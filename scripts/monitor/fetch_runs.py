@@ -83,10 +83,12 @@ def main():
                         help='检查过去多少小时（可选，从config读取）')
     parser.add_argument('--config', type=str, default='data/config.json',
                         help='运行时配置文件（由 configure.py 生成）')
+    parser.add_argument('--timeout', type=int, default=30,
+                        help='API 请求超时时间（秒）')
     
     args = parser.parse_args()
     
-    client = GitHubAPIClient()
+    client = GitHubAPIClient(timeout=args.timeout)
     
     target = config.target_repo
     owner = target["owner"]

@@ -64,14 +64,15 @@ jobs:
       
       - name: Fetch failed workflow runs
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.VLLM_ASCEND_TOKEN || secrets.GITHUB_TOKEN }}
         run: |
           python scripts/monitor/fetch_runs.py \
-            --output data/workflow_runs.json
+            --output data/workflow_runs.json \
+            --timeout 30
       
       - name: Collect build metadata
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.VLLM_ASCEND_TOKEN || secrets.GITHUB_TOKEN }}
         run: |
           python scripts/monitor/collect_metadata.py \
             --input data/workflow_runs.json \

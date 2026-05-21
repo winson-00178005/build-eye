@@ -13,15 +13,22 @@ class GitHubAPIClient:
     
     BASE_URL = "https://api.github.com"
     
-    def __init__(self, token: Optional[str] = None):
-        self.token = token or os.getenv("GITHUB_TOKEN") or os.getenv("ARCHIVE_TOKEN")
+    def __init__(self, token: Optional[str] = None, timeout: int = 30):
+        self.token = token or os.getenv("GITHUB_TOKEN") or os.getenv("VLLM_ASCEND_TOKEN")
+        self.timeout = timeout
         self.session = requests.Session()
+        self.session.headers.update({
+            "Accept": "application/vnd.github.v3+json",
+            "User-Agent": "Build-Eye-Monitor/1.0"
+        })
         if self.token:
             self.session.headers.update({
-                "Authorization": f"Bearer {self.token}",
-                "Accept": "application/vnd.github.v3+json"
+                "Authorization": f"Bearer {self.token}"
             })
-        self.rate_limit_remaining = 5000
+            print(f"使用认证 Token 访问 GitHub API")
+        else:
+            print(f"警告: 未配置 Token，使用公共 API（速率限制: 60次/小时）")
+        self.rate_limit_remaining = 60 if not self.token else 5000
         self.rate_limit_reset_time = None
         self._cache_dir = Path("cache")
         self._cache_dir.mkdir(exist_ok=True)
@@ -55,31 +62,54 @@ class GitHubAPIClient:
         max_retries = 3
         backoff_factor = 2
         
+        kwargs.setdefault('timeout', self.timeout)
+        
         for attempt in range(max_retries):
-            self._check_rate_limit()
-            
-            response = self.session.request(method, url, **kwargs)
-            
-            if response.status_code == 200:
-                self.rate_limit_remaining -= 1
-                return response.json()
-            
-            if response.status_code == 403:
-                if "rate limit exceeded" in response.text.lower():
-                    self._refresh_rate_limit()
+            try:
+                self._check_rate_limit()
+                
+                response = self.session.request(method, url, **kwargs)
+                
+                if response.status_code == 200:
+                    self.rate_limit_remaining -= 1
+                    return response.json()
+                
+                if response.status_code == 401:
+                    print(f"认证失败 (401): {url}")
+                    print(f"请配置 VLLM_ASCEND_TOKEN secret")
+                    return None
+                
+                if response.status_code == 403:
+                    if "rate limit exceeded" in response.text.lower():
+                        wait_time = backoff_factor ** attempt
+                        print(f"速率限制耗尽，等待 {wait_time} 秒后重试...")
+                        time.sleep(wait_time)
+                        self._refresh_rate_limit()
+                        continue
+                    else:
+                        print(f"访问被拒绝 (403): {url}")
+                        return None
+                
+                if response.status_code == 404:
+                    print(f"资源不存在 (404): {url}")
+                    return None
+                
+                if attempt < max_retries - 1:
                     wait_time = backoff_factor ** attempt
-                    print(f"速率限制耗尽，等待 {wait_time} 秒后重试...")
+                    print(f"请求失败 ({response.status_code})，等待 {wait_time} 秒后重试...")
                     time.sleep(wait_time)
-                    continue
             
-            if response.status_code == 404:
-                print(f"资源不存在: {url}")
-                return None
+            except requests.exceptions.Timeout:
+                print(f"请求超时 ({self.timeout}s): {url}")
+                if attempt < max_retries - 1:
+                    time.sleep(backoff_factor ** attempt)
+                continue
             
-            if attempt < max_retries - 1:
-                wait_time = backoff_factor ** attempt
-                print(f"请求失败 ({response.status_code})，等待 {wait_time} 秒后重试...")
-                time.sleep(wait_time)
+            except requests.exceptions.RequestException as e:
+                print(f"请求异常: {e}")
+                if attempt < max_retries - 1:
+                    time.sleep(backoff_factor ** attempt)
+                continue
         
         print(f"请求失败，已达最大重试次数: {url}")
         return None
