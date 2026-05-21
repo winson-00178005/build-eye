@@ -1,0 +1,41 @@
+target_repository:
+  owner: vllm-project
+  repo: vllm-ascend
+  url: https://github.com/vllm-project/vllm-ascend
+  branch: main
+  monitored_workflows:
+    - pr_test_full.yaml
+    - pr_test_light.yaml
+
+archive_repository:
+  owner: winson-00178005
+  repo: build-eye
+  url: https://github.com/winson-00178005/build-eye.git
+  reports_dir: reports
+
+monitoring:
+  polling_interval_hours: 6
+  lookback_hours: 24
+  max_concurrent_checks: 5
+
+api:
+  rate_limit_threshold_percent: 20
+  retry_max_attempts: 3
+  retry_backoff_factor: 2
+  cache_ttl_hours: 24
+
+classification:
+  confidence_thresholds:
+    high: 0.9
+    medium: 0.7
+    low: 0.5
+  manual_review_threshold: low
+  time_window_hours: 2
+
+report:
+  template_dir: templates
+  include_log_excerpt_max_lines: 50
+
+logging:
+  level: INFO
+  file: logs/build-eye.log

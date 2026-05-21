@@ -1,0 +1,58 @@
+{
+  "workflow_runs": [
+    {
+      "id": 12345,
+      "name": "E2E-Full",
+      "status": "completed",
+      "conclusion": "failure",
+      "started_at": "2024-01-15T10:00:00Z",
+      "completed_at": "2024-01-15T12:00:00Z",
+      "head_sha": "abc123def456",
+      "head_branch": "main",
+      "workflow_id": "pr_test_full.yaml",
+      "html_url": "https://github.com/vllm-project/vllm-ascend/actions/runs/12345"
+    }
+  ],
+  "jobs": [
+    {
+      "id": 67890,
+      "name": "e2e-full",
+      "status": "completed",
+      "conclusion": "failure",
+      "started_at": "2024-01-15T10:00:00Z",
+      "completed_at": "2024-01-15T11:30:00Z",
+      "runner_name": "linux-aarch64-a2b3-1",
+      "steps": [
+        {
+          "name": "Checkout",
+          "number": 1,
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run tests",
+          "number": 5,
+          "status": "completed",
+          "conclusion": "failure"
+        }
+      ],
+      "html_url": "https://github.com/vllm-project/vllm-ascend/actions/runs/12345/job/67890"
+    }
+  ],
+  "pr": {
+    "number": 789,
+    "title": "Add new inference optimization",
+    "user": {
+      "login": "developer1"
+    },
+    "merged_at": "2024-01-15T09:00:00Z",
+    "merge_commit_sha": "abc123def456",
+    "html_url": "https://github.com/vllm-project/vllm-ascend/pull/789",
+    "base": {
+      "ref": "main"
+    },
+    "head": {
+      "ref": "feature/optimize"
+    }
+  }
+}
