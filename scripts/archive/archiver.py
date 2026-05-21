@@ -160,7 +160,7 @@ def main():
     input_dir = Path(args.input)
     if not input_dir.exists():
         print(f"报告目录不存在: {input_dir}")
-        return
+        sys.exit(0)
     
     report_files = list(input_dir.glob("*.md"))
     

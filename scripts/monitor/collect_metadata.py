@@ -135,24 +135,43 @@ def main():
                         help='输出元数据文件')
     parser.add_argument('--max-log-lines', type=int, default=100,
                         help='日志片段最大行数')
+    parser.add_argument('--max-runs', type=int, default=20,
+                        help='最大处理 workflow runs 数')
+    parser.add_argument('--timeout', type=int, default=30,
+                        help='API 请求超时时间（秒）')
     
     args = parser.parse_args()
     
-    client = GitHubAPIClient()
+    client = GitHubAPIClient(timeout=args.timeout)
     
     input_path = Path(args.input)
     if not input_path.exists():
         print(f"输入文件不存在: {input_path}")
-        return
+        sys.exit(1)
     
-    workflow_runs = json.loads(input_path.read_text())
+    workflow_runs = json.loads(input_path.read_text(encoding='utf-8'))
     
     if not workflow_runs:
-        print("没有 workflow runs 需要处理")
-        return
+        print("没有 workflow runs 需要处理，写入空结果")
+        output_path = Path(args.output)
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        with open(output_path, 'w', encoding='utf-8') as f:
+            json.dump([], f, indent=2, ensure_ascii=False)
+        sys.exit(0)
     
-    target = workflow_runs[0].get("repository", {}).get("full_name", "vllm-project/vllm-ascend")
-    owner, repo = target.split('/')
+    if len(workflow_runs) > args.max_runs:
+        print(f"workflow runs 数量 ({len(workflow_runs)}) 超过上限 ({args.max_runs})，仅处理前 {args.max_runs} 个")
+        workflow_runs = workflow_runs[:args.max_runs]
+    
+    runtime_config_path = Path("data/config.json")
+    if runtime_config_path.exists():
+        runtime_config = json.loads(runtime_config_path.read_text(encoding='utf-8'))
+        owner = runtime_config["target_repository"]["owner"]
+        repo = runtime_config["target_repository"]["repo"]
+    else:
+        owner, repo = "vllm-project", "vllm-ascend"
+    
+    print(f"正在收集 {len(workflow_runs)} 个 workflow runs 的元数据...")
     
     metadata = collect_build_metadata(client, owner, repo, workflow_runs)
     

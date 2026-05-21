@@ -294,9 +294,21 @@ def main():
     input_path = Path(args.input)
     if not input_path.exists():
         print(f"输入文件不存在: {input_path}")
-        return
+        output_path = Path(args.output)
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        with open(output_path, 'w', encoding='utf-8') as f:
+            json.dump([], f, indent=2, ensure_ascii=False)
+        sys.exit(0)
     
     classifications = json.loads(input_path.read_text(encoding='utf-8'))
+    
+    if not classifications:
+        print("没有分类结果需要生成建议")
+        output_path = Path(args.output)
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        with open(output_path, 'w', encoding='utf-8') as f:
+            json.dump([], f, indent=2, ensure_ascii=False)
+        sys.exit(0)
     
     generator = RecommendationGenerator()
     recommendations = generator.generate_all(classifications)

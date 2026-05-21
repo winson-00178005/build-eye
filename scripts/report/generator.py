@@ -347,9 +347,32 @@ def main():
     input_path = Path(args.input)
     if not input_path.exists():
         print(f"输入文件不存在: {input_path}")
-        return
+        sys.exit(1)
     
     recommendations = json.loads(input_path.read_text(encoding='utf-8'))
+    
+    if not recommendations:
+        print("没有数据生成报告，创建空报告目录")
+        output_dir = Path(args.output)
+        output_dir.mkdir(parents=True, exist_ok=True)
+        
+        no_data_report = output_dir / "no-data.md"
+        no_data_report.write_text(
+            "---\nstatus: no_data\ngenerated_at: " + datetime.now(timezone.utc).isoformat() + "\n---\n\n# 本轮监测无失败构建\n\n本次检查未发现需要报告的失败构建。\n", encoding='utf-8'
+        )
+        
+        summary = {
+            "total_reports": 0,
+            "generated_at": datetime.now().isoformat(),
+            "output_dir": str(output_dir),
+            "status": "no_data"
+        }
+        summary_path = Path("data/summary.json")
+        summary_path.parent.mkdir(parents=True, exist_ok=True)
+        summary_path.write_text(json.dumps(summary, indent=2))
+        
+        print(f"摘要已保存到 {summary_path}")
+        sys.exit(0)
     
     generator = ReportGenerator()
     output_dir = Path(args.output)

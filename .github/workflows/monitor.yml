@@ -76,7 +76,9 @@ jobs:
         run: |
           python scripts/monitor/collect_metadata.py \
             --input data/workflow_runs.json \
-            --output data/build_metadata.json
+            --output data/build_metadata.json \
+            --max-runs 20 \
+            --timeout 30
       
       - name: Classify failure root causes
         run: |

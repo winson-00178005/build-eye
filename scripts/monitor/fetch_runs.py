@@ -3,7 +3,7 @@ import argparse
 import json
 import sys
 import os
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 repo_root = Path(__file__).parent.parent.parent
@@ -24,31 +24,24 @@ def fetch_failed_workflow_runs(
     """
     获取失败的 workflow runs 列表。
     
-    过滤条件:
-    - status = completed
-    - conclusion = failure
-    - branch = main
-    - 时间范围 = 最近 N 小时
+    使用 created 参数限制 API 返回范围，减少请求量。
     """
+    cutoff_time = datetime.now(timezone.utc) - timedelta(hours=lookback_hours)
+    created_filter = f">={cutoff_time.strftime('%Y-%m-%d')}"
+    
     runs = client.get_workflow_runs(
         owner=owner,
         repo=repo,
         branch=branch,
-        status="completed"
+        status="completed",
+        created=created_filter,
+        max_pages=5
     )
-    
-    cutoff_time = datetime.now() - timedelta(hours=lookback_hours)
     
     failed_runs = []
     for run in runs:
         if run.get("conclusion") == "failure":
-            completed_at_str = run.get("completed_at")
-            if completed_at_str:
-                completed_at = datetime.fromisoformat(completed_at_str.replace("Z", "+00:00"))
-                if completed_at > cutoff_time:
-                    failed_runs.append(run)
-            else:
-                failed_runs.append(run)
+            failed_runs.append(run)
     
     return failed_runs
 
@@ -60,19 +53,37 @@ def filter_by_workflow(runs: list, workflow_names: list | None) -> list:
     return [r for r in runs if r.get("name") in workflow_names]
 
 
-def filter_by_pr_association(runs: list, client: GitHubAPIClient, owner: str, repo: str) -> list:
-    """只保留关联 PR 的 workflow runs。"""
-    pr_runs = []
+def enrich_pr_association(runs: list, client: GitHubAPIClient, owner: str, repo: str) -> list:
+    """尝试为 workflow runs 添加 PR 关联信息（不过滤）。"""
+    if not client.token:
+        print("未配置 Token，跳过 PR 关联查询")
+        return runs
+    
+    enriched = []
     
     for run in runs:
+        run_data = dict(run)
+        
+        pull_requests = run.get("pull_requests", [])
+        if pull_requests:
+            pr_ref = pull_requests[0]
+            pr_number = pr_ref.get("number")
+            if pr_number:
+                pr_detail = client.get_pr(owner, repo, pr_number)
+                if pr_detail:
+                    run_data["associated_pr"] = pr_detail
+                    enriched.append(run_data)
+                    continue
+        
         commit_sha = run.get("head_sha")
         if commit_sha:
             pr = client.get_pr_for_commit(owner, repo, commit_sha)
             if pr:
-                run["associated_pr"] = pr
-                pr_runs.append(run)
+                run_data["associated_pr"] = pr
+        
+        enriched.append(run_data)
     
-    return pr_runs
+    return enriched
 
 
 def main():
@@ -111,20 +122,22 @@ def main():
     
     print(f"找到 {len(failed_runs)} 个失败的 workflow runs")
     
-    pr_runs = filter_by_pr_association(failed_runs, client, owner, repo)
+    enriched_runs = enrich_pr_association(failed_runs, client, owner, repo)
     
-    print(f"其中 {len(pr_runs)} 个关联 PR")
+    runs_with_pr = [r for r in enriched_runs if r.get("associated_pr")]
+    runs_without_pr = [r for r in enriched_runs if not r.get("associated_pr")]
+    print(f"其中 {len(runs_with_pr)} 个关联 PR, {len(runs_without_pr)} 个无 PR 关联")
     
     monitored_workflows = target.get("monitored_workflows")
     if monitored_workflows and isinstance(monitored_workflows, list):
-        pr_runs = filter_by_workflow(pr_runs, monitored_workflows)
-        print(f"监控范围内: {len(pr_runs)} 个")
+        enriched_runs = filter_by_workflow(enriched_runs, monitored_workflows)
+        print(f"监控范围内: {len(enriched_runs)} 个")
     
     output_path = Path(args.output)
     output_path.parent.mkdir(parents=True, exist_ok=True)
     
     with open(output_path, 'w', encoding='utf-8') as f:
-        json.dump(pr_runs, f, indent=2, ensure_ascii=False)
+        json.dump(enriched_runs, f, indent=2, ensure_ascii=False)
     
     print(f"已保存到 {output_path}")
 

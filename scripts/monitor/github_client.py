@@ -115,7 +115,8 @@ class GitHubAPIClient:
         return None
     
     def get_workflow_runs(self, owner: str, repo: str, branch: str | None = None,
-                          status: str | None = None, per_page: int = 100) -> List[Dict]:
+                          status: str | None = None, created: str | None = None,
+                          per_page: int = 100, max_pages: int = 10) -> List[Dict]:
         """获取仓库的 workflow runs 列表。"""
         url = f"{self.BASE_URL}/repos/{owner}/{repo}/actions/runs"
         params: Dict[str, Any] = {"per_page": per_page}
@@ -124,11 +125,13 @@ class GitHubAPIClient:
             params["branch"] = branch
         if status:
             params["status"] = status
+        if created:
+            params["created"] = created
         
         runs = []
         page = 1
         
-        while True:
+        while page <= max_pages:
             params["page"] = page
             data = self._request_with_retry("GET", url, params=params)
             
