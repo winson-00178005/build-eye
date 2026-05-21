@@ -10,19 +10,60 @@
 
 ### 1.2 GitHub Token 配置
 
-需要在 GitHub 上配置两个 Token：
+需要在 GitHub 上配置 **三个 Token**：
 
-#### GITHUB_TOKEN（必需）
+#### GITHUB_TOKEN（自动提供）
 
 1. **获取位置**: GitHub Actions 自动提供
 2. **权限要求**:
    - `actions:read` - 读取 workflow runs
    - `contents:read` - 读取仓库内容
    - `pull-requests:read` - 读取 PR 信息
+3. **作用域**: 仅对 build-eye 仓库有效
 
-**配置方式**: 在 workflow 中已自动声明，无需额外配置
+**⚠️ 重要**: GITHUB_TOKEN 无法访问其他仓库！
 
-#### ARCHIVE_REPO_TOKEN（必需）
+#### VLLM_ASCEND_TOKEN（必需 - 用于访问目标仓库）
+
+**用途**: 访问 vllm-project/vllm-ascend 仓库的 workflow runs 数据
+
+**权限要求**:
+- `public_repo` - 读取公开仓库数据
+- 或 Fine-grained token: `contents:read`, `actions:read`
+
+**配置步骤**:
+
+1. **创建 Token**:
+   ```
+   GitHub Settings → Developer settings → Personal access tokens → Fine-grained tokens
+   ```
+   
+2. **Token 配置**:
+   - Repository: `All public repositories` 或仅 `vllm-project/vllm-ascend`
+   - Permissions: Contents (Read), Actions (Read)
+
+3. **添加到仓库密钥**:
+   ```
+   build-eye 仓库 → Settings → Secrets and variables → Actions → New repository secret
+   
+   Name: VLLM_ASCEND_TOKEN
+   Value: <粘贴你的 Token>
+   ```
+
+4. **验证配置**:
+   ```bash
+   curl -H "Authorization: token YOUR_TOKEN" \
+     "https://api.github.com/repos/vllm-project/vllm-ascend/actions/runs?per_page=1"
+   ```
+
+#### ARCHIVE_REPO_TOKEN（必需 - 用于归档报告）
+
+**用途**: 向 winson-00178005/build-eye 仓库提交报告文件
+
+**权限要求**:
+- `contents:write` - 写入报告文件
+
+**配置步骤**:
 
 1. **创建 Token**:
    ```
@@ -67,8 +108,9 @@ https://github.com/winson-00178005/build-eye/settings/secrets/actions
 
 | Secret 名称 | 说明 | 是否必需 |
 |------------|------|---------|
+| `VLLM_ASCEND_TOKEN` | 访问 vllm-ascend 仓库的 Token | **必需** |
 | `ARCHIVE_REPO_TOKEN` | 归档仓库写入 Token | **必需** |
-| `GITHUB_TOKEN` | GitHub Actions 自动提供 | 自动 |
+| `GITHUB_TOKEN` | GitHub Actions 自动提供 | 自动（作用域受限）|
 
 ---
 
