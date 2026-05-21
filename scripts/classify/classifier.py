@@ -2,11 +2,14 @@
 import json
 import argparse
 import sys
+import os
 from pathlib import Path
 from typing import Dict, Any
 from datetime import datetime, timedelta
 
-sys.path.insert(0, str(Path(__file__).parent.parent))
+repo_root = Path(__file__).parent.parent.parent
+sys.path.insert(0, str(repo_root))
+sys.path.insert(0, str(repo_root / "scripts"))
 
 from classify.code_detector import detect_code_issues
 from classify.infra_detector import detect_infrastructure_issues

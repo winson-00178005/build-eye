@@ -2,9 +2,12 @@
 import argparse
 import json
 import sys
+import os
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).parent.parent))
+repo_root = Path(__file__).parent.parent.parent
+sys.path.insert(0, str(repo_root))
+sys.path.insert(0, str(repo_root / "scripts"))
 
 from monitor.github_client import GitHubAPIClient
 

@@ -2,10 +2,13 @@
 import json
 import argparse
 import sys
+import os
 from pathlib import Path
 from typing import Dict, Any, List
 
-sys.path.insert(0, str(Path(__file__).parent.parent))
+repo_root = Path(__file__).parent.parent.parent
+sys.path.insert(0, str(repo_root))
+sys.path.insert(0, str(repo_root / "scripts"))
 
 from recommend.templates import (
     get_code_fix_template,

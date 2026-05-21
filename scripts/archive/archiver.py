@@ -3,13 +3,15 @@ import json
 import subprocess
 import argparse
 import sys
+import os
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import List
-import os
 import tempfile
 
-sys.path.insert(0, str(Path(__file__).parent.parent))
+repo_root = Path(__file__).parent.parent.parent
+sys.path.insert(0, str(repo_root))
+sys.path.insert(0, str(repo_root / "scripts"))
 
 
 class ReportArchiver:
