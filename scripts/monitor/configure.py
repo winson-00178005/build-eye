@@ -1,8 +1,14 @@
 """配置脚本 - 根据工作流输入参数动态配置监测系统。"""
 import argparse
 import json
+import sys
 from pathlib import Path
-from config_loader import config, Config
+
+repo_root = Path(__file__).parent.parent.parent
+sys.path.insert(0, str(repo_root))
+sys.path.insert(0, str(repo_root / "scripts"))
+
+from monitor.config_loader import config, Config
 
 def main():
     parser = argparse.ArgumentParser(description='配置 Build-Eye 监测参数')
