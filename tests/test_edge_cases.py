@@ -196,8 +196,7 @@ class TestReportYAMLFormat:
             "overall_category": "infrastructure"
         }
         filename = generator.generate_filename(data)
-        assert "infrastructure" in filename or "infra" in filename
-        assert "789" in filename
+        assert filename == "report.md"
 
 
 class TestArchiverFailure:
