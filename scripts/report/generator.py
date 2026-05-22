@@ -317,9 +317,10 @@ class ReportGenerator:
     def dispatch_reports(
         self,
         grouped_list: List[Dict],
-        metadata_list: List[Dict] = None,
-        output_dir: Path = None,
-        aggregator=None
+        metadata_list: List[Dict] | None = None,
+        output_dir: Path | None = None,
+        aggregator=None,
+        pipeline_type_override: str | None = None
     ) -> List[Path]:
         """按 pipeline_type 分派报告生成。PR 用 PR 报告，Nightly 用日报，Weekly 用周报。"""
 
@@ -329,7 +330,9 @@ class ReportGenerator:
 
         all_files = []
 
-        pr_groups = [g for g in grouped_list if g.get("pipeline_type", "pr") == "pr"]
+        effective_type = pipeline_type_override
+
+        pr_groups = [g for g in grouped_list if (effective_type or g.get("pipeline_type", "pr")) == "pr"]
         if pr_groups:
             files = self.generate_all(pr_groups, output_dir)
             all_files.extend(files)
@@ -408,6 +411,9 @@ def main():
     parser = argparse.ArgumentParser(description='生成监测报告')
     parser.add_argument('--input', type=str, default='data/recommendations.json')
     parser.add_argument('--output', type=str, default='reports/')
+    parser.add_argument('--pipeline-type', type=str, default=None,
+                        choices=['pr', 'nightly', 'weekly'],
+                        help='只生成指定流水线类型的报告')
 
     args = parser.parse_args()
 
@@ -444,7 +450,12 @@ def main():
     generator = ReportGenerator()
     output_dir = Path(args.output)
 
-    report_files = generator.dispatch_reports(grouped_list, output_dir=output_dir)
+    pipeline_type = args.pipeline_type or (grouped_list[0].get("pipeline_type", "pr") if grouped_list else "pr")
+
+    report_files = generator.dispatch_reports(
+        grouped_list, metadata_list=None, output_dir=output_dir,
+        pipeline_type_override=pipeline_type
+    )
 
     print(f"已生成 {len(report_files)} 个报告")
 

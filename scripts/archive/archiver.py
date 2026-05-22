@@ -103,8 +103,8 @@ class ReportArchiver:
         print(f"已清除 {deleted} 个旧文件")
         return deleted
     
-    def archive(self, report_files: List[Path], group_keys: List[str] | None = None, dry_run: bool = False) -> List[str]:
-        """归档报告文件到 GitHub 仓库。每个 PR 一个子目录。归档前先清除当天旧报告。"""
+    def archive(self, report_files: List[Path], group_keys: List[str] | None = None, dry_run: bool = False, pipeline_type: str | None = None) -> List[str]:
+        """归档报告文件到 GitHub 仓库。每个流水线类型有专属子目录。归档前先清除当天旧报告。"""
         
         if not report_files:
             print("没有报告需要归档")
@@ -123,7 +123,9 @@ class ReportArchiver:
         now = datetime.now(timezone.utc)
         date_path = f"{now.year}/{now.month:02d}/{now.day:02d}"
         
-        self.clean_date_reports(date_path)
+        type_subdir = pipeline_type or "pr"
+        clean_path = f"{date_path}/{type_subdir}"
+        self.clean_date_reports(clean_path)
         
         archived = []
         
@@ -131,7 +133,10 @@ class ReportArchiver:
             group_key = (group_keys[i] if group_keys and i < len(group_keys)
                          else report_file.stem)
             
-            repo_path = f"{self.reports_dir}/{date_path}/{group_key}/report.md"
+            if type_subdir == "pr":
+                repo_path = f"{self.reports_dir}/{date_path}/{group_key}/report.md"
+            else:
+                repo_path = f"{self.reports_dir}/{date_path}/{type_subdir}/report.md"
             
             content = report_file.read_text(encoding='utf-8')
             encoded = base64.b64encode(content.encode('utf-8')).decode('utf-8')
@@ -198,6 +203,9 @@ def main():
                         help='归档仓库 (owner/repo格式)')
     parser.add_argument('--dry-run', action='store_true',
                         help='试运行模式')
+    parser.add_argument('--pipeline-type', type=str, default=None,
+                        choices=['pr', 'nightly', 'weekly'],
+                        help='流水线类型，影响归档目录结构')
     
     args = parser.parse_args()
     
@@ -225,7 +233,7 @@ def main():
         owner, repo = args.repo.split('/')
         archiver = ReportArchiver(owner, repo)
         
-        archived = archiver.archive(report_files, group_keys, args.dry_run)
+        archived = archiver.archive(report_files, group_keys, args.dry_run, args.pipeline_type)
         
         print(f"已归档 {len(archived)} 个报告")
     except Exception as e:

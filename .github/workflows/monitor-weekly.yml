@@ -1,17 +1,17 @@
-name: Build-Eye Scheduled Monitoring
+name: Build-Eye Weekly Pipeline Monitoring
 
 on:
   schedule:
-    - cron: '0 */6 * * *'
+    - cron: '0 3 * * 1'
   workflow_dispatch:
     inputs:
       lookback_hours:
         description: '检查过去多少小时的构建记录'
         required: false
-        default: '24'
+        default: '168'
         type: string
       dry_run:
-        description: '试运行模式（不提交报告到归档仓库）'
+        description: '试运行模式'
         required: false
         default: 'false'
         type: boolean
@@ -26,9 +26,10 @@ env:
   TARGET_REPO_NAME: vllm-ascend
   ARCHIVE_REPO_URL: https://github.com/winson-00178005/build-eye.git
   PYTHON_VERSION: '3.11'
+  PIPELINE_TYPE: weekly
 
 jobs:
-  monitor:
+  monitor-weekly:
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -53,24 +54,28 @@ jobs:
       
       - name: Configure monitoring parameters
         env:
-          LOOKBACK_HOURS: ${{ inputs.lookback_hours || '24' }}
+          LOOKBACK_HOURS: ${{ inputs.lookback_hours || '168' }}
           TARGET_REPO: ${{ inputs.target_repo || 'vllm-project/vllm-ascend' }}
           DRY_RUN: ${{ inputs.dry_run || 'false' }}
         run: |
           python scripts/monitor/configure.py \
             --lookback $LOOKBACK_HOURS \
             --target $TARGET_REPO \
-            --dry-run $DRY_RUN
+            --dry-run $DRY_RUN \
+            --pipeline-type weekly
       
-      - name: Fetch failed workflow runs
+      - name: Fetch Weekly workflow runs (all status)
         env:
           GITHUB_TOKEN: ${{ secrets.VLLM_ASCEND_TOKEN || github.token }}
         run: |
           python scripts/monitor/fetch_runs.py \
             --output data/workflow_runs.json \
+            --pipeline-type weekly \
+            --status all \
             --timeout 30
       
       - name: Collect build metadata
+        if: ${{ hashFiles('data/workflow_runs.json') != '' }}
         env:
           GITHUB_TOKEN: ${{ secrets.VLLM_ASCEND_TOKEN || github.token }}
         run: |
@@ -81,34 +86,28 @@ jobs:
             --timeout 30
       
       - name: Classify failure root causes
+        if: ${{ hashFiles('data/build_metadata.json') != '' }}
         run: |
           python scripts/classify/classifier.py \
             --input data/build_metadata.json \
             --output data/classifications.json
       
       - name: Generate fix recommendations
+        if: ${{ hashFiles('data/classifications.json') != '' }}
         run: |
           python scripts/recommend/recommender.py \
             --input data/classifications.json \
             --output data/recommendations.json
       
-      - name: Generate monitoring reports
+      - name: Generate Weekly summary report + Dashboard data
+        if: ${{ hashFiles('data/recommendations.json') != '' }}
         run: |
           python scripts/report/generator.py \
             --input data/recommendations.json \
-            --output reports/
+            --output reports/ \
+            --pipeline-type weekly
       
-      - name: Archive reports to build-eye repository
-        if: ${{ inputs.dry_run != 'true' }}
-        continue-on-error: true
-        env:
-          GITHUB_TOKEN: ${{ secrets.VLLM_ASCEND_TOKEN || github.token }}
-        run: |
-          python scripts/archive/archiver.py \
-            --input reports/ \
-            --repo winson-00178005/build-eye
-      
-      - name: Aggregate build metrics
+      - name: Aggregate build metrics (weekly)
         if: ${{ always() }}
         run: |
           python scripts/monitor/aggregator_cli.py \
@@ -116,22 +115,30 @@ jobs:
             --classifications data/classifications.json \
             --db data/build_metrics.db
       
+      - name: Archive Weekly report to build-eye repository
+        if: ${{ inputs.dry_run != 'true' && hashFiles('data/recommendations.json') != '' }}
+        continue-on-error: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.VLLM_ASCEND_TOKEN || github.token }}
+        run: |
+          python scripts/archive/archiver.py \
+            --input reports/ \
+            --repo winson-00178005/build-eye \
+            --pipeline-type weekly
+      
       - name: Upload reports artifact
         if: ${{ always() }}
         uses: actions/upload-artifact@v4
         with:
-          name: monitoring-reports
+          name: weekly-monitoring-reports
           path: reports/
           retention-days: 30
       
       - name: Summary
         if: ${{ always() }}
         run: |
-          echo "## Build-Eye 监测报告摘要" >> $GITHUB_STEP_SUMMARY
+          echo "## Weekly 流水线周报摘要" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "检查时间范围: ${{ inputs.lookback_hours || '24' }} 小时" >> $GITHUB_STEP_SUMMARY
+          echo "流水线类型: Weekly" >> $GITHUB_STEP_SUMMARY
+          echo "检查时间范围: ${{ inputs.lookback_hours || '168' }} 小时 (7天)" >> $GITHUB_STEP_SUMMARY
           echo "目标仓库: ${{ inputs.target_repo || 'vllm-project/vllm-ascend' }}" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          if [ -f data/summary.json ]; then
-            python scripts/report/summary.py --input data/summary.json >> $GITHUB_STEP_SUMMARY || true
-          fi

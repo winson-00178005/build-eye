@@ -15,6 +15,9 @@ def main():
     parser.add_argument('--lookback', type=int, default=24, help='检查过去多少小时')
     parser.add_argument('--target', type=str, default='vllm-project/vllm-ascend', help='目标仓库')
     parser.add_argument('--dry-run', type=str, default='false', help='试运行模式')
+    parser.add_argument('--pipeline-type', type=str, default=None,
+                        choices=['pr', 'nightly', 'weekly'],
+                        help='流水线类型')
     parser.add_argument('--output', type=str, default='data/config.json', help='配置输出路径')
     
     args = parser.parse_args()
@@ -29,6 +32,7 @@ def main():
             "url": f"https://github.com/{owner}/{repo}"
         },
         "dry_run": args.dry_run.lower() == 'true',
+        "pipeline_type": args.pipeline_type,
         "archive_repository": config.archive_repo
     }
     
