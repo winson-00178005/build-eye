@@ -157,11 +157,14 @@ def main():
     detector = PipelineDetector(config.pipeline_types)
     enriched_runs = detector.detect_all(enriched_runs)
     
+    unmonitored_count = sum(1 for r in enriched_runs if r.get("pipeline_info", {}).get("pipeline_type") == "unmonitored")
     nightly_count = sum(1 for r in enriched_runs if r.get("pipeline_info", {}).get("pipeline_type") == "nightly")
     weekly_count = sum(1 for r in enriched_runs if r.get("pipeline_info", {}).get("pipeline_type") == "weekly")
     pr_count = sum(1 for r in enriched_runs if r.get("pipeline_info", {}).get("pipeline_type") == "pr")
-    manual_count = sum(1 for r in enriched_runs if r.get("pipeline_info", {}).get("pipeline_type") == "manual")
-    print(f"流水线类型: PR={pr_count}, Nightly={nightly_count}, Weekly={weekly_count}, Manual={manual_count}")
+    print(f"流水线类型: PR={pr_count}, Nightly={nightly_count}, Weekly={weekly_count}, 不监控={unmonitored_count}")
+    
+    enriched_runs = detector.filter_by_type(enriched_runs, "unmonitored", exclude=True)
+    print(f"排除不监控的 run 后: {len(enriched_runs)} 个")
     
     if args.pipeline_type:
         enriched_runs = detector.filter_by_type(enriched_runs, args.pipeline_type)

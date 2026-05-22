@@ -1,17 +1,15 @@
 """Pipeline Detector 测试。"""
 import pytest
-from scripts.monitor.pipeline_detector import PipelineDetector, PIPELINE_PR, PIPELINE_NIGHTLY, PIPELINE_WEEKLY, PIPELINE_MANUAL
+from scripts.monitor.pipeline_detector import PipelineDetector, PIPELINE_PR, PIPELINE_NIGHTLY, PIPELINE_WEEKLY, PIPELINE_UNMONITORED
 
 
 PIPELINE_CONFIG = {
     "nightly": {
         "name_patterns": ["Nightly-*", "*_nightly_*", "schedule_nightly_*"],
-        "schedule_patterns": ["0 3 * * *"],
         "alert_on_consecutive_failures": 2
     },
     "weekly": {
-        "name_patterns": ["Weekly-*", "*_weekly_*"],
-        "schedule_patterns": ["0 3 * * 0"]
+        "name_patterns": ["Weekly-*", "*_weekly_*"]
     }
 }
 
@@ -38,20 +36,25 @@ def test_detect_weekly_by_name():
     assert result["pipeline_type"] == PIPELINE_WEEKLY
 
 
-def test_detect_manual_dispatch():
+def test_detect_manual_dispatch_is_unmonitored():
     detector = PipelineDetector(PIPELINE_CONFIG)
     run = {"name": "E2E-Full", "event": "workflow_dispatch"}
     result = detector.detect(run)
-    assert result["pipeline_type"] == PIPELINE_MANUAL
-    assert result["source"] == "event"
+    assert result["pipeline_type"] == PIPELINE_UNMONITORED
 
 
-def test_detect_pr_default():
+def test_detect_push_to_main_is_unmonitored():
     detector = PipelineDetector(PIPELINE_CONFIG)
-    run = {"name": "E2E-Light", "event": "push"}
+    run = {"name": "E2E-Light", "event": "push", "pull_requests": []}
+    result = detector.detect(run)
+    assert result["pipeline_type"] == PIPELINE_UNMONITORED
+
+
+def test_detect_push_with_pr_is_pr_type():
+    detector = PipelineDetector(PIPELINE_CONFIG)
+    run = {"name": "E2E-Light", "event": "push", "pull_requests": [{"number": 999}]}
     result = detector.detect(run)
     assert result["pipeline_type"] == PIPELINE_PR
-    assert result["source"] == "default"
 
 
 def test_detect_schedule_without_name_match():
@@ -66,13 +69,17 @@ def test_detect_all():
     detector = PipelineDetector(PIPELINE_CONFIG)
     runs = [
         {"name": "Nightly-A2", "event": "schedule"},
-        {"name": "E2E-Full", "event": "push"},
-        {"name": "Weekly-Smoke", "event": "schedule"}
+        {"name": "E2E-Full", "event": "push", "pull_requests": [{"number": 123}]},
+        {"name": "Weekly-Smoke", "event": "schedule"},
+        {"name": "E2E-Light", "event": "push", "pull_requests": []},
+        {"name": "E2E-Manual", "event": "workflow_dispatch"}
     ]
     results = detector.detect_all(runs)
     assert results[0]["pipeline_info"]["pipeline_type"] == PIPELINE_NIGHTLY
     assert results[1]["pipeline_info"]["pipeline_type"] == PIPELINE_PR
     assert results[2]["pipeline_info"]["pipeline_type"] == PIPELINE_WEEKLY
+    assert results[3]["pipeline_info"]["pipeline_type"] == PIPELINE_UNMONITORED
+    assert results[4]["pipeline_info"]["pipeline_type"] == PIPELINE_UNMONITORED
 
 
 def test_filter_by_type():
@@ -86,6 +93,19 @@ def test_filter_by_type():
     assert len(nightly) == 1
 
 
+def test_filter_exclude_unmonitored():
+    detector = PipelineDetector(PIPELINE_CONFIG)
+    runs = [
+        {"pipeline_info": {"pipeline_type": PIPELINE_NIGHTLY}},
+        {"pipeline_info": {"pipeline_type": PIPELINE_UNMONITORED}},
+        {"pipeline_info": {"pipeline_type": PIPELINE_PR}},
+        {"pipeline_info": {"pipeline_type": PIPELINE_UNMONITORED}}
+    ]
+    filtered = detector.filter_by_type(runs, PIPELINE_UNMONITORED, exclude=True)
+    assert len(filtered) == 2
+    assert all(r["pipeline_info"]["pipeline_type"] != PIPELINE_UNMONITORED for r in filtered)
+
+
 def test_wildcard_pattern():
     detector = PipelineDetector({"nightly": {"name_patterns": ["nightly_*"]}})
     run = {"name": "nightly_test", "event": "schedule"}
@@ -93,9 +113,16 @@ def test_wildcard_pattern():
     assert result["pipeline_type"] == PIPELINE_NIGHTLY
 
 
-def test_empty_config():
+def test_empty_config_push_without_pr():
     detector = PipelineDetector({})
-    run = {"name": "SomeWorkflow", "event": "push"}
+    run = {"name": "SomeWorkflow", "event": "push", "pull_requests": []}
+    result = detector.detect(run)
+    assert result["pipeline_type"] == PIPELINE_UNMONITORED
+
+
+def test_empty_config_push_with_pr():
+    detector = PipelineDetector({})
+    run = {"name": "SomeWorkflow", "event": "push", "pull_requests": [{"number": 1}]}
     result = detector.detect(run)
     assert result["pipeline_type"] == PIPELINE_PR
 
