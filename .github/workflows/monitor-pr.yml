@@ -132,7 +132,7 @@ jobs:
           echo "## PR 流水线监测报告摘要" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "流水线类型: PR" >> $GITHUB_STEP_SUMMARY
-          echo "检查时间范围: ${{ inputs.lookback_hours || '6' }} 小时" >> $GITHUB_STEP_SUMMARY
+          echo "检查时间范围: ${{ inputs.lookback_hours || '24' }} 小时" >> $GITHUB_STEP_SUMMARY
           echo "目标仓库: ${{ inputs.target_repo || 'vllm-project/vllm-ascend' }}" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           if [ -f data/summary.json ]; then
