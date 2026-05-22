@@ -198,21 +198,18 @@ class TestArchiverFailure:
     
     def test_archive_without_token(self):
         """测试无 Token 时的归档行为。"""
-        from archive.archiver import ReportArchiver
+        from scripts.archive.archiver import ReportArchiver
         
-        archiver = ReportArchiver(
-            "https://github.com/test/test.git",
-            token=None
-        )
+        archiver = ReportArchiver("test-owner", "test-repo", token=None)
         
         result = archiver.archive([Path("test.md")], dry_run=False)
         assert result == []
     
     def test_dry_run_mode(self):
         """测试试运行模式。"""
-        from archive.archiver import ReportArchiver
+        from scripts.archive.archiver import ReportArchiver
         
-        archiver = ReportArchiver("https://github.com/test/test.git")
+        archiver = ReportArchiver("test-owner", "test-repo", "mock_token")
         result = archiver.archive([Path("test.md")], dry_run=True)
         assert len(result) == 1
 

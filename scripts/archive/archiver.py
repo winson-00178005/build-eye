@@ -4,6 +4,7 @@ import json
 import argparse
 import sys
 import os
+import time
 import requests
 from datetime import datetime, timezone
 from pathlib import Path
@@ -34,8 +35,76 @@ class ReportArchiver:
                 "Authorization": f"Bearer {self.token}"
             })
     
+    def _list_dir(self, path: str) -> list:
+        """列出 GitHub 仓库目录下的所有内容。"""
+        url = f"{self.BASE_URL}/repos/{self.repo_owner}/{self.repo_name}/contents/{path}"
+        response = self.session.get(url)
+        
+        if response.status_code == 200:
+            return response.json()
+        
+        return []
+    
+    def _delete_file(self, path: str, sha: str, commit_msg: str) -> bool:
+        """通过 GitHub Contents API 删除文件。"""
+        url = f"{self.BASE_URL}/repos/{self.repo_owner}/{self.repo_name}/contents/{path}"
+        data = {
+            "message": commit_msg,
+            "sha": sha,
+            "branch": "main"
+        }
+        
+        response = self.session.delete(url, json=data)
+        
+        if response.status_code == 200:
+            return True
+        
+        print(f"删除失败 ({response.status_code}): {path}")
+        return False
+    
+    def _delete_dir_recursive(self, dir_path: str) -> int:
+        """递归删除 GitHub 仓库目录下的所有文件和子目录。"""
+        deleted = 0
+        items = self._list_dir(dir_path)
+        
+        for item in items:
+            item_type = item.get("type", "")
+            item_path = item.get("path", "")
+            item_sha = item.get("sha", "")
+            
+            if item_type == "dir":
+                deleted += self._delete_dir_recursive(item_path)
+            elif item_type == "file":
+                commit_msg = f"Remove old report: {item_path}"
+                if self._delete_file(item_path, item_sha, commit_msg):
+                    deleted += 1
+                    time.sleep(0.3)
+                else:
+                    print(f"  跳过: {item_path}")
+        
+        return deleted
+    
+    def clean_date_reports(self, date_path: str) -> int:
+        """清除指定日期目录下的所有已有报告。"""
+        full_path = f"{self.reports_dir}/{date_path}"
+        
+        print(f"检查已有报告: {full_path}")
+        
+        items = self._list_dir(full_path)
+        
+        if not items:
+            print("当日无已有报告，直接写入")
+            return 0
+        
+        print(f"发现 {len(items)} 个已有目录/文件，正在清除...")
+        
+        deleted = self._delete_dir_recursive(full_path)
+        
+        print(f"已清除 {deleted} 个旧文件")
+        return deleted
+    
     def archive(self, report_files: List[Path], group_keys: List[str] | None = None, dry_run: bool = False) -> List[str]:
-        """归档报告文件到 GitHub 仓库。每个 PR 一个子目录。"""
+        """归档报告文件到 GitHub 仓库。每个 PR 一个子目录。归档前先清除当天旧报告。"""
         
         if not report_files:
             print("没有报告需要归档")
@@ -53,6 +122,8 @@ class ReportArchiver:
         
         now = datetime.now(timezone.utc)
         date_path = f"{now.year}/{now.month:02d}/{now.day:02d}"
+        
+        self.clean_date_reports(date_path)
         
         archived = []
         
@@ -72,6 +143,7 @@ class ReportArchiver:
             if success:
                 archived.append(repo_path)
                 print(f"已归档: {repo_path}")
+                time.sleep(0.3)
             else:
                 print(f"归档失败: {repo_path}")
         
