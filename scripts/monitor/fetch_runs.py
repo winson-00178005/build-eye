@@ -1,4 +1,4 @@
-"""获取 workflow runs - 分页和过滤。"""
+"""获取 workflow runs - 分页、过滤、流水线类型识别。"""
 import argparse
 import json
 import sys
@@ -15,17 +15,20 @@ from monitor.config_loader import config
 from monitor.pipeline_detector import PipelineDetector
 
 
-def fetch_failed_workflow_runs(
+def fetch_workflow_runs(
     client: GitHubAPIClient,
     owner: str,
     repo: str,
     lookback_hours: int = 24,
-    branch: str = "main"
+    branch: str = "main",
+    status_filter: str = "failure"
 ) -> list:
     """
-    获取失败的 workflow runs 列表。
+    获取 workflow runs 列表。
     
-    使用 created 参数限制 API 返回范围，减少请求量。
+    status_filter:
+      - "failure": 只返回失败的 run (PR 流水线默认)
+      - "all": 返回所有已完成的 run (Nightly/Weekly 需要成功率数据)
     """
     cutoff_time = datetime.now(timezone.utc) - timedelta(hours=lookback_hours)
     created_filter = f">={cutoff_time.strftime('%Y-%m-%d')}"
@@ -39,12 +42,15 @@ def fetch_failed_workflow_runs(
         max_pages=5
     )
     
-    failed_runs = []
-    for run in runs:
-        if run.get("conclusion") == "failure":
-            failed_runs.append(run)
+    if status_filter == "failure":
+        runs = [r for r in runs if r.get("conclusion") == "failure"]
     
-    return failed_runs
+    return runs
+
+
+def fetch_failed_workflow_runs(client, owner, repo, lookback_hours=24, branch="main"):
+    """兼容旧调用: 只获取失败的 run。"""
+    return fetch_workflow_runs(client, owner, repo, lookback_hours, branch, "failure")
 
 
 def filter_by_workflow(runs: list, workflow_names: list | None) -> list:
@@ -96,15 +102,21 @@ def enrich_pr_association(runs: list, client: GitHubAPIClient, owner: str, repo:
 
 
 def main():
-    parser = argparse.ArgumentParser(description='获取失败的 workflow runs')
+    parser = argparse.ArgumentParser(description='获取 workflow runs')
     parser.add_argument('--output', type=str, default='data/workflow_runs.json',
                         help='输出文件路径')
     parser.add_argument('--lookback', type=int, default=None,
-                        help='检查过去多少小时（可选，从config读取）')
+                        help='检查过去多少小时')
     parser.add_argument('--config', type=str, default='data/config.json',
-                        help='运行时配置文件（由 configure.py 生成）')
+                        help='运行时配置文件')
     parser.add_argument('--timeout', type=int, default=30,
                         help='API 请求超时时间（秒）')
+    parser.add_argument('--pipeline-type', type=str, default=None,
+                        choices=['pr', 'nightly', 'weekly'],
+                        help='只获取指定流水线类型的 run')
+    parser.add_argument('--status', type=str, default='failure',
+                        choices=['failure', 'all'],
+                        help='获取状态: failure=只失败, all=全部(含成功)')
     
     args = parser.parse_args()
     
@@ -123,15 +135,15 @@ def main():
         else:
             lookback = 24
     
-    print(f"正在获取 {owner}/{repo} 的失败构建...")
+    print(f"正在获取 {owner}/{repo} 的构建 (status={args.status})...")
     
-    failed_runs = fetch_failed_workflow_runs(
-        client, owner, repo, lookback
+    runs = fetch_workflow_runs(
+        client, owner, repo, lookback, status_filter=args.status
     )
     
-    print(f"找到 {len(failed_runs)} 个失败的 workflow runs")
+    print(f"找到 {len(runs)} 个 workflow runs")
     
-    enriched_runs = enrich_pr_association(failed_runs, client, owner, repo)
+    enriched_runs = enrich_pr_association(runs, client, owner, repo)
     
     runs_with_pr = [r for r in enriched_runs if r.get("associated_pr")]
     runs_without_pr = [r for r in enriched_runs if not r.get("associated_pr")]
@@ -150,6 +162,10 @@ def main():
     pr_count = sum(1 for r in enriched_runs if r.get("pipeline_info", {}).get("pipeline_type") == "pr")
     manual_count = sum(1 for r in enriched_runs if r.get("pipeline_info", {}).get("pipeline_type") == "manual")
     print(f"流水线类型: PR={pr_count}, Nightly={nightly_count}, Weekly={weekly_count}, Manual={manual_count}")
+    
+    if args.pipeline_type:
+        enriched_runs = detector.filter_by_type(enriched_runs, args.pipeline_type)
+        print(f"过滤为 {args.pipeline_type} 类型: {len(enriched_runs)} 个")
     
     output_path = Path(args.output)
     output_path.parent.mkdir(parents=True, exist_ok=True)
