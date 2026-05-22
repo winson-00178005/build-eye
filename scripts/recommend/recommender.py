@@ -274,14 +274,75 @@ class RecommendationGenerator:
             
             result = {
                 "workflow_run_id": c["workflow_run_id"],
-                "pr_number": c["pr_number"],
+                "workflow_name": c.get("workflow_name", ""),
+                "pr_number": c.get("pr_number"),
                 "classification": c["classification"],
+                "metadata": c.get("metadata", {}),
                 "recommendations": rec
             }
             
             results.append(result)
         
         return results
+    
+    def group_by_pr(self, recommendations: List[Dict]) -> List[Dict]:
+        """按 PR 分组，输出每 PR 一份聚合数据（含所有 workflow 分析）。"""
+        
+        groups: Dict[str, List[Dict]] = {}
+        
+        for r in recommendations:
+            pr_number = r.get("pr_number")
+            if pr_number is not None:
+                key = f"pr-{pr_number}"
+            else:
+                key = f"run-{r['workflow_run_id']}"
+            
+            if key not in groups:
+                groups[key] = []
+            groups[key].append(r)
+        
+        grouped_results = []
+        
+        for key, items in groups.items():
+            pr_number = items[0].get("pr_number")
+            
+            category_counts = {"code": 0, "infrastructure": 0, "interference": 0}
+            for item in items:
+                cat = item["classification"].get("classification", "unknown")
+                if cat in category_counts:
+                    category_counts[cat] += 1
+            
+            all_recommendations = []
+            for item in items:
+                rec = item.get("recommendations", {})
+                primary = rec.get("primary_recommendation")
+                if primary:
+                    all_recommendations.append({
+                        "workflow_name": item.get("workflow_name", ""),
+                        "workflow_run_id": item["workflow_run_id"],
+                        "action": primary.get("action", ""),
+                        "effort": primary.get("effort", ""),
+                        "detail": primary.get("detail", "")
+                    })
+            
+            if category_counts["code"] > 0:
+                overall_category = "code"
+            elif category_counts["interference"] > 0:
+                overall_category = "interference"
+            else:
+                overall_category = "infrastructure"
+            
+            grouped_results.append({
+                "pr_number": pr_number,
+                "group_key": key,
+                "overall_category": overall_category,
+                "total_failed_workflows": len(items),
+                "category_counts": category_counts,
+                "workflow_runs": items,
+                "overall_recommendations": all_recommendations
+            })
+        
+        return grouped_results
 
 
 def main():
@@ -313,13 +374,15 @@ def main():
     generator = RecommendationGenerator()
     recommendations = generator.generate_all(classifications)
     
+    grouped = generator.group_by_pr(recommendations)
+    
     output_path = Path(args.output)
     output_path.parent.mkdir(parents=True, exist_ok=True)
     
     with open(output_path, 'w', encoding='utf-8') as f:
-        json.dump(recommendations, f, indent=2, ensure_ascii=False)
+        json.dump(grouped, f, indent=2, ensure_ascii=False)
     
-    print(f"已生成 {len(recommendations)} 条建议")
+    print(f"已生成 {len(grouped)} 个 PR 分组（含 {len(recommendations)} 个 workflow）")
 
 
 if __name__ == "__main__":
