@@ -1,8 +1,8 @@
 ---
-report_id: 31fce374
+report_id: b754caab
 pr_number: null
-group_key: run-26261198469
-generated_at: 2026-05-22T06:58:45.190709+00:00
+group_key: run-26261565025
+generated_at: 2026-05-22T07:45:51.999677+00:00
 overall_classification: code
 total_failed_workflows: 1
 category_counts:
@@ -11,21 +11,21 @@ category_counts:
   interference: 0
 ---
 
-# 构建失败报告: run-26261198469
+# 构建失败报告: run-26261565025
 
 ## 概要
 
-run-26261198469 触发了 1 个 workflow，均失败。
+run-26261565025 触发了 1 个 workflow，均失败。
 
 - **代码问题**: 1 次
 
 | # | Workflow | 根因分类 | 置信度 | 具体问题 |
 |---|---|---|---|---|
-| 1 | E2E-Light (#26261198469) | PR代码问题 | 高 | 编译错误 |
+| 1 | E2E-Full (#26261565025) | PR代码问题 | 高 | 编译错误 |
 
 
 ## Workflow 详细分析
-### 1. E2E-Light (Run #26261198469)
+### 1. E2E-Full (Run #26261565025)
 
 - **根因分类**: PR代码问题
 - **置信度**: 高
@@ -36,19 +36,25 @@ run-26261198469 触发了 1 个 workflow，均失败。
 **匹配模式**:
 - compilation: `error:\s+`
 
-[查看 Workflow Run](https://github.com/vllm-project/vllm-ascend/actions/runs/26261198469)
-[查看 Job: lint / pre-commit](https://github.com/vllm-project/vllm-ascend/actions/runs/26261198469/job/77294870710)
+[查看 Workflow Run](https://github.com/vllm-project/vllm-ascend/actions/runs/26261565025)
+[查看 Job: e2e-full (0d4d334eaa583b9c09aa4eb7538c22db99fd84b3) / multicard-2-full (0)](https://github.com/vllm-project/vllm-ascend/actions/runs/26261565025/job/77296140195)
+[查看 Job: e2e-full (0d4d334eaa583b9c09aa4eb7538c22db99fd84b3) / multicard-4-full (0)](https://github.com/vllm-project/vllm-ascend/actions/runs/26261565025/job/77296140197)
+[查看 Job: e2e-full (0d4d334eaa583b9c09aa4eb7538c22db99fd84b3) / singlecard-full (0)](https://github.com/vllm-project/vllm-ascend/actions/runs/26261565025/job/77296140199)
+[查看 Job: e2e-full (v0.20.2) / singlecard-full (0)](https://github.com/vllm-project/vllm-ascend/actions/runs/26261565025/job/77296140219)
+[查看 Job: e2e-full (v0.20.2) / singlecard-full (1)](https://github.com/vllm-project/vllm-ascend/actions/runs/26261565025/job/77296140225)
+[查看 Job: e2e-full (v0.20.2) / multicard-2-full (0)](https://github.com/vllm-project/vllm-ascend/actions/runs/26261565025/job/77296140234)
+[查看 Job: e2e-full (v0.20.2) / multicard-4-full (0)](https://github.com/vllm-project/vllm-ascend/actions/runs/26261565025/job/77296140242)
 
 **日志片段**:
 ```
-2026-05-22T00:31:08.3207186Z [1m--- a/vllm_ascend/ops/triton/fla/solve_tril.py[m
-2026-05-22T00:31:08.3207710Z [1m+++ b/vllm_ascend/ops/triton/fla/solve_tril.py[m
-2026-05-22T00:31:08.3208159Z [36m@@ -12,12 +12,11 @@[m
-2026-05-22T00:31:08.3208486Z  import torch[m
-2026-05-22T00:31:08.3208856Z  from vllm.triton_utils import tl, triton[m
-2026-05-22T00:31:08.3209139Z  [m
-2026-05-22T00:31:08.3209673Z [32m+[m[32mfrom vllm_ascend.device.device_op import DeviceOperator[m
-2026-05-22T00:31:08.3
+2026-05-22T00:59:05.8434379Z   UV_HTTP_TIMEOUT: 120
+2026-05-22T00:59:05.8434681Z   UV_NO_CACHE: 1
+2026-05-22T00:59:05.8434915Z   UV_SYSTEM_PYTHON: 1
+2026-05-22T00:59:05.8435182Z ##[endgroup]
+2026-05-22T00:59:05.8527942Z ##[group]Run '/home/runner/k8s/index.js'
+2026-05-22T00:59:05.8529032Z shell: /home/runner/externals/node20/bin/node {0}
+2026-05-22T00:59:05.8529398Z ##[endgroup]
+2026-05-22T00:59:06.3390795Z (node:1528) [DEP0005] DeprecationWarning: Buffer() is deprecated due to security and usab
 ```
 
 **建议**:
@@ -62,7 +68,7 @@ run-26261198469 触发了 1 个 workflow，均失败。
 
 ### 优先建议
 
-- **E2E-Light (#26261198469)**: 检查编译错误位置 (低成本) - 查看 CMake 或 clang 报错的具体文件和行
+- **E2E-Full (#26261565025)**: 检查编译错误位置 (低成本) - 查看 CMake 或 clang 报错的具体文件和行
 
 ---
-报告生成时间: 2026-05-22T06:58:45.190725+00:00
+报告生成时间: 2026-05-22T07:45:51.999696+00:00
