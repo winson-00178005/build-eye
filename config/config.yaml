@@ -4,8 +4,13 @@ target_repository:
   url: https://github.com/vllm-project/vllm-ascend
   branch: main
   monitored_workflows:
-    - pr_test_full.yaml
-    - pr_test_light.yaml
+    - E2E-Light
+    - E2E-Full
+    - vLLM Main Schedule Test
+    - Image build lint
+    - Nightly-A2
+    - Cache csrc Build Artifacts
+    - Release Code and Wheel
 
 archive_repository:
   owner: winson-00178005

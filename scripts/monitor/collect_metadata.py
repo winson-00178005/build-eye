@@ -38,16 +38,16 @@ def collect_build_metadata(
         metadata = {
             "workflow_run": {
                 "id": run_id,
-                "name": run["name"],
-                "workflow_id": run["workflow_id"],
-                "status": run["status"],
-                "conclusion": run["conclusion"],
-                "started_at": run["started_at"],
-                "completed_at": run["completed_at"],
-                "head_sha": run["head_sha"],
-                "head_branch": run["head_branch"],
-                "url": run["html_url"],
-                "triggering_actor": run.get("triggering_actor", {}).get("login", "unknown")
+                "name": run.get("name", ""),
+                "workflow_id": run.get("workflow_id"),
+                "status": run.get("status", ""),
+                "conclusion": run.get("conclusion", ""),
+                "started_at": run.get("run_started_at", run.get("started_at")),
+                "completed_at": run.get("updated_at", run.get("completed_at")),
+                "head_sha": run.get("head_sha", ""),
+                "head_branch": run.get("head_branch", ""),
+                "url": run.get("html_url", ""),
+                "triggering_actor": (run.get("triggering_actor") or {}).get("login", "unknown")
             },
             "pr": None,
             "jobs": [],
@@ -56,39 +56,39 @@ def collect_build_metadata(
         
         if pr:
             metadata["pr"] = {
-                "number": pr["number"],
-                "title": pr["title"],
-                "author": pr["user"]["login"],
+                "number": pr.get("number"),
+                "title": pr.get("title", ""),
+                "author": (pr.get("user") or {}).get("login", "unknown"),
                 "merged_at": pr.get("merged_at"),
                 "merge_commit_sha": pr.get("merge_commit_sha"),
-                "url": pr["html_url"],
-                "base_ref": pr["base"]["ref"],
-                "head_ref": pr["head"]["ref"]
+                "url": pr.get("html_url", ""),
+                "base_ref": (pr.get("base") or {}).get("ref", ""),
+                "head_ref": (pr.get("head") or {}).get("ref", "")
             }
         
         jobs = client.get_workflow_run_jobs(owner, repo, run_id)
         
         for job in jobs:
             job_data = {
-                "id": job["id"],
-                "name": job["name"],
-                "status": job["status"],
-                "conclusion": job["conclusion"],
+                "id": job.get("id"),
+                "name": job.get("name", ""),
+                "status": job.get("status", ""),
+                "conclusion": job.get("conclusion", ""),
                 "started_at": job.get("started_at"),
                 "completed_at": job.get("completed_at"),
                 "runner_name": job.get("runner_name", "unknown"),
                 "runner_group": job.get("runner_group_name", "unknown"),
                 "steps": [],
-                "url": job["html_url"]
+                "url": job.get("html_url", "")
             }
             
             if job.get("steps"):
                 for step in job["steps"]:
                     step_data = {
-                        "name": step["name"],
-                        "number": step["number"],
-                        "status": step["status"],
-                        "conclusion": step["conclusion"],
+                        "name": step.get("name", ""),
+                        "number": step.get("number", 0),
+                        "status": step.get("status", ""),
+                        "conclusion": step.get("conclusion", ""),
                         "started_at": step.get("started_at"),
                         "completed_at": step.get("completed_at")
                     }
@@ -96,7 +96,7 @@ def collect_build_metadata(
             
             metadata["jobs"].append(job_data)
             
-            if job["conclusion"] == "failure":
+            if job.get("conclusion") == "failure":
                 metadata["failed_jobs"].append(job_data)
         
         metadata_list.append(metadata)
