@@ -215,25 +215,41 @@ def main():
             print(f"报告目录不存在: {input_dir}")
             sys.exit(0)
         
-        report_files = sorted(input_dir.glob("*.md"))
+        report_files = sorted(input_dir.rglob("*.md"))
+        json_files = sorted(input_dir.rglob("*.json"))
+        all_files = report_files + json_files
         
-        if not report_files:
+        if not all_files:
             print("没有报告文件")
             sys.exit(0)
         
-        group_keys = []
-        summary_path = Path("data/summary.json")
-        if summary_path.exists():
-            summary = json.loads(summary_path.read_text(encoding='utf-8'))
-            group_keys = summary.get("group_keys", [])
-        
-        if not group_keys:
-            group_keys = [f.stem for f in report_files]
+        now = datetime.now(timezone.utc)
+        date_path = f"{now.year}/{now.month:02d}/{now.day:02d}"
+        type_subdir = args.pipeline_type or "pr"
         
         owner, repo = args.repo.split('/')
         archiver = ReportArchiver(owner, repo)
         
-        archived = archiver.archive(report_files, group_keys, args.dry_run, args.pipeline_type)
+        clean_path = f"{date_path}/{type_subdir}"
+        archiver.clean_date_reports(clean_path)
+        
+        archived = []
+        for f in all_files:
+            rel = f.relative_to(input_dir)
+            repo_path = f"reports/{rel}"
+            content = f.read_text(encoding='utf-8') if f.suffix == '.md' else f.read_text(encoding='utf-8')
+            encoded = base64.b64encode(content.encode('utf-8')).decode('utf-8')
+            
+            group_key = f.stem if f.suffix == '.md' else f.stem
+            commit_msg = f"Add monitoring report for {group_key}"
+            
+            success = archiver._create_file(repo_path, encoded, commit_msg)
+            if success:
+                archived.append(repo_path)
+                print(f"已归档: {repo_path}")
+                time.sleep(0.3)
+            else:
+                print(f"归档失败: {repo_path}")
         
         print(f"已归档 {len(archived)} 个报告")
     except Exception as e:

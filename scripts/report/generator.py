@@ -286,31 +286,30 @@ class ReportGenerator:
         return "\n".join(lines)
 
     def generate_filename(self, group: Dict[str, Any]) -> str:
-        """生成报告文件名。"""
-        overall_category = group.get("overall_category", "infra")
-        pr_number = group.get("pr_number")
-        group_key = group.get("group_key", "")
-
-        if pr_number is not None:
-            return f"{overall_category}-pr-{pr_number}.md"
-        return f"{overall_category}-pr-{group_key}.md"
+        """生成报告文件名（固定为 report.md）。"""
+        return "report.md"
 
     def generate_all(self, grouped_list: List[Dict], output_dir: Path) -> List[Path]:
-        """生成所有报告并保存。"""
+        """生成所有报告并保存到 reports/YYYY/MM/DD/pr/{group_key}/report.md 结构。"""
 
-        output_dir.mkdir(parents=True, exist_ok=True)
+        now = datetime.now(timezone.utc)
+        date_dir = output_dir / f"{now.year}/{now.month:02d}/{now.day:02d}" / "pr"
+        date_dir.mkdir(parents=True, exist_ok=True)
 
         report_files = []
 
         for group in grouped_list:
             report = self.generate_pr_report(group)
-            filename = self.generate_filename(group)
+            group_key = group.get("group_key", "unknown")
 
-            output_path = output_dir / filename
+            group_dir = date_dir / group_key
+            group_dir.mkdir(parents=True, exist_ok=True)
+
+            output_path = group_dir / "report.md"
             output_path.write_text(report, encoding='utf-8')
 
             report_files.append(output_path)
-            print(f"生成报告: {filename}")
+            print(f"生成报告: pr/{group_key}/report.md")
 
         return report_files
 
@@ -322,11 +321,13 @@ class ReportGenerator:
         aggregator=None,
         pipeline_type_override: str | None = None
     ) -> List[Path]:
-        """按 pipeline_type 分派报告生成。PR 用 PR 报告，Nightly 用日报，Weekly 用周报。"""
+        """按 pipeline_type 分派报告生成，输出到 reports/YYYY/MM/DD/{pr,nightly,weekly}/ 结构。"""
 
         if not output_dir:
             output_dir = Path("reports")
-        output_dir.mkdir(parents=True, exist_ok=True)
+
+        now = datetime.now(timezone.utc)
+        date_dir = output_dir / f"{now.year}/{now.month:02d}/{now.day:02d}"
 
         all_files = []
 
@@ -379,30 +380,34 @@ class ReportGenerator:
             from report.nightly_report import NightlyReportGenerator
             nightly_gen = NightlyReportGenerator(aggregator)
             report = nightly_gen.generate_daily_report(nightly_runs)
-            filename = nightly_gen.generate_filename()
-            path = output_dir / filename
+            nightly_dir = date_dir / "nightly"
+            nightly_dir.mkdir(parents=True, exist_ok=True)
+            path = nightly_dir / "report.md"
             path.write_text(report, encoding="utf-8")
             all_files.append(path)
-            print(f"生成 Nightly 日报: {filename}")
+            print(f"生成 Nightly 日报: nightly/report.md")
 
         if weekly_runs:
             from report.weekly_report import WeeklyReportGenerator
             weekly_gen = WeeklyReportGenerator(aggregator)
             report = weekly_gen.generate_weekly_report(weekly_runs)
-            filename = weekly_gen.generate_filename()
-            path = output_dir / filename
+            weekly_dir = date_dir / "weekly"
+            weekly_dir.mkdir(parents=True, exist_ok=True)
+            path = weekly_dir / "report.md"
             path.write_text(report, encoding="utf-8")
             all_files.append(path)
-            print(f"生成 Weekly 周报: {filename}")
+            print(f"生成 Weekly 周报: weekly/report.md")
 
         if metadata_list and aggregator:
             from report.dashboard import DashboardService
             dashboard_svc = DashboardService(aggregator)
             dashboard_data = dashboard_svc.generate_full_dashboard(metadata_list)
-            dashboard_path = output_dir / "dashboard_data.json"
+            dashboard_dir = date_dir / effective_type if effective_type else date_dir / "pr"
+            dashboard_dir.mkdir(parents=True, exist_ok=True)
+            dashboard_path = dashboard_dir / "dashboard_data.json"
             dashboard_svc.save_dashboard(dashboard_data, dashboard_path)
             all_files.append(dashboard_path)
-            print(f"生成 Dashboard 数据: dashboard_data.json")
+            print(f"生成 Dashboard 数据: {effective_type or 'pr'}/dashboard_data.json")
 
         return all_files
 
@@ -426,10 +431,13 @@ def main():
 
     if not grouped_list:
         print("没有数据生成报告，创建空报告目录")
-        output_dir = Path(args.output)
-        output_dir.mkdir(parents=True, exist_ok=True)
+        now = datetime.now(timezone.utc)
+        date_dir = Path(args.output) / f"{now.year}/{now.month:02d}/{now.day:02d}"
+        pipeline_type = args.pipeline_type or "pr"
+        type_dir = date_dir / pipeline_type
+        type_dir.mkdir(parents=True, exist_ok=True)
 
-        no_data_report = output_dir / "no-data.md"
+        no_data_report = type_dir / "no-data.md"
         no_data_report.write_text(
             "---\nstatus: no_data\ngenerated_at: " + datetime.now(timezone.utc).isoformat() + "\n---\n\n# 本轮监测无失败构建\n\n本次检查未发现需要报告的失败构建。\n", encoding='utf-8'
         )
@@ -437,7 +445,7 @@ def main():
         summary = {
             "total_reports": 0,
             "generated_at": datetime.now().isoformat(),
-            "output_dir": str(output_dir),
+            "output_dir": str(type_dir),
             "status": "no_data"
         }
         summary_path = Path("data/summary.json")

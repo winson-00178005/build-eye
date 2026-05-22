@@ -52,17 +52,7 @@ def test_report_filename_format():
     
     filename = generator.generate_filename(data_code)
     
-    assert filename == "code-pr-123.md"
-    
-    data_infra = {
-        "pr_number": None,
-        "group_key": "run-789",
-        "overall_category": "infrastructure"
-    }
-    
-    filename = generator.generate_filename(data_infra)
-    
-    assert filename == "infrastructure-pr-run-789.md"
+    assert filename == "report.md"
 
 
 def test_section_headers_consistent():
