@@ -308,14 +308,14 @@ class ReportGenerator:
         
         classification = data.get("classification", {})
         pr_number = data.get("pr_number")
+        workflow_run_id = data.get("workflow_run_id")
         
         cat = classification.get("classification", "infra")
         
         if pr_number:
             return f"{cat}-pr-{pr_number}.md"
         
-        workflow_id = data.get("workflow_run_id")
-        return f"{cat}-{workflow_id}.md"
+        return f"{cat}-pr-{workflow_run_id}.md"
     
     def generate_all(self, recommendations_list: List[Dict], output_dir: Path) -> List[Path]:
         """生成所有报告并保存。"""
