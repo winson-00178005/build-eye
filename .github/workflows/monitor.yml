@@ -102,11 +102,11 @@ jobs:
         if: ${{ inputs.dry_run != 'true' }}
         continue-on-error: true
         env:
-          ARCHIVE_TOKEN: ${{ secrets.ARCHIVE_REPO_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.VLLM_ASCEND_TOKEN || github.token }}
         run: |
           python scripts/archive/archiver.py \
             --input reports/ \
-            --repo $ARCHIVE_REPO_URL
+            --repo winson-00178005/build-eye
       
       - name: Upload reports artifact
         if: ${{ always() }}

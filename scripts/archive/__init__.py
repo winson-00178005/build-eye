@@ -1,4 +1,3 @@
-"""Report Archival module - Git repository commits."""
+"""Report Archival module - GitHub Contents API file commits."""
 
 from .archiver import ReportArchiver
-from .git_client import GitClient
