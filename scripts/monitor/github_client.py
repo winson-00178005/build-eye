@@ -204,7 +204,37 @@ class GitHubAPIClient:
         
         return data
     
-    def get_recent_merged_prs(self, owner: str, repo: str, hours: int = 24) -> List[Dict]:
+    def search_pr_by_title(self, owner: str, repo: str, title: str) -> Optional[Dict]:
+        """通过标题搜索 PR（用于 display_title 关联）。"""
+        import urllib.parse
+        query = urllib.parse.quote(f"repo:{owner}/{repo} type:pr in:title {title[:60]}")
+        url = f"{self.BASE_URL}/search/issues?q={query}"
+        data = self._request_with_retry("GET", url)
+        
+        if data and data.get("total_count", 0) > 0:
+            items = data.get("items", [])
+            for item in items:
+                if item.get("title", "").strip() == title.strip():
+                    return {
+                        "number": item["number"],
+                        "title": item["title"],
+                        "state": item["state"],
+                        "url": item.get("html_url", ""),
+                        "user": {"login": item.get("user", {}).get("login", "unknown")},
+                        "base": {"ref": "main"},
+                        "head": {"ref": ""}
+                    }
+            if items:
+                return {
+                    "number": items[0]["number"],
+                    "title": items[0]["title"],
+                    "state": items[0]["state"],
+                    "url": items[0].get("html_url", ""),
+                    "user": {"login": items[0].get("user", {}).get("login", "unknown")},
+                    "base": {"ref": "main"},
+                    "head": {"ref": ""}
+                }
+        return None
         """获取最近合并的 PR 列表。"""
         url = f"{self.BASE_URL}/repos/{owner}/{repo}/pulls"
         params = {

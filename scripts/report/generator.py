@@ -362,7 +362,8 @@ def main():
     summary = {
         "total_reports": len(report_files),
         "generated_at": datetime.now().isoformat(),
-        "output_dir": str(output_dir)
+        "output_dir": str(output_dir),
+        "group_keys": [g.get("group_key", "") for g in grouped_list]
     }
 
     summary_path = Path("data/summary.json")

@@ -34,8 +34,8 @@ class ReportArchiver:
                 "Authorization": f"Bearer {self.token}"
             })
     
-    def archive(self, report_files: List[Path], dry_run: bool = False) -> List[str]:
-        """归档报告文件到 GitHub 仓库。"""
+    def archive(self, report_files: List[Path], group_keys: List[str] | None = None, dry_run: bool = False) -> List[str]:
+        """归档报告文件到 GitHub 仓库。每个 PR 一个子目录。"""
         
         if not report_files:
             print("没有报告需要归档")
@@ -56,13 +56,16 @@ class ReportArchiver:
         
         archived = []
         
-        for report_file in report_files:
-            repo_path = f"{self.reports_dir}/{date_path}/{report_file.name}"
+        for i, report_file in enumerate(report_files):
+            group_key = (group_keys[i] if group_keys and i < len(group_keys)
+                         else report_file.stem)
+            
+            repo_path = f"{self.reports_dir}/{date_path}/{group_key}/report.md"
             
             content = report_file.read_text(encoding='utf-8')
             encoded = base64.b64encode(content.encode('utf-8')).decode('utf-8')
             
-            commit_msg = f"Add monitoring report: {report_file.name}"
+            commit_msg = f"Add monitoring report for {group_key}"
             
             success = self._create_file(repo_path, encoded, commit_msg)
             
@@ -132,16 +135,25 @@ def main():
             print(f"报告目录不存在: {input_dir}")
             sys.exit(0)
         
-        report_files = list(input_dir.glob("*.md"))
+        report_files = sorted(input_dir.glob("*.md"))
         
         if not report_files:
             print("没有报告文件")
             sys.exit(0)
         
+        group_keys = []
+        summary_path = Path("data/summary.json")
+        if summary_path.exists():
+            summary = json.loads(summary_path.read_text(encoding='utf-8'))
+            group_keys = summary.get("group_keys", [])
+        
+        if not group_keys:
+            group_keys = [f.stem for f in report_files]
+        
         owner, repo = args.repo.split('/')
         archiver = ReportArchiver(owner, repo)
         
-        archived = archiver.archive(report_files, args.dry_run)
+        archived = archiver.archive(report_files, group_keys, args.dry_run)
         
         print(f"已归档 {len(archived)} 个报告")
     except Exception as e:

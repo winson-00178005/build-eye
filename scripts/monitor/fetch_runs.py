@@ -80,6 +80,14 @@ def enrich_pr_association(runs: list, client: GitHubAPIClient, owner: str, repo:
             pr = client.get_pr_for_commit(owner, repo, commit_sha)
             if pr:
                 run_data["associated_pr"] = pr
+                enriched.append(run_data)
+                continue
+        
+        display_title = run.get("display_title", "")
+        if display_title:
+            pr = client.search_pr_by_title(owner, repo, display_title)
+            if pr:
+                run_data["associated_pr"] = pr
         
         enriched.append(run_data)
     
