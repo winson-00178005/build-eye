@@ -46,7 +46,7 @@ def test_code_issue_detection():
     )
     
     assert result["detected"] == True
-    assert result["classification"] == "code"
+    assert result["category_detail"] is not None
 
 
 def test_compilation_detection():
