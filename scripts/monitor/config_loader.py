@@ -72,5 +72,9 @@ class Config:
     def api(self) -> Dict[str, Any]:
         return self._config["api"]
 
+    @property
+    def pipeline_types(self) -> Dict[str, Any]:
+        return self._config.get("pipeline_types", {})
+
 
 config = Config()

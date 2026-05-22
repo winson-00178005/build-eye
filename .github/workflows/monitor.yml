@@ -108,6 +108,14 @@ jobs:
             --input reports/ \
             --repo winson-00178005/build-eye
       
+      - name: Aggregate build metrics
+        if: ${{ always() }}
+        run: |
+          python scripts/monitor/aggregator_cli.py \
+            --metadata data/build_metadata.json \
+            --classifications data/classifications.json \
+            --db data/build_metrics.db
+      
       - name: Upload reports artifact
         if: ${{ always() }}
         uses: actions/upload-artifact@v4

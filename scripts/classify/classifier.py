@@ -114,6 +114,7 @@ class FailureClassifier:
                 "workflow_run_id": metadata["workflow_run"]["id"],
                 "workflow_name": metadata["workflow_run"]["name"],
                 "pr_number": metadata["pr"]["number"] if metadata.get("pr") else None,
+                "pipeline_type": metadata.get("pipeline_info", {}).get("pipeline_type", "pr"),
                 "classification": classification,
                 "metadata": metadata
             }

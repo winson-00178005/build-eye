@@ -12,6 +12,7 @@ sys.path.insert(0, str(repo_root / "scripts"))
 
 from monitor.github_client import GitHubAPIClient
 from monitor.config_loader import config
+from monitor.pipeline_detector import PipelineDetector
 
 
 def fetch_failed_workflow_runs(
@@ -140,6 +141,15 @@ def main():
     if monitored_workflows and isinstance(monitored_workflows, list):
         enriched_runs = filter_by_workflow(enriched_runs, monitored_workflows)
         print(f"监控范围内: {len(enriched_runs)} 个")
+    
+    detector = PipelineDetector(config.pipeline_types)
+    enriched_runs = detector.detect_all(enriched_runs)
+    
+    nightly_count = sum(1 for r in enriched_runs if r.get("pipeline_info", {}).get("pipeline_type") == "nightly")
+    weekly_count = sum(1 for r in enriched_runs if r.get("pipeline_info", {}).get("pipeline_type") == "weekly")
+    pr_count = sum(1 for r in enriched_runs if r.get("pipeline_info", {}).get("pipeline_type") == "pr")
+    manual_count = sum(1 for r in enriched_runs if r.get("pipeline_info", {}).get("pipeline_type") == "manual")
+    print(f"流水线类型: PR={pr_count}, Nightly={nightly_count}, Weekly={weekly_count}, Manual={manual_count}")
     
     output_path = Path(args.output)
     output_path.parent.mkdir(parents=True, exist_ok=True)

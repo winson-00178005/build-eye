@@ -276,6 +276,7 @@ class RecommendationGenerator:
                 "workflow_run_id": c["workflow_run_id"],
                 "workflow_name": c.get("workflow_name", ""),
                 "pr_number": c.get("pr_number"),
+                "pipeline_type": c.get("pipeline_type", "pr"),
                 "classification": c["classification"],
                 "metadata": c.get("metadata", {}),
                 "recommendations": rec
@@ -339,7 +340,8 @@ class RecommendationGenerator:
                 "total_failed_workflows": len(items),
                 "category_counts": category_counts,
                 "workflow_runs": items,
-                "overall_recommendations": all_recommendations
+                "overall_recommendations": all_recommendations,
+                "pipeline_type": items[0].get("pipeline_type", "pr")
             })
         
         return grouped_results
