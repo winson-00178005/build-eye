@@ -41,6 +41,22 @@ report:
   template_dir: templates
   include_log_excerpt_max_lines: 50
 
+pipeline_types:
+  nightly:
+    name_patterns:
+      - "Nightly-*"
+      - "*_nightly_*"
+      - "schedule_nightly_*"
+    schedule_patterns:
+      - "0 3 * * *"
+    alert_on_consecutive_failures: 2
+  weekly:
+    name_patterns:
+      - "Weekly-*"
+      - "*_weekly_*"
+    schedule_patterns:
+      - "0 3 * * 0"
+
 logging:
   level: INFO
   file: logs/build-eye.log

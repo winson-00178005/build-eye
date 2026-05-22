@@ -1,4 +1,4 @@
-"""监测报告生成器 - 按 PR 聚合的标准化 Markdown 报告。"""
+"""监测报告生成器 - 按 PR 聚合的标准化 Markdown 报告，支持 Nightly/Weekly 分派。"""
 import json
 import uuid
 import argparse
@@ -314,6 +314,95 @@ class ReportGenerator:
 
         return report_files
 
+    def dispatch_reports(
+        self,
+        grouped_list: List[Dict],
+        metadata_list: List[Dict] = None,
+        output_dir: Path = None,
+        aggregator=None
+    ) -> List[Path]:
+        """按 pipeline_type 分派报告生成。PR 用 PR 报告，Nightly 用日报，Weekly 用周报。"""
+
+        if not output_dir:
+            output_dir = Path("reports")
+        output_dir.mkdir(parents=True, exist_ok=True)
+
+        all_files = []
+
+        pr_groups = [g for g in grouped_list if g.get("pipeline_type", "pr") == "pr"]
+        if pr_groups:
+            files = self.generate_all(pr_groups, output_dir)
+            all_files.extend(files)
+
+        nightly_runs = []
+        weekly_runs = []
+        if metadata_list:
+            for m in metadata_list:
+                ptype = m.get("pipeline_info", {}).get("pipeline_type", "pr")
+                if ptype == "nightly":
+                    wf = m.get("workflow_run", {})
+                    cls_data = {}
+                    for g in grouped_list:
+                        for wr in g.get("workflow_runs", []):
+                            if wr.get("workflow_run_id") == wf.get("id"):
+                                cls_data = wr.get("classification", {})
+                                break
+                    nightly_runs.append({
+                        "id": wf.get("id"),
+                        "name": wf.get("name"),
+                        "conclusion": wf.get("conclusion"),
+                        "started_at": wf.get("started_at"),
+                        "completed_at": wf.get("completed_at"),
+                        "classification": cls_data
+                    })
+                elif ptype == "weekly":
+                    wf = m.get("workflow_run", {})
+                    cls_data = {}
+                    for g in grouped_list:
+                        for wr in g.get("workflow_runs", []):
+                            if wr.get("workflow_run_id") == wf.get("id"):
+                                cls_data = wr.get("classification", {})
+                                break
+                    weekly_runs.append({
+                        "id": wf.get("id"),
+                        "name": wf.get("name"),
+                        "conclusion": wf.get("conclusion"),
+                        "started_at": wf.get("started_at"),
+                        "completed_at": wf.get("completed_at"),
+                        "classification": cls_data
+                    })
+
+        if nightly_runs:
+            from report.nightly_report import NightlyReportGenerator
+            nightly_gen = NightlyReportGenerator(aggregator)
+            report = nightly_gen.generate_daily_report(nightly_runs)
+            filename = nightly_gen.generate_filename()
+            path = output_dir / filename
+            path.write_text(report, encoding="utf-8")
+            all_files.append(path)
+            print(f"生成 Nightly 日报: {filename}")
+
+        if weekly_runs:
+            from report.weekly_report import WeeklyReportGenerator
+            weekly_gen = WeeklyReportGenerator(aggregator)
+            report = weekly_gen.generate_weekly_report(weekly_runs)
+            filename = weekly_gen.generate_filename()
+            path = output_dir / filename
+            path.write_text(report, encoding="utf-8")
+            all_files.append(path)
+            print(f"生成 Weekly 周报: {filename}")
+
+        if metadata_list and aggregator:
+            from report.dashboard import DashboardService
+            dashboard_svc = DashboardService(aggregator)
+            dashboard_data = dashboard_svc.generate_full_dashboard(metadata_list)
+            dashboard_path = output_dir / "dashboard_data.json"
+            dashboard_svc.save_dashboard(dashboard_data, dashboard_path)
+            all_files.append(dashboard_path)
+            print(f"生成 Dashboard 数据: dashboard_data.json")
+
+        return all_files
+
 
 def main():
     parser = argparse.ArgumentParser(description='生成监测报告')
@@ -355,7 +444,7 @@ def main():
     generator = ReportGenerator()
     output_dir = Path(args.output)
 
-    report_files = generator.generate_all(grouped_list, output_dir)
+    report_files = generator.dispatch_reports(grouped_list, output_dir=output_dir)
 
     print(f"已生成 {len(report_files)} 个报告")
 

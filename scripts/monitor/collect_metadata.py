@@ -49,6 +49,7 @@ def collect_build_metadata(
                 "url": run.get("html_url", ""),
                 "triggering_actor": (run.get("triggering_actor") or {}).get("login", "unknown")
             },
+            "pipeline_info": run.get("pipeline_info", {}),
             "pr": None,
             "jobs": [],
             "failed_jobs": []
