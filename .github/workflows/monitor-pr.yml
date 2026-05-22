@@ -8,7 +8,7 @@ on:
       lookback_hours:
         description: '检查过去多少小时的构建记录'
         required: false
-        default: '6'
+        default: '24'
         type: string
       dry_run:
         description: '试运行模式（不提交报告到归档仓库）'
@@ -54,7 +54,7 @@ jobs:
       
       - name: Configure monitoring parameters
         env:
-          LOOKBACK_HOURS: ${{ inputs.lookback_hours || '6' }}
+          LOOKBACK_HOURS: ${{ inputs.lookback_hours || '24' }}
           TARGET_REPO: ${{ inputs.target_repo || 'vllm-project/vllm-ascend' }}
           DRY_RUN: ${{ inputs.dry_run || 'false' }}
         run: |

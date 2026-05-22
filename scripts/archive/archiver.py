@@ -134,7 +134,7 @@ class ReportArchiver:
                          else report_file.stem)
             
             if type_subdir == "pr":
-                repo_path = f"{self.reports_dir}/{date_path}/{group_key}/report.md"
+                repo_path = f"{self.reports_dir}/{date_path}/pr/{group_key}/report.md"
             else:
                 repo_path = f"{self.reports_dir}/{date_path}/{type_subdir}/report.md"
             
