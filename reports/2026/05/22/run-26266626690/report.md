@@ -1,8 +1,8 @@
 ---
-report_id: cebf13bb
+report_id: d980b191
 pr_number: null
-group_key: run-26261564980
-generated_at: 2026-05-22T06:58:45.190551+00:00
+group_key: run-26266075621
+generated_at: 2026-05-22T07:45:51.999343+00:00
 overall_classification: code
 total_failed_workflows: 1
 category_counts:
@@ -11,21 +11,21 @@ category_counts:
   interference: 0
 ---
 
-# 构建失败报告: run-26261564980
+# 构建失败报告: run-26266075621
 
 ## 概要
 
-run-26261564980 触发了 1 个 workflow，均失败。
+run-26266075621 触发了 1 个 workflow，均失败。
 
 - **代码问题**: 1 次
 
 | # | Workflow | 根因分类 | 置信度 | 具体问题 |
 |---|---|---|---|---|
-| 1 | E2E-Light (#26261564980) | PR代码问题 | 高 | 编译错误 |
+| 1 | E2E-Light (#26266075621) | PR代码问题 | 高 | 编译错误 |
 
 
 ## Workflow 详细分析
-### 1. E2E-Light (Run #26261564980)
+### 1. E2E-Light (Run #26266075621)
 
 - **根因分类**: PR代码问题
 - **置信度**: 高
@@ -36,19 +36,17 @@ run-26261564980 触发了 1 个 workflow，均失败。
 **匹配模式**:
 - compilation: `error:\s+`
 
-[查看 Workflow Run](https://github.com/vllm-project/vllm-ascend/actions/runs/26261564980)
-[查看 Job: lint / pre-commit](https://github.com/vllm-project/vllm-ascend/actions/runs/26261564980/job/77296002292)
+[查看 Workflow Run](https://github.com/vllm-project/vllm-ascend/actions/runs/26266075621)
+[查看 Job: lint / pre-commit](https://github.com/vllm-project/vllm-ascend/actions/runs/26266075621/job/77309548000)
 
 **日志片段**:
 ```
-2026-05-22T00:42:29.2791824Z [1m--- a/vllm_ascend/ops/triton/fla/solve_tril.py[m
-2026-05-22T00:42:29.2792358Z [1m+++ b/vllm_ascend/ops/triton/fla/solve_tril.py[m
-2026-05-22T00:42:29.2792753Z [36m@@ -12,12 +12,11 @@[m
-2026-05-22T00:42:29.2793246Z  import torch[m
-2026-05-22T00:42:29.2793600Z  from vllm.triton_utils import tl, triton[m
-2026-05-22T00:42:29.2793922Z  [m
-2026-05-22T00:42:29.2794463Z [32m+[m[32mfrom vllm_ascend.device.device_op import DeviceOperator[m
-2026-05-22T00:42:29.2
+2026-05-22T03:08:45.3890105Z  from vllm_ascend.ops.triton.layernorm_gated import layer_norm_fwd_npu[m
+2026-05-22T03:08:45.3890702Z  from vllm_ascend.utils import enable_custom_op, get_weight_prefetch_method[m
+2026-05-22T03:08:45.3891028Z  [m
+2026-05-22T03:08:45.3891784Z [1mdiff --git a/vllm_ascend/ops/triton/fla/chunk_scaled_dot_kkt.py b/vllm_ascend/ops/triton/fla/chunk_scaled_dot_kkt.py[m
+2026-05-22T03:08:45.3892376Z [1mindex d37527e..55822ea 100644[m
+2026-05-22T03:08:45.3892836Z [1m---
 ```
 
 **建议**:
@@ -62,7 +60,7 @@ run-26261564980 触发了 1 个 workflow，均失败。
 
 ### 优先建议
 
-- **E2E-Light (#26261564980)**: 检查编译错误位置 (低成本) - 查看 CMake 或 clang 报错的具体文件和行
+- **E2E-Light (#26266075621)**: 检查编译错误位置 (低成本) - 查看 CMake 或 clang 报错的具体文件和行
 
 ---
-报告生成时间: 2026-05-22T06:58:45.190571+00:00
+报告生成时间: 2026-05-22T07:45:51.999366+00:00
