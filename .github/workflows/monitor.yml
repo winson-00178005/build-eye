@@ -100,6 +100,7 @@ jobs:
       
       - name: Archive reports to build-eye repository
         if: ${{ inputs.dry_run != 'true' }}
+        continue-on-error: true
         env:
           ARCHIVE_TOKEN: ${{ secrets.ARCHIVE_REPO_TOKEN }}
         run: |
@@ -124,5 +125,5 @@ jobs:
           echo "目标仓库: ${{ inputs.target_repo || 'vllm-project/vllm-ascend' }}" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           if [ -f data/summary.json ]; then
-            python scripts/report/summary.py --input data/summary.json >> $GITHUB_STEP_SUMMARY
+            python scripts/report/summary.py --input data/summary.json >> $GITHUB_STEP_SUMMARY || true
           fi

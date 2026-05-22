@@ -157,18 +157,22 @@ def main():
     
     args = parser.parse_args()
     
-    input_dir = Path(args.input)
-    if not input_dir.exists():
-        print(f"报告目录不存在: {input_dir}")
+    try:
+        input_dir = Path(args.input)
+        if not input_dir.exists():
+            print(f"报告目录不存在: {input_dir}")
+            sys.exit(0)
+        
+        report_files = list(input_dir.glob("*.md"))
+        
+        archiver = ReportArchiver(args.repo)
+        
+        archived = archiver.archive(report_files, args.dry_run)
+        
+        print(f"已归档 {len(archived)} 个报告")
+    except Exception as e:
+        print(f"归档失败: {e}")
         sys.exit(0)
-    
-    report_files = list(input_dir.glob("*.md"))
-    
-    archiver = ReportArchiver(args.repo)
-    
-    archived = archiver.archive(report_files, args.dry_run)
-    
-    print(f"已归档 {len(archived)} 个报告")
 
 
 if __name__ == "__main__":
