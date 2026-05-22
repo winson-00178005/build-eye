@@ -1,8 +1,8 @@
 ---
-report_id: 95b32315
+report_id: 75fefd44
 pr_number: 9429
 group_key: pr-9429
-generated_at: 2026-05-22T06:58:45.189936+00:00
+generated_at: 2026-05-22T07:45:51.999048+00:00
 overall_classification: code
 total_failed_workflows: 1
 category_counts:
@@ -75,4 +75,4 @@ PR #9429 触发了 1 个 workflow，均失败。
 - **Cache csrc Build Artifacts (#26271472247)**: 检查编译错误位置 (低成本) - 查看 CMake 或 clang 报错的具体文件和行
 
 ---
-报告生成时间: 2026-05-22T06:58:45.189981+00:00
+报告生成时间: 2026-05-22T07:45:51.999082+00:00
