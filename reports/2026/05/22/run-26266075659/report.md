@@ -1,8 +1,8 @@
 ---
-report_id: a3c4fccc
+report_id: c8fd5f93
 pr_number: null
-group_key: run-26266075621
-generated_at: 2026-05-22T06:58:45.190260+00:00
+group_key: run-26266626690
+generated_at: 2026-05-22T07:45:51.999242+00:00
 overall_classification: code
 total_failed_workflows: 1
 category_counts:
@@ -11,21 +11,21 @@ category_counts:
   interference: 0
 ---
 
-# 构建失败报告: run-26266075621
+# 构建失败报告: run-26266626690
 
 ## 概要
 
-run-26266075621 触发了 1 个 workflow，均失败。
+run-26266626690 触发了 1 个 workflow，均失败。
 
 - **代码问题**: 1 次
 
 | # | Workflow | 根因分类 | 置信度 | 具体问题 |
 |---|---|---|---|---|
-| 1 | E2E-Light (#26266075621) | PR代码问题 | 高 | 编译错误 |
+| 1 | E2E-Light (#26266626690) | PR代码问题 | 高 | 编译错误 |
 
 
 ## Workflow 详细分析
-### 1. E2E-Light (Run #26266075621)
+### 1. E2E-Light (Run #26266626690)
 
 - **根因分类**: PR代码问题
 - **置信度**: 高
@@ -36,17 +36,20 @@ run-26266075621 触发了 1 个 workflow，均失败。
 **匹配模式**:
 - compilation: `error:\s+`
 
-[查看 Workflow Run](https://github.com/vllm-project/vllm-ascend/actions/runs/26266075621)
-[查看 Job: lint / pre-commit](https://github.com/vllm-project/vllm-ascend/actions/runs/26266075621/job/77309548000)
+[查看 Workflow Run](https://github.com/vllm-project/vllm-ascend/actions/runs/26266626690)
+[查看 Job: lint / validate-pr-title](https://github.com/vllm-project/vllm-ascend/actions/runs/26266626690/job/77311200496)
 
 **日志片段**:
 ```
-2026-05-22T03:08:45.3890105Z  from vllm_ascend.ops.triton.layernorm_gated import layer_norm_fwd_npu[m
-2026-05-22T03:08:45.3890702Z  from vllm_ascend.utils import enable_custom_op, get_weight_prefetch_method[m
-2026-05-22T03:08:45.3891028Z  [m
-2026-05-22T03:08:45.3891784Z [1mdiff --git a/vllm_ascend/ops/triton/fla/chunk_scaled_dot_kkt.py b/vllm_ascend/ops/triton/fla/chunk_scaled_dot_kkt.py[m
-2026-05-22T03:08:45.3892376Z [1mindex d37527e..55822ea 100644[m
-2026-05-22T03:08:45.3892836Z [1m---
+ï»¿2026-05-22T03:25:07.2191741Z Current runner version: '2.334.0'
+2026-05-22T03:25:07.2198177Z Runner name: 'linux-amd64-cpu-8-hk-frp8k-runner-2w2wr'
+2026-05-22T03:25:07.2199083Z Runner group name: 'Default'
+2026-05-22T03:25:07.2199967Z Machine name: 'linux-amd64-cpu-8-hk-frp8k-runner-2w2wr'
+2026-05-22T03:25:07.2202706Z ##[group]GITHUB_TOKEN Permissions
+2026-05-22T03:25:07.2205092Z Contents: read
+2026-05-22T03:25:07.2205652Z Metadata: read
+2026-05-22T03:25:07.2206206Z ##[endgroup]
+2026-05-22T03:
 ```
 
 **建议**:
@@ -60,7 +63,7 @@ run-26266075621 触发了 1 个 workflow，均失败。
 
 ### 优先建议
 
-- **E2E-Light (#26266075621)**: 检查编译错误位置 (低成本) - 查看 CMake 或 clang 报错的具体文件和行
+- **E2E-Light (#26266626690)**: 检查编译错误位置 (低成本) - 查看 CMake 或 clang 报错的具体文件和行
 
 ---
-报告生成时间: 2026-05-22T06:58:45.190283+00:00
+报告生成时间: 2026-05-22T07:45:51.999263+00:00
