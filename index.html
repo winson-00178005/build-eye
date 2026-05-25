@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Build-Eye CI 监测仪表盘</title>
+<title>Build-Eye CI Monitor Dashboard</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0d1117;color:#c9d1d9;min-height:100vh}
@@ -15,7 +15,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:16px;margin-bottom:20px}
 .card{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:20px}
 .card-title{font-size:14px;color:#8b949e;margin-bottom:12px;display:flex;align-items:center;gap:8px}
-.card-title .icon{width:16px;height:16px}
 .stat-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #21262d}
 .stat-row:last-child{border:none}
 .stat-label{color:#8b949e;font-size:13px}
@@ -28,7 +27,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .progress-fill{height:100%;border-radius:4px;transition:width .3s}
 .health-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;text-align:center}
 .health-card{background:#0d1117;border-radius:8px;padding:16px}
-.health-score{font-size:32px;font-weight:700}
+.health-score{font-size:32px;font:700}
 .health-label{font-size:12px;color:#8b949e;margin-top:4px}
 .trend-chart{position:relative;height:200px;background:#0d1117;border-radius:4px;margin-top:12px}
 .chart-canvas{width:100%;height:100%}
@@ -36,12 +35,13 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .failures-table th{text-align:left;color:#8b949e;padding:8px;border-bottom:1px solid #30363d}
 .failures-table td{padding:8px;border-bottom:1px solid #21262d}
 .failures-table tr:hover{background:#161b22}
-.tag{display:inline-block;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600}
+.tag{display:inline-block;padding:2px 8px;border-radius:12px;font-size:11px;font:600}
 .tag-code{background:#1f3feb22;color:#58a6ff;border:1px solid #1f6feb}
 .tag-infra{background:#d29922;border-color:#d29922;color:#0d1117}
 .tag-inter{background:#f85149;border-color:#f85149;color:#0d1117}
 .tag-success{background:#3fb95022;color:#3fb950;border:1px solid #3fb950}
 .tag-failure{background:#f8514922;color:#f85149;border:1px solid #f85149}
+.tag-unknown{background:#8b949e22;color:#8b949e;border:1px solid #8b949e}
 .reports-section{margin-top:20px}
 .reports-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
 .report-card{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:16px;cursor:pointer;transition:border-color .2s}
@@ -55,7 +55,14 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .tab{background:#161b22;border:1px solid #30363d;border-radius:6px;padding:6px 16px;color:#8b949e;cursor:pointer;font-size:13px}
 .tab.active{background:#1f6feb;border-color:#1f6feb;color:#fff}
 .footer{text-align:center;padding:20px;color:#8b949e;font-size:12px;border-top:1px solid #30363d;margin-top:20px}
-@media(max-width:640px){.grid{grid-template-columns:1fr}.health-grid{grid-template-columns:1fr}}
+.loading{display:flex;justify-content:center;align-items:center;padding:40px;color:#58a6ff}
+.pipeline-section{margin-bottom:16px}
+.pipeline-header{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #30363d;font-size:14px;color:#f0f6fc;font:600}
+.pipeline-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:8px 0}
+.pipeline-stat{text-align:center;padding:8px;background:#0d1117;border-radius:4px}
+.pipeline-stat .num{font-size:20px;font:700}
+.pipeline-stat .label{font-size:11px;color:#8b949e}
+@media(max-width:640px){.grid{grid-template-columns:1fr}.health-grid{grid-template-columns:1fr}.pipeline-stats{grid-template-columns:1fr 1fr}}
 </style>
 </head>
 <body>
@@ -65,72 +72,79 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 <span class="repo" id="repoName">vllm-project/vllm-ascend</span>
 </div>
 <div class="container">
+<div id="loadingIndicator" class="loading">Loading dashboard data...</div>
+<div id="dashboardContent" style="display:none">
 <div class="tabs">
-<div class="tab active" onclick="switchTab('overview')">概览</div>
-<div class="tab" onclick="switchTab('trends')">趋势</div>
-<div class="tab" onclick="switchTab('failures')">失败详情</div>
-<div class="tab" onclick="switchTab('reports')">报告</div>
+<div class="tab active" onclick="switchTab('overview')">Overview</div>
+<div class="tab" onclick="switchTab('trends')">Trends</div>
+<div class="tab" onclick="switchTab('failures')">Failures</div>
+<div class="tab" onclick="switchTab('reports')">Reports</div>
 </div>
 <div id="overviewPanel">
 <div class="grid">
 <div class="card">
-<div class="card-title">总体统计</div>
+<div class="card-title">Summary</div>
 <div id="summaryStats"></div>
 </div>
 <div class="card">
-<div class="card-title">健康评分</div>
+<div class="card-title">Health Scores</div>
 <div class="health-grid" id="healthScores"></div>
 </div>
 <div class="card">
-<div class="card-title">分类分布</div>
+<div class="card-title">Classification Distribution</div>
 <div id="categoryDistribution"></div>
 </div>
+</div>
+<div class="card">
+<div class="card-title">Pipeline Breakdown</div>
+<div id="pipelineBreakdown"></div>
 </div>
 </div>
 <div id="trendsPanel" style="display:none">
 <div class="grid">
 <div class="card">
-<div class="card-title">成功率趋势 (7日)</div>
+<div class="card-title">Success Rate Trend (7d)</div>
 <div class="trend-chart"><canvas class="chart-canvas" id="successRateChart"></canvas></div>
 </div>
 <div class="card">
-<div class="card-title">失败数趋势 (7日)</div>
+<div class="card-title">Failure Count Trend (7d)</div>
 <div class="trend-chart"><canvas class="chart-canvas" id="failureChart"></canvas></div>
 </div>
 <div class="card">
-<div class="card-title">健康评分趋势 (7日)</div>
+<div class="card-title">Health Score Trend (7d)</div>
 <div class="trend-chart"><canvas class="chart-canvas" id="healthChart"></canvas></div>
 </div>
 </div>
 </div>
 <div id="failuresPanel" style="display:none">
 <div class="card">
-<div class="card-title">最近失败记录</div>
+<div class="card-title">Recent Failures</div>
 <table class="failures-table" id="failuresTable">
-<thead><tr><th>Workflow</th><th>分类</th><th>置信度</th><th>时间</th><th>流水线</th></tr></thead>
+<thead><tr><th>Workflow</th><th>Classification</th><th>Confidence</th><th>Time</th><th>Pipeline</th></tr></thead>
 <tbody id="failuresBody"></tbody>
 </table>
 </div>
 </div>
 <div id="reportsPanel" style="display:none">
 <div class="card">
-<div class="card-title">最新监测报告</div>
+<div class="card-title">Monitoring Reports</div>
 <div class="reports-grid" id="reportsGrid"></div>
 </div>
 </div>
 </div>
-<div class="footer">Build-Eye CI Monitor Dashboard | 数据自动更新 | <span id="updateTime"></span></div>
+</div>
+<div class="footer">Build-Eye CI Monitor Dashboard | Auto-updated every 6 hours | <span id="updateTime"></span></div>
 <script>
 const DATA_URL='dashboard_data.json';
-const REPORTS_BASE='reports';
 const REPO_URL='https://github.com/winson-00178005/build-eye';
+const VLLM_REPO='https://github.com/vllm-project/vllm-ascend';
 let dashboardData=null;
 let currentTab='overview';
 
 function switchTab(tab){
 currentTab=tab;
 document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-document.querySelector(`.tab[onclick="switchTab('${tab}')"]`).classList.add('active');
+document.querySelector(`.tab[onclick*="'${tab}')"]`).classList.add('active');
 ['overview','trends','failures','reports'].forEach(p=>{
 document.getElementById(p+'Panel').style.display=p===tab?'block':'none';
 });
@@ -138,34 +152,41 @@ if(tab==='trends'&&dashboardData)renderCharts();
 }
 
 async function loadData(){
+const urls=[
+DATA_URL,
+REPO_URL+'/raw/main/dashboard/dashboard_data.json'
+];
+for(const url of urls){
 try{
-const res=await fetch(DATA_URL);
+const res=await fetch(url);
+if(res.ok){
 dashboardData=await res.json();
+if(dashboardData.overview&&dashboardData.overview.summary&&dashboardData.overview.summary.total_runs>0){
 renderDashboard();
-}catch(e){
-try{
-const res=await fetch(REPO_URL+'/raw/main/dashboard/dashboard_data.json');
-dashboardData=await res.json();
-renderDashboard();
-}catch(e2){
-document.querySelector('.container').innerHTML='<div class="empty-state"><div class="icon">&#128269;</div><p>暂无数据</p><p>请先运行监控 Workflow 生成数据</p></div>';
+return;
 }
 }
+}catch(e){continue}
+}
+document.getElementById('loadingIndicator').innerHTML='<div class="empty-state"><div class="icon">&#128269;</div><p>No monitoring data available</p><p>Run a monitoring workflow to generate data</p></div>';
 }
 
 function renderDashboard(){
+document.getElementById('loadingIndicator').style.display='none';
+document.getElementById('dashboardContent').style.display='block';
 if(!dashboardData)return;
 const overview=dashboardData.overview||{};
 const trends=dashboardData.trends||{};
 const categories=dashboardData.categories||{};
 const failures=dashboardData.recent_failures||{};
 const health=dashboardData.health_scores||{};
-document.getElementById('updateTime').textContent=overview.timestamp||'N/A';
+document.getElementById('updateTime').textContent=overview.timestamp?overview.timestamp.substring(0,19).replace('T',' '):'N/A';
 document.getElementById('repoName').textContent='vllm-project/vllm-ascend';
 renderSummary(overview);
 renderHealth(health);
 renderCategories(categories);
 renderFailures(failures);
+renderPipelineBreakdown(overview);
 renderReports();
 }
 
@@ -176,19 +197,43 @@ const success=s.success_runs||0;
 const failure=s.failure_runs||0;
 const rate=s.overall_success_rate||0;
 let html=`
-<div class="stat-row"><span class="stat-label">总构建数</span><span class="stat-value blue">${total}</span></div>
-<div class="stat-row"><span class="stat-label">成功</span><span class="stat-value green">${success}</span></div>
-<div class="stat-row"><span class="stat-label">失败</span><span class="stat-value red">${failure}</span></div>
-<div class="stat-row"><span class="stat-label">成功率</span><span class="stat-value ${rate>=80?'green':rate>=60?'yellow':'red'}">${rate}%</span></div>
+<div class="stat-row"><span class="stat-label">Total Runs</span><span class="stat-value blue">${total}</span></div>
+<div class="stat-row"><span class="stat-label">Success</span><span class="stat-value green">${success}</span></div>
+<div class="stat-row"><span class="stat-label">Failed</span><span class="stat-value red">${failure}</span></div>
+<div class="stat-row"><span class="stat-label">Success Rate</span><span class="stat-value ${rate>=80?'green':rate>=60?'yellow':'red'}">${rate}%</span></div>
 <div class="progress-bar"><div class="progress-fill" style="width:${rate}%;background:${rate>=80?'#3fb950':rate>=60?'#d29922':'#f85149'}"></div></div>
 `;
+document.getElementById('summaryStats').innerHTML=html;
+}
+
+function renderPipelineBreakdown(ov){
 const pipes=ov.pipelines||{};
+const typeLabels={pr:'PR CI',nightly:'Nightly',weekly:'Weekly'};
+const typeColors={pr:'#58a6ff',nightly:'#3fb950',weekly:'#d29922'};
+let html='';
 for(const[type,data]of Object.entries(pipes)){
 const r=data.success_rate||0;
-html+=`<div class="stat-row"><span class="stat-label">${type==='pr'?'PR':type==='nightly'?'Nightly':'Weekly'} 流水线</span>
-<span class="stat-value ${r>=80?'green':r>=60?'yellow':'red'}">${r}%</span></div>`;
+const total=data.total_runs||0;
+const succ=data.success_runs||0;
+const fail=data.failure_runs||0;
+html+=`
+<div class="pipeline-section">
+<div class="pipeline-header">
+<span>${typeLabels[type]||type}</span>
+<span style="color:${r>=80?'#3fb950':r>=60?'#d29922':'#f85149'}">${r}%</span>
+</div>
+<div class="pipeline-stats">
+<div class="pipeline-stat"><div class="num" style="color:#58a6ff">${total}</div><div class="label">Total</div></div>
+<div class="pipeline-stat"><div class="num" style="color:#3fb950">${succ}</div><div class="label">Success</div></div>
+<div class="pipeline-stat"><div class="num" style="color:#f85149">${fail}</div><div class="label">Failed</div></div>
+<div class="pipeline-stat"><div class="num" style="color:${r>=80?'#3fb950':r>=60?'#d29922':'#f85149'}">${r}%</div><div class="label">Rate</div></div>
+</div>
+<div class="progress-bar"><div class="progress-fill" style="width:${r}%;background:${typeColors[type]||'#58a6ff'}"></div></div>
+</div>
+`;
 }
-document.getElementById('summaryStats').innerHTML=html;
+if(!html)html='<div class="empty-state">No pipeline data</div>';
+document.getElementById('pipelineBreakdown').innerHTML=html;
 }
 
 function renderHealth(hs){
@@ -196,68 +241,70 @@ const scores=hs.scores||{};
 let html='';
 for(const[type,data]of Object.entries(scores)){
 const s=data.score||0;
-const emoji=data.emoji||'⚪';
-html+=`<div class="health-card"><div class="health-score" style="color:${s>=80?'#3fb950':s>=60?'#d29922':'#f85149'}">${emoji} ${s}</div>
-<div class="health-label">${type==='pr'?'PR':type==='nightly'?'Nightly':'Weekly'} ${data.rating||'N/A'} ${data.trend==='improving'?'↑':data.trend==='declining'?'↓':'→'}</div></div>`;
+const emoji=data.emoji||'--';
+const trend=data.trend||'stable';
+const trendIcon=trend==='improving'?'+':trend==='declining'?'-':'=';
+html+=`<div class="health-card"><div class="health-score" style="color:${s>=80?'#3fb950':s>=60?'#d29922':'#f85149'}">${s}</div>
+<div class="health-label">${type==='pr'?'PR':type==='nightly'?'Nightly':'Weekly'} | ${data.rating||'N/A'} | ${trendIcon}</div></div>`;
 }
-if(!html)html='<div class="empty-state">暂无健康评分数据</div>';
+if(!html)html='<div class="empty-state">No health scores</div>';
 document.getElementById('healthScores').innerHTML=html;
 }
 
 function renderCategories(cat){
 const dist=cat.distribution||{};
 let html='';
+const total=Object.values(dist).reduce((a,b)=>a+b,0)||1;
 const colors={code:'#58a6ff',infrastructure:'#d29922',interference:'#f85149',unknown:'#8b949e'};
 for(const[k,v]of Object.entries(dist)){
-const pct=((v/Object.values(dist).reduce((a,b)=>a+b,0))*100).toFixed(1);
-const label=k==='code'?'代码':k==='infrastructure'?'基础设施':k==='interference'?'干扰':'未知';
-html+=`<div class="stat-row"><span class="stat-label"><span class="tag tag-${k==='code'?'code':k==='infrastructure'?'infra':k==='interference'?'inter':'success'}">${label}</span></span>
+const pct=((v/total)*100).toFixed(1);
+const tagClass=k==='code'?'tag-code':k==='infrastructure'?'tag-infra':k==='interference'?'tag-inter':'tag-unknown';
+html+=`<div class="stat-row"><span class="stat-label"><span class="tag ${tagClass}">${k}</span></span>
 <span class="stat-value">${v} (${pct}%)</span></div>`;
 }
-if(!html)html='<div class="empty-state">暂无分类数据</div>';
+if(!html)html='<div class="empty-state">No classification data</div>';
 document.getElementById('categoryDistribution').innerHTML=html;
 }
 
 function renderFailures(f){
 const list=f.failures||[];
 let html='';
-for(const item of list){
+for(const item of list.slice(0,20)){
 const cat=item.classification||'unknown';
 const conf=item.confidence||'low';
 const time=item.started_at||'N/A';
 const ptype=item.pipeline_type||'pr';
 const name=item.workflow_name||'N/A';
-const catLabel=cat==='code'?'代码':cat==='infrastructure'?'基础设施':cat==='interference'?'干扰':cat;
-html+=`<tr><td>${name}</td><td><span class="tag tag-${cat==='code'?'code':cat==='infrastructure'?'infra':cat==='interference'?'inter':'success'}">${catLabel}</span></td>
+const tagClass=cat==='code'?'tag-code':cat==='infrastructure'?'tag-infra':cat==='interference'?'tag-inter':'tag-unknown';
+html+=`<tr><td>${name}</td><td><span class="tag ${tagClass}">${cat}</span></td>
 <td>${conf}</td><td>${time.substring(0,10)}</td><td>${ptype}</td></tr>`;
 }
-if(!html)html='<tr><td colspan="5" class="empty-state">暂无失败记录</td></tr>';
+if(!html)html='<tr><td colspan="5" class="empty-state">No failure records</td></tr>';
 document.getElementById('failuresBody').innerHTML=html;
 }
 
 function renderReports(){
-const recentReports=[
-{title:'PR 流水线监测',path:'pr',type:'pr'},
-{title:'Nightly 日报',path:'nightly',type:'nightly'},
-{title:'Weekly 周报',path:'weekly',type:'weekly'}
+const links=[
+{title:'vllm-ascend Actions',url:VLLM_REPO+'/actions',desc:'View all workflow runs',tag:'actions'},
+{title:'build-eye Actions',url:REPO_URL+'/actions',desc:'View monitoring workflows',tag:'monitor'},
+{title:'build-eye Repo',url:REPO_URL,desc:'Source code & reports',tag:'repo'},
+{title:'vllm-ascend Repo',url:VLLM_REPO,desc:'Target repository',tag:'target'}
 ];
 let html='';
-for(const r of recentReports){
-html+=`<div class="report-card" onclick="window.open('${REPO_URL}/tree/main/reports/${r.path}','_blank')">
-<div class="title">${r.title}</div><div class="meta">查看 ${r.type} 类型报告</div>
-<div class="category"><span class="tag tag-${r.type==='pr'?'code':r.type==='nightly'?'infra':'inter'}">${r.type}</span></div></div>`;
+for(const l of links){
+html+=`<div class="report-card" onclick="window.open('${l.url}','_blank')">
+<div class="title">${l.title}</div><div class="meta">${l.desc}</div>
+<div class="category"><span class="tag tag-code">${l.tag}</span></div></div>`;
 }
-html+=`<div class="report-card" onclick="window.open('${REPO_URL}/actions','_blank')">
-<div class="title">GitHub Actions</div><div class="meta">查看所有 Workflow 运行记录</div></div>`;
 document.getElementById('reportsGrid').innerHTML=html;
 }
 
 function renderCharts(){
 if(!dashboardData||!dashboardData.trends)return;
 const pipes=dashboardData.trends.pipelines||{};
-drawLineChart('successRateChart',pipes,'success_rate_trend','dates','成功率 (%)','#3fb950');
-drawLineChart('failureChart',pipes,'failure_count_trend','dates','失败数','#f85149');
-drawBarChart('healthChart',pipes,'health_score_trend','dates','健康评分','#58a6ff');
+drawLineChart('successRateChart',pipes,'success_rate_trend','dates','Success Rate (%)','#3fb950');
+drawLineChart('failureChart',pipes,'failure_count_trend','dates','Failures','#f85149');
+drawLineChart('healthChart',pipes,'health_score_trend','dates','Health Score','#58a6ff');
 }
 
 function drawLineChart(canvasId,pipes,dataKey,dateKey,label,color){
@@ -278,7 +325,7 @@ const typeLabels={pr:'PR',nightly:'Nightly',weekly:'Weekly'};
 const pad=40;
 const w=rect.width-pad*2;
 const h=rect.height-pad*2;
-let maxVal=0,minVal=0;
+let maxVal=10,minVal=0;
 for(const type of allTypes){
 const p=pipes[type];
 if(p&&p[dataKey]){
@@ -287,16 +334,13 @@ minVal=Math.min(minVal,...p[dataKey]);
 }
 }
 maxVal=Math.max(maxVal,minVal+10);
-ctx.strokeStyle='#30363d';
-ctx.lineWidth=1;
-ctx.beginPath();
-ctx.moveTo(pad,pad);ctx.lineTo(pad,rect.height-pad);
-ctx.lineTo(rect.width-pad,rect.height-pad);
-ctx.stroke();
-ctx.fillStyle='#8b949e';
-ctx.font='11px sans-serif';
+ctx.strokeStyle='#30363d';ctx.lineWidth=1;
+ctx.beginPath();ctx.moveTo(pad,pad);ctx.lineTo(pad,rect.height-pad);
+ctx.lineTo(rect.width-pad,rect.height-pad);ctx.stroke();
+ctx.fillStyle='#8b949e';ctx.font='11px sans-serif';
 ctx.fillText(maxVal.toFixed(0),4,pad+4);
 ctx.fillText(minVal.toFixed(0),4,rect.height-pad);
+let legendY=pad+12;
 for(const type of allTypes){
 const p=pipes[type];
 if(!p||!p[dataKey]||!p[dateKey])continue;
@@ -314,12 +358,9 @@ else ctx.lineTo(x,y);
 }
 ctx.stroke();
 ctx.fillStyle=colors[type];
-ctx.fillText(typeLabels[type]+' '+label,rect.width-pad-80,pad+12+i*14);
+ctx.fillText(typeLabels[type]+' '+label,rect.width-pad-80,legendY);
+legendY+=14;
 }
-}
-
-function drawBarChart(canvasId,pipes,dataKey,dateKey,label,color){
-drawLineChart(canvasId,pipes,dataKey,dateKey,label,color);
 }
 
 loadData();

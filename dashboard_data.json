@@ -1,30 +1,1655 @@
 {
   "overview": {
-    "timestamp": "2026-05-25T03:31:02.619523+00:00",
-    "pipelines": {},
+    "timestamp": "2026-05-25T04:18:48.164985+00:00",
+    "pipelines": {
+      "pr": {
+        "total_runs": 94,
+        "success_runs": 21,
+        "failure_runs": 73,
+        "success_rate": 22.3
+      },
+      "nightly": {
+        "total_runs": 106,
+        "success_runs": 4,
+        "failure_runs": 102,
+        "success_rate": 3.8
+      },
+      "weekly": {
+        "total_runs": 0,
+        "success_runs": 0,
+        "failure_runs": 0,
+        "success_rate": 0.0,
+        "health_score": 0.0
+      }
+    },
     "summary": {
-      "total_runs": 0,
-      "success_runs": 0,
-      "failure_runs": 0,
-      "overall_success_rate": 0
+      "total_runs": 200,
+      "success_runs": 25,
+      "failure_runs": 175,
+      "overall_success_rate": 12.5
     }
   },
   "trends": {
-    "timestamp": "2026-05-25T03:31:02.620437+00:00",
+    "timestamp": "2026-05-25T04:18:48.166340+00:00",
     "period_days": 30,
-    "pipelines": {}
+    "pipelines": {
+      "pr": {
+        "success_rate_trend": [
+          19.1
+        ],
+        "failure_count_trend": [
+          38
+        ],
+        "duration_trend": [
+          862.8
+        ],
+        "health_score_trend": [
+          37.7
+        ],
+        "dates": [
+          "2026-05-25"
+        ]
+      },
+      "nightly": {
+        "success_rate_trend": [
+          3.8
+        ],
+        "failure_count_trend": [
+          50
+        ],
+        "duration_trend": [
+          64.2
+        ],
+        "health_score_trend": [
+          31.5
+        ],
+        "dates": [
+          "2026-05-25"
+        ]
+      },
+      "weekly": {
+        "success_rate_trend": [
+          0.0
+        ],
+        "failure_count_trend": [
+          0
+        ],
+        "duration_trend": [
+          0.0
+        ],
+        "health_score_trend": [
+          0.0
+        ],
+        "dates": [
+          "2026-05-25"
+        ]
+      }
+    }
   },
   "categories": {
-    "timestamp": "2026-05-25T03:31:02.621264+00:00",
-    "distribution": {},
+    "timestamp": "2026-05-25T04:18:48.167594+00:00",
+    "distribution": {
+      "infrastructure": 167,
+      "code": 33
+    },
     "by_pipeline_type": {}
   },
   "recent_failures": {
-    "timestamp": "2026-05-25T03:31:02.621569+00:00",
-    "failures": []
+    "timestamp": "2026-05-25T04:18:48.168036+00:00",
+    "failures": [
+      {
+        "workflow_run_id": 26358021964,
+        "pipeline_type": "nightly",
+        "workflow_name": "vLLM Main Schedule Test",
+        "pr_number": 9493,
+        "conclusion": "failure",
+        "classification": "code",
+        "confidence": "medium",
+        "duration_seconds": 1676.0,
+        "started_at": "2026-05-24T09:50:17Z",
+        "completed_at": "2026-05-24T10:18:13Z",
+        "recorded_at": "2026-05-25T04:18:47.944857+00:00"
+      },
+      {
+        "workflow_run_id": 26358050036,
+        "pipeline_type": "nightly",
+        "workflow_name": "E2E-upstream",
+        "pr_number": 9493,
+        "conclusion": "failure",
+        "classification": "code",
+        "confidence": "medium",
+        "duration_seconds": 4675.0,
+        "started_at": "2026-05-24T09:51:44Z",
+        "completed_at": "2026-05-24T11:09:39Z",
+        "recorded_at": "2026-05-25T04:18:47.943641+00:00"
+      },
+      {
+        "workflow_run_id": 26358885018,
+        "pipeline_type": "pr",
+        "workflow_name": "E2E-Light",
+        "pr_number": 9173,
+        "conclusion": "failure",
+        "classification": "code",
+        "confidence": "medium",
+        "duration_seconds": 180.0,
+        "started_at": "2026-05-24T10:33:50Z",
+        "completed_at": "2026-05-24T10:36:50Z",
+        "recorded_at": "2026-05-25T04:18:47.941082+00:00"
+      },
+      {
+        "workflow_run_id": 26359079719,
+        "pipeline_type": "pr",
+        "workflow_name": "E2E-Light",
+        "pr_number": 9173,
+        "conclusion": "failure",
+        "classification": "code",
+        "confidence": "high",
+        "duration_seconds": 168.0,
+        "started_at": "2026-05-24T10:43:35Z",
+        "completed_at": "2026-05-24T10:46:23Z",
+        "recorded_at": "2026-05-25T04:18:47.933263+00:00"
+      },
+      {
+        "workflow_run_id": 26359241744,
+        "pipeline_type": "pr",
+        "workflow_name": "E2E-Light",
+        "pr_number": 9173,
+        "conclusion": "failure",
+        "classification": "code",
+        "confidence": "high",
+        "duration_seconds": 171.0,
+        "started_at": "2026-05-24T10:51:44Z",
+        "completed_at": "2026-05-24T10:54:35Z",
+        "recorded_at": "2026-05-25T04:18:47.930634+00:00"
+      },
+      {
+        "workflow_run_id": 26361380561,
+        "pipeline_type": "pr",
+        "workflow_name": "E2E-Full",
+        "pr_number": 8319,
+        "conclusion": "failure",
+        "classification": "code",
+        "confidence": "medium",
+        "duration_seconds": 10276.0,
+        "started_at": "2026-05-24T12:34:40Z",
+        "completed_at": "2026-05-24T15:25:56Z",
+        "recorded_at": "2026-05-25T04:18:47.913764+00:00"
+      },
+      {
+        "workflow_run_id": 26362038335,
+        "pipeline_type": "nightly",
+        "workflow_name": "Docs link check",
+        "pr_number": 9493,
+        "conclusion": "failure",
+        "classification": "code",
+        "confidence": "high",
+        "duration_seconds": 463.0,
+        "started_at": "2026-05-24T13:04:23Z",
+        "completed_at": "2026-05-24T13:12:06Z",
+        "recorded_at": "2026-05-25T04:18:47.908637+00:00"
+      },
+      {
+        "workflow_run_id": 26362304507,
+        "pipeline_type": "pr",
+        "workflow_name": "E2E-Light",
+        "pr_number": null,
+        "conclusion": "failure",
+        "classification": "code",
+        "confidence": "high",
+        "duration_seconds": 174.0,
+        "started_at": "2026-05-24T13:16:35Z",
+        "completed_at": "2026-05-24T13:19:29Z",
+        "recorded_at": "2026-05-25T04:18:47.902181+00:00"
+      },
+      {
+        "workflow_run_id": 26362888852,
+        "pipeline_type": "pr",
+        "workflow_name": "E2E-Light",
+        "pr_number": null,
+        "conclusion": "failure",
+        "classification": "code",
+        "confidence": "high",
+        "duration_seconds": 220.0,
+        "started_at": "2026-05-24T13:42:50Z",
+        "completed_at": "2026-05-24T13:46:30Z",
+        "recorded_at": "2026-05-25T04:18:47.886184+00:00"
+      },
+      {
+        "workflow_run_id": 26363040485,
+        "pipeline_type": "pr",
+        "workflow_name": "E2E-Light",
+        "pr_number": null,
+        "conclusion": "failure",
+        "classification": "code",
+        "confidence": "high",
+        "duration_seconds": 174.0,
+        "started_at": "2026-05-24T13:49:42Z",
+        "completed_at": "2026-05-24T13:52:36Z",
+        "recorded_at": "2026-05-25T04:18:47.879712+00:00"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "code",
+        "confidence": "medium",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "code",
+        "confidence": "high",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "code",
+        "confidence": "high",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "code",
+        "confidence": "high",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "code",
+        "confidence": "medium",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "code",
+        "confidence": "medium",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "code",
+        "confidence": "high",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "code",
+        "confidence": "high",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "code",
+        "confidence": "high",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "code",
+        "confidence": "high",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "code",
+        "confidence": "high",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "code",
+        "confidence": "high",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "code",
+        "confidence": "high",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "medium",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "code",
+        "confidence": "high",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "code",
+        "confidence": "high",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "code",
+        "confidence": "high",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "medium",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "code",
+        "confidence": "medium",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "code",
+        "confidence": "high",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "medium",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "code",
+        "confidence": "high",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "code",
+        "confidence": "medium",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "code",
+        "confidence": "high",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "code",
+        "confidence": "high",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "code",
+        "confidence": "high",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "code",
+        "confidence": "high",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "code",
+        "confidence": "high",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "code",
+        "confidence": "high",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "code",
+        "confidence": "high",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "code",
+        "confidence": "medium",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "code",
+        "confidence": "high",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "code",
+        "confidence": "high",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "code",
+        "confidence": "medium",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "code",
+        "confidence": "medium",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "code",
+        "confidence": "medium",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      },
+      {
+        "workflow_name": "",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "started_at": "",
+        "pipeline_type": "pr"
+      }
+    ]
   },
   "health_scores": {
-    "timestamp": "2026-05-25T03:31:02.621848+00:00",
-    "scores": {}
+    "timestamp": "2026-05-25T04:18:48.168504+00:00",
+    "scores": {
+      "pr": {
+        "score": 23.9,
+        "rating": "危险",
+        "emoji": "🔴",
+        "trend": "declining"
+      },
+      "nightly": {
+        "score": 16.5,
+        "rating": "危险",
+        "emoji": "🔴",
+        "trend": "declining"
+      },
+      "weekly": {
+        "score": 15.0,
+        "rating": "危险",
+        "emoji": "🔴",
+        "trend": "declining"
+      }
+    }
   }
 }
