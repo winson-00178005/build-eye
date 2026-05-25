@@ -1,0 +1,89 @@
+name: Deploy Dashboard
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'dashboard/**'
+      - 'reports/**'
+      - 'data/**'
+  workflow_dispatch:
+  schedule:
+    - cron: '0 */6 * * *'
+
+permissions:
+  contents: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Generate dashboard data
+        run: |
+          python scripts/monitor/aggregator_cli.py \
+            --metadata data/build_metadata.json \
+            --classifications data/classifications.json \
+            --db data/build_metrics.db || true
+
+          python -c "
+          import json, sys
+          from pathlib import Path
+
+          db_path = Path('data/build_metrics.db')
+          data = {'overview': {'timestamp': '', 'summary': {}, 'pipelines': {}},
+                  'trends': {'pipelines': {}}, 'categories': {'distribution': {}},
+                  'recent_failures': {'failures': []}, 'health_scores': {'scores': {}}}
+
+          if db_path.exists():
+              sys.path.insert(0, 'scripts')
+              from monitor.aggregator import BuildAggregator
+              from report.dashboard import DashboardService
+              agg = BuildAggregator(str(db_path))
+              svc = DashboardService(agg)
+              data = svc.generate_full_dashboard()
+              agg.close()
+
+          # also scan reports directory for latest reports metadata
+          reports_dir = Path('reports')
+          if reports_dir.exists():
+              for ymd_dir in sorted(reports_dir.iterdir(), reverse=True)[:3]:
+                  if not ymd_dir.is_dir(): continue
+                  for type_dir in ['pr', 'nightly', 'weekly']:
+                      td = ymd_dir / type_dir
+                      if td.exists():
+                          for report_file in td.rglob('report.md'):
+                              frontmatter = {}
+                              content = report_file.read_text(encoding='utf-8')
+                              if content.startswith('---'):
+                                  end = content.find('---', 3)
+                                  if end > 0:
+                                      fm_text = content[3:end]
+                                      for line in fm_text.strip().split('\n'):
+                                          if ':' in line:
+                                              k, v = line.split(':', 1)
+                                              frontmatter[k.strip()] = v.strip()
+                              pr_num = frontmatter.get('pr_number')
+                              if pr_num and pr_num != 'null':
+                                  data['recent_failures']['failures'].append({
+                                      'workflow_name': frontmatter.get('overall_classification', ''),
+                                      'classification': frontmatter.get('overall_classification', 'unknown'),
+                                      'confidence': 'high',
+                                      'started_at': frontmatter.get('generated_at', ''),
+                                      'pipeline_type': type_dir
+                                  })
+
+          Path('dashboard/dashboard_data.json').write_text(
+              json.dumps(data, indent=2, ensure_ascii=False), encoding='utf-8')
+          print('Dashboard data generated')
+          "
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dashboard
+          publish_branch: gh-pages
+          cname: false
