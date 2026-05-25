@@ -57,6 +57,30 @@ def test_detect_push_with_pr_is_pr_type():
     assert result["pipeline_type"] == PIPELINE_PR
 
 
+def test_detect_pull_request_event():
+    detector = PipelineDetector(PIPELINE_CONFIG)
+    run = {"name": "E2E-Light", "event": "pull_request"}
+    result = detector.detect(run)
+    assert result["pipeline_type"] == PIPELINE_PR
+    assert result["source"] == "event_pr"
+
+
+def test_detect_pull_request_target_event():
+    detector = PipelineDetector(PIPELINE_CONFIG)
+    run = {"name": "E2E-Full", "event": "pull_request_target"}
+    result = detector.detect(run)
+    assert result["pipeline_type"] == PIPELINE_PR
+    assert result["source"] == "event_pr"
+
+
+def test_detect_pr_by_head_branch():
+    detector = PipelineDetector(PIPELINE_CONFIG)
+    run = {"name": "E2E-Light", "event": "push", "head_branch": "fix/some-bug"}
+    result = detector.detect(run)
+    assert result["pipeline_type"] == PIPELINE_PR
+    assert result["source"] == "head_branch"
+
+
 def test_detect_schedule_without_name_match():
     detector = PipelineDetector(PIPELINE_CONFIG)
     run = {"name": "Some-Custom-Schedule", "event": "schedule"}
