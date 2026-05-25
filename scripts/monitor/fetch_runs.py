@@ -116,8 +116,8 @@ def main():
     parser.add_argument('--timeout', type=int, default=30,
                         help='API 请求超时时间（秒）')
     parser.add_argument('--pipeline-type', type=str, default=None,
-                        choices=['pr', 'nightly', 'weekly'],
-                        help='只获取指定流水线类型的 run')
+                        choices=['pr', 'nightly', 'weekly', 'all'],
+                        help='只获取指定流水线类型的 run (all=不过滤)')
     parser.add_argument('--status', type=str, default='failure',
                         choices=['failure', 'all'],
                         help='获取状态: failure=只失败, all=全部(含成功)')
@@ -150,6 +150,11 @@ def main():
     if args.pipeline_type in ("nightly", "weekly"):
         print(f"Nightly/Weekly 流水线跳过 PR 关联查询（避免 rate limit）")
         enriched_runs = runs
+    elif args.pipeline_type == 'all':
+        enriched_runs = enrich_pr_association(runs, client, owner, repo)
+        runs_with_pr = [r for r in enriched_runs if r.get("associated_pr")]
+        runs_without_pr = [r for r in enriched_runs if not r.get("associated_pr")]
+        print(f"其中 {len(runs_with_pr)} 个关联 PR, {len(runs_without_pr)} 个无 PR 关联")
     else:
         enriched_runs = enrich_pr_association(runs, client, owner, repo)
         runs_with_pr = [r for r in enriched_runs if r.get("associated_pr")]
@@ -173,9 +178,11 @@ def main():
     enriched_runs = detector.filter_by_type(enriched_runs, "unmonitored", exclude=True)
     print(f"排除不监控的 run 后: {len(enriched_runs)} 个")
     
-    if args.pipeline_type:
+    if args.pipeline_type and args.pipeline_type != 'all':
         enriched_runs = detector.filter_by_type(enriched_runs, args.pipeline_type)
         print(f"过滤为 {args.pipeline_type} 类型: {len(enriched_runs)} 个")
+    elif args.pipeline_type == 'all':
+        print(f"保留所有流水线类型: {len(enriched_runs)} 个")
     
     output_path = Path(args.output)
     output_path.parent.mkdir(parents=True, exist_ok=True)

@@ -113,7 +113,53 @@ jobs:
           python scripts/monitor/aggregator_cli.py \
             --metadata data/build_metadata.json \
             --classifications data/classifications.json \
-            --db data/build_metrics.db
+            --db data/build_metrics.db || true
+
+      - name: Generate monitoring summary JSON
+        if: ${{ always() }}
+        run: |
+          python -c "
+          import json, sys
+          from pathlib import Path
+          sys.path.insert(0, 'scripts')
+          from monitor.aggregator import BuildAggregator
+          from report.dashboard import DashboardService
+
+          db_path = Path('data/build_metrics.db')
+          summary = {'timestamp': '', 'pipeline_type': 'weekly', 'runs': 0, 'summary': {}}
+
+          if db_path.exists() and db_path.stat().st_size > 0:
+              agg = BuildAggregator(str(db_path))
+              svc = DashboardService(agg)
+              overview = svc.generate_overview()
+              categories = svc.generate_categories()
+              health = svc.generate_health_scores()
+              summary = {
+                  'timestamp': overview.get('timestamp', ''),
+                  'pipeline_type': 'weekly',
+                  'runs': overview.get('summary', {}).get('total_runs', 0),
+                  'summary': overview.get('summary', {}),
+                  'pipelines': overview.get('pipelines', {}),
+                  'categories': categories.get('distribution', {}),
+                  'health_scores': health.get('scores', {})
+              }
+              agg.close()
+
+          Path('data/monitoring_summary.json').write_text(
+              json.dumps(summary, indent=2, ensure_ascii=False), encoding='utf-8')
+          print(f'Summary: {summary.get(\"runs\", 0)} runs')
+          " || true
+
+      - name: Persist monitoring data to repo
+        if: ${{ always() }}
+        run: |
+          git config user.name "build-eye-monitor"
+          git config user.email "build-eye-monitor@users.noreply.github.com"
+          git add data/monitoring_summary.json || true
+          git add data/build_metadata.json || true
+          git add data/classifications.json || true
+          git diff --staged --quiet || git commit -m "Update Weekly monitoring data [skip ci]"
+          git push || true
       
       - name: Archive Weekly report to build-eye repository
         if: ${{ inputs.dry_run != 'true' && hashFiles('data/recommendations.json') != '' }}
