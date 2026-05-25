@@ -20,7 +20,7 @@ def fetch_workflow_runs(
     owner: str,
     repo: str,
     lookback_hours: int = 24,
-    branch: str = "main",
+    branch: str | None = None,
     status_filter: str = "failure"
 ) -> list:
     """
@@ -29,9 +29,13 @@ def fetch_workflow_runs(
     status_filter:
       - "failure": 只返回失败的 run (PR 流水线默认)
       - "all": 返回所有已完成的 run (Nightly/Weekly 需要成功率数据)
+    
+    branch:
+      - None: 不按分支过滤（推荐，跨仓库监控时 PR 在各分支运行）
+      - "main": 只获取 main 分支的 run
     """
     cutoff_time = datetime.now(timezone.utc) - timedelta(hours=lookback_hours)
-    created_filter = f">={cutoff_time.strftime('%Y-%m-%d')}"
+    created_filter = f">={cutoff_time.strftime('%Y-%m-%dT%H:%M:%SZ')}"
     
     runs = client.get_workflow_runs(
         owner=owner,
@@ -48,7 +52,7 @@ def fetch_workflow_runs(
     return runs
 
 
-def fetch_failed_workflow_runs(client, owner, repo, lookback_hours=24, branch="main"):
+def fetch_failed_workflow_runs(client, owner, repo, lookback_hours=24, branch=None):
     """兼容旧调用: 只获取失败的 run。"""
     return fetch_workflow_runs(client, owner, repo, lookback_hours, branch, "failure")
 
