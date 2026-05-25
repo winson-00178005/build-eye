@@ -1,0 +1,60 @@
+{
+  "rules": [
+    {
+      "rule_id": "R001",
+      "name": "连续构建失败",
+      "condition": "consecutive_failures",
+      "threshold": 2,
+      "pipeline_type": "",
+      "severity": "critical",
+      "channels": ["webhook", "dingtalk"],
+      "cooldown_minutes": 60
+    },
+    {
+      "rule_id": "R002",
+      "name": "健康评分过低",
+      "condition": "health_score_below",
+      "threshold": 70,
+      "pipeline_type": "",
+      "severity": "warning",
+      "channels": ["webhook"],
+      "cooldown_minutes": 120
+    },
+    {
+      "rule_id": "R003",
+      "name": "成功率骤降",
+      "condition": "success_rate_drop",
+      "threshold": 20,
+      "pipeline_type": "",
+      "severity": "warning",
+      "channels": ["webhook"],
+      "cooldown_minutes": 60
+    },
+    {
+      "rule_id": "R004",
+      "name": "Nightly连续失败",
+      "condition": "consecutive_failures",
+      "threshold": 1,
+      "pipeline_type": "nightly",
+      "severity": "critical",
+      "channels": ["webhook", "dingtalk", "lark"],
+      "cooldown_minutes": 30
+    }
+  ],
+  "channels": {
+    "webhook": {
+      "url": ""
+    },
+    "dingtalk": {
+      "webhook_url": "",
+      "secret": ""
+    },
+    "lark": {
+      "webhook_url": ""
+    },
+    "email": {
+      "recipients": [],
+      "subject_prefix": "[Build-Eye Alert]"
+    }
+  }
+}
