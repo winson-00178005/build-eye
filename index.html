@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Build-Eye CI 监测仪表盘</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0d1117;color:#c9d1d9;min-height:100vh}
+.header{background:#161b22;border-bottom:1px solid #30363d;padding:16px 24px;display:flex;align-items:center;gap:12px}
+.header h1{font-size:20px;color:#f0f6fc}
+.header .badge{background:#1f6feb;color:#fff;padding:2px 8px;border-radius:12px;font-size:12px}
+.header .repo{color:#8b949e;font-size:14px;margin-left:auto}
+.container{max-width:1200px;margin:0 auto;padding:20px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:16px;margin-bottom:20px}
+.card{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:20px}
+.card-title{font-size:14px;color:#8b949e;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.card-title .icon{width:16px;height:16px}
+.stat-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #21262d}
+.stat-row:last-child{border:none}
+.stat-label{color:#8b949e;font-size:13px}
+.stat-value{font-size:18px;font-weight:600}
+.stat-value.green{color:#3fb950}
+.stat-value.red{color:#f85149}
+.stat-value.yellow{color:#d29922}
+.stat-value.blue{color:#58a6ff}
+.progress-bar{height:8px;background:#21262d;border-radius:4px;overflow:hidden;margin-top:8px}
+.progress-fill{height:100%;border-radius:4px;transition:width .3s}
+.health-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;text-align:center}
+.health-card{background:#0d1117;border-radius:8px;padding:16px}
+.health-score{font-size:32px;font-weight:700}
+.health-label{font-size:12px;color:#8b949e;margin-top:4px}
+.trend-chart{position:relative;height:200px;background:#0d1117;border-radius:4px;margin-top:12px}
+.chart-canvas{width:100%;height:100%}
+.failures-table{width:100%;border-collapse:collapse;font-size:13px}
+.failures-table th{text-align:left;color:#8b949e;padding:8px;border-bottom:1px solid #30363d}
+.failures-table td{padding:8px;border-bottom:1px solid #21262d}
+.failures-table tr:hover{background:#161b22}
+.tag{display:inline-block;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600}
+.tag-code{background:#1f3feb22;color:#58a6ff;border:1px solid #1f6feb}
+.tag-infra{background:#d29922;border-color:#d29922;color:#0d1117}
+.tag-inter{background:#f85149;border-color:#f85149;color:#0d1117}
+.tag-success{background:#3fb95022;color:#3fb950;border:1px solid #3fb950}
+.tag-failure{background:#f8514922;color:#f85149;border:1px solid #f85149}
+.reports-section{margin-top:20px}
+.reports-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+.report-card{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:16px;cursor:pointer;transition:border-color .2s}
+.report-card:hover{border-color:#58a6ff}
+.report-card .title{font-size:14px;color:#f0f6fc;margin-bottom:4px}
+.report-card .meta{font-size:12px;color:#8b949e}
+.report-card .category{margin-top:8px}
+.empty-state{text-align:center;padding:40px;color:#8b949e}
+.empty-state .icon{font-size:48px;margin-bottom:12px}
+.tabs{display:flex;gap:8px;margin-bottom:16px}
+.tab{background:#161b22;border:1px solid #30363d;border-radius:6px;padding:6px 16px;color:#8b949e;cursor:pointer;font-size:13px}
+.tab.active{background:#1f6feb;border-color:#1f6feb;color:#fff}
+.footer{text-align:center;padding:20px;color:#8b949e;font-size:12px;border-top:1px solid #30363d;margin-top:20px}
+@media(max-width:640px){.grid{grid-template-columns:1fr}.health-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="header">
+<h1>Build-Eye</h1>
+<span class="badge">CI Monitor</span>
+<span class="repo" id="repoName">vllm-project/vllm-ascend</span>
+</div>
+<div class="container">
+<div class="tabs">
+<div class="tab active" onclick="switchTab('overview')">概览</div>
+<div class="tab" onclick="switchTab('trends')">趋势</div>
+<div class="tab" onclick="switchTab('failures')">失败详情</div>
+<div class="tab" onclick="switchTab('reports')">报告</div>
+</div>
+<div id="overviewPanel">
+<div class="grid">
+<div class="card">
+<div class="card-title">总体统计</div>
+<div id="summaryStats"></div>
+</div>
+<div class="card">
+<div class="card-title">健康评分</div>
+<div class="health-grid" id="healthScores"></div>
+</div>
+<div class="card">
+<div class="card-title">分类分布</div>
+<div id="categoryDistribution"></div>
+</div>
+</div>
+</div>
+<div id="trendsPanel" style="display:none">
+<div class="grid">
+<div class="card">
+<div class="card-title">成功率趋势 (7日)</div>
+<div class="trend-chart"><canvas class="chart-canvas" id="successRateChart"></canvas></div>
+</div>
+<div class="card">
+<div class="card-title">失败数趋势 (7日)</div>
+<div class="trend-chart"><canvas class="chart-canvas" id="failureChart"></canvas></div>
+</div>
+<div class="card">
+<div class="card-title">健康评分趋势 (7日)</div>
+<div class="trend-chart"><canvas class="chart-canvas" id="healthChart"></canvas></div>
+</div>
+</div>
+</div>
+<div id="failuresPanel" style="display:none">
+<div class="card">
+<div class="card-title">最近失败记录</div>
+<table class="failures-table" id="failuresTable">
+<thead><tr><th>Workflow</th><th>分类</th><th>置信度</th><th>时间</th><th>流水线</th></tr></thead>
+<tbody id="failuresBody"></tbody>
+</table>
+</div>
+</div>
+<div id="reportsPanel" style="display:none">
+<div class="card">
+<div class="card-title">最新监测报告</div>
+<div class="reports-grid" id="reportsGrid"></div>
+</div>
+</div>
+</div>
+<div class="footer">Build-Eye CI Monitor Dashboard | 数据自动更新 | <span id="updateTime"></span></div>
+<script>
+const DATA_URL='dashboard_data.json';
+const REPORTS_BASE='reports';
+const REPO_URL='https://github.com/winson-00178005/build-eye';
+let dashboardData=null;
+let currentTab='overview';
+
+function switchTab(tab){
+currentTab=tab;
+document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+document.querySelector(`.tab[onclick="switchTab('${tab}')"]`).classList.add('active');
+['overview','trends','failures','reports'].forEach(p=>{
+document.getElementById(p+'Panel').style.display=p===tab?'block':'none';
+});
+if(tab==='trends'&&dashboardData)renderCharts();
+}
+
+async function loadData(){
+try{
+const res=await fetch(DATA_URL);
+dashboardData=await res.json();
+renderDashboard();
+}catch(e){
+try{
+const res=await fetch(REPO_URL+'/raw/main/dashboard/dashboard_data.json');
+dashboardData=await res.json();
+renderDashboard();
+}catch(e2){
+document.querySelector('.container').innerHTML='<div class="empty-state"><div class="icon">&#128269;</div><p>暂无数据</p><p>请先运行监控 Workflow 生成数据</p></div>';
+}
+}
+}
+
+function renderDashboard(){
+if(!dashboardData)return;
+const overview=dashboardData.overview||{};
+const trends=dashboardData.trends||{};
+const categories=dashboardData.categories||{};
+const failures=dashboardData.recent_failures||{};
+const health=dashboardData.health_scores||{};
+document.getElementById('updateTime').textContent=overview.timestamp||'N/A';
+document.getElementById('repoName').textContent='vllm-project/vllm-ascend';
+renderSummary(overview);
+renderHealth(health);
+renderCategories(categories);
+renderFailures(failures);
+renderReports();
+}
+
+function renderSummary(ov){
+const s=ov.summary||{};
+const total=s.total_runs||0;
+const success=s.success_runs||0;
+const failure=s.failure_runs||0;
+const rate=s.overall_success_rate||0;
+let html=`
+<div class="stat-row"><span class="stat-label">总构建数</span><span class="stat-value blue">${total}</span></div>
+<div class="stat-row"><span class="stat-label">成功</span><span class="stat-value green">${success}</span></div>
+<div class="stat-row"><span class="stat-label">失败</span><span class="stat-value red">${failure}</span></div>
+<div class="stat-row"><span class="stat-label">成功率</span><span class="stat-value ${rate>=80?'green':rate>=60?'yellow':'red'}">${rate}%</span></div>
+<div class="progress-bar"><div class="progress-fill" style="width:${rate}%;background:${rate>=80?'#3fb950':rate>=60?'#d29922':'#f85149'}"></div></div>
+`;
+const pipes=ov.pipelines||{};
+for(const[type,data]of Object.entries(pipes)){
+const r=data.success_rate||0;
+html+=`<div class="stat-row"><span class="stat-label">${type==='pr'?'PR':type==='nightly'?'Nightly':'Weekly'} 流水线</span>
+<span class="stat-value ${r>=80?'green':r>=60?'yellow':'red'}">${r}%</span></div>`;
+}
+document.getElementById('summaryStats').innerHTML=html;
+}
+
+function renderHealth(hs){
+const scores=hs.scores||{};
+let html='';
+for(const[type,data]of Object.entries(scores)){
+const s=data.score||0;
+const emoji=data.emoji||'⚪';
+html+=`<div class="health-card"><div class="health-score" style="color:${s>=80?'#3fb950':s>=60?'#d29922':'#f85149'}">${emoji} ${s}</div>
+<div class="health-label">${type==='pr'?'PR':type==='nightly'?'Nightly':'Weekly'} ${data.rating||'N/A'} ${data.trend==='improving'?'↑':data.trend==='declining'?'↓':'→'}</div></div>`;
+}
+if(!html)html='<div class="empty-state">暂无健康评分数据</div>';
+document.getElementById('healthScores').innerHTML=html;
+}
+
+function renderCategories(cat){
+const dist=cat.distribution||{};
+let html='';
+const colors={code:'#58a6ff',infrastructure:'#d29922',interference:'#f85149',unknown:'#8b949e'};
+for(const[k,v]of Object.entries(dist)){
+const pct=((v/Object.values(dist).reduce((a,b)=>a+b,0))*100).toFixed(1);
+const label=k==='code'?'代码':k==='infrastructure'?'基础设施':k==='interference'?'干扰':'未知';
+html+=`<div class="stat-row"><span class="stat-label"><span class="tag tag-${k==='code'?'code':k==='infrastructure'?'infra':k==='interference'?'inter':'success'}">${label}</span></span>
+<span class="stat-value">${v} (${pct}%)</span></div>`;
+}
+if(!html)html='<div class="empty-state">暂无分类数据</div>';
+document.getElementById('categoryDistribution').innerHTML=html;
+}
+
+function renderFailures(f){
+const list=f.failures||[];
+let html='';
+for(const item of list){
+const cat=item.classification||'unknown';
+const conf=item.confidence||'low';
+const time=item.started_at||'N/A';
+const ptype=item.pipeline_type||'pr';
+const name=item.workflow_name||'N/A';
+const catLabel=cat==='code'?'代码':cat==='infrastructure'?'基础设施':cat==='interference'?'干扰':cat;
+html+=`<tr><td>${name}</td><td><span class="tag tag-${cat==='code'?'code':cat==='infrastructure'?'infra':cat==='interference'?'inter':'success'}">${catLabel}</span></td>
+<td>${conf}</td><td>${time.substring(0,10)}</td><td>${ptype}</td></tr>`;
+}
+if(!html)html='<tr><td colspan="5" class="empty-state">暂无失败记录</td></tr>';
+document.getElementById('failuresBody').innerHTML=html;
+}
+
+function renderReports(){
+const recentReports=[
+{title:'PR 流水线监测',path:'pr',type:'pr'},
+{title:'Nightly 日报',path:'nightly',type:'nightly'},
+{title:'Weekly 周报',path:'weekly',type:'weekly'}
+];
+let html='';
+for(const r of recentReports){
+html+=`<div class="report-card" onclick="window.open('${REPO_URL}/tree/main/reports/${r.path}','_blank')">
+<div class="title">${r.title}</div><div class="meta">查看 ${r.type} 类型报告</div>
+<div class="category"><span class="tag tag-${r.type==='pr'?'code':r.type==='nightly'?'infra':'inter'}">${r.type}</span></div></div>`;
+}
+html+=`<div class="report-card" onclick="window.open('${REPO_URL}/actions','_blank')">
+<div class="title">GitHub Actions</div><div class="meta">查看所有 Workflow 运行记录</div></div>`;
+document.getElementById('reportsGrid').innerHTML=html;
+}
+
+function renderCharts(){
+if(!dashboardData||!dashboardData.trends)return;
+const pipes=dashboardData.trends.pipelines||{};
+drawLineChart('successRateChart',pipes,'success_rate_trend','dates','成功率 (%)','#3fb950');
+drawLineChart('failureChart',pipes,'failure_count_trend','dates','失败数','#f85149');
+drawBarChart('healthChart',pipes,'health_score_trend','dates','健康评分','#58a6ff');
+}
+
+function drawLineChart(canvasId,pipes,dataKey,dateKey,label,color){
+const canvas=document.getElementById(canvasId);
+if(!canvas)return;
+const ctx=canvas.getContext('2d');
+const dpr=window.devicePixelRatio||1;
+const rect=canvas.parentElement.getBoundingClientRect();
+canvas.width=rect.width*dpr;
+canvas.height=rect.height*dpr;
+ctx.scale(dpr,dpr);
+canvas.style.width=rect.width+'px';
+canvas.style.height=rect.height+'px';
+ctx.clearRect(0,0,rect.width,rect.height);
+const allTypes=['pr','nightly','weekly'];
+const colors={pr:'#58a6ff',nightly:'#3fb950',weekly:'#d29922'};
+const typeLabels={pr:'PR',nightly:'Nightly',weekly:'Weekly'};
+const pad=40;
+const w=rect.width-pad*2;
+const h=rect.height-pad*2;
+let maxVal=0,minVal=0;
+for(const type of allTypes){
+const p=pipes[type];
+if(p&&p[dataKey]){
+maxVal=Math.max(maxVal,...p[dataKey]);
+minVal=Math.min(minVal,...p[dataKey]);
+}
+}
+maxVal=Math.max(maxVal,minVal+10);
+ctx.strokeStyle='#30363d';
+ctx.lineWidth=1;
+ctx.beginPath();
+ctx.moveTo(pad,pad);ctx.lineTo(pad,rect.height-pad);
+ctx.lineTo(rect.width-pad,rect.height-pad);
+ctx.stroke();
+ctx.fillStyle='#8b949e';
+ctx.font='11px sans-serif';
+ctx.fillText(maxVal.toFixed(0),4,pad+4);
+ctx.fillText(minVal.toFixed(0),4,rect.height-pad);
+for(const type of allTypes){
+const p=pipes[type];
+if(!p||!p[dataKey]||!p[dateKey])continue;
+const data=p[dataKey];
+const dates=p[dateKey];
+const range=maxVal-minVal||1;
+ctx.beginPath();
+ctx.strokeStyle=colors[type]||color;
+ctx.lineWidth=2;
+for(let i=0;i<data.length;i++){
+const x=pad+i*Math.max(w/(Math.max(data.length-1,1)),0);
+const y=rect.height-pad-(data[i]-minVal)/range*h;
+if(i===0)ctx.moveTo(x,y);
+else ctx.lineTo(x,y);
+}
+ctx.stroke();
+ctx.fillStyle=colors[type];
+ctx.fillText(typeLabels[type]+' '+label,rect.width-pad-80,pad+12+i*14);
+}
+}
+
+function drawBarChart(canvasId,pipes,dataKey,dateKey,label,color){
+drawLineChart(canvasId,pipes,dataKey,dateKey,label,color);
+}
+
+loadData();
+</script>
+</body>
+</html>
