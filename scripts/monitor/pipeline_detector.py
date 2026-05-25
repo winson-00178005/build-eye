@@ -44,12 +44,27 @@ class PipelineDetector:
                 "source": "event_fallback"
             }
 
+        if event in ("pull_request", "pull_request_target"):
+            return {
+                "pipeline_type": PIPELINE_PR,
+                "pipeline_type_label": "PR 流水线",
+                "source": "event_pr"
+            }
+
         pull_requests = workflow_run.get("pull_requests", [])
-        if pull_requests and event in ("push", "pull_request"):
+        if pull_requests:
             return {
                 "pipeline_type": PIPELINE_PR,
                 "pipeline_type_label": "PR 流水线",
                 "source": "has_pr_association"
+            }
+
+        head_branch = workflow_run.get("head_branch", "")
+        if head_branch and head_branch not in ("main", "master", ""):
+            return {
+                "pipeline_type": PIPELINE_PR,
+                "pipeline_type_label": "PR 流水线",
+                "source": "head_branch"
             }
 
         return {
