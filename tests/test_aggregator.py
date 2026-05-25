@@ -1,4 +1,5 @@
 """Build Aggregator 测试。"""
+import gc
 import pytest
 import sqlite3
 import tempfile
@@ -11,11 +12,12 @@ TODAY = datetime.now(timezone.utc).strftime("%Y-%m-%d")
 
 @pytest.fixture
 def aggregator():
-    with tempfile.TemporaryDirectory() as tmp:
-        db_path = Path(tmp) / "test_metrics.db"
-        agg = BuildAggregator(str(db_path))
-        yield agg
-        del agg
+    tmp = tempfile.mkdtemp()
+    db_path = Path(tmp) / "test_metrics.db"
+    agg = BuildAggregator(str(db_path))
+    yield agg
+    agg.close()
+    gc.collect()
 
 
 def test_init_db(aggregator):

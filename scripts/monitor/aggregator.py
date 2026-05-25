@@ -1,4 +1,5 @@
 """数据聚合器 - 将构建指标存储到 SQLite 并提供趋势查询。"""
+import gc
 import sqlite3
 import json
 from pathlib import Path
@@ -12,11 +13,39 @@ class BuildAggregator:
     def __init__(self, db_path: str | Path = "data/build_metrics.db"):
         self.db_path = Path(db_path)
         self.db_path.parent.mkdir(parents=True, exist_ok=True)
+        self._closed = False
         self._init_db()
+
+    def close(self):
+        """关闭聚合器，执行 WAL checkpoint 并释放资源。"""
+        if not self._closed:
+            try:
+                conn = sqlite3.connect(str(self.db_path))
+                conn.execute("PRAGMA wal_checkpoint(TRUNCATE)")
+                conn.close()
+            except Exception:
+                pass
+            self._closed = True
+            gc.collect()
+
+    def __del__(self):
+        """析构时确保资源释放。"""
+        self.close()
+
+    def _ensure_open(self):
+        if self._closed:
+            raise RuntimeError("BuildAggregator has been closed")
+
+    def _get_conn(self) -> sqlite3.Connection:
+        self._ensure_open()
+        conn = sqlite3.connect(str(self.db_path))
+        conn.execute("PRAGMA journal_mode=WAL")
+        return conn
 
     def _init_db(self):
         """初始化数据库表。"""
-        with sqlite3.connect(str(self.db_path)) as conn:
+        conn = self._get_conn()
+        try:
             conn.execute("""
                 CREATE TABLE IF NOT EXISTS daily_aggregates (
                     date TEXT NOT NULL,
@@ -47,6 +76,9 @@ class BuildAggregator:
                     recorded_at TEXT NOT NULL
                 )
             """)
+            conn.commit()
+        finally:
+            conn.close()
 
     def record_build(self, metadata: Dict[str, Any], classification: Dict[str, Any] | None = None):
         """记录单次构建结果。"""
@@ -65,7 +97,8 @@ class BuildAggregator:
         pr = metadata.get("pr")
         pr_number = pr.get("number") if pr else None
 
-        with sqlite3.connect(str(self.db_path)) as conn:
+        conn = self._get_conn()
+        try:
             conn.execute("""
                 INSERT OR REPLACE INTO build_records
                 (workflow_run_id, pipeline_type, workflow_name, pr_number,
@@ -85,6 +118,9 @@ class BuildAggregator:
                 completed,
                 datetime.now(timezone.utc).isoformat()
             ))
+            conn.commit()
+        finally:
+            conn.close()
 
     def record_builds_batch(self, metadata_list: List[Dict], classifications: List[Dict] | None = None):
         """批量记录构建结果。"""
@@ -102,13 +138,16 @@ class BuildAggregator:
 
     def update_daily_aggregate(self, date: str, pipeline_type: str, pipeline_name: str = ""):
         """更新指定日期的聚合数据。"""
-        with sqlite3.connect(str(self.db_path)) as conn:
+        conn = self._get_conn()
+        try:
             rows = conn.execute("""
                 SELECT conclusion, classification, duration_seconds
                 FROM build_records
                 WHERE pipeline_type = ? AND started_at LIKE ?
                 AND workflow_name LIKE ?
             """, (pipeline_type, f"{date}%", f"%{pipeline_name}%")).fetchall()
+        finally:
+            conn.close()
 
         total = len(rows)
         success = sum(1 for r in rows if r[0] == "success")
@@ -122,8 +161,9 @@ class BuildAggregator:
 
         health = self._calc_health_score(success, total, category_counts)
 
-        with sqlite3.connect(str(self.db_path)) as conn:
-            conn.execute("""
+        conn2 = self._get_conn()
+        try:
+            conn2.execute("""
                 INSERT OR REPLACE INTO daily_aggregates
                 (date, pipeline_type, pipeline_name, total_runs, success_runs,
                  failure_runs, avg_duration_seconds, health_score,
@@ -135,12 +175,16 @@ class BuildAggregator:
                 json.dumps(category_counts),
                 datetime.now(timezone.utc).isoformat()
             ))
+            conn2.commit()
+        finally:
+            conn2.close()
 
     def get_daily_aggregates(self, pipeline_type: str | None = None, days: int = 7) -> List[Dict]:
         """获取最近 N 天的聚合数据。"""
         cutoff = (datetime.now(timezone.utc) - timedelta(days=days)).strftime("%Y-%m-%d")
 
-        with sqlite3.connect(str(self.db_path)) as conn:
+        conn = self._get_conn()
+        try:
             conn.row_factory = sqlite3.Row
             if pipeline_type:
                 rows = conn.execute("""
@@ -153,6 +197,8 @@ class BuildAggregator:
                     SELECT * FROM daily_aggregates
                     WHERE date >= ? ORDER BY date ASC
                 """, (cutoff,)).fetchall()
+        finally:
+            conn.close()
 
         return [dict(r) for r in rows]
 
@@ -181,7 +227,8 @@ class BuildAggregator:
 
     def get_recent_failures(self, pipeline_type: str | None = None, limit: int = 10) -> List[Dict]:
         """获取最近的构建失败记录。"""
-        with sqlite3.connect(str(self.db_path)) as conn:
+        conn = self._get_conn()
+        try:
             conn.row_factory = sqlite3.Row
             if pipeline_type:
                 rows = conn.execute("""
@@ -195,12 +242,15 @@ class BuildAggregator:
                     WHERE conclusion = 'failure'
                     ORDER BY recorded_at DESC LIMIT ?
                 """, (limit,)).fetchall()
+        finally:
+            conn.close()
 
         return [dict(r) for r in rows]
 
     def get_consecutive_failures(self, pipeline_type: str, pipeline_name: str = "") -> int:
         """获取连续失败次数。"""
-        with sqlite3.connect(str(self.db_path)) as conn:
+        conn = self._get_conn()
+        try:
             if pipeline_name:
                 rows = conn.execute("""
                     SELECT conclusion FROM build_records
@@ -213,6 +263,8 @@ class BuildAggregator:
                     WHERE pipeline_type = ?
                     ORDER BY started_at DESC LIMIT 10
                 """, (pipeline_type,)).fetchall()
+        finally:
+            conn.close()
 
         consecutive = 0
         for r in rows:
