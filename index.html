@@ -426,7 +426,7 @@ for(const f of filtered.slice(0,30)){
 const catTag=getCatTag(f.classification);
 const statusTag=getStatusTag(f.status);
 const typeTag=getTypeTag(f.pipeline_type);
-const keyErr=f.key_errors&&f.key_errors.length?`<span class="key-error">${f.key_errors[0]}</span>`:'<span style="color:#484f58">-</span>';
+const keyErr=f.key_errors&&f.key_errors.length?`<span class="key-error">${f.key_errors[0]}</span>`:(f.status==='skipped'?`<span style="color:#8b949e;font-size:12px">Skipped</span>`:f.status==='cancelled'?`<span style="color:#d29922;font-size:12px">Cancelled</span>`:f.detail?`<span style="color:#8b949e;font-size:12px">${f.detail.substring(0,40)}</span>`:'<span style="color:#484f58">-</span>');
 const time=(f.started_at||'').substring(0,10);
 html+=`<tr onclick="showFailureDetail(D.recent_failures.failures.find(x=>x.run_id===${f.run_id}))">
 <td>${f.workflow_name||'N/A'}</td>
