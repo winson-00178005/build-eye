@@ -71,7 +71,9 @@ jobs:
           python scripts/monitor/fetch_runs.py \
             --output data/workflow_runs.json \
             --pipeline-type nightly \
-            --status all \
+            --status completed \
+            --branch main \
+            --event schedule \
             --timeout 30
       
       - name: Collect build metadata

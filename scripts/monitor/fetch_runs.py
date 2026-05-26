@@ -21,6 +21,7 @@ def fetch_workflow_runs(
     repo: str,
     lookback_hours: int = 24,
     branch: str | None = None,
+    event: str | None = None,
     status_filter: str = "failure"
 ) -> list:
     """
@@ -31,8 +32,12 @@ def fetch_workflow_runs(
       - "all": 返回所有已完成的 run (Nightly/Weekly 需要成功率数据)
     
     branch:
-      - None: 不按分支过滤（推荐，跨仓库监控时 PR 在各分支运行）
+      - None: 不按分支过滤
       - "main": 只获取 main 分支的 run
+    
+    event:
+      - None: 不按触发事件过滤
+      - "schedule": 只获取定时触发的 run
     """
     cutoff_time = datetime.now(timezone.utc) - timedelta(hours=lookback_hours)
     created_filter = f">={cutoff_time.strftime('%Y-%m-%dT%H:%M:%SZ')}"
@@ -41,6 +46,7 @@ def fetch_workflow_runs(
         owner=owner,
         repo=repo,
         branch=branch,
+        event=event,
         status="completed",
         created=created_filter,
         max_pages=5
@@ -48,6 +54,8 @@ def fetch_workflow_runs(
     
     if status_filter == "failure":
         runs = [r for r in runs if r.get("conclusion") == "failure"]
+    elif status_filter == "completed":
+        runs = [r for r in runs if r.get("conclusion") in ("success", "failure", "timed_out", "action_required")]
     
     return runs
 
@@ -119,8 +127,12 @@ def main():
                         choices=['pr', 'nightly', 'weekly', 'all'],
                         help='只获取指定流水线类型的 run (all=不过滤)')
     parser.add_argument('--status', type=str, default='failure',
-                        choices=['failure', 'all'],
-                        help='获取状态: failure=只失败, all=全部(含成功)')
+                        choices=['failure', 'all', 'completed'],
+                        help='获取状态: failure=只失败, all=全部(含成功/跳过/取消), completed=已完成(排除跳过/取消)')
+    parser.add_argument('--branch', type=str, default=None,
+                        help='按分支过滤 (如: main)')
+    parser.add_argument('--event', type=str, default=None,
+                        help='按触发事件过滤 (如: schedule, push, pull_request)')
     
     args = parser.parse_args()
     
@@ -142,7 +154,8 @@ def main():
     print(f"正在获取 {owner}/{repo} 的构建 (status={args.status})...")
     
     runs = fetch_workflow_runs(
-        client, owner, repo, lookback, status_filter=args.status
+        client, owner, repo, lookback, branch=args.branch, event=args.event,
+        status_filter=args.status
     )
     
     print(f"找到 {len(runs)} 个 workflow runs")

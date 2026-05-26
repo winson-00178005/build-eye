@@ -116,6 +116,7 @@ class GitHubAPIClient:
     
     def get_workflow_runs(self, owner: str, repo: str, branch: str | None = None,
                           status: str | None = None, created: str | None = None,
+                          event: str | None = None,
                           per_page: int = 100, max_pages: int = 10) -> List[Dict]:
         """获取仓库的 workflow runs 列表。"""
         url = f"{self.BASE_URL}/repos/{owner}/{repo}/actions/runs"
@@ -127,6 +128,8 @@ class GitHubAPIClient:
             params["status"] = status
         if created:
             params["created"] = created
+        if event:
+            params["event"] = event
         
         runs = []
         page = 1
