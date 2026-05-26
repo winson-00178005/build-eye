@@ -1,6 +1,7 @@
 """构建元数据收集 - PR详情、workflow详情、job/step信息。"""
 import argparse
 import json
+import re
 import sys
 import os
 from pathlib import Path
@@ -105,6 +106,57 @@ def collect_build_metadata(
     return metadata_list
 
 
+def extract_error_lines(logs: str, max_lines: int = 100) -> str:
+    """从日志中提取包含错误信息的行及上下文，而非末尾随机行。"""
+    if not logs:
+        return ""
+    
+    lines = logs.split('\n')
+    
+    error_patterns = [
+        r"error:", r"Error:", r"ERROR",
+        r"FAILED", r"AssertionError", r"Traceback",
+        r"CMake Error", r"compilation failed",
+        r"undefined symbol", r"ImportError",
+        r"ModuleNotFoundError", r"cannot import",
+        r"HCCL error", r"npu-smi.*error",
+        r"cache-service", r"runner.*offline",
+        r"Timeout exceeded", r"timed out",
+        r"AttributeError", r"RuntimeError",
+    ]
+    
+    error_line_indices = []
+    for i, line in enumerate(lines):
+        for pattern in error_patterns:
+            if re.search(pattern, line, re.IGNORECASE):
+                error_line_indices.append(i)
+                break
+    
+    if not error_line_indices:
+        return '\n'.join(lines[-max_lines:])
+    
+    context_range = 3
+    selected_indices = set()
+    for idx in error_line_indices:
+        for j in range(max(0, idx - context_range), min(len(lines), idx + context_range + 1)):
+            selected_indices.add(j)
+    
+    sorted_indices = sorted(selected_indices)
+    
+    result_lines = []
+    prev_idx = None
+    for idx in sorted_indices:
+        if prev_idx is not None and idx - prev_idx > 1:
+            result_lines.append("...")
+        result_lines.append(lines[idx])
+        prev_idx = idx
+    
+    if len(result_lines) > max_lines:
+        result_lines = result_lines[:max_lines]
+    
+    return '\n'.join(result_lines)
+
+
 def extract_failed_step_logs(
     client: GitHubAPIClient,
     owner: str,
@@ -112,7 +164,7 @@ def extract_failed_step_logs(
     metadata_list: list,
     max_lines: int = 100
 ) -> list:
-    """提取失败 job 的日志片段。"""
+    """提取失败 job 的日志片段（提取错误行而非末尾行）。"""
     
     for metadata in metadata_list:
         for failed_job in metadata["failed_jobs"]:
@@ -121,8 +173,7 @@ def extract_failed_step_logs(
             logs = client.get_job_logs(owner, repo, job_id)
             
             if logs:
-                lines = logs.split('\n')
-                failed_job["log_excerpt"] = '\n'.join(lines[-max_lines:])
+                failed_job["log_excerpt"] = extract_error_lines(logs, max_lines)
                 failed_job["log_url"] = f"https://github.com/{owner}/{repo}/actions/runs/{metadata['workflow_run']['id']}/job/{job_id}"
     
     return metadata_list
