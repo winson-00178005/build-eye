@@ -15,6 +15,15 @@ class NightlyReportGenerator:
         "interference": "并发干扰"
     }
 
+    STATUS_LABELS = {
+        "success": "成功",
+        "failure": "失败",
+        "skipped": "跳过",
+        "cancelled": "取消",
+        "timed_out": "超时",
+        "action_required": "需操作"
+    }
+
     CONFIDENCE_LABELS = {
         "high": "高",
         "medium": "中",
@@ -137,39 +146,53 @@ class NightlyReportGenerator:
         ]
         return "\n".join(lines)
 
-    def _generate_failure_details(self, runs: List[Dict]):
-        """生成失败详情。"""
-        failed_runs = [r for r in runs if r.get("conclusion") == "failure"]
-        if not failed_runs:
+def _generate_failure_details(self, runs: List[Dict]):
+        """生成失败详情（包含所有非成功状态：failure/skipped/cancelled 等）。"""
+        non_success_runs = [r for r in runs if r.get("conclusion") != "success"]
+        if not non_success_runs:
             return "## 失败详情\n\n今日无 Nightly 构建失败。\n"
 
         lines = ["## 失败详情", ""]
 
+        status_counts = {}
+        for r in non_success_runs:
+            status = r.get("conclusion", "unknown")
+            status_label = self.STATUS_LABELS.get(status, status)
+            status_counts[status_label] = status_counts.get(status_label, 0) + 1
+
+        for status_label, count in status_counts.items():
+            lines.append(f"- {status_label} ({count})")
+
         category_counts = {}
-        for r in failed_runs:
+        for r in non_success_runs:
             cls = r.get("classification", {})
-            cat = cls.get("classification", "infrastructure")
+            cat = cls.get("classification", "infrastructure") if cls else "infrastructure"
             cat_label = self.CATEGORY_LABELS.get(cat, cat)
             category_counts[cat_label] = category_counts.get(cat_label, 0) + 1
 
-        for cat_label, count in category_counts.items():
-            lines.append(f"- {cat_label} ({count})")
+        if category_counts:
+            lines.append("")
+            lines.append("**根因分类**:")
+            for cat_label, count in category_counts.items():
+                lines.append(f"- {cat_label} ({count})")
 
         lines.append("")
-        lines.append("| # | Workflow | 根因 | 置信度 | 详情 |")
-        lines.append("|---|---|---|---|---|")
+        lines.append("| # | Workflow | 状态 | 根因 | 置信度 | 详情 |")
+        lines.append("|---|---|---|---|---|---|")
 
-        for i, r in enumerate(failed_runs, 1):
+        for i, r in enumerate(non_success_runs, 1):
             cls = r.get("classification", {})
-            cat = cls.get("classification", "infrastructure")
+            status = r.get("conclusion", "unknown")
+            status_label = self.STATUS_LABELS.get(status, status)
+            cat = cls.get("classification", "infrastructure") if cls else "infrastructure"
             cat_label = self.CATEGORY_LABELS.get(cat, cat)
-            conf = cls.get("confidence", "low")
+            conf = cls.get("confidence", "low") if cls else "low"
             conf_label = self.CONFIDENCE_LABELS.get(conf, conf)
-            detail = cls.get("category_detail", "")
+            detail = cls.get("category_detail", "") if cls else f"状态: {status_label}"
             name = r.get("name", r.get("workflow_run", {}).get("name", ""))
             run_id = r.get("id", r.get("workflow_run", {}).get("id", ""))
 
-            lines.append(f"| {i} | {name} (#{run_id}) | {cat_label} | {conf_label} | {detail} |")
+            lines.append(f"| {i} | {name} (#{run_id}) | {status_label} | {cat_label} | {conf_label} | {detail} |")
 
         lines.append("")
         return "\n".join(lines)
