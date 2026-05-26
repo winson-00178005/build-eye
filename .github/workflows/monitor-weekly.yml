@@ -71,7 +71,7 @@ jobs:
           python scripts/monitor/fetch_runs.py \
             --output data/workflow_runs.json \
             --pipeline-type weekly \
-            --status completed \
+            --status all \
             --branch main \
             --event schedule \
             --timeout 30
@@ -84,7 +84,7 @@ jobs:
           python scripts/monitor/collect_metadata.py \
             --input data/workflow_runs.json \
             --output data/build_metadata.json \
-            --max-runs 20 \
+            --max-runs 50 \
             --timeout 30
       
       - name: Classify failure root causes

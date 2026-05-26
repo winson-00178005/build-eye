@@ -8,7 +8,7 @@ on:
       lookback_hours:
         description: '检查过去多少小时的构建记录'
         required: false
-        default: '24'
+        default: '168'
         type: string
       dry_run:
         description: '试运行模式'
@@ -54,7 +54,7 @@ jobs:
       
       - name: Configure monitoring parameters
         env:
-          LOOKBACK_HOURS: ${{ inputs.lookback_hours || '24' }}
+          LOOKBACK_HOURS: ${{ inputs.lookback_hours || '168' }}
           TARGET_REPO: ${{ inputs.target_repo || 'vllm-project/vllm-ascend' }}
           DRY_RUN: ${{ inputs.dry_run || 'false' }}
         run: |
@@ -71,7 +71,7 @@ jobs:
           python scripts/monitor/fetch_runs.py \
             --output data/workflow_runs.json \
             --pipeline-type nightly \
-            --status completed \
+            --status all \
             --branch main \
             --event schedule \
             --timeout 30
@@ -84,7 +84,7 @@ jobs:
           python scripts/monitor/collect_metadata.py \
             --input data/workflow_runs.json \
             --output data/build_metadata.json \
-            --max-runs 20 \
+            --max-runs 50 \
             --timeout 30
       
       - name: Classify failure root causes
@@ -189,5 +189,5 @@ jobs:
           echo "## Nightly 流水线日报摘要" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "流水线类型: Nightly" >> $GITHUB_STEP_SUMMARY
-          echo "检查时间范围: ${{ inputs.lookback_hours || '24' }} 小时" >> $GITHUB_STEP_SUMMARY
+          echo "检查时间范围: ${{ inputs.lookback_hours || '168' }} 小时" >> $GITHUB_STEP_SUMMARY
           echo "目标仓库: ${{ inputs.target_repo || 'vllm-project/vllm-ascend' }}" >> $GITHUB_STEP_SUMMARY
