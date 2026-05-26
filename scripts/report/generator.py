@@ -343,38 +343,31 @@ class ReportGenerator:
         if metadata_list:
             for m in metadata_list:
                 ptype = m.get("pipeline_info", {}).get("pipeline_type", "pr")
+                wf = m.get("workflow_run", {})
+                cls_data = {}
+                rec_data = {}
+                meta_data = {}
+                for g in grouped_list:
+                    for wr in g.get("workflow_runs", []):
+                        if wr.get("workflow_run_id") == wf.get("id"):
+                            cls_data = wr.get("classification", {})
+                            rec_data = wr.get("recommendations", {})
+                            meta_data = wr.get("metadata", {})
+                            break
+                run_entry = {
+                    "id": wf.get("id"),
+                    "name": wf.get("name"),
+                    "conclusion": wf.get("conclusion"),
+                    "started_at": wf.get("started_at"),
+                    "completed_at": wf.get("completed_at"),
+                    "classification": cls_data,
+                    "recommendations": rec_data,
+                    "metadata": meta_data
+                }
                 if ptype == "nightly":
-                    wf = m.get("workflow_run", {})
-                    cls_data = {}
-                    for g in grouped_list:
-                        for wr in g.get("workflow_runs", []):
-                            if wr.get("workflow_run_id") == wf.get("id"):
-                                cls_data = wr.get("classification", {})
-                                break
-                    nightly_runs.append({
-                        "id": wf.get("id"),
-                        "name": wf.get("name"),
-                        "conclusion": wf.get("conclusion"),
-                        "started_at": wf.get("started_at"),
-                        "completed_at": wf.get("completed_at"),
-                        "classification": cls_data
-                    })
+                    nightly_runs.append(run_entry)
                 elif ptype == "weekly":
-                    wf = m.get("workflow_run", {})
-                    cls_data = {}
-                    for g in grouped_list:
-                        for wr in g.get("workflow_runs", []):
-                            if wr.get("workflow_run_id") == wf.get("id"):
-                                cls_data = wr.get("classification", {})
-                                break
-                    weekly_runs.append({
-                        "id": wf.get("id"),
-                        "name": wf.get("name"),
-                        "conclusion": wf.get("conclusion"),
-                        "started_at": wf.get("started_at"),
-                        "completed_at": wf.get("completed_at"),
-                        "classification": cls_data
-                    })
+                    weekly_runs.append(run_entry)
 
         if nightly_runs:
             from report.nightly_report import NightlyReportGenerator

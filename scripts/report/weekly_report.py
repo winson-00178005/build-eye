@@ -15,6 +15,15 @@ class WeeklyReportGenerator:
         "interference": "并发干扰"
     }
 
+    STATUS_LABELS = {
+        "success": "成功",
+        "failure": "失败",
+        "skipped": "跳过",
+        "cancelled": "取消",
+        "timed_out": "超时",
+        "action_required": "需操作"
+    }
+
     CONFIDENCE_LABELS = {
         "high": "高",
         "medium": "中",
@@ -61,6 +70,8 @@ class WeeklyReportGenerator:
 
         failure_detail = self._generate_failure_details(weekly_runs)
 
+        per_failure_analysis = self._generate_per_failure_analysis(weekly_runs)
+
         regression_section = regression_tracking
 
         week_comparison = ""
@@ -80,6 +91,8 @@ class WeeklyReportGenerator:
 {health_section}
 
 {failure_detail}
+
+{per_failure_analysis}
 
 {regression_section}
 
@@ -146,36 +159,50 @@ class WeeklyReportGenerator:
         return "\n".join(lines)
 
     def _generate_failure_details(self, runs: List[Dict]):
-        failed = [r for r in runs if r.get("conclusion") == "failure"]
+        failed = [r for r in runs if r.get("conclusion") != "success"]
         if not failed:
             return "## 失败详情\n\n本周无 Weekly 构建失败。\n"
 
         lines = ["## 失败详情", ""]
 
+        status_counts = {}
+        for r in failed:
+            status = r.get("conclusion", "unknown")
+            status_label = self.STATUS_LABELS.get(status, status)
+            status_counts[status_label] = status_counts.get(status_label, 0) + 1
+
+        for status_label, count in status_counts.items():
+            lines.append(f"- {status_label} ({count})")
+
         cat_summary = {}
         for r in failed:
             cls = r.get("classification", {})
-            cat = cls.get("classification", "infrastructure")
+            cat = cls.get("classification", "infrastructure") if cls else "infrastructure"
             cat_label = self.CATEGORY_LABELS.get(cat, cat)
             cat_summary[cat_label] = cat_summary.get(cat_label, 0) + 1
 
-        for label, count in cat_summary.items():
-            lines.append(f"- {label} ({count})")
+        if cat_summary:
+            lines.append("")
+            lines.append("**根因分类**:")
+            for label, count in cat_summary.items():
+                lines.append(f"- {label} ({count})")
 
         lines.append("")
-        lines.append("| # | Workflow | 根因 | 置信度 | 详情 |")
-        lines.append("|---|---|---|---|---|")
+        lines.append("| # | Workflow | 状态 | 根因 | 置信度 | 详情 |")
+        lines.append("|---|---|---|---|---|---|")
 
         for i, r in enumerate(failed, 1):
             cls = r.get("classification", {})
-            cat = cls.get("classification", "infrastructure")
+            status = r.get("conclusion", "unknown")
+            status_label = self.STATUS_LABELS.get(status, status)
+            cat = cls.get("classification", "infrastructure") if cls else "infrastructure"
             cat_label = self.CATEGORY_LABELS.get(cat, cat)
-            conf = cls.get("confidence", "low")
+            conf = cls.get("confidence", "low") if cls else "low"
             conf_label = self.CONFIDENCE_LABELS.get(conf, conf)
-            detail = cls.get("category_detail", "")
+            detail = cls.get("category_detail", "") if cls else f"状态: {status_label}"
             name = r.get("name", r.get("workflow_run", {}).get("name", ""))
             run_id = r.get("id", r.get("workflow_run", {}).get("id", ""))
-            lines.append(f"| {i} | {name} (#{run_id}) | {cat_label} | {conf_label} | {detail} |")
+            lines.append(f"| {i} | {name} (#{run_id}) | {status_label} | {cat_label} | {conf_label} | {detail} |")
 
         lines.append("")
         return "\n".join(lines)
@@ -236,31 +263,142 @@ class WeeklyReportGenerator:
         return "\n".join(lines)
 
     def _generate_recommendations(self, runs: List[Dict], health_score: float):
-        """生成基于健康评分的改进建议。"""
+        """生成基于健康评分的改进建议 + 每个失败的优先建议。"""
         lines = [
             "## 改进建议",
             ""
         ]
 
-        failed = [r for r in runs if r.get("conclusion") == "failure"]
+        failed = [r for r in runs if r.get("conclusion") != "success"]
         if not failed:
             lines.append("本周构建状况良好，无需特别改进。")
             lines.append("")
             return "\n".join(lines)
 
-        infra_failures = [r for r in failed if r.get("classification", {}).get("classification") == "infrastructure"]
-        code_failures = [r for r in failed if r.get("classification", {}).get("classification") == "code"]
+        priority_recs = []
+        for r in failed:
+            rec = r.get("recommendations", {})
+            primary = rec.get("primary_recommendation")
+            cls = r.get("classification", {})
+            if primary:
+                priority_recs.append({
+                    "name": r.get("name", ""),
+                    "run_id": r.get("id", ""),
+                    "action": primary.get("action", ""),
+                    "effort": primary.get("effort", ""),
+                    "detail": primary.get("detail", ""),
+                    "category": cls.get("classification", "infrastructure") if cls else "infrastructure"
+                })
 
-        if infra_failures:
-            lines.append("1. **基础设施优化**: 检查 Runner 状态和 K8s 服务可用性，减少环境不稳定导致的失败")
-        if code_failures:
-            lines.append("2. **代码质量提升**: 加强 PR 预检和本地测试覆盖，减少代码问题导致的回归")
+        code_recs = [r for r in priority_recs if r["category"] == "code"]
+        infra_recs = [r for r in priority_recs if r["category"] == "infrastructure"]
+
+        if code_recs:
+            lines.append("### 优先修复（代码问题）")
+            lines.append("")
+            for r in code_recs:
+                lines.append(f"- **{r['name']} (#{r['run_id']})**: {r['action']} ({r['effort']}) - {r['detail']}")
+
+        if infra_recs:
+            lines.append("")
+            lines.append("### 建议关注（基础设施问题）")
+            lines.append("")
+            for r in infra_recs:
+                lines.append(f"- **{r['name']} (#{r['run_id']})**: {r['action']} ({r['effort']}) - {r['detail']}")
 
         if health_score < 70:
-            lines.append("3. **紧急**: 健康评分低于 70，建议优先处理基础设施稳定性问题")
+            lines.append("")
+            lines.append(f"**紧急**: 健康评分低于 70 ({health_score:.1f})，建议优先处理基础设施稳定性问题")
 
         lines.append("")
         return "\n".join(lines)
+
+    def _generate_per_failure_analysis(self, runs: List[Dict]) -> str:
+        """为每个失败 run 生成详细分析段落（日志片段 + 修复建议）。"""
+        failed = [r for r in runs if r.get("conclusion") not in ("success",)]
+        if not failed:
+            return ""
+
+        sections = []
+        for i, r in enumerate(failed, 1):
+            cls = r.get("classification", {})
+            meta = r.get("metadata", {})
+            rec = r.get("recommendations", {})
+            status = r.get("conclusion", "unknown")
+            status_label = self.STATUS_LABELS.get(status, status)
+            cat = cls.get("classification", "infrastructure") if cls else "infrastructure"
+            cat_label = self.CATEGORY_LABELS.get(cat, cat)
+            conf = cls.get("confidence", "low") if cls else "low"
+            conf_label = self.CONFIDENCE_LABELS.get(conf, conf)
+            detail = cls.get("category_detail", "") if cls else f"状态: {status_label}"
+            reasoning = cls.get("reasoning", "") if cls else ""
+            name = r.get("name", "")
+            run_id = r.get("id", "")
+
+            section_lines = [
+                f"### {i}. {name} (Run #{run_id})",
+                "",
+                f"- **状态**: {status_label}",
+                f"- **根因分类**: {cat_label}",
+                f"- **置信度**: {conf_label}",
+                f"- **具体问题**: {detail}",
+                ""
+            ]
+
+            if reasoning:
+                section_lines.append(f"**分析推理**: {reasoning}")
+                section_lines.append("")
+
+            evidence_list = cls.get("evidence", []) if cls else []
+            if evidence_list:
+                section_lines.append("**匹配模式**:")
+                for ev in evidence_list:
+                    section_lines.append(f"- {ev.get('category', '未知')}: `{ev.get('pattern', '')}`")
+                section_lines.append("")
+
+            workflow_run = meta.get("workflow_run", {})
+            if workflow_run.get("url"):
+                section_lines.append(f"[查看 Workflow Run]({workflow_run['url']})")
+
+            failed_jobs = meta.get("failed_jobs", [])
+            for job in failed_jobs:
+                if job.get("log_url"):
+                    section_lines.append(f"[查看 Job: {job['name']}]({job['log_url']})")
+
+            log_excerpt = self._get_log_excerpt(meta)
+            if log_excerpt:
+                section_lines.append("")
+                section_lines.append("**日志片段**:")
+                section_lines.append("```")
+                section_lines.append(log_excerpt[:500])
+                section_lines.append("```")
+
+            rec_list = rec.get("recommendations", [])
+            if rec_list:
+                section_lines.append("")
+                section_lines.append("**修复建议**:")
+                primary = rec.get("primary_recommendation")
+                if primary:
+                    section_lines.append(f"- **优先**: {primary.get('action', '')} ({primary.get('effort', '')})")
+                for rec_item in rec_list:
+                    section_lines.append(f"- {rec_item.get('action', '')} ({rec_item.get('effort', '')})")
+
+            sections.append("\n".join(section_lines))
+
+        if not sections:
+            return ""
+
+        header = "## 失败 Workflow 详细分析\n"
+        return header + "\n\n".join(sections)
+
+    def _get_log_excerpt(self, metadata: Dict) -> str:
+        """获取日志片段。"""
+        failed_jobs = metadata.get("failed_jobs", [])
+        for job in failed_jobs:
+            excerpt = job.get("log_excerpt", "")
+            if excerpt:
+                return excerpt
+        return ""
 
     def _calc_health_score(self, success_rate, category_counts, total_runs, avg_duration):
         stability = min(100, max(0, 100 - category_counts.get("infrastructure", 0) * 10))

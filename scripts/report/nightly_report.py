@@ -53,6 +53,8 @@ class NightlyReportGenerator:
 
         failure_detail = self._generate_failure_details(nightly_runs)
 
+        per_failure_analysis = self._generate_per_failure_analysis(nightly_runs)
+
         trend_section = ""
         if self.aggregator:
             trend_data = self.aggregator.get_trend_data("nightly", 7)
@@ -60,6 +62,8 @@ class NightlyReportGenerator:
                 trend_section = self._generate_trend(trend_data, success_rate)
 
         alert_section = self._generate_alert(nightly_runs)
+
+        recommendations_section = self._generate_recommendations(nightly_runs)
 
         yesterday_comparison = ""
         if self.aggregator:
@@ -77,6 +81,10 @@ class NightlyReportGenerator:
 {yesterday_comparison}
 
 {failure_detail}
+
+{per_failure_analysis}
+
+{recommendations_section}
 
 {trend_section}
 
@@ -196,6 +204,143 @@ class NightlyReportGenerator:
 
         lines.append("")
         return "\n".join(lines)
+
+    def _generate_per_failure_analysis(self, runs: List[Dict]) -> str:
+        """为每个失败 run 生成详细分析段落（日志片段 + 修复建议）。"""
+        non_success_runs = [r for r in runs if r.get("conclusion") not in ("success",)]
+        if not non_success_runs:
+            return ""
+
+        sections = []
+        for i, r in enumerate(non_success_runs, 1):
+            cls = r.get("classification", {})
+            meta = r.get("metadata", {})
+            rec = r.get("recommendations", {})
+            status = r.get("conclusion", "unknown")
+            status_label = self.STATUS_LABELS.get(status, status)
+            cat = cls.get("classification", "infrastructure") if cls else "infrastructure"
+            cat_label = self.CATEGORY_LABELS.get(cat, cat)
+            conf = cls.get("confidence", "low") if cls else "low"
+            conf_label = self.CONFIDENCE_LABELS.get(conf, conf)
+            detail = cls.get("category_detail", "") if cls else f"状态: {status_label}"
+            reasoning = cls.get("reasoning", "") if cls else ""
+            name = r.get("name", "")
+            run_id = r.get("id", "")
+
+            section_lines = [
+                f"### {i}. {name} (Run #{run_id})",
+                "",
+                f"- **状态**: {status_label}",
+                f"- **根因分类**: {cat_label}",
+                f"- **置信度**: {conf_label}",
+                f"- **具体问题**: {detail}",
+                ""
+            ]
+
+            if reasoning:
+                section_lines.append(f"**分析推理**: {reasoning}")
+                section_lines.append("")
+
+            evidence_list = cls.get("evidence", []) if cls else []
+            if evidence_list:
+                section_lines.append("**匹配模式**:")
+                for ev in evidence_list:
+                    section_lines.append(f"- {ev.get('category', '未知')}: `{ev.get('pattern', '')}`")
+                section_lines.append("")
+
+            workflow_run = meta.get("workflow_run", {})
+            if workflow_run.get("url"):
+                section_lines.append(f"[查看 Workflow Run]({workflow_run['url']})")
+
+            failed_jobs = meta.get("failed_jobs", [])
+            for job in failed_jobs:
+                if job.get("log_url"):
+                    section_lines.append(f"[查看 Job: {job['name']}]({job['log_url']})")
+
+            log_excerpt = self._get_log_excerpt(meta)
+            if log_excerpt:
+                section_lines.append("")
+                section_lines.append("**日志片段**:")
+                section_lines.append("```")
+                section_lines.append(log_excerpt[:500])
+                section_lines.append("```")
+
+            rec_list = rec.get("recommendations", [])
+            if rec_list:
+                section_lines.append("")
+                section_lines.append("**修复建议**:")
+                primary = rec.get("primary_recommendation")
+                if primary:
+                    section_lines.append(f"- **优先**: {primary.get('action', '')} ({primary.get('effort', '')})")
+                for rec_item in rec_list:
+                    section_lines.append(f"- {rec_item.get('action', '')} ({rec_item.get('effort', '')})")
+
+            sections.append("\n".join(section_lines))
+
+        if not sections:
+            return ""
+
+        header = "## 失败 Workflow 详细分析\n"
+        return header + "\n\n".join(sections)
+
+    def _generate_recommendations(self, runs: List[Dict]) -> str:
+        """生成整体优先修复建议。"""
+        non_success_runs = [r for r in runs if r.get("conclusion") != "success"]
+        if not non_success_runs:
+            return ""
+
+        lines = [
+            "## 修复建议",
+            ""
+        ]
+
+        priority_recs = []
+        for r in non_success_runs:
+            rec = r.get("recommendations", {})
+            primary = rec.get("primary_recommendation")
+            cls = r.get("classification", {})
+            if primary:
+                priority_recs.append({
+                    "name": r.get("name", ""),
+                    "run_id": r.get("id", ""),
+                    "action": primary.get("action", ""),
+                    "effort": primary.get("effort", ""),
+                    "detail": primary.get("detail", ""),
+                    "category": cls.get("classification", "infrastructure") if cls else "infrastructure"
+                })
+
+        if not priority_recs:
+            lines.append("无法生成具体建议，请人工审查日志。")
+            lines.append("")
+            return "\n".join(lines)
+
+        code_recs = [r for r in priority_recs if r["category"] == "code"]
+        infra_recs = [r for r in priority_recs if r["category"] == "infrastructure"]
+
+        if code_recs:
+            lines.append("### 优先修复（代码问题）")
+            lines.append("")
+            for r in code_recs:
+                lines.append(f"- **{r['name']} (#{r['run_id']})**: {r['action']} ({r['effort']}) - {r['detail']}")
+
+        if infra_recs:
+            lines.append("")
+            lines.append("### 建议关注（基础设施问题）")
+            lines.append("")
+            for r in infra_recs:
+                lines.append(f"- **{r['name']} (#{r['run_id']})**: {r['action']} ({r['effort']}) - {r['detail']}")
+
+        lines.append("")
+        return "\n".join(lines)
+
+    def _get_log_excerpt(self, metadata: Dict) -> str:
+        """获取日志片段。"""
+        failed_jobs = metadata.get("failed_jobs", [])
+        for job in failed_jobs:
+            excerpt = job.get("log_excerpt", "")
+            if excerpt:
+                return excerpt
+        return ""
 
     def _generate_trend(self, trend_data: List[Dict], current_rate: float):
         """生成 7 日趋势可视化。"""
