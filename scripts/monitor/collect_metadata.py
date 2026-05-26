@@ -106,43 +106,101 @@ def collect_build_metadata(
     return metadata_list
 
 
+_SETUP_LINE_PATTERNS = [
+    re.compile(r'^\s*(UV_|PIP_|NPM_|PYTHON_|PATH_|HOME_|CI_|GITHUB_|RUNNER_|VIRTUAL_|CONDA_|APT_|DEBIAN_|HTTP_|HTTPS_|FTP_|NO_|LD_|CFLAGS_|LDFLAGS_|CC_|CXX_|MAKE_|CMAKE_|PKG_|VLLM_|HCCL_|ASCEND_|MSHCCL_)\w*='),
+    re.compile(r'^\s*(export|set|setenv|unset)\s+'),
+    re.compile(r'^\s*##\s*(group|endgroup)\s'),
+    re.compile(r'^\s*\$\s+(echo|printf|cat|mkdir|cp|mv|rm|chmod|chown|docker|kubectl|pip|uv|npm|python|bash|sh|curl|wget|git|apt|yum)\s'),
+    re.compile(r'^\s*[\w./]+\s*:\s*http[s]?://'),
+    re.compile(r'^\s*(Image|Runner|RunnerGroup|Operating|Environment|Container):\s'),
+    re.compile(r'^\s*(Run|Step|Job|Workflow|Trigger|Branch|SHA|Commit|Author|Message|Tag|Event):\s'),
+    re.compile(r'^\s*\[command\]'),
+    re.compile(r'^\s*(Cleaning|Cleaning up|Downloading|Extracting|Installing|Fetching|Resolving|Building|Compiling|Running|Executing|Starting|Stopping|Waiting|Checking|Verifying|Preparing|Setting|Configuring|Registering|Authenticating|Logging)\s'),
+    re.compile(r'^\s*(Successfully|Complete|Finished|Done|OK|Pass|Passed)\s'),
+    re.compile(r'^\s*warning:\s', re.IGNORECASE),
+]
+
+_ERROR_PATTERNS = [
+    re.compile(r'error:\s', re.IGNORECASE),
+    re.compile(r'\bError:\s'),
+    re.compile(r'\bERROR\b'),
+    re.compile(r'\bFAILED\b'),
+    re.compile(r'\bAssertionError\b'),
+    re.compile(r'\bTraceback\b'),
+    re.compile(r'\bCMake Error\b'),
+    re.compile(r'\bcompilation\s+failed\b', re.IGNORECASE),
+    re.compile(r'\bundefined\s+symbol\b', re.IGNORECASE),
+    re.compile(r'\bImportError\b'),
+    re.compile(r'\bModuleNotFoundError\b'),
+    re.compile(r'\bcannot\s+import\b'),
+    re.compile(r'\bHCCL\s+error\b', re.IGNORECASE),
+    re.compile(r'\bnpu-smi.*error\b', re.IGNORECASE),
+    re.compile(r'\bcache-service\.\w+.*(?:refused|failed|error|timeout|unreachable|reset)\b', re.IGNORECASE),
+    re.compile(r'\brunner.*(?:offline|unavailable|lost)\b', re.IGNORECASE),
+    re.compile(r'\bTimeout\s+exceeded\b'),
+    re.compile(r'\btimed\s+out\b', re.IGNORECASE),
+    re.compile(r'\bAttributeError\b'),
+    re.compile(r'\bRuntimeError\b'),
+    re.compile(r'\bConnectionRefusedError\b'),
+    re.compile(r'\bOSError\b'),
+    re.compile(r'\bFileNotFoundError\b'),
+    re.compile(r'\bPermissionError\b'),
+    re.compile(r'\bTypeError\b'),
+    re.compile(r'\bValueError\b'),
+    re.compile(r'\bKeyError\b'),
+    re.compile(r'\bSubprocessError\b'),
+    re.compile(r'\bexit\s+code\s+[1-9]\d*\b', re.IGNORECASE),
+    re.compile(r'\bfatal\b', re.IGNORECASE),
+    re.compile(r'\bcritical\b', re.IGNORECASE),
+    re.compile(r'\bpanic\b', re.IGNORECASE),
+    re.compile(r'\bsegfault\b|\bsegmentation\s+fault\b', re.IGNORECASE),
+    re.compile(r'\bOOM\b|\bout\s+of\s+memory\b', re.IGNORECASE),
+    re.compile(r'\bstack\s+overflow\b', re.IGNORECASE),
+    re.compile(r'\bdeadlock\b', re.IGNORECASE),
+]
+
+
+def _is_setup_line(line: str) -> bool:
+    stripped = line.strip()
+    if not stripped:
+        return True
+    for pat in _SETUP_LINE_PATTERNS:
+        if pat.search(stripped):
+            return True
+    return False
+
+
 def extract_error_lines(logs: str, max_lines: int = 100) -> str:
-    """从日志中提取包含错误信息的行及上下文，而非末尾随机行。"""
+    """从日志中提取包含错误信息的行及上下文，排除 setup/config 行。"""
     if not logs:
         return ""
-    
+
     lines = logs.split('\n')
-    
-    error_patterns = [
-        r"error:", r"Error:", r"ERROR",
-        r"FAILED", r"AssertionError", r"Traceback",
-        r"CMake Error", r"compilation failed",
-        r"undefined symbol", r"ImportError",
-        r"ModuleNotFoundError", r"cannot import",
-        r"HCCL error", r"npu-smi.*error",
-        r"cache-service", r"runner.*offline",
-        r"Timeout exceeded", r"timed out",
-        r"AttributeError", r"RuntimeError",
-    ]
-    
+
     error_line_indices = []
     for i, line in enumerate(lines):
-        for pattern in error_patterns:
-            if re.search(pattern, line, re.IGNORECASE):
+        if _is_setup_line(line):
+            continue
+        for pattern in _ERROR_PATTERNS:
+            if pattern.search(line):
                 error_line_indices.append(i)
                 break
-    
+
     if not error_line_indices:
+        non_setup_lines = [l for l in lines if not _is_setup_line(l)]
+        if non_setup_lines:
+            return '\n'.join(non_setup_lines[-max_lines:])
         return '\n'.join(lines[-max_lines:])
-    
+
     context_range = 3
     selected_indices = set()
     for idx in error_line_indices:
         for j in range(max(0, idx - context_range), min(len(lines), idx + context_range + 1)):
-            selected_indices.add(j)
-    
+            if not _is_setup_line(lines[j]):
+                selected_indices.add(j)
+
     sorted_indices = sorted(selected_indices)
-    
+
     result_lines = []
     prev_idx = None
     for idx in sorted_indices:
@@ -150,10 +208,10 @@ def extract_error_lines(logs: str, max_lines: int = 100) -> str:
             result_lines.append("...")
         result_lines.append(lines[idx])
         prev_idx = idx
-    
+
     if len(result_lines) > max_lines:
         result_lines = result_lines[:max_lines]
-    
+
     return '\n'.join(result_lines)
 
 

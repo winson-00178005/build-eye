@@ -188,8 +188,8 @@ class WeeklyReportGenerator:
                 lines.append(f"- {label} ({count})")
 
         lines.append("")
-        lines.append("| # | Workflow | 状态 | 根因 | 置信度 | 详情 |")
-        lines.append("|---|---|---|---|---|---|")
+        lines.append("| # | Workflow | 执行日期 | 状态 | 根因 | 置信度 | 详情 |")
+        lines.append("|---|---|---|---|---|---|---|")
 
         for i, r in enumerate(failed, 1):
             cls = r.get("classification", {})
@@ -199,10 +199,17 @@ class WeeklyReportGenerator:
             cat_label = self.CATEGORY_LABELS.get(cat, cat)
             conf = cls.get("confidence", "low") if cls else "low"
             conf_label = self.CONFIDENCE_LABELS.get(conf, conf)
-            detail = cls.get("category_detail", "") if cls else f"状态: {status_label}"
             name = r.get("name", r.get("workflow_run", {}).get("name", ""))
             run_id = r.get("id", r.get("workflow_run", {}).get("id", ""))
-            lines.append(f"| {i} | {name} (#{run_id}) | {status_label} | {cat_label} | {conf_label} | {detail} |")
+            started_at = r.get("started_at", r.get("workflow_run", {}).get("started_at", ""))
+            exec_date = ""
+            if started_at:
+                try:
+                    dt = datetime.fromisoformat(started_at.replace("Z", "+00:00"))
+                    exec_date = dt.strftime("%Y-%m-%d")
+                except (ValueError, TypeError):
+                    exec_date = started_at[:10] if len(started_at) >= 10 else ""
+            lines.append(f"| {i} | {name} (#{run_id}) | {exec_date} | {status_label} | {cat_label} | {conf_label} | [详细分析](#failure-{i}) |")
 
         lines.append("")
         return "\n".join(lines)
@@ -334,8 +341,10 @@ class WeeklyReportGenerator:
             reasoning = cls.get("reasoning", "") if cls else ""
             name = r.get("name", "")
             run_id = r.get("id", "")
+            started_at = r.get("started_at", r.get("workflow_run", {}).get("started_at", ""))
 
             section_lines = [
+                f"<a id='failure-{i}'></a>",
                 f"### {i}. {name} (Run #{run_id})",
                 "",
                 f"- **状态**: {status_label}",
@@ -344,6 +353,14 @@ class WeeklyReportGenerator:
                 f"- **具体问题**: {detail}",
                 ""
             ]
+
+            if started_at:
+                try:
+                    dt = datetime.fromisoformat(started_at.replace("Z", "+00:00"))
+                    section_lines.append(f"- **执行时间**: {dt.strftime('%Y-%m-%d %H:%M')} UTC")
+                except (ValueError, TypeError):
+                    pass
+                section_lines.append("")
 
             if reasoning:
                 section_lines.append(f"**分析推理**: {reasoning}")
@@ -368,20 +385,24 @@ class WeeklyReportGenerator:
             log_excerpt = self._get_log_excerpt(meta)
             if log_excerpt:
                 section_lines.append("")
-                section_lines.append("**日志片段**:")
+                section_lines.append("**错误日志**:")
                 section_lines.append("```")
-                section_lines.append(log_excerpt[:500])
+                section_lines.append(log_excerpt[:800])
                 section_lines.append("```")
 
-            rec_list = rec.get("recommendations", [])
-            if rec_list:
+            key_errors = self._extract_key_errors(log_excerpt, cat)
+            if key_errors:
                 section_lines.append("")
-                section_lines.append("**修复建议**:")
-                primary = rec.get("primary_recommendation")
-                if primary:
-                    section_lines.append(f"- **优先**: {primary.get('action', '')} ({primary.get('effort', '')})")
-                for rec_item in rec_list:
-                    section_lines.append(f"- {rec_item.get('action', '')} ({rec_item.get('effort', '')})")
+                section_lines.append("**关键错误信息**:")
+                for err in key_errors:
+                    section_lines.append(f"- `{err}`")
+
+            section_lines.append("")
+            section_lines.append("**修复建议**:")
+            context_recs = self._generate_contextual_recommendations(cat, detail, key_errors, name)
+            for rec_item in context_recs:
+                prefix = f"- **{rec_item['priority']}**: " if rec_item.get('priority') else "- "
+                section_lines.append(f"{prefix}{rec_item['action']} ({rec_item['effort']}) — {rec_item['detail']}")
 
             sections.append("\n".join(section_lines))
 
@@ -399,6 +420,105 @@ class WeeklyReportGenerator:
             if excerpt:
                 return excerpt
         return ""
+
+    def _extract_key_errors(self, log_excerpt: str, category: str) -> List[str]:
+        """从日志片段中提取关键错误行（去除 ANSI 控制码和时间戳前缀）。"""
+        if not log_excerpt:
+            return []
+
+        import re as _re
+        key_error_patterns = [
+            _re.compile(r"error:\s+(.{5,80})", _re.IGNORECASE),
+            _re.compile(r"Error:\s+(.{5,80})"),
+            _re.compile(r"FAILED\s+(.{5,60})", _re.IGNORECASE),
+            _re.compile(r"AssertionError:\s+(.{5,80})"),
+            _re.compile(r"ImportError:\s+(.{5,80})"),
+            _re.compile(r"ModuleNotFoundError:\s+(.{5,80})"),
+            _re.compile(r"CMake Error\s+(.{5,80})", _re.IGNORECASE),
+            _re.compile(r"undefined symbol[:\s]+(.{5,60})", _re.IGNORECASE),
+            _re.compile(r"cache-service[.\w]+[:\s]+(.{5,60})", _re.IGNORECASE),
+            _re.compile(r"HCCL\w*[:\s]+(.{5,60})", _re.IGNORECASE),
+            _re.compile(r"npu.*error[:\s]+(.{5,60})", _re.IGNORECASE),
+            _re.compile(r"timeout[:\s]+(.{5,60})", _re.IGNORECASE),
+            _re.compile(r"compilation\s+failed[:\s]+(.{5,60})", _re.IGNORECASE),
+        ]
+
+        errors = []
+        ansi_re = _re.compile(r'\x1b\[[0-9;]*m|\x1b\].*?\x07|\[[0-9;]*m')
+        for line in log_excerpt.split('\n')[:50]:
+            clean = ansi_re.sub('', line)
+            clean = _re.sub(r'^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d+Z\s+', '', clean).strip()
+            if not clean or len(clean) < 5:
+                continue
+            for pattern in key_error_patterns:
+                m = pattern.search(clean)
+                if m:
+                    err = m.group(1) if m.lastindex else m.group(0)
+                    err = err.strip()[:120]
+                    if err not in errors:
+                        errors.append(err)
+                    break
+
+        return errors[:8]
+
+    def _generate_contextual_recommendations(self, category: str, detail: str, key_errors: List[str], workflow_name: str) -> List[Dict]:
+        """根据实际错误内容生成针对性修复建议。"""
+        recs = []
+
+        if category == "code":
+            has_compilation = any("编译" in detail or "compilation" in detail.lower() or "error:" in e.lower() for e in key_errors)
+            has_import = any("Import" in e or "ModuleNot" in e for e in key_errors)
+            has_assert = any("Assertion" in e or "FAILED" in e for e in key_errors)
+
+            if has_compilation:
+                specific_files = []
+                for e in key_errors:
+                    if ".py" in e or ".c" in e or ".cpp" in e or ".h" in e:
+                        specific_files.append(e.split()[0] if e.split() else e[:40])
+                file_hint = f"（涉及 {', '.join(specific_files[:3])}）" if specific_files else ""
+                recs.append({"priority": "优先", "action": "定位并修复编译错误", "effort": "中等成本", "detail": f"根据日志中的 error 信息找到具体出错文件和行号{file_hint}，修改代码使编译通过"})
+                recs.append({"priority": "", "action": "本地复现编译并验证", "effort": "低成本", "detail": f"在本地使用相同配置编译 {workflow_name}，确认修复后不再报错"})
+            if has_import:
+                recs.append({"priority": "优先", "action": "修复导入错误", "effort": "低成本", "detail": "检查 vLLM 或 vllm-ascend 的 API 变更，更新 import 语句适配新版本"})
+                recs.append({"priority": "", "action": "更新依赖版本", "effort": "中等成本", "detail": "确认当前依赖版本与代码兼容，必要时锁定兼容版本"})
+            if has_assert:
+                recs.append({"priority": "优先", "action": "修复断言失败的测试", "effort": "中等成本", "detail": "查看具体测试用例的断言内容，确认是否为代码回归或预期变更"})
+                recs.append({"priority": "", "action": "增加测试稳定性", "effort": "低成本", "detail": "对于因环境不稳定导致的断言失败，增加重试逻辑或放宽容差"})
+            if not recs:
+                recs.append({"priority": "优先", "action": "检查日志定位根因", "effort": "低成本", "detail": f"查看 {workflow_name} 的完整 CI 日志，找到第一个失败 step 的具体错误"})
+                recs.append({"priority": "", "action": "提交修复并观察", "effort": "中等成本", "detail": "修复后推送代码，观察下一次 weekly 构建是否通过"})
+
+        elif category == "infrastructure":
+            has_k8s = any("cache-service" in e or "K8s" in detail or "svc" in e.lower() for e in key_errors)
+            has_npu = any("npu" in e.lower() or "NPU" in detail for e in key_errors)
+            has_hccl = any("HCCL" in e or "hccl" in e.lower() for e in key_errors)
+            has_timeout = any("timeout" in e.lower() or "超时" in detail for e in key_errors)
+
+            if has_k8s:
+                recs.append({"priority": "优先", "action": "等待 cache-service 恢复后重试", "effort": "低成本", "detail": "cache-service.nginx-pypi-cache 通常会自动恢复，等待 10-30 分钟后重新触发"})
+                recs.append({"priority": "", "action": "配置备用 pip 镜像源", "effort": "中等成本", "detail": "在 CI 配置中添加公网 pip mirror 作为 fallback，减少 K8s 服务依赖"})
+            if has_npu:
+                recs.append({"priority": "优先", "action": "排查 NPU 状态", "effort": "中等成本", "detail": "运行 npu-smi info 检查 NPU 卡状态，确认 ECC 错误或设备不可用的原因"})
+                recs.append({"priority": "", "action": "联系运维团队", "effort": "低成本", "detail": "如 NPU 硬件持续异常，联系基础设施运维团队更换或维修"})
+            if has_hccl:
+                recs.append({"priority": "优先", "action": "检查多卡通信配置", "effort": "中等成本", "detail": "HCCL 通信失败通常是网络或 NPU 间通信问题，检查 HCCL 配置和网络连接"})
+                recs.append({"priority": "", "action": "降级为单卡测试", "effort": "低成本", "detail": "如多卡测试持续失败，可临时降级为单卡测试以排除通信因素"})
+            if has_timeout:
+                recs.append({"priority": "优先", "action": "重新触发构建", "effort": "低成本", "detail": "超时可能是 Runner 临时负载高，重新触发通常能通过"})
+                recs.append({"priority": "", "action": "优化超时配置", "effort": "中等成本", "detail": f"如 {workflow_name} 持续超时，考虑增加 timeout-minutes 或拆分大任务"})
+            if not recs:
+                recs.append({"priority": "优先", "action": "重新触发构建", "effort": "低成本", "detail": "基础设施问题通常自动恢复，重新触发是最直接的验证方式"})
+                recs.append({"priority": "", "action": "联系运维团队排查", "effort": "中等成本", "detail": "如持续失败，联系基础设施运维团队检查 Runner 和 K8s 集群状态"})
+
+        elif category == "interference":
+            recs.append({"priority": "优先", "action": "重新触发构建", "effort": "低成本", "detail": "并发合入导致的干扰可通过重试解决，等待其他构建完成后重试"})
+            recs.append({"priority": "", "action": "协调合入顺序", "effort": "中等成本", "detail": "如持续失败，联系相关作者协调合入时机，避免同时构建"})
+
+        else:
+            recs.append({"priority": "优先", "action": "检查日志定位根因", "effort": "低成本", "detail": f"查看 {workflow_name} 的完整 CI 日志，找到第一个失败 step"})
+            recs.append({"priority": "", "action": "人工审查", "effort": "中等成本", "detail": "未能明确归类，建议人工审查日志确认失败原因"})
+
+        return recs
 
     def _calc_health_score(self, success_rate, category_counts, total_runs, avg_duration):
         stability = min(100, max(0, 100 - category_counts.get("infrastructure", 0) * 10))
