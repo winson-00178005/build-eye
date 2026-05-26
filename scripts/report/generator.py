@@ -333,7 +333,7 @@ class ReportGenerator:
 
         effective_type = pipeline_type_override
 
-        pr_groups = [g for g in grouped_list if (effective_type or g.get("pipeline_type", "pr")) == "pr"]
+        pr_groups = [g for g in grouped_list if g.get("pipeline_type", "pr") == "pr"]
         if pr_groups:
             files = self.generate_all(pr_groups, output_dir)
             all_files.extend(files)
@@ -460,10 +460,25 @@ def main():
 
     pipeline_type = args.pipeline_type or (grouped_list[0].get("pipeline_type", "pr") if grouped_list else "pr")
 
+    metadata_list = None
+    metadata_path = Path("data/build_metadata.json")
+    if metadata_path.exists():
+        metadata_list = json.loads(metadata_path.read_text(encoding='utf-8'))
+
+    aggregator = None
+    db_path = Path("data/build_metrics.db")
+    if db_path.exists() and db_path.stat().st_size > 0:
+        sys.path.insert(0, str(repo_root / "scripts"))
+        from monitor.aggregator import BuildAggregator
+        aggregator = BuildAggregator(str(db_path))
+
     report_files = generator.dispatch_reports(
-        grouped_list, metadata_list=None, output_dir=output_dir,
-        pipeline_type_override=pipeline_type
+        grouped_list, metadata_list=metadata_list, output_dir=output_dir,
+        aggregator=aggregator, pipeline_type_override=pipeline_type
     )
+
+    if aggregator:
+        aggregator.close()
 
     print(f"已生成 {len(report_files)} 个报告")
 

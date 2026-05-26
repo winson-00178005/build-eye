@@ -155,9 +155,9 @@ jobs:
         run: |
           git config user.name "build-eye-monitor"
           git config user.email "build-eye-monitor@users.noreply.github.com"
-          git add data/monitoring_summary.json || true
-          git add data/build_metadata.json || true
-          git add data/classifications.json || true
+          git add -f data/monitoring_summary.json || true
+          git add -f data/build_metadata.json || true
+          git add -f data/classifications.json || true
           git diff --staged --quiet || git commit -m "Update Nightly monitoring data [skip ci]"
           git push || true
       
