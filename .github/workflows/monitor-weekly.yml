@@ -159,6 +159,7 @@ jobs:
           git add -f data/build_metadata.json || true
           git add -f data/classifications.json || true
           git diff --staged --quiet || git commit -m "Update Weekly monitoring data [skip ci]"
+          git pull --rebase || true
           git push || true
       
       - name: Archive Weekly report to build-eye repository
