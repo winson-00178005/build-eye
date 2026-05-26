@@ -118,6 +118,11 @@ _SETUP_LINE_PATTERNS = [
     re.compile(r'^\s*(Cleaning|Cleaning up|Downloading|Extracting|Installing|Fetching|Resolving|Building|Compiling|Running|Executing|Starting|Stopping|Waiting|Checking|Verifying|Preparing|Setting|Configuring|Registering|Authenticating|Logging)\s'),
     re.compile(r'^\s*(Successfully|Complete|Finished|Done|OK|Pass|Passed)\s'),
     re.compile(r'^\s*warning:\s', re.IGNORECASE),
+    re.compile(r'^\s*Error:\s+command terminated with non-zero exit code', re.IGNORECASE),
+    re.compile(r'^\s*failed to run script step', re.IGNORECASE),
+    re.compile(r"gh.*CLI not found", re.IGNORECASE),
+    re.compile(r'^\s*Process completed with exit code', re.IGNORECASE),
+    re.compile(r'^\s*The operation was canceled', re.IGNORECASE),
 ]
 
 _ERROR_PATTERNS = [

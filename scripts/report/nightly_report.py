@@ -1,5 +1,6 @@
 """Nightly 日报生成器 - 每日定时流水线汇总报告。"""
 import json
+import re
 import uuid
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -363,26 +364,45 @@ class NightlyReportGenerator:
                 return excerpt
         return ""
 
+    _INFRA_WRAPPER_RE = re.compile(
+        r"Error:\s+command terminated with non-zero exit code"
+        r"|failed to run script step"
+        r"|gh.*CLI not found"
+        r"|Process completed with exit code"
+        r"|The operation was canceled",
+        re.IGNORECASE
+    )
+
     def _extract_key_errors(self, log_excerpt: str, category: str) -> List[str]:
-        """从日志片段中提取关键错误行（去除 ANSI 控制码和时间戳前缀）。"""
+        """从日志片段中提取关键错误行（去除 ANSI 控制码、时间戳前缀和 Runner 包装行）。"""
         if not log_excerpt:
             return []
 
         import re as _re
         key_error_patterns = [
-            _re.compile(r"error:\s+(.{5,80})", _re.IGNORECASE),
-            _re.compile(r"Error:\s+(.{5,80})"),
-            _re.compile(r"FAILED\s+(.{5,60})", _re.IGNORECASE),
-            _re.compile(r"AssertionError:\s+(.{5,80})"),
-            _re.compile(r"ImportError:\s+(.{5,80})"),
             _re.compile(r"ModuleNotFoundError:\s+(.{5,80})"),
+            _re.compile(r"ImportError:\s+(.{5,80})"),
+            _re.compile(r"cannot\s+import\s+(.{5,60})"),
+            _re.compile(r"AssertionError:\s+(.{5,80})"),
+            _re.compile(r"AttributeError:\s+(.{5,80})"),
+            _re.compile(r"RuntimeError:\s+(.{5,80})"),
+            _re.compile(r"TypeError:\s+(.{5,80})"),
+            _re.compile(r"ValueError:\s+(.{5,80})"),
+            _re.compile(r"KeyError:\s+(.{5,60})"),
+            _re.compile(r"OSError:\s+(.{5,80})"),
+            _re.compile(r"FileNotFoundError:\s+(.{5,80})"),
+            _re.compile(r"ConnectionRefusedError:\s+(.{5,80})"),
+            _re.compile(r"FAILED\s+(.{5,60})", _re.IGNORECASE),
             _re.compile(r"CMake Error\s+(.{5,80})", _re.IGNORECASE),
             _re.compile(r"undefined symbol[:\s]+(.{5,60})", _re.IGNORECASE),
-            _re.compile(r"cache-service[.\w]+[:\s]+(.{5,60})", _re.IGNORECASE),
             _re.compile(r"HCCL\w*[:\s]+(.{5,60})", _re.IGNORECASE),
             _re.compile(r"npu.*error[:\s]+(.{5,60})", _re.IGNORECASE),
-            _re.compile(r"timeout[:\s]+(.{5,60})", _re.IGNORECASE),
+            _re.compile(r"cache-service[.\w]+[:\s]+(.{5,60})", _re.IGNORECASE),
             _re.compile(r"compilation\s+failed[:\s]+(.{5,60})", _re.IGNORECASE),
+            _re.compile(r"timeout[:\s]+(.{5,60})", _re.IGNORECASE),
+            _re.compile(r"Traceback\s+\(most recent call last\)", _re.IGNORECASE),
+            _re.compile(r"error:\s+(.{5,80})", _re.IGNORECASE),
+            _re.compile(r"\bError:\s+(.{5,80})"),
         ]
 
         errors = []
@@ -391,6 +411,8 @@ class NightlyReportGenerator:
             clean = ansi_re.sub('', line)
             clean = _re.sub(r'^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d+Z\s+', '', clean).strip()
             if not clean or len(clean) < 5:
+                continue
+            if self._INFRA_WRAPPER_RE.search(clean):
                 continue
             for pattern in key_error_patterns:
                 m = pattern.search(clean)
