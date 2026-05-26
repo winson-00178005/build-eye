@@ -265,9 +265,31 @@ def generate_dashboard_data(
 
         cls_data = cls_by_run_id.get(run_id, {})
         classification_obj = cls_data.get("classification", {}) if cls_data else {}
-        cat = classification_obj.get("classification", "infrastructure") if classification_obj else "infrastructure"
+        cat = classification_obj.get("classification", "") if classification_obj else ""
         confidence = classification_obj.get("confidence", "low") if classification_obj else "low"
-        detail = classification_obj.get("category_detail", "") if classification_obj else f"Status: {conclusion}"
+        detail = classification_obj.get("category_detail", "") if classification_obj else ""
+
+        if not cat:
+            if conclusion == "skipped":
+                cat = "infrastructure"
+                detail = "Skipped by CI runner (dependency or scheduling issue)"
+                confidence = "medium"
+            elif conclusion == "cancelled":
+                cat = "infrastructure"
+                detail = "Cancelled (user abort or newer push superseded)"
+                confidence = "medium"
+            elif conclusion == "timed_out":
+                cat = "infrastructure"
+                detail = "Timed out (runner overload or slow environment)"
+                confidence = "medium"
+            elif conclusion == "action_required":
+                cat = "infrastructure"
+                detail = "Action required (manual approval needed)"
+                confidence = "low"
+            else:
+                cat = "infrastructure"
+                detail = f"Status: {conclusion}"
+                confidence = "low"
 
         key_errors = []
         for fj in m.get("failed_jobs", []):
