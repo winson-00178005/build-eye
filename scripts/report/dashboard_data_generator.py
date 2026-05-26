@@ -8,6 +8,8 @@ from datetime import datetime, timezone
 REPO_URL = "https://github.com/winson-00178005/build-eye"
 VLLM_REPO = "https://github.com/vllm-project/vllm-ascend"
 
+TYPE_LABELS = {"pr": "PR CI", "nightly": "Nightly", "weekly": "Weekly"}
+
 _INFRA_WRAPPER_RE = re.compile(
     r"Error:\s+command terminated with non-zero exit code"
     r"|failed to run script step"
@@ -367,6 +369,63 @@ def generate_dashboard_data(
         except Exception:
             pass
 
+    pr_lookup = {}
+    for m in metadata_list:
+        pr_number = (m.get("pr") or {}).get("number")
+        if pr_number:
+            wf = m.get("workflow_run", {})
+            conclusion = wf.get("conclusion", "")
+            cls_data = cls_by_run_id.get(wf.get("id"), {})
+            cls_obj = cls_data.get("classification", {}) if cls_data else {}
+            cat = cls_obj.get("classification", "") if cls_obj else ""
+            if not cat:
+                if conclusion == "failure":
+                    cat = "code"
+                elif conclusion in ("skipped", "cancelled"):
+                    cat = "infrastructure"
+                else:
+                    cat = "unknown"
+            key_errors = []
+            for fj in m.get("failed_jobs", []):
+                excerpt = fj.get("log_excerpt", "")
+                if excerpt:
+                    key_errors = _extract_key_errors_from_excerpt(excerpt)
+                    if key_errors:
+                        break
+            entry = {
+                "run_id": wf.get("id"),
+                "workflow_name": wf.get("name", ""),
+                "status": conclusion,
+                "classification": cat,
+                "key_errors": key_errors,
+                "started_at": wf.get("started_at", ""),
+                "run_url": wf.get("url", ""),
+            }
+            if pr_number not in pr_lookup:
+                pr_lookup[pr_number] = []
+            pr_lookup[pr_number].append(entry)
+
+    alerts = []
+    for ptype, pg in pipeline_groups.items():
+        rate = round((pg["success"] / max(pg["total"], 1)) * 100, 1)
+        if rate < 20:
+            alerts.append({"level": "critical", "pipeline": ptype, "message": f"{TYPE_LABELS.get(ptype,ptype)} success rate critically low ({rate}%). Immediate attention required."})
+        elif rate < 50:
+            alerts.append({"level": "warning", "pipeline": ptype, "message": f"{TYPE_LABELS.get(ptype,ptype)} success rate below 50% ({rate}%). Needs investigation."})
+
+    consecutive_failures = {}
+    for ptype in ["pr", "nightly", "weekly"]:
+        runs_sorted = sorted(pipeline_groups.get(ptype, {}).get("runs", []), key=lambda r: r.get("workflow_run", {}).get("started_at", ""), reverse=True)
+        count = 0
+        for r in runs_sorted[:10]:
+            if r.get("workflow_run", {}).get("conclusion") == "failure":
+                count += 1
+            else:
+                break
+        if count >= 2:
+            level = "critical" if count >= 5 else "warning"
+            alerts.append({"level": level, "pipeline": ptype, "message": f"{TYPE_LABELS.get(ptype,ptype)} has {count} consecutive failures."})
+
     data = {
         "overview": overview,
         "trends": trends,
@@ -374,6 +433,8 @@ def generate_dashboard_data(
         "recent_failures": {"failures": failures},
         "health_scores": {"scores": health_scores},
         "reports": reports_data,
+        "pr_lookup": pr_lookup,
+        "alerts": alerts,
     }
 
     output_path_p = Path(output_path)
