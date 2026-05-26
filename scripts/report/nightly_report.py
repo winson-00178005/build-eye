@@ -146,7 +146,7 @@ class NightlyReportGenerator:
         ]
         return "\n".join(lines)
 
-def _generate_failure_details(self, runs: List[Dict]):
+    def _generate_failure_details(self, runs: List[Dict]):
         """生成失败详情（包含所有非成功状态：failure/skipped/cancelled 等）。"""
         non_success_runs = [r for r in runs if r.get("conclusion") != "success"]
         if not non_success_runs:
