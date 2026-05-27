@@ -1,8 +1,8 @@
 ---
-report_id: 1abdc553
+report_id: 0588fbed
 pr_number: 7964
 group_key: pr-7964
-generated_at: 2026-05-27T05:23:00.030493+00:00
+generated_at: 2026-05-27T05:14:43.376705+00:00
 overall_classification: code
 total_failed_workflows: 3
 category_counts:
@@ -127,4 +127,4 @@ PR #7964 触发了 3 个 workflow，均失败。
 - **E2E-Light (#26486387997)**: 检查编译错误位置 (低成本) - 查看 CMake 或 clang 报错的具体文件和行
 
 ---
-报告生成时间: 2026-05-27T05:23:00.030542+00:00
+报告生成时间: 2026-05-27T05:14:43.376742+00:00
