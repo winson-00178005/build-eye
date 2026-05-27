@@ -1,8 +1,8 @@
 ---
-report_id: 5e4b370d
+report_id: 39ad0309
 report_type: nightly_daily
 date: 2026-05-27
-generated_at: 2026-05-27T01:18:21.447281+00:00
+generated_at: 2026-05-27T01:43:55.966936+00:00
 total_runs: 50
 success_runs: 12
 failure_runs: 38
@@ -177,8 +177,13 @@ failure_runs: 38
 **错误日志**:
 ```
 2026-05-26T18:26:11.7258240Z Collecting soupsieve>=1.6.1 (from beautifulsoup4->pydata-sphinx-theme==0.16.1->sphinx-book-theme->-r /vllm-workspace/vllm-ascend/tests/e2e/../../docs/requirements-docs.txt (line 3))
-2026-05-26T18:26:11.7302693Z   Downloading http://cache-service.nginx-pypi-cache.svc.cluster.local/pypi/packages/5e/f5/0c41cb68dcae6b7de4fac4188a3a9589e21fb31df21ea3a2e888db95e6c9/soupsieve-2.8.4-py3-none-any.whl (37 kB)
-2026-05-26T18:26:12.8386416Z Installing collected packages: urllib3, typing-extensions, tqdm, sphinxcontrib-serializinghtml, sphinxcontrib-qthelp, sphinxcontrib-jsmath, sphinxcontrib-htmlhelp, sphinxcontrib-devhelp, sphinxcontrib-applehelp, soupsieve, snowballstemmer, sniffio, roman-numerals, regex, pyyaml, Pygments, packaging, msgspec, mdurl, MarkupSafe, jiter, ima
+...
+2026-05-26T18:26:22.8509555Z ERROR: pip's dependency resolver does not currently take into account all the packages that are installed. This behaviour is the source of the following dependency conflicts.
+2026-05-26T18:26:22.8510636Z ms-service-profiler 26.0.0 requires loguru, which is not installed.
+...
+2026-05-26T18:26:22.8518866Z ms-service-profiler 26.0.0 requires matplotlib, which is not installed.
+...
+2026-05-26T18:28:26.6820292Z    ââââââââââââââââââââââââââââââââââââââââ 536.2/536.2 kB 2.8 MB/
 ```
 
 **关键错误信息**:
@@ -396,8 +401,13 @@ failure_runs: 38
 **错误日志**:
 ```
 2026-05-25T17:32:09.9860265Z Collecting soupsieve>=1.6.1 (from beautifulsoup4->pydata-sphinx-theme==0.16.1->sphinx-book-theme->-r /vllm-workspace/vllm-ascend/tests/e2e/../../docs/requirements-docs.txt (line 3))
-2026-05-25T17:32:09.9914959Z   Downloading http://cache-service.nginx-pypi-cache.svc.cluster.local/pypi/packages/5e/f5/0c41cb68dcae6b7de4fac4188a3a9589e21fb31df21ea3a2e888db95e6c9/soupsieve-2.8.4-py3-none-any.whl (37 kB)
-2026-05-25T17:32:10.9405246Z Installing collected packages: urllib3, typing-extensions, tqdm, sphinxcontrib-serializinghtml, sphinxcontrib-qthelp, sphinxcontrib-jsmath, sphinxcontrib-htmlhelp, sphinxcontrib-devhelp, sphinxcontrib-applehelp, soupsieve, snowballstemmer, sniffio, roman-numerals, regex, pyyaml, Pygments, packaging, msgspec, mdurl, MarkupSafe, jiter, ima
+...
+2026-05-25T17:32:21.4361613Z ERROR: pip's dependency resolver does not currently take into account all the packages that are installed. This behaviour is the source of the following dependency conflicts.
+2026-05-25T17:32:21.4362607Z dataflow 0.0.1 requires numpy>=1.7.0, which is not installed.
+...
+2026-05-25T17:32:21.4370581Z ms-service-profiler 26.0.0 requires loguru, which is not installed.
+...
+2026-05-25T17:34:32.1413286Z    ââââââââââââââââââââââââââââââââââââââââ 536.2/536.2 kB 6.0 MB/s eta 0:00
 ```
 
 **关键错误信息**:
@@ -725,8 +735,12 @@ failure_runs: 38
 **错误日志**:
 ```
 2026-05-24T16:52:11.1391165Z Collecting soupsieve>=1.6.1 (from beautifulsoup4->pydata-sphinx-theme==0.16.1->sphinx-book-theme->-r /vllm-workspace/vllm-ascend/tests/e2e/../../docs/requirements-docs.txt (line 3))
-2026-05-24T16:52:11.1485803Z   Downloading http://cache-service.nginx-pypi-cache.svc.cluster.local/pypi/packages/5e/f5/0c41cb68dcae6b7de4fac4188a3a9589e21fb31df21ea3a2e888db95e6c9/soupsieve-2.8.4-py3-none-any.whl (37 kB)
-2026-05-24T16:52:12.1416907Z Installing collected packages: urllib3, typing-extensions, tqdm, sphinxcontrib-serializinghtml, sphinxcontrib-qthelp, sphinxcontrib-jsmath, sphinxcontrib-htmlhelp, sphinxcontrib-devhelp, sphinxcontrib-applehelp, soupsieve, snowballstemmer, sniffio, roman-numerals, regex, pyyaml, Pygments, packaging, msgspec, mdurl, MarkupSafe, jiter, ima
+...
+2026-05-24T16:52:22.7638302Z ERROR: pip's dependency resolver does not currently take into account all the packages that are installed. This behaviour is the source of the following dependency conflicts.
+2026-05-24T16:52:22.7639060Z ms-service-profiler 26.0.0 requires loguru, which is not installed.
+2026-05-24T16:52:22.7639471Z ms-service-profiler 26.0.0 requires matplotlib, which is not installed.
+...
+2026-05-24T16:55:45.2175100Z    ââââââââââââââââââââââââââââââââââââââââ 536.2/536.2 kB 4.3 MB/s et
 ```
 
 **关键错误信息**:
@@ -868,7 +882,14 @@ failure_runs: 38
 **错误日志**:
 ```
 2026-05-24T13:05:23.2617134Z Using cached wheel-0.47.0-py3-none-any.whl (32 kB)
-2026-05-24T13:05:23.4657229Z Installing collected packages: typing-extensions, tqdm, sphinxcontrib-serializinghtml, sphinxcontrib-qthelp, sphinxcontrib-jsmath, sphinxcontrib-htmlhelp, sphinxcontrib-devhelp, sphinxcontrib-applehelp, soupsieve, snowballstemmer, sniffio, roman-numerals, regex, Pygments, packaging, msgspec, mdurl, MarkupSafe, jiter, imagesize, h11, docutils, distro, click, beartype, babel, annotated-types, alabaster, wheel, typing-inspection, pydantic-core, markdown-it-py, Jinja2, httpcore, beautifulsoup4, anyio, accessible-pygments, sphinx, pydantic, mdit-py-plugins, httpx, sphinx-togglebutton, sphinx-intl, sphinx-design, sphinx-copybutton, sphinx-argparse, pydata-sphinx-theme, openai, myst-parser
+...
+2026-05-24T13:05:28.5487635Z 
+2026-05-24T13:05:28.5510914Z ERROR: pip's dependency resolver does not currently take into account all the packages that are installed. This behaviour is the source of the following dependency conflicts.
+2026-05-24T13:05:28.5511698Z ms-service-profiler 26.0.0 requires loguru, which is not installed.
+2026-05-24T13:05:28.5512131Z ms-service-profiler 26.0.0 requires matplotlib, which is not installed.
+2026-05-24T13:05:28.5512556Z ms-service-profiler 26.0.0 requires msguard, which is not installed.
+...
+2026-05-24T13:09:35.8915794Z (tutorials/features/suffix_speculative_decoding: line   66) [35mredirect  [39;49;00mhttps://www.snowflake.com/en/engineering-blog/fast-speculative-deco
 ```
 
 **关键错误信息**:
@@ -904,7 +925,7 @@ failure_runs: 38
 **错误日志**:
 ```
 2026-05-24T09:55:36.3324689Z     Uninstalling numpy-2.4.4:
-2026-05-24T09:55:36.9123981Z       Successfully uninstalled numpy-2.4.4
+...
 2026-05-24T09:56:38.9196577Z 
 2026-05-24T09:56:38.9216773Z ERROR: pip's dependency resolver does not currently take into account all the packages that are installed. This behaviour is the source of the following dependency conflicts.
 2026-05-24T09:56:38.9217552Z te 0.4.0 requires ml-dtypes, which is not installed.
@@ -912,8 +933,9 @@ failure_runs: 38
 2026-05-24T09:56:38.9218326Z ms-service-profiler 26.0.0 requires matplotlib, which is not installed.
 ...
 2026-05-24T10:04:20.8606189Z     Uninstalling transformers-5.9.0:
-2026-05-24T10:04:20.9297244Z       Successfully uninstalled transformers-5.9.0
-2026-05-24T10:04:37.114
+...
+2026-05-24T10:04:37.1148543Z 
+2026-05-24T10:04:37.1165710Z ERROR: pip's dependency resolver does not currently take into account all the packages that are installed. 
 ```
 
 **关键错误信息**:
@@ -1182,8 +1204,13 @@ failure_runs: 38
 **错误日志**:
 ```
 2026-05-23T16:49:40.2194663Z Collecting soupsieve>=1.6.1 (from beautifulsoup4->pydata-sphinx-theme==0.16.1->sphinx-book-theme->-r /vllm-workspace/vllm-ascend/tests/e2e/../../docs/requirements-docs.txt (line 3))
-2026-05-23T16:49:40.2363099Z   Downloading http://cache-service.nginx-pypi-cache.svc.cluster.local/pypi/packages/46/2c/1462b1d0a634697ae9e55b3cecdcb64788e8b7d63f54d923fcd0bb140aed/soupsieve-2.8.3-py3-none-any.whl (37 kB)
-2026-05-23T16:49:41.1910017Z Installing collected packages: urllib3, typing-extensions, tqdm, sphinxcontrib-serializinghtml, sphinxcontrib-qthelp, sphinxcontrib-jsmath, sphinxcontrib-htmlhelp, sphinxcontrib-devhelp, sphinxcontrib-applehelp, soupsieve, snowballstemmer, sniffio, roman-numerals, regex, pyyaml, Pygments, packaging, msgspec, mdurl, MarkupSafe, jiter, ima
+...
+2026-05-23T16:49:51.7454871Z ERROR: pip's dependency resolver does not currently take into account all the packages that are installed. This behaviour is the source of the following dependency conflicts.
+2026-05-23T16:49:51.7455755Z dataflow 0.0.1 requires numpy>=1.7.0, which is not installed.
+...
+2026-05-23T16:49:51.7463524Z ms-service-profiler 26.0.0 requires loguru, which is not installed.
+...
+2026-05-23T16:51:57.0406603Z    ââââââââââââââââââââââââââââââââââââââââ 536.2/536.2 kB 61.1 MB/s eta 0:0
 ```
 
 **关键错误信息**:
@@ -1266,11 +1293,17 @@ failure_runs: 38
 ```
 2026-05-23T10:00:00.3919137Z ##[endgroup]
 2026-05-23T10:00:00.3919835Z ##[group]Fetching the repository
-2026-05-23T10:00:00.3929619Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +b46ad6e1dcc4d04f787c75614c62405df404658d:refs/remotes/origin/main
+...
 2026-05-23T10:00:00.6261831Z ##[error]fatal: could not read Username for 'https://github.com': terminal prompts disabled
 2026-05-23T10:00:00.6273381Z The process '/usr/bin/git' failed with exit code 128
-2026-05-23T10:00:00.6274214Z Waiting 14 seconds before trying again
-2026-05-23T10:00:14.6313865Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +b46ad6e1dcc4d04f787c75614c62405df404658d:refs/remotes/origin/main
+...
+2026-05-23T10:00:14.8435673Z ##[error]fatal: could not read Username for 'https://github.com': terminal prompts disabled
+2026-05-23T10:00:14.8452289Z The process '/usr/bin/git' failed with exit code 128
+...
+2026-05-23T10:00:29.0611586Z ##[error]fatal: could not read Username for 'https://github.com': terminal prompts disabled
+2026-05-23T10:00:29.0660059Z ##[error]The process '/usr/bin/git' failed with exit code 128
+2026-05-23T10:00:29.2740679Z Post job cleanup.
+...
 2026-05-23T10:0
 ```
 
@@ -1540,8 +1573,13 @@ failure_runs: 38
 **错误日志**:
 ```
 2026-05-22T17:58:24.1278281Z Collecting soupsieve>=1.6.1 (from beautifulsoup4->pydata-sphinx-theme==0.16.1->sphinx-book-theme->-r /vllm-workspace/vllm-ascend/tests/e2e/../../docs/requirements-docs.txt (line 3))
-2026-05-22T17:58:24.1377343Z   Downloading http://cache-service.nginx-pypi-cache.svc.cluster.local/pypi/packages/46/2c/1462b1d0a634697ae9e55b3cecdcb64788e8b7d63f54d923fcd0bb140aed/soupsieve-2.8.3-py3-none-any.whl (37 kB)
-2026-05-22T17:58:25.5943101Z Installing collected packages: urllib3, typing-extensions, tqdm, sphinxcontrib-serializinghtml, sphinxcontrib-qthelp, sphinxcontrib-jsmath, sphinxcontrib-htmlhelp, sphinxcontrib-devhelp, sphinxcontrib-applehelp, soupsieve, snowballstemmer, sniffio, roman-numerals, regex, pyyaml, Pygments, packaging, msgspec, mdurl, MarkupSafe, jiter, ima
+...
+2026-05-22T17:58:35.8906262Z ERROR: pip's dependency resolver does not currently take into account all the packages that are installed. This behaviour is the source of the following dependency conflicts.
+2026-05-22T17:58:35.8907114Z ms-service-profiler 26.0.0 requires loguru, which is not installed.
+2026-05-22T17:58:35.8907564Z ms-service-profiler 26.0.0 requires matplotlib, which is not installed.
+2026-05-22T17:58:35.8907998Z ms-service-profiler 26.0.0 requires msguard, which is not installed.
+...
+2026-05-22T18:00:43.2062743Z    âââââââââââââââââ
 ```
 
 **关键错误信息**:
@@ -1891,16 +1929,19 @@ failure_runs: 38
 2026-05-21T17:51:10.9755773Z     - Calculation rule for `MAX_JOBS`: Number of CPU cores Ã Number of NPU
 ...
 2026-05-21T17:58:28.1539133Z Collecting soupsieve>=1.6.1 (from beautifulsoup4->pydata-sphinx-theme==0.16.1->sphinx-book-theme->-r /vllm-workspace/vllm-ascend/tests/e2e/../../docs/requirements-docs.txt (line 3))
-2026-05-21T17:58:28.1583928Z   Downloading http://cache-service.nginx-pypi-cache.sv
+...
+2026-05-21T17:58:39.2148958Z ERROR: pip's dependency resolver does not currentl
 ```
 
 **关键错误信息**:
 - `pip's dependency resolver does not currently take into account all the packages`
 - `to import Triton kernels. Please make sure your triton versi`
 - `Traceback (most recent call last)`
+- `to compile {src_path}, error: {result.stderr}")`
+- `Failed to compile /tmp/tmpmi4f9xtc/npu_utils.cpp, error: /tmp/tmpmi4f9xtc/npu_ut`
 
 **修复建议**:
-- **优先**: 定位并修复编译错误 (中等成本) — 根据日志中的 error 信息找到具体出错文件和行号，修改代码使编译通过
+- **优先**: 定位并修复编译错误 (中等成本) — 根据日志中的 error 信息找到具体出错文件和行号（涉及 Failed），修改代码使编译通过
 - 本地复现编译并验证 (低成本) — 在本地使用相同配置编译 Nightly-A2，确认修复后不再报错
 
 <a id='failure-36'></a>
@@ -2095,4 +2136,4 @@ failure_runs: 38
 
 
 ---
-报告生成时间: 2026-05-27T01:18:21.473885+00:00
+报告生成时间: 2026-05-27T01:43:55.983822+00:00
