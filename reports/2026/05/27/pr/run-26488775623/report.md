@@ -1,8 +1,8 @@
 ---
-report_id: e435c3cf
+report_id: ed769968
 pr_number: null
 group_key: run-26488775623
-generated_at: 2026-05-27T05:23:00.030353+00:00
+generated_at: 2026-05-27T05:14:43.376581+00:00
 overall_classification: code
 total_failed_workflows: 1
 category_counts:
@@ -62,4 +62,4 @@ run-26488775623 触发了 1 个 workflow，均失败。
 - **E2E-Light (#26488775623)**: 检查编译错误位置 (低成本) - 查看 CMake 或 clang 报错的具体文件和行
 
 ---
-报告生成时间: 2026-05-27T05:23:00.030380+00:00
+报告生成时间: 2026-05-27T05:14:43.376604+00:00
