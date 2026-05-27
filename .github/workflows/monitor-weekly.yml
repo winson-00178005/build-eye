@@ -2,7 +2,7 @@ name: Build-Eye Weekly Pipeline Monitoring
 
 on:
   schedule:
-    - cron: '0 3 * * 1'
+    - cron: '0 19 * * 0'
   workflow_dispatch:
     inputs:
       lookback_hours:
@@ -174,6 +174,25 @@ jobs:
             --input reports/ \
             --repo winson-00178005/build-eye \
             --pipeline-type weekly
+      
+      - name: Send notification
+        if: ${{ always() }}
+        env:
+          FEISHU_WEBHOOK_URL: ${{ secrets.FEISHU_WEBHOOK_URL }}
+          FEISHU_SIGN_SECRET: ${{ secrets.FEISHU_SIGN_SECRET }}
+          DINGTALK_WEBHOOK_URL: ${{ secrets.DINGTALK_WEBHOOK_URL }}
+          DINGTALK_SIGN_SECRET: ${{ secrets.DINGTALK_SIGN_SECRET }}
+          SMTP_HOST: ${{ secrets.SMTP_HOST }}
+          SMTP_PORT: ${{ secrets.SMTP_PORT }}
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+          SMTP_TO: ${{ secrets.SMTP_TO }}
+          SMTP_SSL: ${{ secrets.SMTP_SSL }}
+        run: |
+          python scripts/notify/notifier_cli.py \
+            --report-type Weekly \
+            --summary dashboard/dashboard_data.json \
+            --report-url "https://github.com/winson-00178005/build-eye/blob/main/reports/$(date +%Y/%m/%d)/weekly/report.md" || true
       
       - name: Upload reports artifact
         if: ${{ always() }}
