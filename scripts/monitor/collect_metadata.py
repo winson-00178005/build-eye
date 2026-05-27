@@ -109,10 +109,15 @@ def collect_build_metadata(
 _SETUP_LINE_PATTERNS = [
     re.compile(r'^\s*(UV_|PIP_|NPM_|PYTHON_|PATH_|HOME_|CI_|GITHUB_|RUNNER_|VIRTUAL_|CONDA_|APT_|DEBIAN_|HTTP_|HTTPS_|FTP_|NO_|LD_|CFLAGS_|LDFLAGS_|CC_|CXX_|MAKE_|CMAKE_|PKG_|VLLM_|HCCL_|ASCEND_|MSHCCL_)\w*='),
     re.compile(r'^\s*(export|set|setenv|unset)\s+'),
-    re.compile(r'^\s*##\s*(group|endgroup)\s'),
+    re.compile(r'^\s*##\s*\[?(group|endgroup)\]?\s'),
     re.compile(r'^\s*\$\s+(echo|printf|cat|mkdir|cp|mv|rm|chmod|chown|docker|kubectl|pip|uv|npm|python|bash|sh|curl|wget|git|apt|yum)\s'),
     re.compile(r'^\s*[\w./]+\s*:\s*http[s]?://'),
     re.compile(r'^\s*(Image|Runner|RunnerGroup|Operating|Environment|Container):\s'),
+    re.compile(r'^\s*Current\s+runner\s+version:\s'),
+    re.compile(r'^\s*Runner\s+(name|group\s+name):\s'),
+    re.compile(r'^\s*Machine\s+name:\s'),
+    re.compile(r'^\s*GITHUB_TOKEN\s+Permissions', re.IGNORECASE),
+    re.compile(r'^\s*(Contents|Metadata|PullRequests|Actions|Workflows|Packages|Issues|Repository|Security|Deployments|Environments|Statuses|Pages|Checks|Discussions|Secrets|Variables|Organizations|Members|Team):\s+(read|write|none)'),
     re.compile(r'^\s*(Run|Step|Job|Workflow|Trigger|Branch|SHA|Commit|Author|Message|Tag|Event):\s'),
     re.compile(r'^\s*\[command\]'),
     re.compile(r'^\s*(Cleaning|Cleaning up|Downloading|Extracting|Installing|Fetching|Resolving|Building|Compiling|Running|Executing|Starting|Stopping|Waiting|Checking|Verifying|Preparing|Setting|Configuring|Registering|Authenticating|Logging)\s'),
@@ -165,10 +170,22 @@ _ERROR_PATTERNS = [
 ]
 
 
+_TS_PREFIX_RE = re.compile(r'^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d+Z\s+')
+
+
+def _remove_bom(text: str) -> str:
+    if text.startswith('\ufeff'):
+        return text[1:]
+    elif text.startswith('\xef\xbb\xbf'):
+        return text[3:]
+    return text
+
+
 def _is_setup_line(line: str) -> bool:
     stripped = line.strip()
     if not stripped:
         return True
+    stripped = _TS_PREFIX_RE.sub('', stripped)
     for pat in _SETUP_LINE_PATTERNS:
         if pat.search(stripped):
             return True
@@ -180,6 +197,7 @@ def extract_error_lines(logs: str, max_lines: int = 100) -> str:
     if not logs:
         return ""
 
+    logs = _remove_bom(logs)
     lines = logs.split('\n')
 
     error_line_indices = []
