@@ -7,154 +7,154 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0d1117;color:#c9d1d9;min-height:100vh}
-.header{background:#161b22;border-bottom:1px solid #30363d;padding:16px 24px;display:flex;align-items:center;gap:12px}
-.header h1{font-size:20px;color:#f0f6fc;cursor:pointer}
-.header .badge{background:#1f6feb;color:#fff;padding:2px 8px;border-radius:12px;font-size:12px}
-.header .repo{color:#8b949e;font-size:14px;margin-left:auto;cursor:pointer}
-.container{max-width:1400px;margin:0 auto;padding:20px}
-.tabs{display:flex;gap:8px;margin-bottom:16px;border-bottom:1px solid #30363d;padding-bottom:8px}
-.tab{background:#161b22;border:1px solid #30363d;border-radius:6px;padding:8px 20px;color:#8b949e;cursor:pointer;font-size:13px;transition:all .2s}
+.header{background:#161b22;border-bottom:1px solid #30363d;padding:12px 16px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.header h1{font-size:18px;color:#f0f6fc;cursor:pointer}
+.header .badge{background:#1f6feb;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px}
+.header .repo{color:#8b949e;font-size:13px;margin-left:auto;cursor:pointer}
+.refresh-indicator{font-size:11px;color:#8b949e;display:flex;align-items:center;gap:4px}
+.refresh-indicator .dot{width:8px;height:8px;border-radius:50%;background:#3fb950;display:inline-block}
+.alert-banner{background:#f8514922;border:1px solid #f85149;border-radius:6px;padding:10px 16px;margin:12px 16px 0;display:flex;align-items:center;gap:8px;font-size:13px;color:#f85149}
+.alert-banner.warn{background:#d2992222;border-color:#d29922;color:#d29922}
+.container{max-width:1400px;margin:0 auto;padding:16px}
+.tabs{display:flex;gap:6px;margin-bottom:12px;border-bottom:1px solid #30363d;padding-bottom:6px;flex-wrap:wrap}
+.tab{background:#161b22;border:1px solid #30363d;border-radius:6px;padding:6px 14px;color:#8b949e;cursor:pointer;font-size:12px;transition:all .2s}
 .tab:hover{color:#f0f6fc;border-color:#58a6ff}
 .tab.active{background:#1f6feb;border-color:#1f6feb;color:#fff}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:16px;margin-bottom:20px}
-.card{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:20px}
-.card-title{font-size:14px;color:#8b949e;margin-bottom:12px;display:flex;align-items:center;gap:8px}
-.stat-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #21262d;cursor:pointer;transition:background .2s}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:12px;margin-bottom:16px}
+.card{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:16px}
+.card-title{font-size:13px;color:#8b949e;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.stat-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid #21262d;cursor:pointer;transition:background .2s}
 .stat-row:hover{background:#1c2128;border-radius:4px}
 .stat-row:last-child{border:none}
-.stat-label{color:#8b949e;font-size:13px}
-.stat-value{font-size:18px;font-weight:600}
-.stat-value.green{color:#3fb950}
-.stat-value.red{color:#f85149}
-.stat-value.yellow{color:#d29922}
-.stat-value.blue{color:#58a6ff}
-.clickable{cursor:pointer;transition:opacity .2s;text-decoration:none}
-.clickable:hover{opacity:.8}
-.progress-bar{height:8px;background:#21262d;border-radius:4px;overflow:hidden;margin-top:8px}
-.progress-fill{height:100%;border-radius:4px;transition:width .3s}
-.pipeline-section{margin-bottom:16px}
-.pipeline-header{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #30363d;font-size:14px;color:#f0f6fc;font-weight:600}
-.pipeline-header .view-report{color:#58a6ff;font-size:12px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:4px}
+.stat-label{color:#8b949e;font-size:12px}
+.stat-value{font-size:16px;font-weight:600}
+.stat-value.green{color:#3fb950}.stat-value.red{color:#f85149}.stat-value.yellow{color:#d29922}.stat-value.blue{color:#58a6ff}
+.progress-bar{height:6px;background:#21262d;border-radius:3px;overflow:hidden;margin-top:6px}
+.progress-fill{height:100%;border-radius:3px;transition:width .3s}
+.pipeline-section{margin-bottom:12px}
+.pipeline-header{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid #30363d;font-size:13px;color:#f0f6fc;font-weight:600}
+.pipeline-header .view-report{color:#58a6ff;font-size:11px;cursor:pointer;text-decoration:none}
 .pipeline-header .view-report:hover{text-decoration:underline}
-.pipeline-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:8px 0}
-.pipeline-stat{text-align:center;padding:8px;background:#0d1117;border-radius:4px;cursor:pointer;transition:background .2s}
-.pipeline-stat:hover{background:#161b22;border:1px solid #30363d}
-.pipeline-stat .num{font-size:20px;font-weight:700}
-.pipeline-stat .label{font-size:11px;color:#8b949e}
-.health-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;text-align:center}
-.health-card{background:#0d1117;border-radius:8px;padding:16px;cursor:pointer;transition:border-color .2s}
+.pipeline-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;padding:6px 0}
+.pipeline-stat{text-align:center;padding:6px;background:#0d1117;border-radius:4px;cursor:pointer;transition:background .2s;font-size:12px}
+.pipeline-stat:hover{background:#161b22}
+.pipeline-stat .num{font-size:18px;font-weight:700}
+.pipeline-stat .label{font-size:10px;color:#8b949e}
+.health-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;text-align:center}
+.health-card{background:#0d1117;border-radius:6px;padding:12px;cursor:pointer;transition:border-color .2s}
 .health-card:hover{border:1px solid #58a6ff}
-.health-score{font-size:32px;font-weight:700}
-.health-label{font-size:12px;color:#8b949e;margin-top:4px}
-.failures-table{width:100%;border-collapse:collapse;font-size:13px}
-.failures-table th{text-align:left;color:#8b949e;padding:8px;border-bottom:1px solid #30363d}
-.failures-table td{padding:8px;border-bottom:1px solid #21262d}
+.health-score{font-size:28px;font-weight:700}
+.health-label{font-size:11px;color:#8b949e;margin-top:2px}
+.failures-table{width:100%;border-collapse:collapse;font-size:12px}
+.failures-table th{text-align:left;color:#8b949e;padding:6px;border-bottom:1px solid #30363d;white-space:nowrap}
+.failures-table td{padding:6px;border-bottom:1px solid #21262d}
 .failures-table tr{cursor:pointer;transition:background .2s}
 .failures-table tr:hover{background:#1c2128}
-.tag{display:inline-block;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600}
+.tag{display:inline-block;padding:1px 6px;border-radius:10px;font-size:10px;font-weight:600}
 .tag-code{background:#1f6feb22;color:#58a6ff;border:1px solid #1f6feb}
 .tag-infra{background:#d2992222;color:#d29922;border:1px solid #d29922}
 .tag-inter{background:#f8514922;color:#f85149;border:1px solid #f85149}
-.tag-success{background:#3fb95022;color:#3fb950;border:1px solid #3fb950}
-.tag-failure{background:#f8514922;color:#f85149;border:1px solid #f85149}
-.tag-skipped{background:#8b949e22;color:#8b949e;border:1px solid #8b949e}
-.tag-cancelled{background:#8b949e22;color:#8b949e;border:1px solid #8b949e}
 .tag-nightly{background:#3fb95022;color:#3fb950;border:1px solid #3fb950}
 .tag-pr{background:#58a6ff22;color:#58a6ff;border:1px solid #58a6ff}
 .tag-weekly{background:#d2992222;color:#d29922;border:1px solid #d29922}
-.tag-good{background:#3fb95022;color:#3fb950;border:1px solid #3fb950}
-.tag-fair{background:#d2992222;color:#d29922;border:1px solid #d29922}
-.tag-warning{background:#d2992222;color:#d29922;border:1px solid #d29922}
+.tag-good,.tag-excellent{background:#3fb95022;color:#3fb950;border:1px solid #3fb950}
+.tag-fair,.tag-warning{background:#d2992222;color:#d29922;border:1px solid #d29922}
 .tag-danger{background:#f8514922;color:#f85149;border:1px solid #f85149}
-.key-error{display:inline-block;background:#f8514911;color:#f85149;padding:2px 6px;border-radius:4px;font-size:11px;max-width:300px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin:2px 0}
-.reports-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}
-.report-card{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:16px;cursor:pointer;transition:border-color .2s}
-.report-card:hover{border-color:#58a6ff}
-.report-card .title{font-size:14px;color:#f0f6fc;margin-bottom:4px;display:flex;align-items:center;gap:8px}
-.report-card .meta{font-size:12px;color:#8b949e;margin-bottom:8px}
-.report-card .preview{font-size:12px;color:#8b949e;line-height:1.4;margin-top:8px;border-top:1px solid #21262d;padding-top:8px}
-.report-card .actions{display:flex;gap:8px;margin-top:8px}
-.btn{display:inline-flex;align-items:center;gap:4px;padding:4px 12px;border-radius:6px;font-size:12px;cursor:pointer;border:1px solid #30363d;background:#21262d;color:#c9d1d9;transition:all .2s}
-.btn:hover{background:#30363d;color:#f0f6fc}
-.btn-primary{background:#1f6feb;border-color:#1f6feb;color:#fff}
-.btn-primary:hover{background:#388bfd}
-.btn-link{background:none;border:none;color:#58a6ff;font-size:12px;padding:4px 8px;cursor:pointer}
-.btn-link:hover{text-decoration:underline}
-.filter-bar{display:flex;gap:8px;margin-bottom:12px;align-items:center}
-.filter-bar label{font-size:13px;color:#8b949e}
-.filter-btn{background:#21262d;border:1px solid #30363d;border-radius:6px;padding:4px 12px;color:#8b949e;font-size:12px;cursor:pointer;transition:all .2s}
-.filter-btn:hover{border-color:#58a6ff;color:#58a6ff}
-.filter-btn.active{background:#1f6feb;border-color:#1f6feb;color:#fff}
-.detail-modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.7);z-index:100;display:flex;justify-content:center;align-items:center;padding:20px}
-.detail-modal-content{background:#161b22;border:1px solid #30363d;border-radius:8px;max-width:800px;width:100%;max-height:80vh;overflow-y:auto;padding:24px}
-.detail-modal-content h3{font-size:18px;color:#f0f6fc;margin-bottom:16px;display:flex;justify-content:space-between;align-items:center}
-.detail-modal-content .close-btn{background:none;border:none;color:#8b949e;font-size:20px;cursor:pointer;padding:4px 8px}
-.detail-modal-content .close-btn:hover{color:#f0f6fc}
-.detail-field{padding:8px 0;border-bottom:1px solid #21262d}
-.detail-field .field-label{font-size:12px;color:#8b949e;margin-bottom:2px}
-.detail-field .field-value{font-size:14px;color:#f0f6fc}
-.error-list{margin:8px 0}
-.error-list .error-item{background:#f8514911;color:#f85149;padding:4px 8px;border-radius:4px;font-size:12px;margin:4px 0;font-family:monospace}
-.trend-chart{position:relative;height:220px;background:#0d1117;border-radius:4px;margin-top:12px}
-.chart-canvas{width:100%;height:100%}
-.empty-state{text-align:center;padding:40px;color:#8b949e}
-.footer{text-align:center;padding:20px;color:#8b949e;font-size:12px;border-top:1px solid #30363d;margin-top:20px}
-.search-input{background:#0d1117;border:1px solid #30363d;border-radius:6px;padding:6px 12px;color:#c9d1d9;font-size:13px;width:200px;outline:none}
-.search-input:focus{border-color:#58a6ff}
-.search-input::placeholder{color:#484f58}
-.status-badge{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600}
+.status-badge{display:inline-flex;align-items:center;gap:2px;padding:1px 6px;border-radius:4px;font-size:10px;font-weight:600}
 .status-failure{background:#f8514922;color:#f85149;border:1px solid #f85149}
 .status-success{background:#3fb95022;color:#3fb950;border:1px solid #3fb950}
 .status-skipped{background:#8b949e22;color:#8b949e;border:1px solid #8b949e}
 .status-cancelled{background:#d2992222;color:#d29922;border:1px solid #d29922}
-@media(max-width:768px){.grid{grid-template-columns:1fr}.health-grid{grid-template-columns:1fr}.pipeline-stats{grid-template-columns:1fr 1fr}.filter-bar{flex-wrap:wrap}.search-input{width:100%}}
+.key-error{display:inline-block;background:#f8514911;color:#f85149;padding:1px 4px;border-radius:3px;font-size:10px;max-width:250px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.reports-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px}
+.report-card{background:#161b22;border:1px solid #30363d;border-radius:6px;padding:12px;cursor:pointer;transition:border-color .2s}
+.report-card:hover{border-color:#58a6ff}
+.report-card .title{font-size:13px;color:#f0f6fc;margin-bottom:2px;display:flex;align-items:center;gap:6px}
+.report-card .meta{font-size:11px;color:#8b949e;margin-bottom:6px}
+.report-card .preview{font-size:11px;color:#8b949e;line-height:1.3;margin-top:6px;border-top:1px solid #21262d;padding-top:6px}
+.btn{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:5px;font-size:11px;cursor:pointer;border:1px solid #30363d;background:#21262d;color:#c9d1d9;transition:all .2s}
+.btn:hover{background:#30363d;color:#f0f6fc}
+.btn-primary{background:#1f6feb;border-color:#1f6feb;color:#fff}
+.btn-primary:hover{background:#388bfd}
+.btn-link{background:none;border:none;color:#58a6ff;font-size:11px;padding:2px 4px;cursor:pointer}
+.btn-link:hover{text-decoration:underline}
+.filter-bar{display:flex;gap:6px;margin-bottom:10px;align-items:center;flex-wrap:wrap}
+.filter-btn{background:#21262d;border:1px solid #30363d;border-radius:5px;padding:3px 10px;color:#8b949e;font-size:11px;cursor:pointer;transition:all .2s}
+.filter-btn:hover{border-color:#58a6ff;color:#58a6ff}
+.filter-btn.active{background:#1f6feb;border-color:#1f6feb;color:#fff}
+.search-input{background:#0d1117;border:1px solid #30363d;border-radius:5px;padding:4px 8px;color:#c9d1d9;font-size:12px;outline:none;min-width:140px}
+.search-input:focus{border-color:#58a6ff}
+.search-input::placeholder{color:#484f58}
+.detail-modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.7);z-index:100;display:flex;justify-content:center;align-items:center;padding:12px}
+.detail-modal-content{background:#161b22;border:1px solid #30363d;border-radius:8px;max-width:700px;width:100%;max-height:80vh;overflow-y:auto;padding:20px}
+.detail-modal-content h3{font-size:16px;color:#f0f6fc;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center}
+.close-btn{background:none;border:none;color:#8b949e;font-size:18px;cursor:pointer;padding:4px 8px}
+.close-btn:hover{color:#f0f6fc}
+.detail-field{padding:6px 0;border-bottom:1px solid #21262d}
+.detail-field .field-label{font-size:11px;color:#8b949e;margin-bottom:1px}
+.detail-field .field-value{font-size:13px;color:#f0f6fc}
+.error-list .error-item{background:#f8514911;color:#f85149;padding:3px 6px;border-radius:3px;font-size:11px;margin:3px 0;font-family:monospace}
+.trend-chart{position:relative;height:200px;background:#0d1117;border-radius:4px;margin-top:10px}
+.chart-canvas{width:100%;height:100%}
+.empty-state{text-align:center;padding:30px;color:#8b949e;font-size:13px}
+.footer{text-align:center;padding:16px;color:#8b949e;font-size:11px;border-top:1px solid #30363d;margin-top:16px}
+.toolbar{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-bottom:12px}
+.pr-lookup{display:flex;gap:6px;align-items:center}
+.pr-lookup input{background:#0d1117;border:1px solid #30363d;border-radius:5px;padding:4px 8px;color:#c9d1d9;font-size:12px;width:120px;outline:none}
+.pr-lookup input:focus{border-color:#58a6ff}
+.pr-result{background:#161b22;border:1px solid #30363d;border-radius:6px;padding:12px;margin-top:8px}
+.pr-result .pr-title{font-size:14px;color:#f0f6fc;margin-bottom:8px}
+.pr-result .run-row{padding:6px 0;border-bottom:1px solid #21262d;font-size:12px;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+@media(max-width:640px){
+.header{padding:8px 12px}.header h1{font-size:16px}.header .repo{font-size:11px}
+.container{padding:8px}.grid{grid-template-columns:1fr}.health-grid{grid-template-columns:1fr}
+.pipeline-stats{grid-template-columns:1fr 1fr}.card{padding:12px}
+.failures-table{font-size:11px}.filter-bar{flex-wrap:wrap;gap:4px}
+.search-input,.pr-lookup input{width:100%;min-width:0}
+.tab{padding:4px 10px;font-size:11px}
+.reports-grid{grid-template-columns:1fr}.detail-modal-content{max-width:100%;padding:16px}
+.toolbar{flex-wrap:wrap}.pr-lookup input{width:80px}
+}
 </style>
 </head>
 <body>
 <div class="header">
 <h1 onclick="switchTab('overview')">Build-Eye</h1>
 <span class="badge">CI Monitor</span>
+<div class="refresh-indicator" id="refreshIndicator"><span class="dot" id="refreshDot"></span> <span id="refreshText">Loading...</span></div>
 <span class="repo" id="repoName" onclick="window.open(VLLM_REPO,'_blank')">vllm-project/vllm-ascend</span>
 </div>
+<div id="alertBanner" style="display:none"></div>
 <div class="container">
-<div id="loadingIndicator" style="text-align:center;padding:40px;color:#58a6ff">Loading dashboard data...</div>
+<div id="loadingIndicator" style="text-align:center;padding:30px;color:#58a6ff">Loading...</div>
 <div id="dashboardContent" style="display:none">
-
 <div class="tabs">
 <div class="tab active" data-tab="overview" onclick="switchTab('overview')">Overview</div>
 <div class="tab" data-tab="failures" onclick="switchTab('failures')">Failures</div>
 <div class="tab" data-tab="trends" onclick="switchTab('trends')">Trends</div>
 <div class="tab" data-tab="reports" onclick="switchTab('reports')">Reports</div>
+<div class="tab" data-tab="prlookup" onclick="switchTab('prlookup')">PR Lookup</div>
 </div>
-
+<div class="toolbar">
+<div class="pr-lookup"><input id="prSearchInput" placeholder="PR # e.g. 9549" onkeyup="if(event.key==='Enter')doPrLookup()"><button class="btn btn-primary" onclick="doPrLookup()">Search PR</button></div>
+<button class="btn" onclick="exportCSV()">Export CSV</button>
+<button class="btn" onclick="exportJSON()">Export JSON</button>
+</div>
 <div id="overviewPanel">
 <div class="grid">
-<div class="card">
-<div class="card-title">Summary</div>
-<div id="summaryStats"></div>
+<div class="card"><div class="card-title">Summary</div><div id="summaryStats"></div></div>
+<div class="card"><div class="card-title">Health Scores</div><div class="health-grid" id="healthScores"></div></div>
+<div class="card"><div class="card-title">Root Cause Distribution</div><div id="categoryDistribution"></div></div>
 </div>
-<div class="card">
-<div class="card-title">Health Scores</div>
-<div class="health-grid" id="healthScores"></div>
+<div class="card"><div class="card-title">Pipeline Breakdown</div><div id="pipelineBreakdown"></div></div>
 </div>
-<div class="card">
-<div class="card-title">Root Cause Distribution</div>
-<div id="categoryDistribution"></div>
-</div>
-</div>
-<div class="card">
-<div class="card-title">Pipeline Breakdown</div>
-<div id="pipelineBreakdown"></div>
-</div>
-</div>
-
 <div id="failuresPanel" style="display:none">
 <div class="filter-bar">
 <div class="filter-btn active" data-filter="all" onclick="filterFailures('all')">All</div>
 <div class="filter-btn" data-filter="nightly" onclick="filterFailures('nightly')">Nightly</div>
 <div class="filter-btn" data-filter="pr" onclick="filterFailures('pr')">PR</div>
 <div class="filter-btn" data-filter="weekly" onclick="filterFailures('weekly')">Weekly</div>
-<input type="text" class="search-input" placeholder="Search workflow name..." oninput="searchFailures(this.value)">
+<input type="text" class="search-input" placeholder="Search workflow..." oninput="searchFailures(this.value)">
 </div>
 <div class="card">
 <table class="failures-table">
@@ -163,24 +163,13 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 </table>
 </div>
 </div>
-
 <div id="trendsPanel" style="display:none">
 <div class="grid">
-<div class="card">
-<div class="card-title">Success Rate Trend (7d)</div>
-<div class="trend-chart"><canvas class="chart-canvas" id="successRateChart"></canvas></div>
-</div>
-<div class="card">
-<div class="card-title">Failure Count Trend (7d)</div>
-<div class="trend-chart"><canvas class="chart-canvas" id="failureChart"></canvas></div>
-</div>
-<div class="card">
-<div class="card-title">Health Score Trend (7d)</div>
-<div class="trend-chart"><canvas class="chart-canvas" id="healthChart"></canvas></div>
+<div class="card"><div class="card-title">Success Rate (7d)</div><div class="trend-chart"><canvas class="chart-canvas" id="successRateChart"></canvas></div></div>
+<div class="card"><div class="card-title">Failure Count (7d)</div><div class="trend-chart"><canvas class="chart-canvas" id="failureChart"></canvas></div></div>
+<div class="card"><div class="card-title">Health Score (7d)</div><div class="trend-chart"><canvas class="chart-canvas" id="healthChart"></canvas></div></div>
 </div>
 </div>
-</div>
-
 <div id="reportsPanel" style="display:none">
 <div class="filter-bar">
 <div class="filter-btn active" data-rfilter="all" onclick="filterReports('all')">All</div>
@@ -190,142 +179,144 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 </div>
 <div class="reports-grid" id="reportsGrid"></div>
 </div>
-
+<div id="prlookupPanel" style="display:none">
+<div class="card" id="prLookupResult"><div class="empty-state">Enter a PR number above to view its workflow runs, failures, and error details.</div></div>
 </div>
 </div>
-
+</div>
 <div id="detailModal" class="detail-modal" style="display:none" onclick="if(event.target===this)closeModal()">
-<div class="detail-modal-content">
-<h3><span id="modalTitle"></span><button class="close-btn" onclick="closeModal()">&times;</button></h3>
-<div id="modalBody"></div>
+<div class="detail-modal-content"><h3><span id="modalTitle"></span><button class="close-btn" onclick="closeModal()">&times;</button></h3><div id="modalBody"></div></div>
 </div>
-</div>
-
-<div class="footer">Build-Eye CI Monitor | Auto-updated every 6 hours | <span id="updateTime"></span></div>
-
+<div class="footer">Build-Eye CI Monitor | Auto-refresh every 5 min | <span id="updateTime"></span></div>
 <script>
 const REPO_URL='https://github.com/winson-00178005/build-eye';
 const VLLM_REPO='https://github.com/vllm-project/vllm-ascend';
-let D=null;
-let currentTab='overview';
-let currentFailureFilter='all';
-let currentReportFilter='all';
-let searchQuery='';
-
+let D=null;let currentTab='overview';let currentFailureFilter='all';let currentReportFilter='all';let searchQuery='';
 const TYPE_LABELS={pr:'PR CI',nightly:'Nightly',weekly:'Weekly'};
 const TYPE_COLORS={pr:'#58a6ff',nightly:'#3fb950',weekly:'#d29922'};
 const STATUS_LABELS={success:'Success',failure:'Failure',skipped:'Skipped',cancelled:'Cancelled',timed_out:'Timed Out',action_required:'Action Required'};
 const CAT_LABELS={code:'Code',infrastructure:'Infra',interference:'Interference',unknown:'Unknown'};
 const CONF_LABELS={high:'High',medium:'Medium',low:'Low'};
+let refreshInterval=300;let refreshTimer=refreshInterval;let refreshTimerId=null;
+
+function startAutoRefresh(){
+refreshTimerId=setInterval(()=>{
+refreshTimer--;
+if(refreshTimer<=0){refreshTimer=refreshInterval;loadDataSilent();}
+document.getElementById('refreshDot').className='dot';
+document.getElementById('refreshText').textContent='Refresh in '+refreshTimer+'s';
+},1000);
+}
 
 function switchTab(tab){
 currentTab=tab;
 document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-document.querySelector(`.tab[data-tab="${tab}"]`).classList.add('active');
-['overview','failures','trends','reports'].forEach(p=>{
+const el=document.querySelector(`.tab[data-tab="${tab}"]`);
+if(el)el.classList.add('active');
+['overview','failures','trends','reports','prlookup'].forEach(p=>{
 document.getElementById(p+'Panel').style.display=p===tab?'block':'none';
 });
 if(tab==='trends'&&D)renderCharts();
+if(tab==='prlookup')document.getElementById('prSearchInput').focus();
 }
 
-function filterFailures(filter){
-currentFailureFilter=filter;
-document.querySelectorAll('.filter-bar .filter-btn[data-filter]').forEach(b=>b.classList.toggle('active',b.dataset.filter===filter));
-renderFailures();
-}
+function filterFailures(filter){currentFailureFilter=filter;document.querySelectorAll('.filter-btn[data-filter]').forEach(b=>b.classList.toggle('active',b.dataset.filter===filter));renderFailures();}
+function filterReports(filter){currentReportFilter=filter;document.querySelectorAll('.filter-btn[data-rfilter]').forEach(b=>b.classList.toggle('active',b.dataset.rfilter===filter));renderReports();}
+function searchFailures(q){searchQuery=q.toLowerCase();renderFailures();}
 
-function filterReports(filter){
-currentReportFilter=filter;
-document.querySelectorAll('.filter-bar .filter-btn[data-rfilter]').forEach(b=>b.classList.toggle('active',b.dataset.rfilter===filter));
-renderReports();
-}
-
-function searchFailures(query){
-searchQuery=query.toLowerCase();
-renderFailures();
-}
+function getCatTag(cat){const cls=cat==='code'?'tag-code':cat==='infrastructure'?'tag-infra':cat==='interference'?'tag-inter':'tag-danger';return`<span class="tag ${cls}">${CAT_LABELS[cat]||cat}</span>`;}
+function getStatusTag(s){return`<span class="status-badge status-${s}">${STATUS_LABELS[s]||s}</span>`;}
+function getTypeTag(t){return`<span class="tag tag-${t}">${TYPE_LABELS[t]||t}</span>`;}
 
 function showFailureDetail(f){
-const catTag=getCatTag(f.classification);
-const statusTag=getStatusTag(f.status);
+const catTag=getCatTag(f.classification);const statusTag=getStatusTag(f.status);
 const keyErrors=f.key_errors||[];
 let errHtml=keyErrors.length?keyErrors.map(e=>`<div class="error-item">${e}</div>`).join(''):'<span style="color:#8b949e">No key error extracted</span>';
-
-let html=`
-<div class="detail-field"><div class="field-label">Workflow</div><div class="field-value">${f.workflow_name}</div></div>
+let html=`<div class="detail-field"><div class="field-label">Workflow</div><div class="field-value">${f.workflow_name}</div></div>
 <div class="detail-field"><div class="field-label">Status</div><div class="field-value">${statusTag}</div></div>
 <div class="detail-field"><div class="field-label">Root Cause</div><div class="field-value">${catTag} (${f.detail||'N/A'})</div></div>
 <div class="detail-field"><div class="field-label">Confidence</div><div class="field-value">${f.confidence}</div></div>
 <div class="detail-field"><div class="field-label">Key Errors</div><div class="error-list">${errHtml}</div></div>
-<div class="detail-field"><div class="field-label">Started At</div><div class="field-value">${(f.started_at||'N/A').substring(0,19).replace('T',' ')}</div></div>
+<div class="detail-field"><div class="field-label">Started</div><div class="field-value">${(f.started_at||'N/A').substring(0,19).replace('T',' ')}</div></div>
 <div class="detail-field"><div class="field-label">Pipeline</div><div class="field-value">${TYPE_LABELS[f.pipeline_type]||f.pipeline_type}</div></div>
-<div style="margin-top:16px;display:flex;gap:8px">
-<a class="btn btn-primary" href="${f.run_url}" target="_blank">View Run on GitHub</a>
-<a class="btn" href="${f.report_url}" target="_blank">View Report</a>
-</div>`;
+<div style="margin-top:12px;display:flex;gap:6px"><a class="btn btn-primary" href="${f.run_url}" target="_blank">View Run</a><a class="btn" href="${f.report_url}" target="_blank">View Report</a></div>`;
 document.getElementById('modalTitle').textContent=f.workflow_name+' #'+f.run_id;
 document.getElementById('modalBody').innerHTML=html;
 document.getElementById('detailModal').style.display='flex';
 }
 
 function showReportDetail(r){
-const typeTag=`<span class="tag tag-${r.type}">${TYPE_LABELS[r.type]||r.type}</span>`;
+const typeTag=getTypeTag(r._type||r.type);
 let statsHtml='';
 if(r.total_runs!==undefined)statsHtml=`<div class="detail-field"><div class="field-label">Stats</div><div class="field-value">Total: ${r.total_runs} | Success: ${r.success_runs} | Failure: ${r.failure_runs}</div></div>`;
-const preview=r.preview||'';
-
-let html=`
-<div class="detail-field"><div class="field-label">Type</div><div class="field-value">${typeTag}</div></div>
+let html=`<div class="detail-field"><div class="field-label">Type</div><div class="field-value">${typeTag}</div></div>
 <div class="detail-field"><div class="field-label">Date</div><div class="field-value">${r.date}</div></div>
 ${statsHtml}
-<div class="detail-field"><div class="field-label">Preview</div><div class="field-value" style="font-size:13px;color:#8b949e;line-height:1.4">${preview}</div></div>
-<div style="margin-top:16px;display:flex;gap:8px">
-<a class="btn btn-primary" href="${r.url}" target="_blank">View Full Report</a>
-<a class="btn" href="${r.raw_url}" target="_blank">View Raw Markdown</a>
-</div>`;
+<div class="detail-field"><div class="field-label">Preview</div><div class="field-value" style="font-size:12px;color:#8b949e">${r.preview||''}</div></div>
+<div style="margin-top:12px;display:flex;gap:6px"><a class="btn btn-primary" href="${r.url}" target="_blank">View Report</a><a class="btn" href="${r.raw_url}" target="_blank">Raw Markdown</a></div>`;
 document.getElementById('modalTitle').textContent=(r.name||r.date)+' Report';
 document.getElementById('modalBody').innerHTML=html;
 document.getElementById('detailModal').style.display='flex';
 }
 
-function closeModal(){
-document.getElementById('detailModal').style.display='none';
+function closeModal(){document.getElementById('detailModal').style.display='none';}
+
+function doPrLookup(){
+const prNum=document.getElementById('prSearchInput').value.trim();
+if(!prNum||!D)return;
+const prData=D.pr_lookup?.[prNum];
+const panel=document.getElementById('prLookupResult');
+if(!prData||prData.length===0){
+panel.innerHTML=`<div class="empty-state">No data found for PR #${prNum}.<br><a class="btn-link" href="${VLLM_REPO}/pull/${prNum}" target="_blank">View on GitHub</a></div>`;
+return;
+}
+let html=`<div class="pr-title">PR #${prNum} — ${prData.length} workflow runs <a class="btn-link" href="${VLLM_REPO}/pull/${prNum}" target="_blank">View PR on GitHub</a></div>`;
+for(const r of prData){
+const statusTag=getStatusTag(r.status);const catTag=getCatTag(r.classification);
+const keyErr=r.key_errors&&r.key_errors.length?`<span class="key-error">${r.key_errors[0]}</span>`:'<span style="color:#8b949e;font-size:11px">'+(r.detail||r.status)+'</span>';
+html+=`<div class="run-row"><span>${r.workflow_name}</span><span>${statusTag}</span><span>${catTag}</span><span>${keyErr}</span><span style="font-size:11px;color:#8b949e">${(r.started_at||'').substring(0,10)}</span><a class="btn-link" href="${r.run_url}" target="_blank">Run</a></div>`;
+}
+if(prData.some(r=>r.key_errors&&r.key_errors.length>0)){
+html+=`<div style="margin-top:10px"><strong style="color:#f85149;font-size:13px">Key Errors:</strong>`;
+for(const r of prData){for(const e of (r.key_errors||[])){html+=`<div style="font-family:monospace;font-size:11px;color:#f85149;padding:2px 4px;margin:2px 0;background:#f8514911;border-radius:3px">${e}</div>`;}}
+html+=`</div>`;
+}
+panel.innerHTML=html;
 }
 
-function getCatTag(cat){
-const cls=cat==='code'?'tag-code':cat==='infrastructure'?'tag-infra':cat==='interference'?'tag-inter':'tag-danger';
-return `<span class="tag ${cls}">${CAT_LABELS[cat]||cat}</span>`;
+function exportCSV(){
+if(!D||!D.recent_failures)return;
+const failures=D.recent_failures.failures;
+let csv='Workflow,Status,Classification,Confidence,Detail,Key Errors,Started At,Pipeline,Run URL,Report URL\n';
+for(const f of failures){csv+=`"${f.workflow_name}","${f.status}","${f.classification}","${f.confidence}","${f.detail||''}","${(f.key_errors||[]).join(';')}","${f.started_at||''}","${f.pipeline_type}","${f.run_url}","${f.report_url}"\n`;}
+downloadFile(csv,'build-eye-failures.csv','text/csv');
 }
 
-function getStatusTag(status){
-const cls='status-'+status;
-return `<span class="status-badge ${cls}">${STATUS_LABELS[status]||status}</span>`;
+function exportJSON(){
+if(!D)return;
+downloadFile(JSON.stringify(D,null,2),'build-eye-dashboard.json','application/json');
 }
 
-function getTypeTag(type){
-return `<span class="tag tag-${type}">${TYPE_LABELS[type]||type}</span>`;
-}
-
-function getConfBadge(conf){
-const color=conf==='high'?'#3fb950':conf==='medium'?'#d29922':'#8b949e';
-return `<span style="color:${color};font-size:12px">${CONF_LABELS[conf]||conf}</span>`;
+function downloadFile(content,name,type){
+const blob=new Blob([content],{type:type});const url=URL.createObjectURL(blob);
+const a=document.createElement('a');a.href=url;a.download=name;document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(url);
 }
 
 async function loadData(){
 const urls=['dashboard_data.json',REPO_URL+'/raw/main/dashboard/dashboard_data.json'];
-for(const url of urls){
-try{
-const res=await fetch(url);
-if(res.ok){
-D=await res.json();
-if(D.overview&&D.overview.summary&&D.overview.summary.total_runs>0){
-renderDashboard();
-return;
+for(const url of urls){try{const res=await fetch(url);if(res.ok){D=await res.json();
+if(D.overview&&D.overview.summary&&D.overview.summary.total_runs>0){renderDashboard();startAutoRefresh();return;}
+}}catch(e){continue}}
+document.getElementById('loadingIndicator').innerHTML='<div class="empty-state">No monitoring data available.</div>';
 }
-}
-}catch(e){continue}
-}
-document.getElementById('loadingIndicator').innerHTML='<div class="empty-state">No monitoring data available.<br>Run a monitoring workflow to generate data.</div>';
+
+async function loadDataSilent(){
+const urls=['dashboard_data.json',REPO_URL+'/raw/main/dashboard/dashboard_data.json'];
+for(const url of urls){try{const res=await fetch(url);if(res.ok){const nd=await res.json();
+if(nd.overview&&nd.overview.summary&&nd.overview.summary.total_runs>0){D=nd;renderDashboard();
+document.getElementById('refreshDot').className='dot';
+document.getElementById('refreshText').textContent='Updated! Refresh in '+refreshTimer+'s';return;}
+}}catch(e){continue}}
 }
 
 function renderDashboard(){
@@ -334,47 +325,37 @@ document.getElementById('dashboardContent').style.display='block';
 if(!D)return;
 const ts=D.overview?.timestamp||'';
 document.getElementById('updateTime').textContent=ts?ts.substring(0,19).replace('T',' ')+' UTC':'N/A';
-renderSummary(D.overview);
-renderHealth(D.health_scores);
-renderCategories(D.categories);
-renderPipelineBreakdown(D.overview);
-renderFailures();
-renderReports();
+renderAlerts();renderSummary(D.overview);renderHealth(D.health_scores);renderCategories(D.categories);renderPipelineBreakdown(D.overview);renderFailures();renderReports();
+}
+
+function renderAlerts(){
+const alerts=D?.alerts||[];
+if(!alerts.length){document.getElementById('alertBanner').style.display='none';return;}
+let html='';
+for(const a of alerts.filter(a=>a.level==='critical'))html+=`<div class="alert-banner" style="margin:0 0 4px">&#9888; ${a.message}</div>`;
+for(const a of alerts.filter(a=>a.level==='warning'))html+=`<div class="alert-banner warn" style="margin:0 0 4px">&#9888; ${a.message}</div>`;
+document.getElementById('alertBanner').innerHTML=html;
+document.getElementById('alertBanner').style.display='block';
 }
 
 function renderSummary(ov){
-const s=ov.summary||{};
-const total=s.total_runs||0;
-const success=s.success_runs||0;
-const failure=s.failure_runs||0;
-const rate=s.overall_success_rate||0;
-let html=`
-<div class="stat-row" onclick="switchTab('failures')"><span class="stat-label">Total Runs</span><span class="stat-value blue">${total}</span></div>
-<div class="stat-row" onclick="switchTab('failures');filterFailures('all')"><span class="stat-label">Success</span><span class="stat-value green clickable">${success}</span></div>
-<div class="stat-row" onclick="switchTab('failures');filterFailures('all')"><span class="stat-label">Failed</span><span class="stat-value red clickable">${failure}</span></div>
+const s=ov.summary||{};const total=s.total_runs||0;const success=s.success_runs||0;const failure=s.failure_runs||0;const rate=s.overall_success_rate||0;
+let html=`<div class="stat-row" onclick="switchTab('failures')"><span class="stat-label">Total Runs</span><span class="stat-value blue">${total}</span></div>
+<div class="stat-row" onclick="switchTab('failures')"><span class="stat-label">Success</span><span class="stat-value green">${success}</span></div>
+<div class="stat-row" onclick="switchTab('failures')"><span class="stat-label">Failed</span><span class="stat-value red">${failure}</span></div>
 <div class="stat-row" onclick="switchTab('trends')"><span class="stat-label">Success Rate</span><span class="stat-value ${rate>=80?'green':rate>=60?'yellow':'red'}">${rate}%</span></div>
-<div class="progress-bar" onclick="switchTab('trends')"><div class="progress-fill" style="width:${rate}%;background:${rate>=80?'#3fb950':rate>=60?'#d29922':'#f85149'}"></div></div>
-`;
+<div class="progress-bar" onclick="switchTab('trends')"><div class="progress-fill" style="width:${rate}%;background:${rate>=80?'#3fb950':rate>=60?'#d29922':'#f85149'}"></div></div>`;
 document.getElementById('summaryStats').innerHTML=html;
 }
 
 function renderPipelineBreakdown(ov){
-const pipes=ov.pipelines||{};
-let html='';
+const pipes=ov.pipelines||{};let html='';
 for(const[type,data]of Object.entries(pipes)){
-const r=data.success_rate||0;
-const total=data.total_runs||0;
-const succ=data.success_runs||0;
-const fail=data.failure_runs||0;
-const reportUrl=data.latest_report_url||'';
-const vllmUrl=data.vllm_actions_url||VLLM_REPO+'/actions';
-const reportLink=reportUrl?`<a class="view-report" href="${reportUrl}" target="_blank">View Report &rarr;</a>`:`<span style="color:#484f58;font-size:12px">No report yet</span>`;
-html+=`
-<div class="pipeline-section">
-<div class="pipeline-header">
-<span>${TYPE_LABELS[type]||type}</span>
-${reportLink}
-</div>
+const r=data.success_rate||0;const total=data.total_runs||0;const succ=data.success_runs||0;const fail=data.failure_runs||0;
+const reportUrl=data.latest_report_url||'';const vllmUrl=data.vllm_actions_url||VLLM_REPO+'/actions';
+const reportLink=reportUrl?`<a class="view-report" href="${reportUrl}" target="_blank">View Report &rarr;</a>`:`<span style="color:#484f58;font-size:11px">No report yet</span>`;
+html+=`<div class="pipeline-section">
+<div class="pipeline-header"><span>${TYPE_LABELS[type]||type}</span>${reportLink}</div>
 <div class="pipeline-stats">
 <div class="pipeline-stat" onclick="switchTab('failures');filterFailures('${type}')"><div class="num" style="color:#58a6ff">${total}</div><div class="label">Total</div></div>
 <div class="pipeline-stat" onclick="switchTab('failures');filterFailures('${type}')"><div class="num" style="color:#3fb950">${succ}</div><div class="label">Success</div></div>
@@ -382,7 +363,7 @@ ${reportLink}
 <div class="pipeline-stat" onclick="switchTab('trends')"><div class="num" style="color:${r>=80?'#3fb950':r>=60?'#d29922':'#f85149'}">${r}%</div><div class="label">Rate</div></div>
 </div>
 <div class="progress-bar"><div class="progress-fill" style="width:${r}%;background:${TYPE_COLORS[type]||'#58a6ff'}"></div></div>
-<div style="margin-top:8px"><a class="btn-link" href="${vllmUrl}" target="_blank">View vllm-ascend Actions</a></div>
+<div style="margin-top:4px"><a class="btn-link" href="${vllmUrl}" target="_blank">vllm-ascend Actions</a></div>
 </div>`;
 }
 if(!html)html='<div class="empty-state">No pipeline data</div>';
@@ -390,11 +371,9 @@ document.getElementById('pipelineBreakdown').innerHTML=html;
 }
 
 function renderHealth(hs){
-const scores=hs?.scores||{};
-let html='';
+const scores=hs?.scores||{};let html='';
 for(const[type,data]of Object.entries(scores)){
-const s=data.score||0;
-const rating=data.rating||'unknown';
+const s=data.score||0;const rating=data.rating||'unknown';
 const ratingTag=`<span class="tag tag-${rating}">${rating}</span>`;
 html+=`<div class="health-card" onclick="switchTab('trends')"><div class="health-score" style="color:${s>=80?'#3fb950':s>=60?'#d29922':'#f85149'}">${s}</div>
 <div class="health-label">${TYPE_LABELS[type]||type} | ${ratingTag}</div></div>`;
@@ -404,14 +383,9 @@ document.getElementById('healthScores').innerHTML=html;
 }
 
 function renderCategories(cat){
-const dist=cat.distribution||{};
-let html='';
+const dist=cat.distribution||{};let html='';
 const total=Object.values(dist).reduce((a,b)=>a+b,0)||1;
-for(const[k,v]of Object.entries(dist)){
-const pct=((v/total)*100).toFixed(1);
-const tagHtml=getCatTag(k);
-html+=`<div class="stat-row" onclick="switchTab('failures')"><span class="stat-label">${tagHtml}</span><span class="stat-value">${v} (${pct}%)</span></div>`;
-}
+for(const[k,v]of Object.entries(dist)){const pct=((v/total)*100).toFixed(1);html+=`<div class="stat-row" onclick="switchTab('failures')"><span class="stat-label">${getCatTag(k)}</span><span class="stat-value">${v} (${pct}%)</span></div>`;}
 if(!html)html='<div class="empty-state">No classification data</div>';
 document.getElementById('categoryDistribution').innerHTML=html;
 }
@@ -420,55 +394,32 @@ function renderFailures(){
 const list=D?.recent_failures?.failures||[];
 let filtered=currentFailureFilter==='all'?list:list.filter(f=>f.pipeline_type===currentFailureFilter);
 if(searchQuery)filtered=filtered.filter(f=>(f.workflow_name||'').toLowerCase().includes(searchQuery));
-
 let html='';
 for(const f of filtered.slice(0,30)){
-const catTag=getCatTag(f.classification);
-const statusTag=getStatusTag(f.status);
-const typeTag=getTypeTag(f.pipeline_type);
-const keyErr=f.key_errors&&f.key_errors.length?`<span class="key-error">${f.key_errors[0]}</span>`:(f.status==='skipped'?`<span style="color:#8b949e;font-size:12px">Skipped</span>`:f.status==='cancelled'?`<span style="color:#d29922;font-size:12px">Cancelled</span>`:f.detail?`<span style="color:#8b949e;font-size:12px">${f.detail.substring(0,40)}</span>`:'<span style="color:#484f58">-</span>');
+const catTag=getCatTag(f.classification);const statusTag=getStatusTag(f.status);const typeTag=getTypeTag(f.pipeline_type);
+const keyErr=f.key_errors&&f.key_errors.length?`<span class="key-error">${f.key_errors[0]}</span>`:(f.status==='skipped'?`<span style="color:#8b949e;font-size:11px">Skipped</span>`:f.status==='cancelled'?`<span style="color:#d29922;font-size:11px">Cancelled</span>`:f.detail?`<span style="color:#8b949e;font-size:11px">${f.detail.substring(0,40)}</span>`:'<span style="color:#484f58">-</span>');
 const time=(f.started_at||'').substring(0,10);
 html+=`<tr onclick="showFailureDetail(D.recent_failures.failures.find(x=>x.run_id===${f.run_id}))">
-<td>${f.workflow_name||'N/A'}</td>
-<td>${statusTag}</td>
-<td>${catTag}</td>
-<td>${keyErr}</td>
-<td>${time}</td>
-<td>${typeTag}</td>
-<td><a class="btn-link" href="${f.run_url}" target="_blank">Run</a> <a class="btn-link" href="${f.report_url}" target="_blank">Report</a></td>
-</tr>`;
+<td>${f.workflow_name||'N/A'}</td><td>${statusTag}</td><td>${catTag}</td><td>${keyErr}</td><td>${time}</td><td>${typeTag}</td>
+<td><a class="btn-link" href="${f.run_url}" target="_blank">Run</a> <a class="btn-link" href="${f.report_url}" target="_blank">Report</a></td></tr>`;
 }
 if(!html)html='<tr><td colspan="7" class="empty-state">No matching failures</td></tr>';
 document.getElementById('failuresBody').innerHTML=html;
 }
 
 function renderReports(){
-const reports=D?.reports||{};
-let allReports=[];
-for(const type of ['nightly','weekly','pr']){
-const list=reports[type]||[];
-for(const r of list){
-r._type=type;
-allReports.push(r);
-}
-}
+const reports=D?.reports||{};let allReports=[];
+for(const type of['nightly','weekly','pr']){const list=reports[type]||[];for(const r of list){r._type=type;allReports.push(r);}}
 let filtered=currentReportFilter==='all'?allReports:allReports.filter(r=>r._type===currentReportFilter);
 filtered.sort((a,b)=>b.date.localeCompare(a.date));
-
 let html='';
 for(const r of filtered){
-const typeTag=getTypeTag(r._type);
-const name=r.name?`PR ${r.name}`:`${TYPE_LABELS[r._type]} ${r.date}`;
-const stats=r.total_runs!==undefined?`Total: ${r.total_runs} | Success: ${r.success_runs} | Failure: ${r.failure_runs}`:'';
-const preview=r.preview||'';
+const typeTag=getTypeTag(r._type);const name=r.name?`PR ${r.name}`:`${TYPE_LABELS[r._type]} ${r.date}`;
+const stats=r.total_runs!==undefined?`Total: ${r.total_runs} | Succ: ${r.success_runs} | Fail: ${r.failure_runs}`:'';
 html+=`<div class="report-card" onclick="showReportDetail(${JSON.stringify(r).replace(/"/g,'&quot;')})">
-<div class="title">${typeTag} ${name}</div>
-<div class="meta">${r.date}${stats?' | '+stats:''}</div>
-<div class="actions">
-<a class="btn btn-primary" href="${r.url}" target="_blank">View Report</a>
-<a class="btn" href="${r.raw_url}" target="_blank">Raw</a>
-</div>
-${preview?'<div class="preview">'+preview.substring(0,150)+'...</div>':''}
+<div class="title">${typeTag} ${name}</div><div class="meta">${r.date}${stats?' | '+stats:''}</div>
+<div style="margin-top:4px;display:flex;gap:4px"><a class="btn btn-primary" href="${r.url}" target="_blank">View Report</a><a class="btn" href="${r.raw_url}" target="_blank">Raw</a></div>
+${r.preview?'<div class="preview">'+r.preview.substring(0,120)+'...</div>':''}
 </div>`;
 }
 if(!html)html='<div class="empty-state">No reports available</div>';
@@ -484,50 +435,28 @@ drawLineChart('healthChart',pipes,'health_score_trend','dates','Health Score','#
 }
 
 function drawLineChart(canvasId,pipes,dataKey,dateKey,label,color){
-const canvas=document.getElementById(canvasId);
-if(!canvas)return;
-const ctx=canvas.getContext('2d');
-const dpr=window.devicePixelRatio||1;
+const canvas=document.getElementById(canvasId);if(!canvas)return;
+const ctx=canvas.getContext('2d');const dpr=window.devicePixelRatio||1;
 const rect=canvas.parentElement.getBoundingClientRect();
-canvas.width=rect.width*dpr;
-canvas.height=rect.height*dpr;
-ctx.scale(dpr,dpr);
-canvas.style.width=rect.width+'px';
-canvas.style.height=rect.height+'px';
+canvas.width=rect.width*dpr;canvas.height=rect.height*dpr;ctx.scale(dpr,dpr);
+canvas.style.width=rect.width+'px';canvas.style.height=rect.height+'px';
 ctx.clearRect(0,0,rect.width,rect.height);
-const allTypes=['pr','nightly','weekly'];
-const pad=50;
-const w=rect.width-pad*2;
-const h=rect.height-pad*2;
+const allTypes=['pr','nightly','weekly'];const pad=40;const w=rect.width-pad*2;const h=rect.height-pad*2;
 let maxVal=10,minVal=0;
-for(const type of allTypes){
-const p=pipes[type];
-if(p&&p[dataKey]){
-maxVal=Math.max(maxVal,...p[dataKey]);
-minVal=Math.min(minVal,...p[dataKey]);
-}
-}
+for(const type of allTypes){const p=pipes[type];if(p&&p[dataKey]){maxVal=Math.max(maxVal,...p[dataKey]);minVal=Math.min(minVal,...p[dataKey]);}}
 maxVal=Math.max(maxVal,minVal+10);
 ctx.strokeStyle='#30363d';ctx.lineWidth=1;
 ctx.beginPath();ctx.moveTo(pad,pad);ctx.lineTo(pad,rect.height-pad);ctx.lineTo(rect.width-pad,rect.height-pad);ctx.stroke();
-ctx.fillStyle='#8b949e';ctx.font='11px sans-serif';
-ctx.fillText(maxVal.toFixed(0),4,pad+4);
-ctx.fillText(minVal.toFixed(0),4,rect.height-pad);
-const range=maxVal-minVal||1;
-let legendY=pad+12;
+ctx.fillStyle='#8b949e';ctx.font='10px sans-serif';
+ctx.fillText(maxVal.toFixed(0),2,pad+4);ctx.fillText(minVal.toFixed(0),2,rect.height-pad);
+const range=maxVal-minVal||1;let legendY=pad+12;
 for(const type of allTypes){
-const p=pipes[type];
-if(!p||!p[dataKey]||!p[dateKey])continue;
-const data=p[dataKey];
-const dates=p[dateKey];
-ctx.beginPath();
-ctx.strokeStyle=TYPE_COLORS[type]||color;
-ctx.lineWidth=2;
+const p=pipes[type];if(!p||!p[dataKey]||!p[dateKey])continue;
+const data=p[dataKey];ctx.beginPath();ctx.strokeStyle=TYPE_COLORS[type]||color;ctx.lineWidth=2;
 for(let i=0;i<data.length;i++){
 const x=pad+i*Math.max(w/(Math.max(data.length-1,1)),0);
 const y=rect.height-pad-(data[i]-minVal)/range*h;
-if(i===0)ctx.moveTo(x,y);
-else ctx.lineTo(x,y);
+if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);
 }
 ctx.stroke();
 for(let i=0;i<data.length;i++){
@@ -535,18 +464,11 @@ const x=pad+i*Math.max(w/(Math.max(data.length-1,1)),0);
 const y=rect.height-pad-(data[i]-minVal)/range*h;
 ctx.beginPath();ctx.arc(x,y,3,0,2*Math.PI);ctx.fillStyle=TYPE_COLORS[type];ctx.fill();
 }
-ctx.fillStyle=TYPE_COLORS[type];
-ctx.fillText(TYPE_LABELS[type]+' '+label,rect.width-pad-100,legendY);
-legendY+=14;
+ctx.fillStyle=TYPE_COLORS[type];ctx.fillText(TYPE_LABELS[type]+' '+label,rect.width-pad-90,legendY);legendY+=12;
 }
-if(dates&&dates.length>0){
-ctx.fillStyle='#484f58';ctx.font='10px sans-serif';
-for(let i=0;i<dates.length;i++){
-const x=pad+i*Math.max(w/(Math.max(dates.length-1,1)),0);
-ctx.fillText(dates[i].substring(5),x-15,rect.height-pad+14);
-}
-}
-}
+if(pipes.pr&&pipes.pr[dateKey]){ctx.fillStyle='#484f58';ctx.font='9px sans-serif';const dates=pipes.pr[dateKey];
+for(let i=0;i<dates.length;i++){const x=pad+i*Math.max(w/(Math.max(dates.length-1,1)),0);ctx.fillText(dates[i].substring(5),x-12,rect.height-pad+12);}
+}}
 
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
 loadData();
