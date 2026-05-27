@@ -66,12 +66,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .status-skipped{background:#8b949e22;color:#8b949e;border:1px solid #8b949e}
 .status-cancelled{background:#d2992222;color:#d29922;border:1px solid #d29922}
 .key-error{display:inline-block;background:#f8514911;color:#f85149;padding:1px 4px;border-radius:3px;font-size:10px;max-width:250px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.reports-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px}
-.report-card{background:#161b22;border:1px solid #30363d;border-radius:6px;padding:12px;cursor:pointer;transition:border-color .2s}
-.report-card:hover{border-color:#58a6ff}
-.report-card .title{font-size:13px;color:#f0f6fc;margin-bottom:2px;display:flex;align-items:center;gap:6px}
-.report-card .meta{font-size:11px;color:#8b949e;margin-bottom:6px}
-.report-card .preview{font-size:11px;color:#8b949e;line-height:1.3;margin-top:6px;border-top:1px solid #21262d;padding-top:6px}
+.reports-table{width:100%;border-collapse:collapse;font-size:12px}
+.reports-table th{text-align:left;color:#8b949e;padding:6px;border-bottom:1px solid #30363d;white-space:nowrap}
+.reports-table td{padding:6px;border-bottom:1px solid #21262d}
+.reports-table tr{cursor:pointer;transition:background .2s}
+.reports-table tr:hover{background:#1c2128}
 .btn{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:5px;font-size:11px;cursor:pointer;border:1px solid #30363d;background:#21262d;color:#c9d1d9;transition:all .2s}
 .btn:hover{background:#30363d;color:#f0f6fc}
 .btn-primary{background:#1f6feb;border-color:#1f6feb;color:#fff}
@@ -120,10 +119,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .header{padding:8px 12px}.header h1{font-size:16px}.header .repo{font-size:11px}
 .container{padding:8px}.grid{grid-template-columns:1fr}.health-grid{grid-template-columns:1fr}
 .pipeline-stats{grid-template-columns:1fr 1fr}.card{padding:12px}
-.failures-table{font-size:11px}.filter-bar{flex-wrap:wrap;gap:4px}
+.failures-table,.reports-table{font-size:11px}.filter-bar{flex-wrap:wrap;gap:4px}
 .search-input,.pr-lookup input{width:100%;min-width:0}
 .tab{padding:4px 10px;font-size:11px}
-.reports-grid{grid-template-columns:1fr}.detail-modal-content{max-width:100%;padding:16px}
+.detail-modal-content{max-width:100%;padding:16px}
 .toolbar{flex-wrap:wrap}.pr-lookup input{width:80px}
 }
 </style>
@@ -146,11 +145,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 <div class="tab" data-tab="reports" onclick="switchTab('reports')">Reports</div>
 <div class="tab" data-tab="prlookup" onclick="switchTab('prlookup')">PR Lookup</div>
 <div class="tab" data-tab="settings" onclick="switchTab('settings')">Settings</div>
-</div>
-<div class="toolbar">
-<div class="pr-lookup"><input id="prSearchInput" placeholder="PR # e.g. 9549" onkeyup="if(event.key==='Enter')doPrLookup()"><button class="btn btn-primary" onclick="doPrLookup()">Search PR</button></div>
-<button class="btn" onclick="exportCSV()">Export CSV</button>
-<button class="btn" onclick="exportJSON()">Export JSON</button>
 </div>
 <div id="overviewPanel">
 <div class="grid">
@@ -188,10 +182,22 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 <div class="filter-btn" data-rfilter="nightly" onclick="filterReports('nightly')">Nightly</div>
 <div class="filter-btn" data-rfilter="weekly" onclick="filterReports('weekly')">Weekly</div>
 <div class="filter-btn" data-rfilter="pr" onclick="filterReports('pr')">PR</div>
+<button class="btn" onclick="exportCSV()" style="margin-left:auto">Export CSV</button>
+<button class="btn" onclick="exportJSON()">Export JSON</button>
 </div>
-<div class="reports-grid" id="reportsGrid"></div>
+<div class="card">
+<table class="reports-table">
+<thead><tr><th>Pipeline</th><th>Name</th><th>Date</th><th>Stats</th><th>Preview</th><th>Actions</th></tr></thead>
+<tbody id="reportsBody"></tbody>
+</table>
+</div>
 </div>
 <div id="prlookupPanel" style="display:none">
+<div class="toolbar">
+<div class="pr-lookup"><input id="prSearchInput" placeholder="PR # e.g. 9549" onkeyup="if(event.key==='Enter')doPrLookup()"><button class="btn btn-primary" onclick="doPrLookup()">Search PR</button></div>
+<button class="btn" onclick="exportCSV()">Export CSV</button>
+<button class="btn" onclick="exportJSON()">Export JSON</button>
+</div>
 <div class="card" id="prLookupResult"><div class="empty-state">Enter a PR number above to view its workflow runs, failures, and error details.</div></div>
 </div>
 <div id="settingsPanel" style="display:none">
@@ -477,15 +483,15 @@ filtered.sort((a,b)=>b.date.localeCompare(a.date));
 let html='';
 for(const r of filtered){
 const typeTag=getTypeTag(r._type);const name=r.name?`PR ${r.name}`:`${TYPE_LABELS[r._type]} ${r.date}`;
-const stats=r.total_runs!==undefined?`Total: ${r.total_runs} | Succ: ${r.success_runs} | Fail: ${r.failure_runs}`:'';
-html+=`<div class="report-card" onclick="showReportDetail(${JSON.stringify(r).replace(/"/g,'&quot;')})">
-<div class="title">${typeTag} ${name}</div><div class="meta">${r.date}${stats?' | '+stats:''}</div>
-<div style="margin-top:4px;display:flex;gap:4px"><a class="btn btn-primary" href="${r.url}" target="_blank">View Report</a><a class="btn" href="${r.raw_url}" target="_blank">Raw</a></div>
-${r.preview?'<div class="preview">'+r.preview.substring(0,120)+'...</div>':''}
-</div>`;
+const stats=r.total_runs!==undefined?`${r.total_runs} total, ${r.success_runs} succ, ${r.failure_runs} fail`:(r.overall_classification||'');
+const preview=r.preview?r.preview.substring(0,80)+'...':'';
+html+=`<tr onclick="showReportDetail(${JSON.stringify(r).replace(/"/g,'&quot;')})">
+<td>${typeTag}</td><td style="color:#f0f6fc">${name}</td><td>${r.date}</td><td style="font-size:11px;color:#8b949e">${stats}</td>
+<td style="font-size:11px;color:#8b949e;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${preview}</td>
+<td><a class="btn-link" href="${r.url}" target="_blank">View</a> <a class="btn-link" href="${r.raw_url}" target="_blank">Raw</a></td></tr>`;
 }
-if(!html)html='<div class="empty-state">No reports available</div>';
-document.getElementById('reportsGrid').innerHTML=html;
+if(!html)html='<tr><td colspan="6" class="empty-state">No reports available</td></tr>';
+document.getElementById('reportsBody').innerHTML=html;
 }
 
 function renderCharts(){
