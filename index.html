@@ -203,24 +203,27 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 <div id="settingsPanel" style="display:none">
 <div class="card">
 <div class="card-title">通知设置</div>
-<p style="font-size:13px;color:#8b949e;margin-bottom:12px">配置构建失败告警的通知渠道。在输入框中填写值，点击「复制并设置」按钮，将生成的命令在终端执行即可完成配置。<br>已配置的敏感值仅显示「已配置」，不显示实际内容。</p>
+<p style="font-size:13px;color:#8b949e;margin-bottom:12px">配置构建失败告警的通知渠道，均支持多收件人。在输入框中填写值，点击「复制并设置」按钮，将生成的命令在终端执行即可完成配置。<br>飞书/钉钉使用应用 API 发送个人消息；邮件使用 SMTP 发送。已配置的敏感值仅显示「已配置」。</p>
 <div class="settings-section">
-<h4><span class="status-dot" id="feishuDot"></span> Feishu (飞书)</h4>
+<h4><span class="status-dot" id="feishuDot"></span> 飞书 (个人消息)</h4>
 <div class="settings-form">
-<label>Webhook URL</label><input id="feishuWebhook" placeholder="输入 Webhook URL，如 https://open.feishu.cn/open-apis/bot/v2/hook/xxx">
-<label>签名密钥 (可选)</label><input id="feishuSecret" placeholder="输入签名密钥（可选）">
+<label>App ID</label><input id="feishuAppId" placeholder="飞书自建应用的 App ID">
+<label>App Secret</label><input id="feishuAppSecret" placeholder="飞书自建应用的 App Secret">
+<label>接收人 open_id (多人逗号分隔)</label><input id="feishuReceiveIds" placeholder="如 ou_xxxx1,ou_xxxx2">
 </div>
-<div style="margin-top:8px"><button class="btn btn-primary" onclick="copySecretCmd('FEISHU_WEBHOOK_URL','feishuWebhook')">复制并设置 (URL)</button> <button class="btn" onclick="copySecretCmd('FEISHU_SIGN_SECRET','feishuSecret')">复制并设置 (签名)</button></div>
-<div class="cmd-block" id="feishuCmdBlock">gh secret set FEISHU_WEBHOOK_URL --repo winson-00178005/build-eye <button class="copy-btn" onclick="copyText('gh secret set FEISHU_WEBHOOK_URL --repo winson-00178005/build-eye')">复制</button></div>
+<div style="margin-top:8px"><button class="btn btn-primary" onclick="copySecretCmd('FEISHU_APP_ID','feishuAppId')">复制并设置 (App ID)</button> <button class="btn" onclick="copySecretCmd('FEISHU_APP_SECRET','feishuAppSecret')">复制并设置 (App Secret)</button> <button class="btn" onclick="copySecretCmd('FEISHU_RECEIVE_IDS','feishuReceiveIds')">复制并设置 (接收人)</button></div>
+<div class="cmd-block">gh secret set FEISHU_APP_ID --repo winson-00178005/build-eye <button class="copy-btn" onclick="copyText('gh secret set FEISHU_APP_ID --repo winson-00178005/build-eye')">复制</button></div>
 </div>
 <div class="settings-section">
-<h4><span class="status-dot" id="dingtalkDot"></span> DingTalk (钉钉)</h4>
+<h4><span class="status-dot" id="dingtalkDot"></span> 钉钉 (个人消息)</h4>
 <div class="settings-form">
-<label>Webhook URL</label><input id="dingtalkWebhook" placeholder="输入 Webhook URL，如 https://oapi.dingtalk.com/robot/send?access_token=xxx">
-<label>签名密钥 (可选)</label><input id="dingtalkSecret" placeholder="输入签名密钥（可选）">
+<label>AppKey</label><input id="dingtalkAppKey" placeholder="钉钉企业内部应用的 AppKey">
+<label>AppSecret</label><input id="dingtalkAppSecret" placeholder="钉钉企业内部应用的 AppSecret">
+<label>AgentId</label><input id="dingtalkAgentId" placeholder="工作通知的应用 AgentId">
+<label>接收人 userid (多人逗号分隔)</label><input id="dingtalkReceiveIds" placeholder="如 user001,user002">
 </div>
-<div style="margin-top:8px"><button class="btn btn-primary" onclick="copySecretCmd('DINGTALK_WEBHOOK_URL','dingtalkWebhook')">复制并设置 (URL)</button> <button class="btn" onclick="copySecretCmd('DINGTALK_SIGN_SECRET','dingtalkSecret')">复制并设置 (签名)</button></div>
-<div class="cmd-block" id="dingtalkCmdBlock">gh secret set DINGTALK_WEBHOOK_URL --repo winson-00178005/build-eye <button class="copy-btn" onclick="copyText('gh secret set DINGTALK_WEBHOOK_URL --repo winson-00178005/build-eye')">复制</button></div>
+<div style="margin-top:8px"><button class="btn btn-primary" onclick="copySecretCmd('DINGTALK_APP_KEY','dingtalkAppKey')">复制并设置 (AppKey)</button> <button class="btn" onclick="copySecretCmd('DINGTALK_APP_SECRET','dingtalkAppSecret')">复制并设置 (AppSecret)</button> <button class="btn" onclick="copySecretCmd('DINGTALK_AGENT_ID','dingtalkAgentId')">复制并设置 (AgentId)</button> <button class="btn" onclick="copySecretCmd('DINGTALK_RECEIVE_IDS','dingtalkReceiveIds')">复制并设置 (接收人)</button></div>
+<div class="cmd-block">gh secret set DINGTALK_APP_KEY --repo winson-00178005/build-eye <button class="copy-btn" onclick="copyText('gh secret set DINGTALK_APP_KEY --repo winson-00178005/build-eye')">复制</button></div>
 </div>
 <div class="settings-section">
 <h4><span class="status-dot" id="emailDot"></span> Email (邮件)</h4>
@@ -541,11 +544,14 @@ for(let i=0;i<dates.length;i++){const x=pad+i*Math.max(w/(Math.max(dates.length-
 function renderSettings(){
 const ns=D?.notification_settings||{};
 document.getElementById('feishuDot').className='status-dot '+((ns.feishu_enabled)?'on':'off');
-if(ns.feishu_webhook_url){document.getElementById('feishuWebhook').placeholder='已配置 (输入新值可覆盖)';}else{document.getElementById('feishuWebhook').placeholder='输入 Webhook URL';}
-if(ns.feishu_sign_secret){document.getElementById('feishuSecret').placeholder='已配置 (输入新值可覆盖)';}else{document.getElementById('feishuSecret').placeholder='输入签名密钥（可选）';}
+if(ns.feishu_app_id){document.getElementById('feishuAppId').placeholder='已配置 (输入新值可覆盖)';}
+if(ns.feishu_app_secret){document.getElementById('feishuAppSecret').placeholder='已配置 (输入新值可覆盖)';}
+if(ns.feishu_receive_ids){document.getElementById('feishuReceiveIds').placeholder='已配置: '+ns.feishu_receive_ids+' (输入新值可覆盖)';}
 document.getElementById('dingtalkDot').className='status-dot '+((ns.dingtalk_enabled)?'on':'off');
-if(ns.dingtalk_webhook_url){document.getElementById('dingtalkWebhook').placeholder='已配置 (输入新值可覆盖)';}else{document.getElementById('dingtalkWebhook').placeholder='输入 Webhook URL';}
-if(ns.dingtalk_sign_secret){document.getElementById('dingtalkSecret').placeholder='已配置 (输入新值可覆盖)';}else{document.getElementById('dingtalkSecret').placeholder='输入签名密钥（可选）';}
+if(ns.dingtalk_app_key){document.getElementById('dingtalkAppKey').placeholder='已配置 (输入新值可覆盖)';}
+if(ns.dingtalk_app_secret){document.getElementById('dingtalkAppSecret').placeholder='已配置 (输入新值可覆盖)';}
+if(ns.dingtalk_agent_id){document.getElementById('dingtalkAgentId').placeholder='已配置 (输入新值可覆盖)';}
+if(ns.dingtalk_receive_ids){document.getElementById('dingtalkReceiveIds').placeholder='已配置: '+ns.dingtalk_receive_ids+' (输入新值可覆盖)';}
 document.getElementById('emailDot').className='status-dot '+((ns.email_enabled)?'on':'off');
 if(ns.smtp_host){document.getElementById('smtpHost').placeholder='已配置 (输入新值可覆盖)';}
 if(ns.smtp_port){document.getElementById('smtpPort').placeholder='已配置: '+ns.smtp_port+' (输入新值可覆盖)';}
