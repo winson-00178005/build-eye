@@ -130,122 +130,122 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 <body>
 <div class="header">
 <h1 onclick="switchTab('overview')">Build-Eye</h1>
-<span class="badge">CI Monitor</span>
-<div class="refresh-indicator" id="refreshIndicator"><span class="dot" id="refreshDot"></span> <span id="refreshText">Loading...</span></div>
+<span class="badge">CI 监控</span>
+<div class="refresh-indicator" id="refreshIndicator"><span class="dot" id="refreshDot"></span> <span id="refreshText">加载中...</span></div>
 <span class="repo" id="repoName" onclick="window.open(VLLM_REPO,'_blank')">vllm-project/vllm-ascend</span>
 </div>
 <div id="alertBanner" style="display:none"></div>
 <div class="container">
-<div id="loadingIndicator" style="text-align:center;padding:30px;color:#58a6ff">Loading...</div>
+<div id="loadingIndicator" style="text-align:center;padding:30px;color:#58a6ff">加载中...</div>
 <div id="dashboardContent" style="display:none">
 <div class="tabs">
-<div class="tab active" data-tab="overview" onclick="switchTab('overview')">Overview</div>
-<div class="tab" data-tab="failures" onclick="switchTab('failures')">Failures</div>
-<div class="tab" data-tab="trends" onclick="switchTab('trends')">Trends</div>
-<div class="tab" data-tab="reports" onclick="switchTab('reports')">Reports</div>
-<div class="tab" data-tab="prlookup" onclick="switchTab('prlookup')">PR Lookup</div>
-<div class="tab" data-tab="settings" onclick="switchTab('settings')">Settings</div>
+<div class="tab active" data-tab="overview" onclick="switchTab('overview')">概览</div>
+<div class="tab" data-tab="failures" onclick="switchTab('failures')">失败记录</div>
+<div class="tab" data-tab="trends" onclick="switchTab('trends')">趋势</div>
+<div class="tab" data-tab="reports" onclick="switchTab('reports')">报告</div>
+<div class="tab" data-tab="prlookup" onclick="switchTab('prlookup')">PR 查询</div>
+<div class="tab" data-tab="settings" onclick="switchTab('settings')">设置</div>
 </div>
 <div id="overviewPanel">
 <div class="grid">
-<div class="card"><div class="card-title">Summary</div><div id="summaryStats"></div></div>
-<div class="card"><div class="card-title">Health Scores</div><div class="health-grid" id="healthScores"></div></div>
-<div class="card"><div class="card-title">Root Cause Distribution</div><div id="categoryDistribution"></div></div>
+<div class="card"><div class="card-title">概要</div><div id="summaryStats"></div></div>
+<div class="card"><div class="card-title">健康评分</div><div class="health-grid" id="healthScores"></div></div>
+<div class="card"><div class="card-title">根因分布</div><div id="categoryDistribution"></div></div>
 </div>
-<div class="card"><div class="card-title">Pipeline Breakdown</div><div id="pipelineBreakdown"></div></div>
+<div class="card"><div class="card-title">流水线详情</div><div id="pipelineBreakdown"></div></div>
 </div>
 <div id="failuresPanel" style="display:none">
 <div class="filter-bar">
-<div class="filter-btn active" data-filter="all" onclick="filterFailures('all')">All</div>
+<div class="filter-btn active" data-filter="all" onclick="filterFailures('all')">全部</div>
 <div class="filter-btn" data-filter="nightly" onclick="filterFailures('nightly')">Nightly</div>
 <div class="filter-btn" data-filter="pr" onclick="filterFailures('pr')">PR</div>
 <div class="filter-btn" data-filter="weekly" onclick="filterFailures('weekly')">Weekly</div>
-<input type="text" class="search-input" placeholder="Search workflow..." oninput="searchFailures(this.value)">
+<input type="text" class="search-input" placeholder="搜索工作流..." oninput="searchFailures(this.value)">
 </div>
 <div class="card">
 <table class="failures-table">
-<thead><tr><th>Workflow</th><th>Status</th><th>Root Cause</th><th>Key Error</th><th>Time</th><th>Pipeline</th><th>Actions</th></tr></thead>
+<thead><tr><th>工作流</th><th>状态</th><th>根因</th><th>关键错误</th><th>时间</th><th>流水线</th><th>操作</th></tr></thead>
 <tbody id="failuresBody"></tbody>
 </table>
 </div>
 </div>
 <div id="trendsPanel" style="display:none">
 <div class="grid">
-<div class="card"><div class="card-title">Success Rate (7d)</div><div class="trend-chart"><canvas class="chart-canvas" id="successRateChart"></canvas></div></div>
-<div class="card"><div class="card-title">Failure Count (7d)</div><div class="trend-chart"><canvas class="chart-canvas" id="failureChart"></canvas></div></div>
-<div class="card"><div class="card-title">Health Score (7d)</div><div class="trend-chart"><canvas class="chart-canvas" id="healthChart"></canvas></div></div>
+<div class="card"><div class="card-title">成功率 (7天)</div><div class="trend-chart"><canvas class="chart-canvas" id="successRateChart"></canvas></div></div>
+<div class="card"><div class="card-title">失败数 (7天)</div><div class="trend-chart"><canvas class="chart-canvas" id="failureChart"></canvas></div></div>
+<div class="card"><div class="card-title">健康评分 (7天)</div><div class="trend-chart"><canvas class="chart-canvas" id="healthChart"></canvas></div></div>
 </div>
 </div>
 <div id="reportsPanel" style="display:none">
 <div class="filter-bar">
-<div class="filter-btn active" data-rfilter="all" onclick="filterReports('all')">All</div>
+<div class="filter-btn active" data-rfilter="all" onclick="filterReports('all')">全部</div>
 <div class="filter-btn" data-rfilter="nightly" onclick="filterReports('nightly')">Nightly</div>
 <div class="filter-btn" data-rfilter="weekly" onclick="filterReports('weekly')">Weekly</div>
 <div class="filter-btn" data-rfilter="pr" onclick="filterReports('pr')">PR</div>
-<button class="btn" onclick="exportCSV()" style="margin-left:auto">Export CSV</button>
-<button class="btn" onclick="exportJSON()">Export JSON</button>
+<button class="btn" onclick="exportCSV()" style="margin-left:auto">导出 CSV</button>
+<button class="btn" onclick="exportJSON()">导出 JSON</button>
 </div>
 <div class="card">
 <table class="reports-table">
-<thead><tr><th>Pipeline</th><th>Name</th><th>Date</th><th>Stats</th><th>Preview</th><th>Actions</th></tr></thead>
+<thead><tr><th>流水线</th><th>名称</th><th>日期</th><th>统计</th><th>预览</th><th>操作</th></tr></thead>
 <tbody id="reportsBody"></tbody>
 </table>
 </div>
 </div>
 <div id="prlookupPanel" style="display:none">
 <div class="toolbar">
-<div class="pr-lookup"><input id="prSearchInput" placeholder="PR # e.g. 9549" onkeyup="if(event.key==='Enter')doPrLookup()"><button class="btn btn-primary" onclick="doPrLookup()">Search PR</button></div>
-<button class="btn" onclick="exportCSV()">Export CSV</button>
-<button class="btn" onclick="exportJSON()">Export JSON</button>
+<div class="pr-lookup"><input id="prSearchInput" placeholder="PR号 例如 9549" onkeyup="if(event.key==='Enter')doPrLookup()"><button class="btn btn-primary" onclick="doPrLookup()">查询</button></div>
+<button class="btn" onclick="exportCSV()">导出 CSV</button>
+<button class="btn" onclick="exportJSON()">导出 JSON</button>
 </div>
-<div class="card" id="prLookupResult"><div class="empty-state">Enter a PR number above to view its workflow runs, failures, and error details.</div></div>
+<div class="card" id="prLookupResult"><div class="empty-state">输入 PR 号查看相关工作流运行、失败记录和错误详情。</div></div>
 </div>
 <div id="settingsPanel" style="display:none">
 <div class="card">
-<div class="card-title">Notification Settings</div>
-<p style="font-size:13px;color:#8b949e;margin-bottom:12px">Configure notification channels for build failure alerts. Sensitive values (webhook URLs, passwords) are stored as GitHub Secrets and cannot be edited from this page. Use the commands below to set them.</p>
+<div class="card-title">通知设置</div>
+<p style="font-size:13px;color:#8b949e;margin-bottom:12px">配置构建失败告警的通知渠道。敏感信息（Webhook URL、密码等）以 GitHub Secrets 存储，不可在此页面编辑，请使用下方命令设置。</p>
 <div class="settings-section">
 <h4><span class="status-dot" id="feishuDot"></span> Feishu (飞书)</h4>
 <div class="settings-form">
 <label>Webhook URL</label><input id="feishuWebhook" placeholder="https://open.feishu.cn/open-apis/bot/v2/hook/xxx" readonly>
-<label>Sign Secret (optional)</label><input id="feishuSecret" placeholder="签名密钥" readonly>
+<label>签名密钥 (可选)</label><input id="feishuSecret" placeholder="签名密钥" readonly>
 </div>
-<div style="margin-top:8px"><button class="btn btn-primary" onclick="copyCmd('gh secret set FEISHU_WEBHOOK_URL')">Copy Set Command (URL)</button> <button class="btn" onclick="copyCmd('gh secret set FEISHU_SIGN_SECRET')">Copy Set Command (Sign)</button></div>
+<div style="margin-top:8px"><button class="btn btn-primary" onclick="copyCmd('gh secret set FEISHU_WEBHOOK_URL')">复制设置命令 (URL)</button> <button class="btn" onclick="copyCmd('gh secret set FEISHU_SIGN_SECRET')">复制设置命令 (签名)</button></div>
 <div class="cmd-block">gh secret set FEISHU_WEBHOOK_URL --repo winson-00178005/build-eye <button class="copy-btn" onclick="copyText('gh secret set FEISHU_WEBHOOK_URL --repo winson-00178005/build-eye')">Copy</button></div>
 </div>
 <div class="settings-section">
 <h4><span class="status-dot" id="dingtalkDot"></span> DingTalk (钉钉)</h4>
 <div class="settings-form">
 <label>Webhook URL</label><input id="dingtalkWebhook" placeholder="https://oapi.dingtalk.com/robot/send?access_token=xxx" readonly>
-<label>Sign Secret (optional)</label><input id="dingtalkSecret" placeholder="签名密钥" readonly>
+<label>签名密钥 (可选)</label><input id="dingtalkSecret" placeholder="签名密钥" readonly>
 </div>
-<div style="margin-top:8px"><button class="btn btn-primary" onclick="copyCmd('gh secret set DINGTALK_WEBHOOK_URL')">Copy Set Command (URL)</button> <button class="btn" onclick="copyCmd('gh secret set DINGTALK_SIGN_SECRET')">Copy Set Command (Sign)</button></div>
+<div style="margin-top:8px"><button class="btn btn-primary" onclick="copyCmd('gh secret set DINGTALK_WEBHOOK_URL')">复制设置命令 (URL)</button> <button class="btn" onclick="copyCmd('gh secret set DINGTALK_SIGN_SECRET')">复制设置命令 (签名)</button></div>
 <div class="cmd-block">gh secret set DINGTALK_WEBHOOK_URL --repo winson-00178005/build-eye <button class="copy-btn" onclick="copyText('gh secret set DINGTALK_WEBHOOK_URL --repo winson-00178005/build-eye')">Copy</button></div>
 </div>
 <div class="settings-section">
 <h4><span class="status-dot" id="emailDot"></span> Email (邮件)</h4>
 <div class="settings-form">
-<label>SMTP Host</label><input id="smtpHost" placeholder="smtp.qq.com" readonly>
-<label>SMTP Port</label><input id="smtpPort" placeholder="465" readonly>
-<label>SMTP User (发件邮箱)</label><input id="smtpUser" placeholder="user@example.com" readonly>
-<label>SMTP Password</label><input id="smtpPassword" placeholder="应用专用密码" readonly>
-<label>Recipients (收件邮箱，逗号分隔)</label><input id="smtpTo" placeholder="a@example.com,b@example.com" readonly>
-<label>Use SSL</label><input id="smtpSSL" placeholder="true" readonly>
+<label>SMTP 主机</label><input id="smtpHost" placeholder="smtp.qq.com" readonly>
+<label>SMTP 端口</label><input id="smtpPort" placeholder="465" readonly>
+<label>SMTP 用户 (发件邮箱)</label><input id="smtpUser" placeholder="user@example.com" readonly>
+<label>SMTP 密码</label><input id="smtpPassword" placeholder="应用专用密码" readonly>
+<label>收件邮箱 (逗号分隔)</label><input id="smtpTo" placeholder="a@example.com,b@example.com" readonly>
+<label>启用 SSL</label><input id="smtpSSL" placeholder="true" readonly>
 </div>
 <div style="margin-top:8px">
-<button class="btn btn-primary" onclick="copyCmd('gh secret set SMTP_HOST')">Set Host</button>
-<button class="btn" onclick="copyCmd('gh secret set SMTP_PORT')">Set Port</button>
-<button class="btn" onclick="copyCmd('gh secret set SMTP_USER')">Set User</button>
-<button class="btn" onclick="copyCmd('gh secret set SMTP_PASSWORD')">Set Password</button>
-<button class="btn" onclick="copyCmd('gh secret set SMTP_TO')">Set Recipients</button>
-<button class="btn" onclick="copyCmd('gh secret set SMTP_SSL')">Set SSL</button>
+<button class="btn btn-primary" onclick="copyCmd('gh secret set SMTP_HOST')">设置主机</button>
+<button class="btn" onclick="copyCmd('gh secret set SMTP_PORT')">设置端口</button>
+<button class="btn" onclick="copyCmd('gh secret set SMTP_USER')">设置用户</button>
+<button class="btn" onclick="copyCmd('gh secret set SMTP_PASSWORD')">设置密码</button>
+<button class="btn" onclick="copyCmd('gh secret set SMTP_TO')">设置收件人</button>
+<button class="btn" onclick="copyCmd('gh secret set SMTP_SSL')">设置SSL</button>
 </div>
 <div class="cmd-block">gh secret set SMTP_HOST --repo winson-00178005/build-eye <button class="copy-btn" onclick="copyText('gh secret set SMTP_HOST --repo winson-00178005/build-eye')">Copy</button></div>
 </div>
 <div class="settings-section">
-<h4>Test Notification</h4>
-<button class="btn btn-primary" onclick="testNotification()">Send Test Notification</button>
-<p style="font-size:11px;color:#8b949e;margin-top:6px">This triggers the test-notification workflow which sends a test message to all configured channels.</p>
+<h4>测试通知</h4>
+<button class="btn btn-primary" onclick="testNotification()">发送测试通知</button>
+<p style="font-size:11px;color:#8b949e;margin-top:6px">触发 test-notification 工作流，向所有已配置渠道发送测试消息。</p>
 </div>
 </div>
 </div>
@@ -254,16 +254,16 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 <div id="detailModal" class="detail-modal" style="display:none" onclick="if(event.target===this)closeModal()">
 <div class="detail-modal-content"><h3><span id="modalTitle"></span><button class="close-btn" onclick="closeModal()">&times;</button></h3><div id="modalBody"></div></div>
 </div>
-<div class="footer">Build-Eye CI Monitor | Auto-refresh every 5 min | <span id="updateTime"></span></div>
+<div class="footer">Build-Eye CI 监控 | 每5分钟自动刷新 | <span id="updateTime"></span></div>
 <script>
 const REPO_URL='https://github.com/winson-00178005/build-eye';
 const VLLM_REPO='https://github.com/vllm-project/vllm-ascend';
 let D=null;let currentTab='overview';let currentFailureFilter='all';let currentReportFilter='all';let searchQuery='';
 const TYPE_LABELS={pr:'PR CI',nightly:'Nightly',weekly:'Weekly'};
 const TYPE_COLORS={pr:'#58a6ff',nightly:'#3fb950',weekly:'#d29922'};
-const STATUS_LABELS={success:'Success',failure:'Failure',skipped:'Skipped',cancelled:'Cancelled',timed_out:'Timed Out',action_required:'Action Required'};
-const CAT_LABELS={code:'Code',infrastructure:'Infra',interference:'Interference',unknown:'Unknown'};
-const CONF_LABELS={high:'High',medium:'Medium',low:'Low'};
+const STATUS_LABELS={success:'成功',failure:'失败',skipped:'跳过',cancelled:'取消',timed_out:'超时',action_required:'需人工干预'};
+const CAT_LABELS={code:'代码',infrastructure:'基础设施',interference:'干扰',unknown:'未知'};
+const CONF_LABELS={high:'高',medium:'中',low:'低'};
 let refreshInterval=300;let refreshTimer=refreshInterval;let refreshTimerId=null;
 
 function startAutoRefresh(){
@@ -271,7 +271,7 @@ refreshTimerId=setInterval(()=>{
 refreshTimer--;
 if(refreshTimer<=0){refreshTimer=refreshInterval;loadDataSilent();}
 document.getElementById('refreshDot').className='dot';
-document.getElementById('refreshText').textContent='Refresh in '+refreshTimer+'s';
+document.getElementById('refreshText').textContent=refreshTimer+'秒后刷新';
 },1000);
 }
 
@@ -299,15 +299,15 @@ function getTypeTag(t){return`<span class="tag tag-${t}">${TYPE_LABELS[t]||t}</s
 function showFailureDetail(f){
 const catTag=getCatTag(f.classification);const statusTag=getStatusTag(f.status);
 const keyErrors=f.key_errors||[];
-let errHtml=keyErrors.length?keyErrors.map(e=>`<div class="error-item">${e}</div>`).join(''):'<span style="color:#8b949e">No key error extracted</span>';
-let html=`<div class="detail-field"><div class="field-label">Workflow</div><div class="field-value">${f.workflow_name}</div></div>
-<div class="detail-field"><div class="field-label">Status</div><div class="field-value">${statusTag}</div></div>
-<div class="detail-field"><div class="field-label">Root Cause</div><div class="field-value">${catTag} (${f.detail||'N/A'})</div></div>
-<div class="detail-field"><div class="field-label">Confidence</div><div class="field-value">${f.confidence}</div></div>
-<div class="detail-field"><div class="field-label">Key Errors</div><div class="error-list">${errHtml}</div></div>
-<div class="detail-field"><div class="field-label">Started</div><div class="field-value">${(f.started_at||'N/A').substring(0,19).replace('T',' ')}</div></div>
-<div class="detail-field"><div class="field-label">Pipeline</div><div class="field-value">${TYPE_LABELS[f.pipeline_type]||f.pipeline_type}</div></div>
-<div style="margin-top:12px;display:flex;gap:6px"><a class="btn btn-primary" href="${f.run_url}" target="_blank">View Run</a><a class="btn" href="${f.report_url}" target="_blank">View Report</a></div>`;
+let errHtml=keyErrors.length?keyErrors.map(e=>`<div class="error-item">${e}</div>`).join(''):'<span style="color:#8b949e">未提取到关键错误</span>';
+let html=`<div class="detail-field"><div class="field-label">工作流</div><div class="field-value">${f.workflow_name}</div></div>
+<div class="detail-field"><div class="field-label">状态</div><div class="field-value">${statusTag}</div></div>
+<div class="detail-field"><div class="field-label">根因</div><div class="field-value">${catTag} (${f.detail||'N/A'})</div></div>
+<div class="detail-field"><div class="field-label">置信度</div><div class="field-value">${f.confidence}</div></div>
+<div class="detail-field"><div class="field-label">关键错误</div><div class="error-list">${errHtml}</div></div>
+<div class="detail-field"><div class="field-label">启动时间</div><div class="field-value">${(f.started_at||'N/A').substring(0,19).replace('T',' ')}</div></div>
+<div class="detail-field"><div class="field-label">流水线</div><div class="field-value">${TYPE_LABELS[f.pipeline_type]||f.pipeline_type}</div></div>
+<div style="margin-top:12px;display:flex;gap:6px"><a class="btn btn-primary" href="${f.run_url}" target="_blank">查看运行</a><a class="btn" href="${f.report_url}" target="_blank">查看报告</a></div>`;
 document.getElementById('modalTitle').textContent=f.workflow_name+' #'+f.run_id;
 document.getElementById('modalBody').innerHTML=html;
 document.getElementById('detailModal').style.display='flex';
@@ -316,13 +316,13 @@ document.getElementById('detailModal').style.display='flex';
 function showReportDetail(r){
 const typeTag=getTypeTag(r._type||r.type);
 let statsHtml='';
-if(r.total_runs!==undefined)statsHtml=`<div class="detail-field"><div class="field-label">Stats</div><div class="field-value">Total: ${r.total_runs} | Success: ${r.success_runs} | Failure: ${r.failure_runs}</div></div>`;
-let html=`<div class="detail-field"><div class="field-label">Type</div><div class="field-value">${typeTag}</div></div>
-<div class="detail-field"><div class="field-label">Date</div><div class="field-value">${r.date}</div></div>
+if(r.total_runs!==undefined)statsHtml=`<div class="detail-field"><div class="field-label">统计</div><div class="field-value">总计: ${r.total_runs} | 成功: ${r.success_runs} | 失败: ${r.failure_runs}</div></div>`;
+let html=`<div class="detail-field"><div class="field-label">类型</div><div class="field-value">${typeTag}</div></div>
+<div class="detail-field"><div class="field-label">日期</div><div class="field-value">${r.date}</div></div>
 ${statsHtml}
-<div class="detail-field"><div class="field-label">Preview</div><div class="field-value" style="font-size:12px;color:#8b949e">${r.preview||''}</div></div>
-<div style="margin-top:12px;display:flex;gap:6px"><a class="btn btn-primary" href="${r.url}" target="_blank">View Report</a><a class="btn" href="${r.raw_url}" target="_blank">Raw Markdown</a></div>`;
-document.getElementById('modalTitle').textContent=(r.name||r.date)+' Report';
+<div class="detail-field"><div class="field-label">预览</div><div class="field-value" style="font-size:12px;color:#8b949e">${r.preview||''}</div></div>
+<div style="margin-top:12px;display:flex;gap:6px"><a class="btn btn-primary" href="${r.url}" target="_blank">查看报告</a><a class="btn" href="${r.raw_url}" target="_blank">原始 Markdown</a></div>`;
+document.getElementById('modalTitle').textContent=(r.name||r.date)+' 报告';
 document.getElementById('modalBody').innerHTML=html;
 document.getElementById('detailModal').style.display='flex';
 }
@@ -335,17 +335,17 @@ if(!prNum||!D)return;
 const prData=D.pr_lookup?.[prNum];
 const panel=document.getElementById('prLookupResult');
 if(!prData||prData.length===0){
-panel.innerHTML=`<div class="empty-state">No data found for PR #${prNum}.<br><a class="btn-link" href="${VLLM_REPO}/pull/${prNum}" target="_blank">View on GitHub</a></div>`;
+panel.innerHTML=`<div class="empty-state">未找到 PR #${prNum} 的数据。<br><a class="btn-link" href="${VLLM_REPO}/pull/${prNum}" target="_blank">在 GitHub 上查看</a></div>`;
 return;
 }
-let html=`<div class="pr-title">PR #${prNum} — ${prData.length} workflow runs <a class="btn-link" href="${VLLM_REPO}/pull/${prNum}" target="_blank">View PR on GitHub</a></div>`;
+let html=`<div class="pr-title">PR #${prNum} — ${prData.length} 次工作流运行 <a class="btn-link" href="${VLLM_REPO}/pull/${prNum}" target="_blank">在 GitHub 查看</a></div>`;
 for(const r of prData){
 const statusTag=getStatusTag(r.status);const catTag=getCatTag(r.classification);
 const keyErr=r.key_errors&&r.key_errors.length?`<span class="key-error">${r.key_errors[0]}</span>`:'<span style="color:#8b949e;font-size:11px">'+(r.detail||r.status)+'</span>';
-html+=`<div class="run-row"><span>${r.workflow_name}</span><span>${statusTag}</span><span>${catTag}</span><span>${keyErr}</span><span style="font-size:11px;color:#8b949e">${(r.started_at||'').substring(0,10)}</span><a class="btn-link" href="${r.run_url}" target="_blank">Run</a></div>`;
+html+=`<div class="run-row"><span>${r.workflow_name}</span><span>${statusTag}</span><span>${catTag}</span><span>${keyErr}</span><span style="font-size:11px;color:#8b949e">${(r.started_at||'').substring(0,10)}</span><a class="btn-link" href="${r.run_url}" target="_blank">运行</a></div>`;
 }
 if(prData.some(r=>r.key_errors&&r.key_errors.length>0)){
-html+=`<div style="margin-top:10px"><strong style="color:#f85149;font-size:13px">Key Errors:</strong>`;
+html+=`<div style="margin-top:10px"><strong style="color:#f85149;font-size:13px">关键错误:</strong>`;
 for(const r of prData){for(const e of (r.key_errors||[])){html+=`<div style="font-family:monospace;font-size:11px;color:#f85149;padding:2px 4px;margin:2px 0;background:#f8514911;border-radius:3px">${e}</div>`;}}
 html+=`</div>`;
 }
@@ -408,10 +408,10 @@ document.getElementById('alertBanner').style.display='block';
 
 function renderSummary(ov){
 const s=ov.summary||{};const total=s.total_runs||0;const success=s.success_runs||0;const failure=s.failure_runs||0;const rate=s.overall_success_rate||0;
-let html=`<div class="stat-row" onclick="switchTab('failures')"><span class="stat-label">Total Runs</span><span class="stat-value blue">${total}</span></div>
-<div class="stat-row" onclick="switchTab('failures')"><span class="stat-label">Success</span><span class="stat-value green">${success}</span></div>
-<div class="stat-row" onclick="switchTab('failures')"><span class="stat-label">Failed</span><span class="stat-value red">${failure}</span></div>
-<div class="stat-row" onclick="switchTab('trends')"><span class="stat-label">Success Rate</span><span class="stat-value ${rate>=80?'green':rate>=60?'yellow':'red'}">${rate}%</span></div>
+let html=`<div class="stat-row" onclick="switchTab('failures')"><span class="stat-label">总运行数</span><span class="stat-value blue">${total}</span></div>
+<div class="stat-row" onclick="switchTab('failures')"><span class="stat-label">成功</span><span class="stat-value green">${success}</span></div>
+<div class="stat-row" onclick="switchTab('failures')"><span class="stat-label">失败</span><span class="stat-value red">${failure}</span></div>
+<div class="stat-row" onclick="switchTab('trends')"><span class="stat-label">成功率</span><span class="stat-value ${rate>=80?'green':rate>=60?'yellow':'red'}">${rate}%</span></div>
 <div class="progress-bar" onclick="switchTab('trends')"><div class="progress-fill" style="width:${rate}%;background:${rate>=80?'#3fb950':rate>=60?'#d29922':'#f85149'}"></div></div>`;
 document.getElementById('summaryStats').innerHTML=html;
 }
@@ -421,20 +421,20 @@ const pipes=ov.pipelines||{};let html='';
 for(const[type,data]of Object.entries(pipes)){
 const r=data.success_rate||0;const total=data.total_runs||0;const succ=data.success_runs||0;const fail=data.failure_runs||0;
 const reportUrl=data.latest_report_url||'';const vllmUrl=data.vllm_actions_url||VLLM_REPO+'/actions';
-const reportLink=reportUrl?`<a class="view-report" href="${reportUrl}" target="_blank">View Report &rarr;</a>`:`<span style="color:#484f58;font-size:11px">No report yet</span>`;
+const reportLink=reportUrl?`<a class="view-report" href="${reportUrl}" target="_blank">查看报告 &rarr;</a>`:`<span style="color:#484f58;font-size:11px">暂无报告</span>`;
 html+=`<div class="pipeline-section">
 <div class="pipeline-header"><span>${TYPE_LABELS[type]||type}</span>${reportLink}</div>
 <div class="pipeline-stats">
-<div class="pipeline-stat" onclick="switchTab('failures');filterFailures('${type}')"><div class="num" style="color:#58a6ff">${total}</div><div class="label">Total</div></div>
-<div class="pipeline-stat" onclick="switchTab('failures');filterFailures('${type}')"><div class="num" style="color:#3fb950">${succ}</div><div class="label">Success</div></div>
-<div class="pipeline-stat" onclick="switchTab('failures');filterFailures('${type}')"><div class="num" style="color:#f85149">${fail}</div><div class="label">Failed</div></div>
-<div class="pipeline-stat" onclick="switchTab('trends')"><div class="num" style="color:${r>=80?'#3fb950':r>=60?'#d29922':'#f85149'}">${r}%</div><div class="label">Rate</div></div>
+<div class="pipeline-stat" onclick="switchTab('failures');filterFailures('${type}')"><div class="num" style="color:#58a6ff">${total}</div><div class="label">总数</div></div>
+<div class="pipeline-stat" onclick="switchTab('failures');filterFailures('${type}')"><div class="num" style="color:#3fb950">${succ}</div><div class="label">成功</div></div>
+<div class="pipeline-stat" onclick="switchTab('failures');filterFailures('${type}')"><div class="num" style="color:#f85149">${fail}</div><div class="label">失败</div></div>
+<div class="pipeline-stat" onclick="switchTab('trends')"><div class="num" style="color:${r>=80?'#3fb950':r>=60?'#d29922':'#f85149'}">${r}%</div><div class="label">成功率</div></div>
 </div>
 <div class="progress-bar"><div class="progress-fill" style="width:${r}%;background:${TYPE_COLORS[type]||'#58a6ff'}"></div></div>
 <div style="margin-top:4px"><a class="btn-link" href="${vllmUrl}" target="_blank">vllm-ascend Actions</a></div>
 </div>`;
 }
-if(!html)html='<div class="empty-state">No pipeline data</div>';
+if(!html)html='<div class="empty-state">暂无流水线数据</div>';
 document.getElementById('pipelineBreakdown').innerHTML=html;
 }
 
@@ -446,7 +446,7 @@ const ratingTag=`<span class="tag tag-${rating}">${rating}</span>`;
 html+=`<div class="health-card" onclick="switchTab('trends')"><div class="health-score" style="color:${s>=80?'#3fb950':s>=60?'#d29922':'#f85149'}">${s}</div>
 <div class="health-label">${TYPE_LABELS[type]||type} | ${ratingTag}</div></div>`;
 }
-if(!html)html='<div class="empty-state">No health scores</div>';
+if(!html)html='<div class="empty-state">暂无健康评分</div>';
 document.getElementById('healthScores').innerHTML=html;
 }
 
@@ -454,7 +454,7 @@ function renderCategories(cat){
 const dist=cat.distribution||{};let html='';
 const total=Object.values(dist).reduce((a,b)=>a+b,0)||1;
 for(const[k,v]of Object.entries(dist)){const pct=((v/total)*100).toFixed(1);html+=`<div class="stat-row" onclick="switchTab('failures')"><span class="stat-label">${getCatTag(k)}</span><span class="stat-value">${v} (${pct}%)</span></div>`;}
-if(!html)html='<div class="empty-state">No classification data</div>';
+if(!html)html='<div class="empty-state">暂无分类数据</div>';
 document.getElementById('categoryDistribution').innerHTML=html;
 }
 
@@ -465,13 +465,13 @@ if(searchQuery)filtered=filtered.filter(f=>(f.workflow_name||'').toLowerCase().i
 let html='';
 for(const f of filtered.slice(0,30)){
 const catTag=getCatTag(f.classification);const statusTag=getStatusTag(f.status);const typeTag=getTypeTag(f.pipeline_type);
-const keyErr=f.key_errors&&f.key_errors.length?`<span class="key-error">${f.key_errors[0]}</span>`:(f.status==='skipped'?`<span style="color:#8b949e;font-size:11px">Skipped</span>`:f.status==='cancelled'?`<span style="color:#d29922;font-size:11px">Cancelled</span>`:f.detail?`<span style="color:#8b949e;font-size:11px">${f.detail.substring(0,40)}</span>`:'<span style="color:#484f58">-</span>');
+const keyErr=f.key_errors&&f.key_errors.length?`<span class="key-error">${f.key_errors[0]}</span>`:(f.status==='skipped'?`<span style="color:#8b949e;font-size:11px">跳过</span>`:f.status==='cancelled'?`<span style="color:#d29922;font-size:11px">取消</span>`:f.detail?`<span style="color:#8b949e;font-size:11px">${f.detail.substring(0,40)}</span>`:'<span style="color:#484f58">-</span>');
 const time=(f.started_at||'').substring(0,10);
 html+=`<tr onclick="showFailureDetail(D.recent_failures.failures.find(x=>x.run_id===${f.run_id}))">
 <td>${f.workflow_name||'N/A'}</td><td>${statusTag}</td><td>${catTag}</td><td>${keyErr}</td><td>${time}</td><td>${typeTag}</td>
-<td><a class="btn-link" href="${f.run_url}" target="_blank">Run</a> <a class="btn-link" href="${f.report_url}" target="_blank">Report</a></td></tr>`;
+<td><a class="btn-link" href="${f.run_url}" target="_blank">运行</a> <a class="btn-link" href="${f.report_url}" target="_blank">报告</a></td></tr>`;
 }
-if(!html)html='<tr><td colspan="7" class="empty-state">No matching failures</td></tr>';
+if(!html)html='<tr><td colspan="7" class="empty-state">暂无匹配的失败记录</td></tr>';
 document.getElementById('failuresBody').innerHTML=html;
 }
 
@@ -483,14 +483,14 @@ filtered.sort((a,b)=>b.date.localeCompare(a.date));
 let html='';
 for(const r of filtered){
 const typeTag=getTypeTag(r._type);const name=r.name?`PR ${r.name}`:`${TYPE_LABELS[r._type]} ${r.date}`;
-const stats=r.total_runs!==undefined?`${r.total_runs} total, ${r.success_runs} succ, ${r.failure_runs} fail`:(r.overall_classification||'');
+const stats=r.total_runs!==undefined?`${r.total_runs} 总计, ${r.success_runs} 成功, ${r.failure_runs} 失败`:(r.overall_classification||'');
 const preview=r.preview?r.preview.substring(0,80)+'...':'';
 html+=`<tr onclick="showReportDetail(${JSON.stringify(r).replace(/"/g,'&quot;')})">
 <td>${typeTag}</td><td style="color:#f0f6fc">${name}</td><td>${r.date}</td><td style="font-size:11px;color:#8b949e">${stats}</td>
 <td style="font-size:11px;color:#8b949e;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${preview}</td>
-<td><a class="btn-link" href="${r.url}" target="_blank">View</a> <a class="btn-link" href="${r.raw_url}" target="_blank">Raw</a></td></tr>`;
+<td><a class="btn-link" href="${r.url}" target="_blank">查看</a> <a class="btn-link" href="${r.raw_url}" target="_blank">原始</a></td></tr>`;
 }
-if(!html)html='<tr><td colspan="6" class="empty-state">No reports available</td></tr>';
+if(!html)html='<tr><td colspan="6" class="empty-state">暂无报告</td></tr>';
 document.getElementById('reportsBody').innerHTML=html;
 }
 
