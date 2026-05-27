@@ -1,4 +1,4 @@
-"""Build-Eye 通知模块 CLI - 从环境变量或命令行发送通知。"""
+"""Build-Eye 通知模块 CLI - 从环境变量或命令行发送通知，支持多收件人。"""
 import argparse
 import json
 import os
@@ -8,12 +8,19 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 from notify.notifier import send_notification, format_report_notification
 
 
+def _parse_ids(id_str: str) -> list:
+    return [s.strip() for s in id_str.split(",") if s.strip()]
+
+
 def load_config_from_env() -> dict:
     return {
-        "feishu_webhook_url": os.environ.get("FEISHU_WEBHOOK_URL", ""),
-        "feishu_sign_secret": os.environ.get("FEISHU_SIGN_SECRET", ""),
-        "dingtalk_webhook_url": os.environ.get("DINGTALK_WEBHOOK_URL", ""),
-        "dingtalk_sign_secret": os.environ.get("DINGTALK_SIGN_SECRET", ""),
+        "feishu_app_id": os.environ.get("FEISHU_APP_ID", ""),
+        "feishu_app_secret": os.environ.get("FEISHU_APP_SECRET", ""),
+        "feishu_receive_ids": os.environ.get("FEISHU_RECEIVE_IDS", ""),
+        "dingtalk_app_key": os.environ.get("DINGTALK_APP_KEY", ""),
+        "dingtalk_app_secret": os.environ.get("DINGTALK_APP_SECRET", ""),
+        "dingtalk_agent_id": os.environ.get("DINGTALK_AGENT_ID", ""),
+        "dingtalk_receive_ids": os.environ.get("DINGTALK_RECEIVE_IDS", ""),
         "smtp_host": os.environ.get("SMTP_HOST", ""),
         "smtp_port": os.environ.get("SMTP_PORT", "465"),
         "smtp_user": os.environ.get("SMTP_USER", ""),
@@ -42,22 +49,25 @@ def main():
                 config[k] = v
 
     enabled = []
-    if config["feishu_webhook_url"]:
-        enabled.append("Feishu")
-    if config["dingtalk_webhook_url"]:
-        enabled.append("DingTalk")
+    if config["feishu_app_id"] and config["feishu_app_secret"] and config["feishu_receive_ids"]:
+        ids = _parse_ids(config["feishu_receive_ids"])
+        enabled.append(f"飞书 ({len(ids)} 人)")
+    if config["dingtalk_app_key"] and config["dingtalk_app_secret"] and config["dingtalk_agent_id"] and config["dingtalk_receive_ids"]:
+        ids = _parse_ids(config["dingtalk_receive_ids"])
+        enabled.append(f"钉钉 ({len(ids)} 人)")
     if config["smtp_host"] and config["smtp_to"]:
-        enabled.append("Email")
+        ids = _parse_ids(config["smtp_to"])
+        enabled.append(f"邮件 ({len(ids)} 人)")
 
     if args.dry_run:
-        print(f"Notification channels enabled: {enabled or 'None'}")
-        print(f"Feishu: webhook={'configured' if config['feishu_webhook_url'] else 'not set'}")
-        print(f"DingTalk: webhook={'configured' if config['dingtalk_webhook_url'] else 'not set'}")
-        print(f"Email: smtp={'configured' if config['smtp_host'] else 'not set'}, to={config['smtp_to'] or 'not set'}")
+        print(f"已启用通知渠道: {enabled or '无'}")
+        print(f"飞书: app_id={'已配置' if config['feishu_app_id'] else '未设置'}, 接收人={config['feishu_receive_ids'] or '未设置'}")
+        print(f"钉钉: app_key={'已配置' if config['dingtalk_app_key'] else '未设置'}, agent_id={'已配置' if config['dingtalk_agent_id'] else '未设置'}, 接收人={config['dingtalk_receive_ids'] or '未设置'}")
+        print(f"邮件: smtp={'已配置' if config['smtp_host'] else '未设置'}, 收件人={config['smtp_to'] or '未设置'}")
         return
 
     if not enabled:
-        print("No notification channels configured. Skipping notification.")
+        print("未配置任何通知渠道，跳过通知。")
         return
 
     if args.summary:
@@ -89,9 +99,14 @@ def main():
         return
 
     results = send_notification(config, title, md, html)
-    for channel, ok in results.items():
-        status = "sent" if ok else "failed"
-        print(f"{channel}: {status}")
+    for channel, detail in results.items():
+        if isinstance(detail, dict):
+            ok_count = sum(1 for v in detail.values() if v)
+            fail_count = sum(1 for v in detail.values() if not v)
+            print(f"{channel}: 成功 {ok_count}/{len(detail)}, 失败 {fail_count}/{len(detail)}")
+        else:
+            status = "成功" if detail else "失败"
+            print(f"{channel}: {status}")
 
 
 if __name__ == "__main__":
