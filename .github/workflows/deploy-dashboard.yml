@@ -4,12 +4,16 @@ on:
   push:
     branches: [main]
     paths:
-      - 'dashboard/**'
-      - 'reports/**'
       - 'data/**'
+      - 'reports/**'
+      - 'dashboard/**'
   workflow_dispatch:
   schedule:
-    - cron: '0 */6 * * *'
+    - cron: '0 4,10,16,22 * * *'
+
+concurrency:
+  group: deploy-dashboard
+  cancel-in-progress: false
 
 permissions:
   contents: write
@@ -31,7 +35,20 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      - name: Fetch ALL workflow runs from vllm-ascend (7-day lookback)
+      - name: Check for monitor data availability
+        id: check_data
+        run: |
+          has_data="false"
+          for ptype in pr nightly weekly; do
+            if [ -f "data/${ptype}_metadata.json" ]; then
+              has_data="true"
+              echo "${ptype}_metadata_exists=true" >> $GITHUB_OUTPUT
+            fi
+          done
+          echo "has_monitor_data=${has_data}" >> $GITHUB_OUTPUT
+
+      - name: 'Fallback: Fetch ALL workflow runs (if no monitor data exists)'
+        if: ${{ steps.check_data.outputs.has_monitor_data == 'false' }}
         env:
           GITHUB_TOKEN: ${{ secrets.VLLM_ASCEND_TOKEN || github.token }}
         run: |
@@ -42,8 +59,8 @@ jobs:
             --lookback 168 \
             --timeout 60 || true
 
-      - name: Collect build metadata
-        if: ${{ hashFiles('data/workflow_runs_all.json') != '' }}
+      - name: 'Fallback: Collect build metadata'
+        if: ${{ steps.check_data.outputs.has_monitor_data == 'false' && hashFiles('data/workflow_runs_all.json') != '' }}
         env:
           GITHUB_TOKEN: ${{ secrets.VLLM_ASCEND_TOKEN || github.token }}
         run: |
@@ -53,15 +70,15 @@ jobs:
             --max-runs 200 \
             --timeout 60 || true
 
-      - name: Classify failure root causes
-        if: ${{ hashFiles('data/build_metadata.json') != '' }}
+      - name: 'Fallback: Classify failure root causes'
+        if: ${{ steps.check_data.outputs.has_monitor_data == 'false' && hashFiles('data/build_metadata.json') != '' }}
         run: |
           python scripts/classify/classifier.py \
             --input data/build_metadata.json \
             --output data/classifications.json || true
 
-      - name: Aggregate build metrics into SQLite
-        if: ${{ always() }}
+      - name: 'Fallback: Aggregate build metrics'
+        if: ${{ steps.check_data.outputs.has_monitor_data == 'false' && always() }}
         run: |
           python scripts/monitor/aggregator_cli.py \
             --metadata data/build_metadata.json \
@@ -83,6 +100,26 @@ jobs:
             git diff --staged --quiet || git commit -m "Update dashboard data [skip ci]"
             git push || true
           fi
+
+      - name: Send notification for each pipeline type
+        if: ${{ always() }}
+        env:
+          FEISHU_WEBHOOK_URL: ${{ secrets.FEISHU_WEBHOOK_URL }}
+          FEISHU_SIGN_SECRET: ${{ secrets.FEISHU_SIGN_SECRET }}
+          DINGTALK_WEBHOOK_URL: ${{ secrets.DINGTALK_WEBHOOK_URL }}
+          DINGTALK_SIGN_SECRET: ${{ secrets.DINGTALK_SIGN_SECRET }}
+          SMTP_HOST: ${{ secrets.SMTP_HOST }}
+          SMTP_PORT: ${{ secrets.SMTP_PORT }}
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+          SMTP_TO: ${{ secrets.SMTP_TO }}
+          SMTP_SSL: ${{ secrets.SMTP_SSL }}
+        run: |
+          for ptype in Nightly Weekly PR; do
+            python scripts/notify/notifier_cli.py \
+              --report-type "$ptype" \
+              --summary dashboard/dashboard_data.json || true
+          done
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4

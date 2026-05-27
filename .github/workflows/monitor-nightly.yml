@@ -2,7 +2,7 @@ name: Build-Eye Nightly Pipeline Monitoring
 
 on:
   schedule:
-    - cron: '0 3 * * *'
+    - cron: '0 19 * * *'
   workflow_dispatch:
     inputs:
       lookback_hours:
@@ -21,10 +21,13 @@ on:
         default: 'vllm-project/vllm-ascend'
         type: string
 
+concurrency:
+  group: monitor-nightly
+  cancel-in-progress: false
+
 env:
   TARGET_REPO_OWNER: vllm-project
   TARGET_REPO_NAME: vllm-ascend
-  ARCHIVE_REPO_URL: https://github.com/winson-00178005/build-eye.git
   PYTHON_VERSION: '3.11'
   PIPELINE_TYPE: nightly
 
@@ -69,7 +72,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.VLLM_ASCEND_TOKEN || github.token }}
         run: |
           python scripts/monitor/fetch_runs.py \
-            --output data/workflow_runs.json \
+            --output data/nightly_workflow_runs.json \
             --pipeline-type nightly \
             --status all \
             --branch main \
@@ -77,35 +80,35 @@ jobs:
             --timeout 30
       
       - name: Collect build metadata
-        if: ${{ hashFiles('data/workflow_runs.json') != '' }}
+        if: ${{ hashFiles('data/nightly_workflow_runs.json') != '' }}
         env:
           GITHUB_TOKEN: ${{ secrets.VLLM_ASCEND_TOKEN || github.token }}
         run: |
           python scripts/monitor/collect_metadata.py \
-            --input data/workflow_runs.json \
-            --output data/build_metadata.json \
+            --input data/nightly_workflow_runs.json \
+            --output data/nightly_metadata.json \
             --max-runs 50 \
             --timeout 30
       
       - name: Classify failure root causes
-        if: ${{ hashFiles('data/build_metadata.json') != '' }}
+        if: ${{ hashFiles('data/nightly_metadata.json') != '' }}
         run: |
           python scripts/classify/classifier.py \
-            --input data/build_metadata.json \
-            --output data/classifications.json
+            --input data/nightly_metadata.json \
+            --output data/nightly_classifications.json
       
       - name: Generate fix recommendations
-        if: ${{ hashFiles('data/classifications.json') != '' }}
+        if: ${{ hashFiles('data/nightly_classifications.json') != '' }}
         run: |
           python scripts/recommend/recommender.py \
-            --input data/classifications.json \
-            --output data/recommendations.json
+            --input data/nightly_classifications.json \
+            --output data/nightly_recommendations.json
       
       - name: Generate Nightly daily report
-        if: ${{ hashFiles('data/recommendations.json') != '' }}
+        if: ${{ hashFiles('data/nightly_recommendations.json') != '' }}
         run: |
           python scripts/report/generator.py \
-            --input data/recommendations.json \
+            --input data/nightly_recommendations.json \
             --output reports/ \
             --pipeline-type nightly
       
@@ -113,59 +116,13 @@ jobs:
         if: ${{ always() }}
         run: |
           python scripts/monitor/aggregator_cli.py \
-            --metadata data/build_metadata.json \
-            --classifications data/classifications.json \
-            --db data/build_metrics.db || true
-
-      - name: Generate monitoring summary JSON
-        if: ${{ always() }}
-        run: |
-          python -c "
-          import json, sys
-          from pathlib import Path
-          sys.path.insert(0, 'scripts')
-          from monitor.aggregator import BuildAggregator
-          from report.dashboard import DashboardService
-
-          db_path = Path('data/build_metrics.db')
-          summary = {'timestamp': '', 'pipeline_type': 'nightly', 'runs': 0, 'summary': {}}
-
-          if db_path.exists() and db_path.stat().st_size > 0:
-              agg = BuildAggregator(str(db_path))
-              svc = DashboardService(agg)
-              overview = svc.generate_overview()
-              categories = svc.generate_categories()
-              health = svc.generate_health_scores()
-              summary = {
-                  'timestamp': overview.get('timestamp', ''),
-                  'pipeline_type': 'nightly',
-                  'runs': overview.get('summary', {}).get('total_runs', 0),
-                  'summary': overview.get('summary', {}),
-                  'pipelines': overview.get('pipelines', {}),
-                  'categories': categories.get('distribution', {}),
-                  'health_scores': health.get('scores', {})
-              }
-              agg.close()
-
-          Path('data/monitoring_summary.json').write_text(
-              json.dumps(summary, indent=2, ensure_ascii=False), encoding='utf-8')
-          print(f'Summary: {summary.get(\"runs\", 0)} runs')
-          " || true
-
-      - name: Persist monitoring data to repo
-        if: ${{ always() }}
-        run: |
-          git config user.name "build-eye-monitor"
-          git config user.email "build-eye-monitor@users.noreply.github.com"
-          git add -f data/monitoring_summary.json || true
-          git add -f data/build_metadata.json || true
-          git add -f data/classifications.json || true
-          git diff --staged --quiet || git commit -m "Update Nightly monitoring data [skip ci]"
-          git pull --rebase || true
-          git push || true
+            --metadata data/nightly_metadata.json \
+            --classifications data/nightly_classifications.json \
+            --db data/build_metrics.db \
+            --pipeline-type nightly || true
       
       - name: Archive Nightly report to build-eye repository
-        if: ${{ inputs.dry_run != 'true' && hashFiles('data/recommendations.json') != '' }}
+        if: ${{ inputs.dry_run != 'true' && hashFiles('data/nightly_recommendations.json') != '' }}
         continue-on-error: true
         env:
           GITHUB_TOKEN: ${{ secrets.VLLM_ASCEND_TOKEN || github.token }}
@@ -175,24 +132,17 @@ jobs:
             --repo winson-00178005/build-eye \
             --pipeline-type nightly
       
-      - name: Send notification
+      - name: Persist monitoring data to repo
         if: ${{ always() }}
-        env:
-          FEISHU_WEBHOOK_URL: ${{ secrets.FEISHU_WEBHOOK_URL }}
-          FEISHU_SIGN_SECRET: ${{ secrets.FEISHU_SIGN_SECRET }}
-          DINGTALK_WEBHOOK_URL: ${{ secrets.DINGTALK_WEBHOOK_URL }}
-          DINGTALK_SIGN_SECRET: ${{ secrets.DINGTALK_SIGN_SECRET }}
-          SMTP_HOST: ${{ secrets.SMTP_HOST }}
-          SMTP_PORT: ${{ secrets.SMTP_PORT }}
-          SMTP_USER: ${{ secrets.SMTP_USER }}
-          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
-          SMTP_TO: ${{ secrets.SMTP_TO }}
-          SMTP_SSL: ${{ secrets.SMTP_SSL }}
         run: |
-          python scripts/notify/notifier_cli.py \
-            --report-type Nightly \
-            --summary dashboard/dashboard_data.json \
-            --report-url "https://github.com/winson-00178005/build-eye/blob/main/reports/$(date +%Y/%m/%d)/nightly/report.md" || true
+          git config user.name "build-eye-monitor"
+          git config user.email "build-eye-monitor@users.noreply.github.com"
+          git add -f data/nightly_metadata.json || true
+          git add -f data/nightly_classifications.json || true
+          git add -f data/build_metrics.db || true
+          git diff --staged --quiet || git commit -m "Update Nightly monitoring data [skip ci]"
+          git pull --rebase || true
+          git push || true
       
       - name: Upload reports artifact
         if: ${{ always() }}

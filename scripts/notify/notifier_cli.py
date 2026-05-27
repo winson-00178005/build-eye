@@ -63,8 +63,22 @@ def main():
     if args.summary:
         dashboard_data = json.loads(open(args.summary, encoding="utf-8").read())
         summary = dashboard_data.get("overview", {}).get("summary", {})
-        failures = dashboard_data.get("recent_failures", {}).get("failures", [])
-        report_url = args.report_url or ""
+        all_failures = dashboard_data.get("recent_failures", {}).get("failures", [])
+        ptype_map = {"Nightly": "nightly", "Weekly": "weekly", "PR": "pr"}
+        ptype = ptype_map.get(args.report_type, "")
+        if ptype:
+            failures = [f for f in all_failures if f.get("pipeline_type") == ptype]
+            pipeline_data = dashboard_data.get("overview", {}).get("pipelines", {}).get(ptype, {})
+            summary = {
+                "total_runs": pipeline_data.get("total_runs", 0),
+                "success_runs": pipeline_data.get("success_runs", 0),
+                "failure_runs": pipeline_data.get("failure_runs", 0),
+                "overall_success_rate": pipeline_data.get("success_rate", 0),
+            }
+            report_url = pipeline_data.get("latest_report_url", "")
+        else:
+            failures = all_failures
+            report_url = args.report_url or ""
         title, md, html = format_report_notification(args.report_type, summary, failures, report_url)
     elif args.title and args.content:
         title = args.title

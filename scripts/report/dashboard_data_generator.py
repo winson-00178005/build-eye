@@ -172,6 +172,39 @@ def _extract_preview(content: str, max_chars: int = 300) -> str:
     return preview if preview else body[:max_chars]
 
 
+def _load_type_specific_data(data_dir: str = "data") -> tuple:
+    """Load metadata and classifications from type-specific files, merging all types.
+    
+    Reads: data/{pr,nightly,weekly}_metadata.json and data/{pr,nightly,weekly}_classifications.json
+    Falls back to unified data/build_metadata.json and data/classifications.json for backward compat.
+    """
+    metadata_list = []
+    cls_list = []
+    data_dir_p = Path(data_dir)
+    
+    for ptype in ["pr", "nightly", "weekly"]:
+        meta_file = data_dir_p / f"{ptype}_metadata.json"
+        cls_file = data_dir_p / f"{ptype}_classifications.json"
+        
+        if meta_file.exists():
+            type_metadata = json.loads(meta_file.read_text(encoding='utf-8'))
+            metadata_list.extend(type_metadata)
+        if cls_file.exists():
+            type_cls = json.loads(cls_file.read_text(encoding='utf-8'))
+            cls_list.extend(type_cls)
+    
+    if not metadata_list:
+        unified_meta = data_dir_p / "build_metadata.json"
+        if unified_meta.exists():
+            metadata_list = json.loads(unified_meta.read_text(encoding='utf-8'))
+    if not cls_list:
+        unified_cls = data_dir_p / "classifications.json"
+        if unified_cls.exists():
+            cls_list = json.loads(unified_cls.read_text(encoding='utf-8'))
+    
+    return metadata_list, cls_list
+
+
 def generate_dashboard_data(
     metadata_path: str = "data/build_metadata.json",
     classifications_path: str = "data/classifications.json",
@@ -179,15 +212,7 @@ def generate_dashboard_data(
     reports_dir: str = "reports",
     output_path: str = "dashboard/dashboard_data.json",
 ) -> dict:
-    metadata_list = []
-    cls_list = []
-    metadata_path_p = Path(metadata_path)
-    classifications_path_p = Path(classifications_path)
-
-    if metadata_path_p.exists():
-        metadata_list = json.loads(metadata_path_p.read_text(encoding='utf-8'))
-    if classifications_path_p.exists():
-        cls_list = json.loads(classifications_path_p.read_text(encoding='utf-8'))
+    metadata_list, cls_list = _load_type_specific_data()
 
     cls_by_run_id = {}
     for c in cls_list:

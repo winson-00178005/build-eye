@@ -19,6 +19,9 @@ def main():
                         help='分类结果文件')
     parser.add_argument('--db', type=str, default='data/build_metrics.db',
                         help='SQLite 数据库路径')
+    parser.add_argument('--pipeline-type', type=str, default=None,
+                        choices=['pr', 'nightly', 'weekly', 'all'],
+                        help='只更新指定流水线类型的日聚合 (all=全部)')
 
     args = parser.parse_args()
 
@@ -35,12 +38,14 @@ def main():
 
         aggregator.record_builds_batch(metadata_list, classifications)
 
-        today = metadata_path.parent.parent / "data" / "config.json"
         from datetime import datetime, timezone
         date_str = datetime.now(timezone.utc).strftime("%Y-%m-%d")
 
-        for ptype in ["pr", "nightly", "weekly"]:
-            aggregator.update_daily_aggregate(date_str, ptype)
+        if args.pipeline_type and args.pipeline_type != 'all':
+            aggregator.update_daily_aggregate(date_str, args.pipeline_type)
+        else:
+            for ptype in ["pr", "nightly", "weekly"]:
+                aggregator.update_daily_aggregate(date_str, ptype)
 
         print(f"已聚合 {len(metadata_list)} 条构建数据到 {args.db}")
     else:
