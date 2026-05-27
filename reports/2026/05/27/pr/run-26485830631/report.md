@@ -1,8 +1,8 @@
 ---
-report_id: 7bee3eea
+report_id: 710815d3
 pr_number: null
 group_key: run-26485830631
-generated_at: 2026-05-27T02:45:58.540952+00:00
+generated_at: 2026-05-27T03:02:42.082484+00:00
 overall_classification: code
 total_failed_workflows: 1
 category_counts:
@@ -69,4 +69,4 @@ run-26485830631 触发了 1 个 workflow，均失败。
 - **Docs link check (#26485830631)**: 检查编译错误位置 (低成本) - 查看 CMake 或 clang 报错的具体文件和行
 
 ---
-报告生成时间: 2026-05-27T02:45:58.540975+00:00
+报告生成时间: 2026-05-27T03:02:42.082509+00:00
