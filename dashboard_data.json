@@ -1,6 +1,6 @@
 {
   "overview": {
-    "timestamp": "2026-05-27T08:05:12.882724+00:00",
+    "timestamp": "2026-05-27T08:07:35.403296+00:00",
     "summary": {
       "total_runs": 70,
       "success_runs": 21,
@@ -27,7 +27,7 @@
     }
   },
   "trends": {
-    "timestamp": "2026-05-27T08:05:12.901165+00:00",
+    "timestamp": "2026-05-27T08:07:35.422013+00:00",
     "pipelines": {
       "pr": {
         "success_rate_trend": [
@@ -1122,7 +1122,18 @@
       }
     ]
   },
-  "alerts": [],
+  "alerts": [
+    {
+      "level": "warning",
+      "pipeline": "pr",
+      "message": "PR CI 成率低于50% (45.0%)，需要排查。"
+    },
+    {
+      "level": "warning",
+      "pipeline": "nightly",
+      "message": "Nightly 成率低于50% (24.0%)，需要排查。"
+    }
+  ],
   "notification_settings": {
     "feishu_enabled": false,
     "feishu_webhook_url": "",
