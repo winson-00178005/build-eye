@@ -1,8 +1,8 @@
 ---
-report_id: 3cf5d238
+report_id: 9afcf557
 pr_number: null
 group_key: run-26487920512
-generated_at: 2026-05-27T03:02:42.079324+00:00
+generated_at: 2026-05-27T03:28:41.235777+00:00
 overall_classification: code
 total_failed_workflows: 1
 category_counts:
@@ -62,4 +62,4 @@ run-26487920512 触发了 1 个 workflow，均失败。
 - **E2E-Light (#26487920512)**: 检查编译错误位置 (低成本) - 查看 CMake 或 clang 报错的具体文件和行
 
 ---
-报告生成时间: 2026-05-27T03:02:42.079376+00:00
+报告生成时间: 2026-05-27T03:28:41.235816+00:00
