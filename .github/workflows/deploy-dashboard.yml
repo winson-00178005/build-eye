@@ -25,6 +25,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Python
         uses: actions/setup-python@v5
@@ -101,7 +103,7 @@ jobs:
             git stash -u || true
             git pull --rebase --strategy-option ours || git rebase --abort || true
             git stash pop || true
-            git push --force-with-lease || true
+            git push || true
           fi
 
       - name: Send notification for each pipeline type
