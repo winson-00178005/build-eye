@@ -1,8 +1,8 @@
 ---
-report_id: 261d5399
+report_id: dd5d5239
 pr_number: 9449
 group_key: pr-9449
-generated_at: 2026-05-27T01:10:15.294105+00:00
+generated_at: 2026-05-27T03:02:42.081747+00:00
 overall_classification: code
 total_failed_workflows: 2
 category_counts:
@@ -21,12 +21,12 @@ PR #9449 触发了 2 个 workflow，均失败。
 
 | # | Workflow | 根因分类 | 置信度 | 具体问题 |
 |---|---|---|---|---|
-| 1 | E2E-Light (#26484167819) | PR代码问题 | 中 | 编译错误 |
-| 2 | Docs link check (#26450490466) | PR代码问题 | 中 | 编译错误 |
+| 1 | E2E-Light (#26486239020) | PR代码问题 | 中 | 编译错误 |
+| 2 | Docs link check (#26486238913) | PR代码问题 | 中 | 编译错误 |
 
 
 ## Workflow 详细分析
-### 1. E2E-Light (Run #26484167819)
+### 1. E2E-Light (Run #26486239020)
 
 - **根因分类**: PR代码问题
 - **置信度**: 中
@@ -37,15 +37,15 @@ PR #9449 触发了 2 个 workflow，均失败。
 **匹配模式**:
 - compilation: `error:\s+`
 
-[查看 Workflow Run](https://github.com/vllm-project/vllm-ascend/actions/runs/26484167819)
-[查看 Job: lint / validate-pr-title](https://github.com/vllm-project/vllm-ascend/actions/runs/26484167819/job/77987936561)
+[查看 Workflow Run](https://github.com/vllm-project/vllm-ascend/actions/runs/26486239020)
+[查看 Job: lint / validate-pr-title](https://github.com/vllm-project/vllm-ascend/actions/runs/26486239020/job/77994212988)
 
 **日志片段**:
 ```
-2026-05-27T00:58:37.6555429Z Checking PR title: [ci][Nightly] Add the external_dp test framework
-2026-05-27T00:58:37.6581503Z ##[error]PR title must contain one of the following prefixes: [BugFix], [Performance], [Test], [CI], [Feature], [Doc], [Misc], [Community], [Refactor]
-2026-05-27T00:58:37.6590494Z ##[error]Example: '[Feature] Add new optimization pass' or 'Add new feature [Feature]'
-2026-05-27T00:58:37.6695375Z ##[error]Error: failed to run script step: Error: command terminated with non-
+2026-05-27T02:01:58.7327121Z ##[error]PR title must contain one of the following prefixes: [BugFix], [Performance], [Test], [CI], [Feature], [Doc], [Misc], [Community], [Refactor]
+2026-05-27T02:01:58.7336035Z ##[error]Example: '[Feature] Add new optimization pass' or 'Add new feature [Feature]'
+2026-05-27T02:01:58.7483276Z ##[error]Error: failed to run script step: Error: command terminated with non-zero exit code: command terminated with exit code 1
+2026-05-27T02:01:58.7545315Z ##[error]Process
 ```
 
 **建议**:
@@ -53,7 +53,7 @@ PR #9449 触发了 2 个 workflow，均失败。
 - 检查编译错误位置 (低成本)
 - 修复编译问题 (中等成本)
 
-### 2. Docs link check (Run #26450490466)
+### 2. Docs link check (Run #26486238913)
 
 - **根因分类**: PR代码问题
 - **置信度**: 中
@@ -64,21 +64,23 @@ PR #9449 触发了 2 个 workflow，均失败。
 **匹配模式**:
 - compilation: `error:\s+`
 
-[查看 Workflow Run](https://github.com/vllm-project/vllm-ascend/actions/runs/26450490466)
-[查看 Job: Sphinx linkcheck](https://github.com/vllm-project/vllm-ascend/actions/runs/26450490466/job/77869551694)
+[查看 Workflow Run](https://github.com/vllm-project/vllm-ascend/actions/runs/26486238913)
+[查看 Job: Sphinx linkcheck](https://github.com/vllm-project/vllm-ascend/actions/runs/26486238913/job/77994212470)
 
 **日志片段**:
 ```
-2026-05-26T13:21:12.0344150Z   token: ***
-2026-05-26T13:21:12.0344337Z   api_url: https://api.github.com
-2026-05-26T13:21:12.0344564Z   fail_on_initial_diff_error: false
-2026-05-26T13:21:12.0344784Z   fail_on_submodule_diff_error: false
-2026-05-26T13:21:12.0345021Z   negation_patterns_first: false
-2026-05-26T13:21:12.0345215Z   matrix: false
-2026-05-26T13:21:12.0345386Z   exclude_submodules: false
+2026-05-27T02:02:07.8318575Z   token: ***
 ...
-2026-05-26T13:21:22.2069398Z Using cached wheel-0.47.0-py3-none-any.whl (32 kB)
-2026-05-26T13:2
+2026-05-27T02:02:07.8318978Z   fail_on_initial_diff_error: false
+2026-05-27T02:02:07.8319203Z   fail_on_submodule_diff_error: false
+2026-05-27T02:02:07.8319434Z   negation_patterns_first: false
+2026-05-27T02:02:07.8319629Z   matrix: false
+2026-05-27T02:02:07.8319802Z   exclude_submodules: false
+...
+2026-05-27T02:02:20.3192622Z Using cached wheel-0.47.0-py3-none-any.whl (32 kB)
+...
+2026-05-27T02:02:25.5575052Z 
+2026-05-27T02:02:25.5584346Z ERROR: pip'
 ```
 
 **建议**:
@@ -92,8 +94,8 @@ PR #9449 触发了 2 个 workflow，均失败。
 
 ### 优先建议
 
-- **E2E-Light (#26484167819)**: 检查编译错误位置 (低成本) - 查看 CMake 或 clang 报错的具体文件和行
-- **Docs link check (#26450490466)**: 检查编译错误位置 (低成本) - 查看 CMake 或 clang 报错的具体文件和行
+- **E2E-Light (#26486239020)**: 检查编译错误位置 (低成本) - 查看 CMake 或 clang 报错的具体文件和行
+- **Docs link check (#26486238913)**: 检查编译错误位置 (低成本) - 查看 CMake 或 clang 报错的具体文件和行
 
 ---
-报告生成时间: 2026-05-27T01:10:15.294159+00:00
+报告生成时间: 2026-05-27T03:02:42.081782+00:00
