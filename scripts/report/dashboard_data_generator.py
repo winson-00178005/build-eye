@@ -460,12 +460,15 @@ def generate_dashboard_data(
             alerts.append({"level": level, "pipeline": ptype, "message": CN_ALERTS["consecutive"].format(label=label, count=count)})
 
     notification_settings = {
-        "feishu_enabled": bool(os.environ.get("FEISHU_WEBHOOK_URL", "")),
-        "feishu_webhook_url": "configured" if os.environ.get("FEISHU_WEBHOOK_URL") else "",
-        "feishu_sign_secret": "configured" if os.environ.get("FEISHU_SIGN_SECRET") else "",
-        "dingtalk_enabled": bool(os.environ.get("DINGTALK_WEBHOOK_URL", "")),
-        "dingtalk_webhook_url": "configured" if os.environ.get("DINGTALK_WEBHOOK_URL") else "",
-        "dingtalk_sign_secret": "configured" if os.environ.get("DINGTALK_SIGN_SECRET") else "",
+        "feishu_enabled": bool(os.environ.get("FEISHU_APP_ID", "") and os.environ.get("FEISHU_APP_SECRET", "") and os.environ.get("FEISHU_RECEIVE_IDS", "")),
+        "feishu_app_id": "configured" if os.environ.get("FEISHU_APP_ID") else "",
+        "feishu_app_secret": "configured" if os.environ.get("FEISHU_APP_SECRET") else "",
+        "feishu_receive_ids": os.environ.get("FEISHU_RECEIVE_IDS", ""),
+        "dingtalk_enabled": bool(os.environ.get("DINGTALK_APP_KEY", "") and os.environ.get("DINGTALK_APP_SECRET", "") and os.environ.get("DINGTALK_AGENT_ID", "") and os.environ.get("DINGTALK_RECEIVE_IDS", "")),
+        "dingtalk_app_key": "configured" if os.environ.get("DINGTALK_APP_KEY") else "",
+        "dingtalk_app_secret": "configured" if os.environ.get("DINGTALK_APP_SECRET") else "",
+        "dingtalk_agent_id": "configured" if os.environ.get("DINGTALK_AGENT_ID") else "",
+        "dingtalk_receive_ids": os.environ.get("DINGTALK_RECEIVE_IDS", ""),
         "email_enabled": bool(os.environ.get("SMTP_HOST", "") and os.environ.get("SMTP_TO", "")),
         "smtp_host": os.environ.get("SMTP_HOST", ""),
         "smtp_port": os.environ.get("SMTP_PORT", "465"),

@@ -24,10 +24,13 @@ jobs:
 
       - name: Send test notification
         env:
-          FEISHU_WEBHOOK_URL: ${{ secrets.FEISHU_WEBHOOK_URL }}
-          FEISHU_SIGN_SECRET: ${{ secrets.FEISHU_SIGN_SECRET }}
-          DINGTALK_WEBHOOK_URL: ${{ secrets.DINGTALK_WEBHOOK_URL }}
-          DINGTALK_SIGN_SECRET: ${{ secrets.DINGTALK_SIGN_SECRET }}
+          FEISHU_APP_ID: ${{ secrets.FEISHU_APP_ID }}
+          FEISHU_APP_SECRET: ${{ secrets.FEISHU_APP_SECRET }}
+          FEISHU_RECEIVE_IDS: ${{ secrets.FEISHU_RECEIVE_IDS }}
+          DINGTALK_APP_KEY: ${{ secrets.DINGTALK_APP_KEY }}
+          DINGTALK_APP_SECRET: ${{ secrets.DINGTALK_APP_SECRET }}
+          DINGTALK_AGENT_ID: ${{ secrets.DINGTALK_AGENT_ID }}
+          DINGTALK_RECEIVE_IDS: ${{ secrets.DINGTALK_RECEIVE_IDS }}
           SMTP_HOST: ${{ secrets.SMTP_HOST }}
           SMTP_PORT: ${{ secrets.SMTP_PORT }}
           SMTP_USER: ${{ secrets.SMTP_USER }}
