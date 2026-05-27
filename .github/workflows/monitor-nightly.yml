@@ -140,8 +140,11 @@ jobs:
           git add -f data/nightly_metadata.json || true
           git add -f data/nightly_classifications.json || true
           git add -f data/build_metrics.db || true
+          git add -A data/ || true
           git diff --staged --quiet || git commit -m "Update Nightly monitoring data [skip ci]"
+          git stash -u || true
           git pull --rebase --strategy-option ours || git rebase --abort || true
+          git stash pop || true
           git push --force-with-lease || true
       
       - name: Upload reports artifact
