@@ -105,6 +105,17 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .pr-result{background:#161b22;border:1px solid #30363d;border-radius:6px;padding:12px;margin-top:8px}
 .pr-result .pr-title{font-size:14px;color:#f0f6fc;margin-bottom:8px}
 .pr-result .run-row{padding:6px 0;border-bottom:1px solid #21262d;font-size:12px;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.settings-form{display:flex;flex-direction:column;gap:8px}
+.settings-form label{font-size:12px;color:#8b949e;margin-bottom:2px}
+.settings-form input{background:#0d1117;border:1px solid #30363d;border-radius:5px;padding:6px 10px;color:#c9d1d9;font-size:12px;outline:none;width:100%}
+.settings-form input:focus{border-color:#58a6ff}
+.settings-section{background:#0d1117;border:1px solid #30363d;border-radius:6px;padding:12px;margin-bottom:10px}
+.settings-section h4{font-size:14px;color:#f0f6fc;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.status-dot{width:10px;height:10px;border-radius:50%;display:inline-block}
+.status-dot.on{background:#3fb950}.status-dot.off{background:#484f58}
+.cmd-block{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:8px;font-family:monospace;font-size:11px;color:#c9d1d9;overflow-x:auto;margin:4px 0;white-space:nowrap}
+.copy-btn{float:right;font-size:10px;padding:2px 6px;background:#21262d;border:1px solid #30363d;border-radius:3px;color:#8b949e;cursor:pointer}
+.copy-btn:hover{color:#f0f6fc;border-color:#58a6ff}
 @media(max-width:640px){
 .header{padding:8px 12px}.header h1{font-size:16px}.header .repo{font-size:11px}
 .container{padding:8px}.grid{grid-template-columns:1fr}.health-grid{grid-template-columns:1fr}
@@ -134,6 +145,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 <div class="tab" data-tab="trends" onclick="switchTab('trends')">Trends</div>
 <div class="tab" data-tab="reports" onclick="switchTab('reports')">Reports</div>
 <div class="tab" data-tab="prlookup" onclick="switchTab('prlookup')">PR Lookup</div>
+<div class="tab" data-tab="settings" onclick="switchTab('settings')">Settings</div>
 </div>
 <div class="toolbar">
 <div class="pr-lookup"><input id="prSearchInput" placeholder="PR # e.g. 9549" onkeyup="if(event.key==='Enter')doPrLookup()"><button class="btn btn-primary" onclick="doPrLookup()">Search PR</button></div>
@@ -182,6 +194,55 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 <div id="prlookupPanel" style="display:none">
 <div class="card" id="prLookupResult"><div class="empty-state">Enter a PR number above to view its workflow runs, failures, and error details.</div></div>
 </div>
+<div id="settingsPanel" style="display:none">
+<div class="card">
+<div class="card-title">Notification Settings</div>
+<p style="font-size:13px;color:#8b949e;margin-bottom:12px">Configure notification channels for build failure alerts. Sensitive values (webhook URLs, passwords) are stored as GitHub Secrets and cannot be edited from this page. Use the commands below to set them.</p>
+<div class="settings-section">
+<h4><span class="status-dot" id="feishuDot"></span> Feishu (飞书)</h4>
+<div class="settings-form">
+<label>Webhook URL</label><input id="feishuWebhook" placeholder="https://open.feishu.cn/open-apis/bot/v2/hook/xxx" readonly>
+<label>Sign Secret (optional)</label><input id="feishuSecret" placeholder="签名密钥" readonly>
+</div>
+<div style="margin-top:8px"><button class="btn btn-primary" onclick="copyCmd('gh secret set FEISHU_WEBHOOK_URL')">Copy Set Command (URL)</button> <button class="btn" onclick="copyCmd('gh secret set FEISHU_SIGN_SECRET')">Copy Set Command (Sign)</button></div>
+<div class="cmd-block">gh secret set FEISHU_WEBHOOK_URL --repo winson-00178005/build-eye <button class="copy-btn" onclick="copyText('gh secret set FEISHU_WEBHOOK_URL --repo winson-00178005/build-eye')">Copy</button></div>
+</div>
+<div class="settings-section">
+<h4><span class="status-dot" id="dingtalkDot"></span> DingTalk (钉钉)</h4>
+<div class="settings-form">
+<label>Webhook URL</label><input id="dingtalkWebhook" placeholder="https://oapi.dingtalk.com/robot/send?access_token=xxx" readonly>
+<label>Sign Secret (optional)</label><input id="dingtalkSecret" placeholder="签名密钥" readonly>
+</div>
+<div style="margin-top:8px"><button class="btn btn-primary" onclick="copyCmd('gh secret set DINGTALK_WEBHOOK_URL')">Copy Set Command (URL)</button> <button class="btn" onclick="copyCmd('gh secret set DINGTALK_SIGN_SECRET')">Copy Set Command (Sign)</button></div>
+<div class="cmd-block">gh secret set DINGTALK_WEBHOOK_URL --repo winson-00178005/build-eye <button class="copy-btn" onclick="copyText('gh secret set DINGTALK_WEBHOOK_URL --repo winson-00178005/build-eye')">Copy</button></div>
+</div>
+<div class="settings-section">
+<h4><span class="status-dot" id="emailDot"></span> Email (邮件)</h4>
+<div class="settings-form">
+<label>SMTP Host</label><input id="smtpHost" placeholder="smtp.qq.com" readonly>
+<label>SMTP Port</label><input id="smtpPort" placeholder="465" readonly>
+<label>SMTP User (发件邮箱)</label><input id="smtpUser" placeholder="user@example.com" readonly>
+<label>SMTP Password</label><input id="smtpPassword" placeholder="应用专用密码" readonly>
+<label>Recipients (收件邮箱，逗号分隔)</label><input id="smtpTo" placeholder="a@example.com,b@example.com" readonly>
+<label>Use SSL</label><input id="smtpSSL" placeholder="true" readonly>
+</div>
+<div style="margin-top:8px">
+<button class="btn btn-primary" onclick="copyCmd('gh secret set SMTP_HOST')">Set Host</button>
+<button class="btn" onclick="copyCmd('gh secret set SMTP_PORT')">Set Port</button>
+<button class="btn" onclick="copyCmd('gh secret set SMTP_USER')">Set User</button>
+<button class="btn" onclick="copyCmd('gh secret set SMTP_PASSWORD')">Set Password</button>
+<button class="btn" onclick="copyCmd('gh secret set SMTP_TO')">Set Recipients</button>
+<button class="btn" onclick="copyCmd('gh secret set SMTP_SSL')">Set SSL</button>
+</div>
+<div class="cmd-block">gh secret set SMTP_HOST --repo winson-00178005/build-eye <button class="copy-btn" onclick="copyText('gh secret set SMTP_HOST --repo winson-00178005/build-eye')">Copy</button></div>
+</div>
+<div class="settings-section">
+<h4>Test Notification</h4>
+<button class="btn btn-primary" onclick="testNotification()">Send Test Notification</button>
+<p style="font-size:11px;color:#8b949e;margin-top:6px">This triggers the test-notification workflow which sends a test message to all configured channels.</p>
+</div>
+</div>
+</div>
 </div>
 </div>
 <div id="detailModal" class="detail-modal" style="display:none" onclick="if(event.target===this)closeModal()">
@@ -213,11 +274,12 @@ currentTab=tab;
 document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
 const el=document.querySelector(`.tab[data-tab="${tab}"]`);
 if(el)el.classList.add('active');
-['overview','failures','trends','reports','prlookup'].forEach(p=>{
+['overview','failures','trends','reports','prlookup','settings'].forEach(p=>{
 document.getElementById(p+'Panel').style.display=p===tab?'block':'none';
 });
 if(tab==='trends'&&D)renderCharts();
 if(tab==='prlookup')document.getElementById('prSearchInput').focus();
+if(tab==='settings')renderSettings();
 }
 
 function filterFailures(filter){currentFailureFilter=filter;document.querySelectorAll('.filter-btn[data-filter]').forEach(b=>b.classList.toggle('active',b.dataset.filter===filter));renderFailures();}
@@ -469,6 +531,48 @@ ctx.fillStyle=TYPE_COLORS[type];ctx.fillText(TYPE_LABELS[type]+' '+label,rect.wi
 if(pipes.pr&&pipes.pr[dateKey]){ctx.fillStyle='#484f58';ctx.font='9px sans-serif';const dates=pipes.pr[dateKey];
 for(let i=0;i<dates.length;i++){const x=pad+i*Math.max(w/(Math.max(dates.length-1,1)),0);ctx.fillText(dates[i].substring(5),x-12,rect.height-pad+12);}
 }}
+
+function renderSettings(){
+const ns=D?.notification_settings||{};
+document.getElementById('feishuDot').className='status-dot '+((ns.feishu_enabled)?'on':'off');
+document.getElementById('feishuWebhook').value=ns.feishu_webhook_url||'(set via GitHub Secret)';
+document.getElementById('feishuSecret').value=ns.feishu_sign_secret?'configured':'(not set)';
+document.getElementById('dingtalkDot').className='status-dot '+((ns.dingtalk_enabled)?'on':'off');
+document.getElementById('dingtalkWebhook').value=ns.dingtalk_webhook_url||'(set via GitHub Secret)';
+document.getElementById('dingtalkSecret').value=ns.dingtalk_sign_secret?'configured':'(not set)';
+document.getElementById('emailDot').className='status-dot '+((ns.email_enabled)?'on':'off');
+document.getElementById('smtpHost').value=ns.smtp_host||'(set via GitHub Secret)';
+document.getElementById('smtpPort').value=ns.smtp_port||'465';
+document.getElementById('smtpUser').value=ns.smtp_user||'(set via GitHub Secret)';
+document.getElementById('smtpPassword').value=ns.smtp_password?'configured':'(not set)';
+document.getElementById('smtpTo').value=ns.smtp_to||'(set via GitHub Secret)';
+document.getElementById('smtpSSL').value=ns.smtp_ssl||'true';
+}
+
+function copyCmd(secretName){
+const cmd=`${secretName} --repo winson-00178005/build-eye`;
+navigator.clipboard.writeText(cmd).then(()=>{alert('Copied: '+cmd+'\n\nRun this command in your terminal with the value.')});
+}
+
+function copyText(text){
+navigator.clipboard.writeText(text);
+}
+
+function testNotification(){
+gh_workflow_run('test-notification.yml');
+}
+
+async function gh_workflow_run(workflow){
+const token=null;
+try{
+const res=await fetch('https://api.github.com/repos/winson-00178005/build-eye/actions/workflows/'+workflow+'/dispatches',{
+method:'POST',headers:{'Content-Type':'application/json'},
+body:JSON.stringify({ref:'main'})
+});
+if(res.ok){alert('Test notification workflow triggered! Check Actions page for results.');}
+else{alert('Failed to trigger. You may need to run: gh workflow run '+workflow);}
+}catch(e){alert('Run manually: gh workflow run '+workflow);}
+}
 
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
 loadData();
