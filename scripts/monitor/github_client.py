@@ -12,6 +12,8 @@ class GitHubAPIClient:
     """GitHub REST API 客户端，支持认证和速率限制管理。"""
     
     BASE_URL = "https://api.github.com"
+    SEARCH_RATE_LIMIT_MAX = 30
+    SEARCH_RATE_LIMIT_PERIOD = 60
     
     def __init__(self, token: Optional[str] = None, timeout: int = 30):
         self.token = token or os.getenv("GITHUB_TOKEN") or os.getenv("VLLM_ASCEND_TOKEN")
@@ -30,6 +32,10 @@ class GitHubAPIClient:
             print(f"警告: 未配置 Token，使用公共 API（速率限制: 60次/小时）")
         self.rate_limit_remaining = 60 if not self.token else 5000
         self.rate_limit_reset_time = None
+        self.search_rate_limit_remaining = self.SEARCH_RATE_LIMIT_MAX
+        self.search_rate_limit_reset_time = None
+        self._search_calls_this_period = 0
+        self._search_period_start = time.time()
         self._cache_dir = Path("cache")
         self._cache_dir.mkdir(exist_ok=True)
     
@@ -43,6 +49,23 @@ class GitHubAPIClient:
                     time.sleep(wait_seconds + 10)
                     return self._refresh_rate_limit()
             return False
+        return True
+    
+    def _check_search_rate_limit(self) -> bool:
+        """检查 Search API 速率限制（独立配额: 30次/分钟）。"""
+        elapsed = time.time() - self._search_period_start
+        if elapsed >= self.SEARCH_RATE_LIMIT_PERIOD:
+            self._search_calls_this_period = 0
+            self._search_period_start = time.time()
+        
+        remaining = self.SEARCH_RATE_LIMIT_MAX - self._search_calls_this_period
+        if remaining <= 2:
+            wait_seconds = self.SEARCH_RATE_LIMIT_PERIOD - elapsed + 5
+            print(f"Search API 速率限制接近耗尽 ({remaining} left)，等待 {wait_seconds:.0f} 秒...")
+            time.sleep(wait_seconds)
+            self._search_calls_this_period = 0
+            self._search_period_start = time.time()
+        
         return True
     
     def _refresh_rate_limit(self) -> bool:
@@ -61,17 +84,24 @@ class GitHubAPIClient:
         """带重试的请求方法。"""
         max_retries = 3
         backoff_factor = 2
+        is_search_api = "/search/" in url
         
         kwargs.setdefault('timeout', self.timeout)
         
+        if is_search_api:
+            self._check_search_rate_limit()
+        else:
+            self._check_rate_limit()
+        
         for attempt in range(max_retries):
             try:
-                self._check_rate_limit()
-                
                 response = self.session.request(method, url, **kwargs)
                 
                 if response.status_code == 200:
-                    self.rate_limit_remaining -= 1
+                    if is_search_api:
+                        self._search_calls_this_period += 1
+                    else:
+                        self.rate_limit_remaining -= 1
                     return response.json()
                 
                 if response.status_code == 401:
@@ -81,17 +111,29 @@ class GitHubAPIClient:
                 
                 if response.status_code == 403:
                     if "rate limit exceeded" in response.text.lower():
-                        wait_time = backoff_factor ** attempt
-                        print(f"速率限制耗尽，等待 {wait_time} 秒后重试...")
-                        time.sleep(wait_time)
-                        self._refresh_rate_limit()
-                        continue
+                        if is_search_api:
+                            wait_time = 65
+                            print(f"Search API 速率限制耗尽，等待 {wait_time} 秒后重试...")
+                            time.sleep(wait_time)
+                            self._search_calls_this_period = 0
+                            self._search_period_start = time.time()
+                            continue
+                        else:
+                            wait_time = backoff_factor ** attempt
+                            print(f"速率限制耗尽，等待 {wait_time} 秒后重试...")
+                            time.sleep(wait_time)
+                            self._refresh_rate_limit()
+                            continue
                     else:
                         print(f"访问被拒绝 (403): {url}")
                         return None
                 
                 if response.status_code == 404:
                     print(f"资源不存在 (404): {url}")
+                    return None
+                
+                if response.status_code == 422:
+                    print(f"搜索参数无效 (422): {url}")
                     return None
                 
                 if attempt < max_retries - 1:
@@ -208,9 +250,22 @@ class GitHubAPIClient:
         return data
     
     def search_pr_by_title(self, owner: str, repo: str, title: str) -> Optional[Dict]:
-        """通过标题搜索 PR（用于 display_title 关联）。"""
+        """通过标题搜索 PR（用于 display_title 关联）。受 Search API 速率限制约束。"""
+        elapsed = time.time() - self._search_period_start
+        if elapsed >= self.SEARCH_RATE_LIMIT_PERIOD:
+            self._search_calls_this_period = 0
+            self._search_period_start = time.time()
+        
+        remaining = self.SEARCH_RATE_LIMIT_MAX - self._search_calls_this_period
+        if remaining <= 3:
+            print(f"Search API 配额不足 ({remaining} left)，跳过标题搜索: {title[:40]}")
+            return None
+        
         import urllib.parse
-        query = urllib.parse.quote(f"repo:{owner}/{repo} type:pr in:title {title[:60]}")
+        truncated_title = title[:60].replace('"', '').replace("'", "")
+        if not truncated_title.strip():
+            return None
+        query = urllib.parse.quote(f"repo:{owner}/{repo} type:pr in:title {truncated_title}")
         url = f"{self.BASE_URL}/search/issues?q={query}"
         data = self._request_with_retry("GET", url)
         
@@ -238,30 +293,6 @@ class GitHubAPIClient:
                     "head": {"ref": ""}
                 }
         return None
-        """获取最近合并的 PR 列表。"""
-        url = f"{self.BASE_URL}/repos/{owner}/{repo}/pulls"
-        params = {
-            "state": "closed",
-            "sort": "updated",
-            "direction": "desc",
-            "per_page": 100
-        }
-        
-        data = self._request_with_retry("GET", url, params=params)
-        
-        if not data:
-            return []
-        
-        cutoff_time = datetime.now() - timedelta(hours=hours)
-        
-        merged_prs = []
-        for pr in data:
-            if pr.get("merged_at"):
-                merged_at = datetime.fromisoformat(pr["merged_at"].replace("Z", "+00:00"))
-                if merged_at > cutoff_time and pr["base"]["ref"] == "main":
-                    merged_prs.append(pr)
-        
-        return merged_prs
 
 
 def create_client() -> GitHubAPIClient:
