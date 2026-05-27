@@ -203,44 +203,44 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 <div id="settingsPanel" style="display:none">
 <div class="card">
 <div class="card-title">通知设置</div>
-<p style="font-size:13px;color:#8b949e;margin-bottom:12px">配置构建失败告警的通知渠道。敏感信息（Webhook URL、密码等）以 GitHub Secrets 存储，不可在此页面编辑，请使用下方命令设置。</p>
+<p style="font-size:13px;color:#8b949e;margin-bottom:12px">配置构建失败告警的通知渠道。在输入框中填写值，点击「复制并设置」按钮，将生成的命令在终端执行即可完成配置。<br>已配置的敏感值仅显示「已配置」，不显示实际内容。</p>
 <div class="settings-section">
 <h4><span class="status-dot" id="feishuDot"></span> Feishu (飞书)</h4>
 <div class="settings-form">
-<label>Webhook URL</label><input id="feishuWebhook" placeholder="https://open.feishu.cn/open-apis/bot/v2/hook/xxx" readonly>
-<label>签名密钥 (可选)</label><input id="feishuSecret" placeholder="签名密钥" readonly>
+<label>Webhook URL</label><input id="feishuWebhook" placeholder="输入 Webhook URL，如 https://open.feishu.cn/open-apis/bot/v2/hook/xxx">
+<label>签名密钥 (可选)</label><input id="feishuSecret" placeholder="输入签名密钥（可选）">
 </div>
-<div style="margin-top:8px"><button class="btn btn-primary" onclick="copyCmd('gh secret set FEISHU_WEBHOOK_URL')">复制设置命令 (URL)</button> <button class="btn" onclick="copyCmd('gh secret set FEISHU_SIGN_SECRET')">复制设置命令 (签名)</button></div>
-<div class="cmd-block">gh secret set FEISHU_WEBHOOK_URL --repo winson-00178005/build-eye <button class="copy-btn" onclick="copyText('gh secret set FEISHU_WEBHOOK_URL --repo winson-00178005/build-eye')">Copy</button></div>
+<div style="margin-top:8px"><button class="btn btn-primary" onclick="copySecretCmd('FEISHU_WEBHOOK_URL','feishuWebhook')">复制并设置 (URL)</button> <button class="btn" onclick="copySecretCmd('FEISHU_SIGN_SECRET','feishuSecret')">复制并设置 (签名)</button></div>
+<div class="cmd-block" id="feishuCmdBlock">gh secret set FEISHU_WEBHOOK_URL --repo winson-00178005/build-eye <button class="copy-btn" onclick="copyText('gh secret set FEISHU_WEBHOOK_URL --repo winson-00178005/build-eye')">复制</button></div>
 </div>
 <div class="settings-section">
 <h4><span class="status-dot" id="dingtalkDot"></span> DingTalk (钉钉)</h4>
 <div class="settings-form">
-<label>Webhook URL</label><input id="dingtalkWebhook" placeholder="https://oapi.dingtalk.com/robot/send?access_token=xxx" readonly>
-<label>签名密钥 (可选)</label><input id="dingtalkSecret" placeholder="签名密钥" readonly>
+<label>Webhook URL</label><input id="dingtalkWebhook" placeholder="输入 Webhook URL，如 https://oapi.dingtalk.com/robot/send?access_token=xxx">
+<label>签名密钥 (可选)</label><input id="dingtalkSecret" placeholder="输入签名密钥（可选）">
 </div>
-<div style="margin-top:8px"><button class="btn btn-primary" onclick="copyCmd('gh secret set DINGTALK_WEBHOOK_URL')">复制设置命令 (URL)</button> <button class="btn" onclick="copyCmd('gh secret set DINGTALK_SIGN_SECRET')">复制设置命令 (签名)</button></div>
-<div class="cmd-block">gh secret set DINGTALK_WEBHOOK_URL --repo winson-00178005/build-eye <button class="copy-btn" onclick="copyText('gh secret set DINGTALK_WEBHOOK_URL --repo winson-00178005/build-eye')">Copy</button></div>
+<div style="margin-top:8px"><button class="btn btn-primary" onclick="copySecretCmd('DINGTALK_WEBHOOK_URL','dingtalkWebhook')">复制并设置 (URL)</button> <button class="btn" onclick="copySecretCmd('DINGTALK_SIGN_SECRET','dingtalkSecret')">复制并设置 (签名)</button></div>
+<div class="cmd-block" id="dingtalkCmdBlock">gh secret set DINGTALK_WEBHOOK_URL --repo winson-00178005/build-eye <button class="copy-btn" onclick="copyText('gh secret set DINGTALK_WEBHOOK_URL --repo winson-00178005/build-eye')">复制</button></div>
 </div>
 <div class="settings-section">
 <h4><span class="status-dot" id="emailDot"></span> Email (邮件)</h4>
 <div class="settings-form">
-<label>SMTP 主机</label><input id="smtpHost" placeholder="smtp.qq.com" readonly>
-<label>SMTP 端口</label><input id="smtpPort" placeholder="465" readonly>
-<label>SMTP 用户 (发件邮箱)</label><input id="smtpUser" placeholder="user@example.com" readonly>
-<label>SMTP 密码</label><input id="smtpPassword" placeholder="应用专用密码" readonly>
-<label>收件邮箱 (逗号分隔)</label><input id="smtpTo" placeholder="a@example.com,b@example.com" readonly>
-<label>启用 SSL</label><input id="smtpSSL" placeholder="true" readonly>
+<label>SMTP 主机</label><input id="smtpHost" placeholder="如 smtp.qq.com">
+<label>SMTP 端口</label><input id="smtpPort" placeholder="如 465">
+<label>SMTP 用户 (发件邮箱)</label><input id="smtpUser" placeholder="如 user@example.com">
+<label>SMTP 密码</label><input id="smtpPassword" placeholder="应用专用密码">
+<label>收件邮箱 (逗号分隔)</label><input id="smtpTo" placeholder="如 a@example.com,b@example.com">
+<label>启用 SSL</label><input id="smtpSSL" placeholder="true 或 false">
 </div>
 <div style="margin-top:8px">
-<button class="btn btn-primary" onclick="copyCmd('gh secret set SMTP_HOST')">设置主机</button>
-<button class="btn" onclick="copyCmd('gh secret set SMTP_PORT')">设置端口</button>
-<button class="btn" onclick="copyCmd('gh secret set SMTP_USER')">设置用户</button>
-<button class="btn" onclick="copyCmd('gh secret set SMTP_PASSWORD')">设置密码</button>
-<button class="btn" onclick="copyCmd('gh secret set SMTP_TO')">设置收件人</button>
-<button class="btn" onclick="copyCmd('gh secret set SMTP_SSL')">设置SSL</button>
+<button class="btn btn-primary" onclick="copySecretCmd('SMTP_HOST','smtpHost')">复制并设置 (主机)</button>
+<button class="btn" onclick="copySecretCmd('SMTP_PORT','smtpPort')">复制并设置 (端口)</button>
+<button class="btn" onclick="copySecretCmd('SMTP_USER','smtpUser')">复制并设置 (用户)</button>
+<button class="btn" onclick="copySecretCmd('SMTP_PASSWORD','smtpPassword')">复制并设置 (密码)</button>
+<button class="btn" onclick="copySecretCmd('SMTP_TO','smtpTo')">复制并设置 (收件人)</button>
+<button class="btn" onclick="copySecretCmd('SMTP_SSL','smtpSSL')">复制并设置 (SSL)</button>
 </div>
-<div class="cmd-block">gh secret set SMTP_HOST --repo winson-00178005/build-eye <button class="copy-btn" onclick="copyText('gh secret set SMTP_HOST --repo winson-00178005/build-eye')">Copy</button></div>
+<div class="cmd-block" id="smtpCmdBlock">gh secret set SMTP_HOST --repo winson-00178005/build-eye <button class="copy-btn" onclick="copyText('gh secret set SMTP_HOST --repo winson-00178005/build-eye')">复制</button></div>
 </div>
 <div class="settings-section">
 <h4>测试通知</h4>
@@ -541,23 +541,28 @@ for(let i=0;i<dates.length;i++){const x=pad+i*Math.max(w/(Math.max(dates.length-
 function renderSettings(){
 const ns=D?.notification_settings||{};
 document.getElementById('feishuDot').className='status-dot '+((ns.feishu_enabled)?'on':'off');
-document.getElementById('feishuWebhook').value=ns.feishu_webhook_url||'(set via GitHub Secret)';
-document.getElementById('feishuSecret').value=ns.feishu_sign_secret?'configured':'(not set)';
+if(ns.feishu_webhook_url){document.getElementById('feishuWebhook').placeholder='已配置 (输入新值可覆盖)';}else{document.getElementById('feishuWebhook').placeholder='输入 Webhook URL';}
+if(ns.feishu_sign_secret){document.getElementById('feishuSecret').placeholder='已配置 (输入新值可覆盖)';}else{document.getElementById('feishuSecret').placeholder='输入签名密钥（可选）';}
 document.getElementById('dingtalkDot').className='status-dot '+((ns.dingtalk_enabled)?'on':'off');
-document.getElementById('dingtalkWebhook').value=ns.dingtalk_webhook_url||'(set via GitHub Secret)';
-document.getElementById('dingtalkSecret').value=ns.dingtalk_sign_secret?'configured':'(not set)';
+if(ns.dingtalk_webhook_url){document.getElementById('dingtalkWebhook').placeholder='已配置 (输入新值可覆盖)';}else{document.getElementById('dingtalkWebhook').placeholder='输入 Webhook URL';}
+if(ns.dingtalk_sign_secret){document.getElementById('dingtalkSecret').placeholder='已配置 (输入新值可覆盖)';}else{document.getElementById('dingtalkSecret').placeholder='输入签名密钥（可选）';}
 document.getElementById('emailDot').className='status-dot '+((ns.email_enabled)?'on':'off');
-document.getElementById('smtpHost').value=ns.smtp_host||'(set via GitHub Secret)';
-document.getElementById('smtpPort').value=ns.smtp_port||'465';
-document.getElementById('smtpUser').value=ns.smtp_user||'(set via GitHub Secret)';
-document.getElementById('smtpPassword').value=ns.smtp_password?'configured':'(not set)';
-document.getElementById('smtpTo').value=ns.smtp_to||'(set via GitHub Secret)';
-document.getElementById('smtpSSL').value=ns.smtp_ssl||'true';
+if(ns.smtp_host){document.getElementById('smtpHost').placeholder='已配置 (输入新值可覆盖)';}
+if(ns.smtp_port){document.getElementById('smtpPort').placeholder='已配置: '+ns.smtp_port+' (输入新值可覆盖)';}
+if(ns.smtp_user){document.getElementById('smtpUser').placeholder='已配置: '+ns.smtp_user+' (输入新值可覆盖)';}
+if(ns.smtp_password){document.getElementById('smtpPassword').placeholder='已配置 (输入新值可覆盖)';}
+if(ns.smtp_to){document.getElementById('smtpTo').placeholder='已配置 (输入新值可覆盖)';}
+if(ns.smtp_ssl){document.getElementById('smtpSSL').placeholder='已配置: '+ns.smtp_ssl+' (输入新值可覆盖)';}
 }
 
-function copyCmd(secretName){
-const cmd=`${secretName} --repo winson-00178005/build-eye`;
-navigator.clipboard.writeText(cmd).then(()=>{alert('Copied: '+cmd+'\n\nRun this command in your terminal with the value.')});
+function copySecretCmd(secretName,inputId){
+const input=document.getElementById(inputId);
+const value=input.value;
+if(!value){alert('请先在输入框中填写值，再点击此按钮。');return;}
+const cmd=`gh secret set ${secretName} --repo winson-00178005/build-eye --body '${value}'`;
+navigator.clipboard.writeText(cmd).then(()=>{
+alert('已复制命令到剪贴板:\n\n'+cmd+'\n\n请在终端中执行此命令。');
+});
 }
 
 function copyText(text){
