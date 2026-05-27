@@ -1,8 +1,8 @@
 ---
-report_id: 114d806a
+report_id: f92e326e
 pr_number: 9567
 group_key: pr-9567
-generated_at: 2026-05-27T05:23:00.031103+00:00
+generated_at: 2026-05-27T05:14:43.377186+00:00
 overall_classification: code
 total_failed_workflows: 1
 category_counts:
@@ -63,4 +63,4 @@ PR #9567 触发了 1 个 workflow，均失败。
 - **E2E-Light (#26487569494)**: 检查编译错误位置 (低成本) - 查看 CMake 或 clang 报错的具体文件和行
 
 ---
-报告生成时间: 2026-05-27T05:23:00.031126+00:00
+报告生成时间: 2026-05-27T05:14:43.377205+00:00
