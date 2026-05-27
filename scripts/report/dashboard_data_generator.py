@@ -439,12 +439,11 @@ def generate_dashboard_data(
     alerts = []
     for ptype, pg in pipeline_groups.items():
         rate = round((pg["success"] / max(pg["total"], 1)) * 100, 1)
+        label = TYPE_LABELS.get(ptype, ptype)
         if rate < 20:
-            label = TYPE_LABELS.get(ptype, ptype)
-            if rate < 20:
-                alerts.append({"level": "critical", "pipeline": ptype, "message": CN_ALERTS["critical_low"].format(label=label, rate=rate)})
-            elif rate < 50:
-                alerts.append({"level": "warning", "pipeline": ptype, "message": CN_ALERTS["warning_low"].format(label=label, rate=rate)})
+            alerts.append({"level": "critical", "pipeline": ptype, "message": CN_ALERTS["critical_low"].format(label=label, rate=rate)})
+        elif rate < 50:
+            alerts.append({"level": "warning", "pipeline": ptype, "message": CN_ALERTS["warning_low"].format(label=label, rate=rate)})
 
     consecutive_failures = {}
     for ptype in ["pr", "nightly", "weekly"]:
