@@ -12,7 +12,7 @@ VLLM_REPO = "https://github.com/vllm-project/vllm-ascend"
 TYPE_LABELS = {"pr": "PR CI", "nightly": "Nightly", "weekly": "Weekly"}
 CN_ALERTS = {
     "critical_low": "{label} 成功率极低 ({rate}%)，需要立即处理。",
-    "warning_low": "{label} 成率低于50% ({rate}%)，需要排查。",
+    "warning_low": "{label} 成功率低于50% ({rate}%)，需要排查。",
     "consecutive": "{label} 连续 {count} 次失败。",
 }
 
