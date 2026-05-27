@@ -1,8 +1,8 @@
 ---
-report_id: 350af0c7
+report_id: 4b423880
 pr_number: null
 group_key: run-26483320901
-generated_at: 2026-05-27T01:42:17.895036+00:00
+generated_at: 2026-05-27T01:17:22.849740+00:00
 overall_classification: code
 total_failed_workflows: 1
 category_counts:
@@ -63,4 +63,4 @@ run-26483320901 触发了 1 个 workflow，均失败。
 - **E2E-Light (#26483320901)**: 检查编译错误位置 (低成本) - 查看 CMake 或 clang 报错的具体文件和行
 
 ---
-报告生成时间: 2026-05-27T01:42:17.895054+00:00
+报告生成时间: 2026-05-27T01:17:22.849769+00:00
