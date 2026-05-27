@@ -10,6 +10,11 @@ REPO_URL = "https://github.com/winson-00178005/build-eye"
 VLLM_REPO = "https://github.com/vllm-project/vllm-ascend"
 
 TYPE_LABELS = {"pr": "PR CI", "nightly": "Nightly", "weekly": "Weekly"}
+CN_ALERTS = {
+    "critical_low": "{label} 成功率极低 ({rate}%)，需要立即处理。",
+    "warning_low": "{label} 成率低于50% ({rate}%)，需要排查。",
+    "consecutive": "{label} 连续 {count} 次失败。",
+}
 
 _INFRA_WRAPPER_RE = re.compile(
     r"Error:\s+command terminated with non-zero exit code"
@@ -435,9 +440,11 @@ def generate_dashboard_data(
     for ptype, pg in pipeline_groups.items():
         rate = round((pg["success"] / max(pg["total"], 1)) * 100, 1)
         if rate < 20:
-            alerts.append({"level": "critical", "pipeline": ptype, "message": f"{TYPE_LABELS.get(ptype,ptype)} success rate critically low ({rate}%). Immediate attention required."})
-        elif rate < 50:
-            alerts.append({"level": "warning", "pipeline": ptype, "message": f"{TYPE_LABELS.get(ptype,ptype)} success rate below 50% ({rate}%). Needs investigation."})
+            label = TYPE_LABELS.get(ptype, ptype)
+            if rate < 20:
+                alerts.append({"level": "critical", "pipeline": ptype, "message": CN_ALERTS["critical_low"].format(label=label, rate=rate)})
+            elif rate < 50:
+                alerts.append({"level": "warning", "pipeline": ptype, "message": CN_ALERTS["warning_low"].format(label=label, rate=rate)})
 
     consecutive_failures = {}
     for ptype in ["pr", "nightly", "weekly"]:
@@ -450,7 +457,8 @@ def generate_dashboard_data(
                 break
         if count >= 2:
             level = "critical" if count >= 5 else "warning"
-            alerts.append({"level": level, "pipeline": ptype, "message": f"{TYPE_LABELS.get(ptype,ptype)} has {count} consecutive failures."})
+            label = TYPE_LABELS.get(ptype, ptype)
+            alerts.append({"level": level, "pipeline": ptype, "message": CN_ALERTS["consecutive"].format(label=label, count=count)})
 
     notification_settings = {
         "feishu_enabled": bool(os.environ.get("FEISHU_WEBHOOK_URL", "")),
