@@ -576,7 +576,7 @@ navigator.clipboard.writeText(text);
 }
 
 function testNotification(){
-alert('请在终端执行以下命令触发测试通知:\n\ngh workflow run test-notification.yml\n\n需要先配置好 GitHub Secrets 才能发送通知。');
+window.open('https://github.com/winson-00178005/build-eye/actions/workflows/test-notification.yml','_blank');
 }
 
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
