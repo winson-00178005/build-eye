@@ -175,6 +175,25 @@ jobs:
             --repo winson-00178005/build-eye \
             --pipeline-type nightly
       
+      - name: Send notification
+        if: ${{ always() }}
+        env:
+          FEISHU_WEBHOOK_URL: ${{ secrets.FEISHU_WEBHOOK_URL }}
+          FEISHU_SIGN_SECRET: ${{ secrets.FEISHU_SIGN_SECRET }}
+          DINGTALK_WEBHOOK_URL: ${{ secrets.DINGTALK_WEBHOOK_URL }}
+          DINGTALK_SIGN_SECRET: ${{ secrets.DINGTALK_SIGN_SECRET }}
+          SMTP_HOST: ${{ secrets.SMTP_HOST }}
+          SMTP_PORT: ${{ secrets.SMTP_PORT }}
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+          SMTP_TO: ${{ secrets.SMTP_TO }}
+          SMTP_SSL: ${{ secrets.SMTP_SSL }}
+        run: |
+          python scripts/notify/notifier_cli.py \
+            --report-type Nightly \
+            --summary dashboard/dashboard_data.json \
+            --report-url "https://github.com/winson-00178005/build-eye/blob/main/reports/$(date +%Y/%m/%d)/nightly/report.md" || true
+      
       - name: Upload reports artifact
         if: ${{ always() }}
         uses: actions/upload-artifact@v4

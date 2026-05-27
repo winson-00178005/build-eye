@@ -1,5 +1,6 @@
 """Dashboard data generator - builds rich JSON with URLs, error excerpts, and report links."""
 import json
+import os
 import re
 import sys
 from pathlib import Path
@@ -426,6 +427,22 @@ def generate_dashboard_data(
             level = "critical" if count >= 5 else "warning"
             alerts.append({"level": level, "pipeline": ptype, "message": f"{TYPE_LABELS.get(ptype,ptype)} has {count} consecutive failures."})
 
+    notification_settings = {
+        "feishu_enabled": bool(os.environ.get("FEISHU_WEBHOOK_URL", "")),
+        "feishu_webhook_url": "configured" if os.environ.get("FEISHU_WEBHOOK_URL") else "",
+        "feishu_sign_secret": "configured" if os.environ.get("FEISHU_SIGN_SECRET") else "",
+        "dingtalk_enabled": bool(os.environ.get("DINGTALK_WEBHOOK_URL", "")),
+        "dingtalk_webhook_url": "configured" if os.environ.get("DINGTALK_WEBHOOK_URL") else "",
+        "dingtalk_sign_secret": "configured" if os.environ.get("DINGTALK_SIGN_SECRET") else "",
+        "email_enabled": bool(os.environ.get("SMTP_HOST", "") and os.environ.get("SMTP_TO", "")),
+        "smtp_host": os.environ.get("SMTP_HOST", ""),
+        "smtp_port": os.environ.get("SMTP_PORT", "465"),
+        "smtp_user": os.environ.get("SMTP_USER", ""),
+        "smtp_password": "configured" if os.environ.get("SMTP_PASSWORD") else "",
+        "smtp_to": os.environ.get("SMTP_TO", ""),
+        "smtp_ssl": os.environ.get("SMTP_SSL", "true"),
+    }
+
     data = {
         "overview": overview,
         "trends": trends,
@@ -435,6 +452,7 @@ def generate_dashboard_data(
         "reports": reports_data,
         "pr_lookup": pr_lookup,
         "alerts": alerts,
+        "notification_settings": notification_settings,
     }
 
     output_path_p = Path(output_path)

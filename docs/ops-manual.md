@@ -80,9 +80,106 @@
    
    Name: ARCHIVE_REPO_TOKEN
    Value: <粘贴你的 Token>
-   ```
+```
 
 ---
+
+## 七、通知配置
+
+Build-Eye 支持三种通知渠道：飞书、钉钉、邮件。通过 Dashboard 的 Settings 页面可查看配置状态，通过 `gh secret set` 命令配置敏感信息。
+
+### 7.1 飞书 (Feishu)
+
+#### 创建自定义机器人
+
+1. 打开飞书群 → 设置 → 群机器人 → 添加自定义机器人
+2. 设置机器人名称（如 "Build-Eye CI Monitor"）
+3. 选择安全设置：**加签**方式（推荐）
+4. 复制 Webhook URL 和签名密钥
+
+#### 配置 GitHub Secrets
+
+```bash
+gh secret set FEISHU_WEBHOOK_URL --repo winson-00178005/build-eye
+# 输入: https://open.feishu.cn/open-apis/bot/v2/hook/xxx
+
+gh secret set FEISHU_SIGN_SECRET --repo winson-00178005/build-eye
+# 输入: 签名密钥（如使用加签方式）
+```
+
+### 7.2 钉钉 (DingTalk)
+
+#### 创建自定义机器人
+
+1. 打开钉钉群 → 设置 → 智能群助手 → 添加机器人 → 自定义
+2. 设置机器人名称（如 "Build-Eye CI Monitor"）
+3. 安全设置：**加签**方式
+4. 复制 Webhook URL 和签名密钥
+
+#### 配置 GitHub Secrets
+
+```bash
+gh secret set DINGTALK_WEBHOOK_URL --repo winson-00178005/build-eye
+# 输入: https://oapi.dingtalk.com/robot/send?access_token=xxx
+
+gh secret set DINGTALK_SIGN_SECRET --repo winson-00178005/build-eye
+# 输入: 签名密钥
+```
+
+### 7.3 邮件 (Email)
+
+#### 配置 SMTP
+
+支持任何 SMTP 服务（QQ邮箱、163邮箱、企业邮箱等）。
+
+**QQ 邮箱示例**：
+1. 登录 QQ 邮箱 → 设置 → 账户 → POP3/SMTP 开启
+2. 生成授权码（不是 QQ 密码）
+
+```bash
+gh secret set SMTP_HOST --repo winson-00178005/build-eye
+# 输入: smtp.qq.com
+
+gh secret set SMTP_PORT --repo winson-00178005/build-eye
+# 输入: 465
+
+gh secret set SMTP_USER --repo winson-00178005/build-eye
+# 输入: xxx@qq.com
+
+gh secret set SMTP_PASSWORD --repo winson-00178005/build-eye
+# 输入: 授权码（非QQ密码）
+
+gh secret set SMTP_TO --repo winson-00178005/build-eye
+# 输入: recipient@example.com（多个用逗号分隔）
+
+gh secret set SMTP_SSL --repo winson-00178005/build-eye
+# 输入: true
+```
+
+### 7.4 测试通知
+
+配置完成后，可通过 Dashboard 的 Settings 页面点击 **"Send Test Notification"** 按钮，或在命令行运行：
+
+```bash
+gh workflow run test-notification.yml
+```
+
+查看结果：https://github.com/winson-00178005/build-eye/actions
+
+### 7.5 通知内容
+
+每次 Nightly/Weekly/PR 报告生成后自动发送通知，包含：
+- 报告类型和标题
+- 总运行数、成功数、失败数、成功率
+- Top 5 失败 workflow 的名称、根因分类、关键错误信息
+- 查看完整报告的链接
+
+### 7.6 通过 Dashboard 管理通知
+
+访问 https://winson-00178005.github.io/build-eye/ → Settings 标签页：
+- 查看各通知渠道的状态（绿色/灰色圆点）
+- 一键复制 `gh secret set` 命令
+- 发送测试通知
 
 ## 二、GitHub Actions Workflow 配置
 
