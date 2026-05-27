@@ -1,8 +1,8 @@
 ---
-report_id: 2bbb13b9
+report_id: e2623ed1
 pr_number: 8850
 group_key: pr-8850
-generated_at: 2026-05-26T03:34:40.721989+00:00
+generated_at: 2026-05-26T09:58:18.454214+00:00
 overall_classification: code
 total_failed_workflows: 2
 category_counts:
@@ -21,12 +21,12 @@ PR #8850 触发了 2 个 workflow，均失败。
 
 | # | Workflow | 根因分类 | 置信度 | 具体问题 |
 |---|---|---|---|---|
-| 1 | E2E-Light (#26430439630) | PR代码问题 | 中 | 编译错误 |
-| 2 | E2E-Light (#26427461092) | PR代码问题 | 中 | 编译错误 |
+| 1 | E2E-Light (#26445062191) | PR代码问题 | 中 | 编译错误 |
+| 2 | E2E-Light (#26441924115) | PR代码问题 | 中 | 编译错误 |
 
 
 ## Workflow 详细分析
-### 1. E2E-Light (Run #26430439630)
+### 1. E2E-Light (Run #26445062191)
 
 - **根因分类**: PR代码问题
 - **置信度**: 中
@@ -37,20 +37,15 @@ PR #8850 触发了 2 个 workflow，均失败。
 **匹配模式**:
 - compilation: `error:\s+`
 
-[查看 Workflow Run](https://github.com/vllm-project/vllm-ascend/actions/runs/26430439630)
-[查看 Job: lint / validate-pr-title](https://github.com/vllm-project/vllm-ascend/actions/runs/26430439630/job/77802428846)
+[查看 Workflow Run](https://github.com/vllm-project/vllm-ascend/actions/runs/26445062191)
+[查看 Job: lint / validate-pr-title](https://github.com/vllm-project/vllm-ascend/actions/runs/26445062191/job/77849134036)
 
 **日志片段**:
 ```
-ï»¿2026-05-26T03:25:37.9667942Z Current runner version: '2.334.0'
-2026-05-26T03:25:37.9674754Z Runner name: 'linux-amd64-cpu-8-hk-frp8k-runner-8dg2t'
-2026-05-26T03:25:37.9675702Z Runner group name: 'Default'
-2026-05-26T03:25:37.9676681Z Machine name: 'linux-amd64-cpu-8-hk-frp8k-runner-8dg2t'
-2026-05-26T03:25:37.9679503Z ##[group]GITHUB_TOKEN Permissions
-2026-05-26T03:25:37.9681958Z Contents: read
-2026-05-26T03:25:37.9682518Z Metadata: read
-2026-05-26T03:25:37.9683087Z ##[endgroup]
-2026-05-26T03:
+2026-05-26T09:49:32.5841213Z Checking PR title: [Future] [P/D] support hybrid attention for mooncake connector
+2026-05-26T09:49:32.5865278Z ##[error]PR title must contain one of the following prefixes: [BugFix], [Performance], [Test], [CI], [Feature], [Doc], [Misc], [Community], [Refactor]
+2026-05-26T09:49:32.5874033Z ##[error]Example: '[Feature] Add new optimization pass' or 'Add new feature [Feature]'
+2026-05-26T09:49:32.5987403Z ##[error]Error: failed to run script step: Error: command termin
 ```
 
 **建议**:
@@ -58,7 +53,7 @@ PR #8850 触发了 2 个 workflow，均失败。
 - 检查编译错误位置 (低成本)
 - 修复编译问题 (中等成本)
 
-### 2. E2E-Light (Run #26427461092)
+### 2. E2E-Light (Run #26441924115)
 
 - **根因分类**: PR代码问题
 - **置信度**: 中
@@ -69,20 +64,15 @@ PR #8850 触发了 2 个 workflow，均失败。
 **匹配模式**:
 - compilation: `error:\s+`
 
-[查看 Workflow Run](https://github.com/vllm-project/vllm-ascend/actions/runs/26427461092)
-[查看 Job: lint / validate-pr-title](https://github.com/vllm-project/vllm-ascend/actions/runs/26427461092/job/77793828065)
+[查看 Workflow Run](https://github.com/vllm-project/vllm-ascend/actions/runs/26441924115)
+[查看 Job: lint / validate-pr-title](https://github.com/vllm-project/vllm-ascend/actions/runs/26441924115/job/77838271747)
 
 **日志片段**:
 ```
-ï»¿2026-05-26T01:41:50.7005293Z Current runner version: '2.334.0'
-2026-05-26T01:41:50.7012108Z Runner name: 'linux-amd64-cpu-8-hk-frp8k-runner-p26xf'
-2026-05-26T01:41:50.7012969Z Runner group name: 'Default'
-2026-05-26T01:41:50.7013831Z Machine name: 'linux-amd64-cpu-8-hk-frp8k-runner-p26xf'
-2026-05-26T01:41:50.7016569Z ##[group]GITHUB_TOKEN Permissions
-2026-05-26T01:41:50.7019027Z Contents: read
-2026-05-26T01:41:50.7019559Z Metadata: read
-2026-05-26T01:41:50.7020098Z ##[endgroup]
-2026-05-26T01:
+2026-05-26T08:43:29.4827920Z Checking PR title: [Future] [P/D] support hybrid attention for mooncake connector
+2026-05-26T08:43:29.4852955Z ##[error]PR title must contain one of the following prefixes: [BugFix], [Performance], [Test], [CI], [Feature], [Doc], [Misc], [Community], [Refactor]
+2026-05-26T08:43:29.4861575Z ##[error]Example: '[Feature] Add new optimization pass' or 'Add new feature [Feature]'
+2026-05-26T08:43:29.4971134Z ##[error]Error: failed to run script step: Error: command termin
 ```
 
 **建议**:
@@ -96,8 +86,8 @@ PR #8850 触发了 2 个 workflow，均失败。
 
 ### 优先建议
 
-- **E2E-Light (#26430439630)**: 检查编译错误位置 (低成本) - 查看 CMake 或 clang 报错的具体文件和行
-- **E2E-Light (#26427461092)**: 检查编译错误位置 (低成本) - 查看 CMake 或 clang 报错的具体文件和行
+- **E2E-Light (#26445062191)**: 检查编译错误位置 (低成本) - 查看 CMake 或 clang 报错的具体文件和行
+- **E2E-Light (#26441924115)**: 检查编译错误位置 (低成本) - 查看 CMake 或 clang 报错的具体文件和行
 
 ---
-报告生成时间: 2026-05-26T03:34:40.722056+00:00
+报告生成时间: 2026-05-26T09:58:18.454274+00:00
