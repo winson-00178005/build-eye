@@ -1,8 +1,8 @@
 ---
-report_id: 48e44470
+report_id: ed3b48bb
 pr_number: null
 group_key: run-26487708649
-generated_at: 2026-05-27T05:23:00.030969+00:00
+generated_at: 2026-05-27T05:14:43.377076+00:00
 overall_classification: code
 total_failed_workflows: 1
 category_counts:
@@ -62,4 +62,4 @@ run-26487708649 触发了 1 个 workflow，均失败。
 - **E2E-Light (#26487708649)**: 检查编译错误位置 (低成本) - 查看 CMake 或 clang 报错的具体文件和行
 
 ---
-报告生成时间: 2026-05-27T05:23:00.030995+00:00
+报告生成时间: 2026-05-27T05:14:43.377096+00:00
