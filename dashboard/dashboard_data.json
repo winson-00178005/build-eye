@@ -1,33 +1,33 @@
 {
   "overview": {
-    "timestamp": "2026-05-31T16:56:28.981821+00:00",
+    "timestamp": "2026-05-31T22:50:03.980236+00:00",
     "summary": {
       "total_runs": 70,
-      "success_runs": 15,
-      "failure_runs": 55,
-      "overall_success_rate": 21.4
+      "success_runs": 14,
+      "failure_runs": 56,
+      "overall_success_rate": 20.0
     },
     "pipelines": {
       "pr": {
         "total_runs": 20,
-        "success_runs": 1,
-        "failure_runs": 19,
-        "success_rate": 5.0,
-        "latest_report_url": "https://github.com/winson-00178005/build-eye/blob/main/reports/2026/05/31/pr/run-26711298252/report.md",
+        "success_runs": 2,
+        "failure_runs": 18,
+        "success_rate": 10.0,
+        "latest_report_url": "https://github.com/winson-00178005/build-eye/blob/main/reports/2026/05/31/pr/run-26717938089/report.md",
         "vllm_actions_url": "https://github.com/vllm-project/vllm-ascend/actions"
       },
       "nightly": {
         "total_runs": 50,
-        "success_runs": 14,
-        "failure_runs": 36,
-        "success_rate": 28.0,
+        "success_runs": 12,
+        "failure_runs": 38,
+        "success_rate": 24.0,
         "latest_report_url": "",
         "vllm_actions_url": "https://github.com/vllm-project/vllm-ascend/actions"
       }
     }
   },
   "trends": {
-    "timestamp": "2026-05-31T16:56:29.004064+00:00",
+    "timestamp": "2026-05-31T22:50:04.004058+00:00",
     "pipelines": {
       "pr": {
         "success_rate_trend": [
@@ -35,21 +35,21 @@
           12.3,
           16.1,
           15.4,
-          5.0
+          6.7
         ],
         "failure_count_trend": [
           45,
           57,
           52,
           55,
-          38
+          56
         ],
         "health_score_trend": [
           40.5,
           34.9,
           36.5,
           36.2,
-          32.0
+          32.7
         ],
         "dates": [
           "2026-05-27",
@@ -64,25 +64,29 @@
           40.0,
           40.0,
           20.0,
-          0.0
+          0.0,
+          14.3
         ],
         "failure_count_trend": [
           3,
           3,
           4,
+          6,
           6
         ],
         "health_score_trend": [
           62.5,
           62.5,
           57.5,
-          53.0
+          53.0,
+          56.2
         ],
         "dates": [
           "2026-05-27",
           "2026-05-28",
           "2026-05-29",
-          "2026-05-30"
+          "2026-05-30",
+          "2026-05-31"
         ]
       },
       "weekly": {
@@ -103,292 +107,427 @@
   },
   "categories": {
     "distribution": {
-      "infrastructure": 25,
-      "code": 45
+      "infrastructure": 24,
+      "code": 46
     }
   },
   "recent_failures": {
     "failures": [
       {
-        "run_id": 26711553242,
+        "run_id": 26717938088,
         "workflow_name": "E2E-Full",
         "pipeline_type": "pr",
         "status": "skipped",
         "classification": "infrastructure",
         "confidence": "low",
         "detail": "无失败job信息",
-        "started_at": "2026-05-31T11:38:17Z",
+        "started_at": "2026-05-31T16:22:28Z",
         "key_errors": [],
-        "run_url": "https://github.com/vllm-project/vllm-ascend/actions/runs/26711553242",
+        "run_url": "https://github.com/vllm-project/vllm-ascend/actions/runs/26717938088",
+        "report_url": "https://github.com/winson-00178005/build-eye/blob/main/reports/2026/05/31/pr/run-26717938088/report.md",
+        "pr_number": null
+      },
+      {
+        "run_id": 26717938089,
+        "workflow_name": "E2E-Light",
+        "pipeline_type": "pr",
+        "status": "failure",
+        "classification": "code",
+        "confidence": "high",
+        "detail": "编译错误",
+        "started_at": "2026-05-31T16:22:28Z",
+        "key_errors": [],
+        "run_url": "https://github.com/vllm-project/vllm-ascend/actions/runs/26717938089",
+        "report_url": "https://github.com/winson-00178005/build-eye/blob/main/reports/2026/05/31/pr/run-26717938089/report.md",
+        "pr_number": null
+      },
+      {
+        "run_id": 26717400912,
+        "workflow_name": "E2E-Light",
+        "pipeline_type": "pr",
+        "status": "cancelled",
+        "classification": "code",
+        "confidence": "high",
+        "detail": "编译错误",
+        "started_at": "2026-05-31T15:59:39Z",
+        "key_errors": [],
+        "run_url": "https://github.com/vllm-project/vllm-ascend/actions/runs/26717400912",
+        "report_url": "https://github.com/winson-00178005/build-eye/blob/main/reports/2026/05/31/pr/run-26717400912/report.md",
+        "pr_number": null
+      },
+      {
+        "run_id": 26717400908,
+        "workflow_name": "E2E-Full",
+        "pipeline_type": "pr",
+        "status": "skipped",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "detail": "无失败job信息",
+        "started_at": "2026-05-31T15:59:39Z",
+        "key_errors": [],
+        "run_url": "https://github.com/vllm-project/vllm-ascend/actions/runs/26717400908",
+        "report_url": "https://github.com/winson-00178005/build-eye/blob/main/reports/2026/05/31/pr/run-26717400908/report.md",
+        "pr_number": null
+      },
+      {
+        "run_id": 26717286208,
+        "workflow_name": "E2E-Full",
+        "pipeline_type": "pr",
+        "status": "skipped",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "detail": "无失败job信息",
+        "started_at": "2026-05-31T15:54:43Z",
+        "key_errors": [],
+        "run_url": "https://github.com/vllm-project/vllm-ascend/actions/runs/26717286208",
+        "report_url": "https://github.com/winson-00178005/build-eye/blob/main/reports/2026/05/31/pr/pr-9721/report.md",
+        "pr_number": 9721
+      },
+      {
+        "run_id": 26717286227,
+        "workflow_name": "E2E-Light",
+        "pipeline_type": "pr",
+        "status": "failure",
+        "classification": "code",
+        "confidence": "high",
+        "detail": "测试断言失败",
+        "started_at": "2026-05-31T15:54:43Z",
+        "key_errors": [
+          "pip's dependency resolver does not currently take into account all the packages",
+          "to put key ['k1'],error:'MooncakeBackend' object has no attr",
+          "to check keys ['k1']: fail"
+        ],
+        "run_url": "https://github.com/vllm-project/vllm-ascend/actions/runs/26717286227",
+        "report_url": "https://github.com/winson-00178005/build-eye/blob/main/reports/2026/05/31/pr/pr-9721/report.md",
+        "pr_number": 9721
+      },
+      {
+        "run_id": 26717277987,
+        "workflow_name": "E2E-Full",
+        "pipeline_type": "pr",
+        "status": "skipped",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "detail": "无失败job信息",
+        "started_at": "2026-05-31T15:54:21Z",
+        "key_errors": [],
+        "run_url": "https://github.com/vllm-project/vllm-ascend/actions/runs/26717277987",
+        "report_url": "https://github.com/winson-00178005/build-eye/blob/main/reports/2026/05/31/pr/pr-9678/report.md",
+        "pr_number": 9678
+      },
+      {
+        "run_id": 26717277999,
+        "workflow_name": "E2E-Light",
+        "pipeline_type": "pr",
+        "status": "failure",
+        "classification": "code",
+        "confidence": "high",
+        "detail": "测试断言失败",
+        "started_at": "2026-05-31T15:54:21Z",
+        "key_errors": [
+          "pip's dependency resolver does not currently take into account all the packages",
+          "to put key ['k1'],error:'MooncakeBackend' object has no attr",
+          "to check keys ['k1']: fail"
+        ],
+        "run_url": "https://github.com/vllm-project/vllm-ascend/actions/runs/26717277999",
+        "report_url": "https://github.com/winson-00178005/build-eye/blob/main/reports/2026/05/31/pr/pr-9678/report.md",
+        "pr_number": 9678
+      },
+      {
+        "run_id": 26716366799,
+        "workflow_name": "vLLM Main Schedule Test",
+        "pipeline_type": "nightly",
+        "status": "failure",
+        "classification": "code",
+        "confidence": "high",
+        "detail": "编译错误",
+        "started_at": "2026-05-31T15:14:52Z",
+        "key_errors": [
+          "false",
+          "cannot import name 'CustomOp' from 'vllm.model_executor.layers.mamba.linear_attn",
+          "(exit code 4)  tests/e2e/multicard/2-cards/test_qwen3_moe.py"
+        ],
+        "run_url": "https://github.com/vllm-project/vllm-ascend/actions/runs/26716366799",
+        "report_url": "https://github.com/winson-00178005/build-eye/blob/main/reports/2026/05/31/nightly/report.md",
+        "pr_number": null
+      },
+      {
+        "run_id": 26715657016,
+        "workflow_name": "E2E-Full",
+        "pipeline_type": "pr",
+        "status": "skipped",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "detail": "无失败job信息",
+        "started_at": "2026-05-31T14:44:18Z",
+        "key_errors": [],
+        "run_url": "https://github.com/vllm-project/vllm-ascend/actions/runs/26715657016",
         "report_url": "https://github.com/winson-00178005/build-eye/blob/main/reports/2026/05/31/pr/pr-9481/report.md",
         "pr_number": 9481
       },
       {
-        "run_id": 26711345237,
-        "workflow_name": "E2E-Full",
-        "pipeline_type": "pr",
-        "status": "skipped",
-        "classification": "infrastructure",
-        "confidence": "low",
-        "detail": "无失败job信息",
-        "started_at": "2026-05-31T11:28:34Z",
-        "key_errors": [],
-        "run_url": "https://github.com/vllm-project/vllm-ascend/actions/runs/26711345237",
-        "report_url": "https://github.com/winson-00178005/build-eye/blob/main/reports/2026/05/31/pr/pr-9789/report.md",
-        "pr_number": 9789
-      },
-      {
-        "run_id": 26711333095,
-        "workflow_name": "E2E-Full",
-        "pipeline_type": "pr",
-        "status": "skipped",
-        "classification": "infrastructure",
-        "confidence": "low",
-        "detail": "无失败job信息",
-        "started_at": "2026-05-31T11:27:59Z",
-        "key_errors": [],
-        "run_url": "https://github.com/vllm-project/vllm-ascend/actions/runs/26711333095",
-        "report_url": "https://github.com/winson-00178005/build-eye/blob/main/reports/2026/05/31/pr/pr-9189/report.md",
-        "pr_number": 9189
-      },
-      {
-        "run_id": 26711333080,
-        "workflow_name": "E2E-Light",
-        "pipeline_type": "pr",
-        "status": "failure",
-        "classification": "code",
-        "confidence": "medium",
-        "detail": "编译错误",
-        "started_at": "2026-05-31T11:27:59Z",
-        "key_errors": [],
-        "run_url": "https://github.com/vllm-project/vllm-ascend/actions/runs/26711333080",
-        "report_url": "https://github.com/winson-00178005/build-eye/blob/main/reports/2026/05/31/pr/pr-9189/report.md",
-        "pr_number": 9189
-      },
-      {
-        "run_id": 26711299101,
-        "workflow_name": "E2E-Full",
-        "pipeline_type": "pr",
-        "status": "skipped",
-        "classification": "infrastructure",
-        "confidence": "low",
-        "detail": "无失败job信息",
-        "started_at": "2026-05-31T11:26:18Z",
-        "key_errors": [],
-        "run_url": "https://github.com/vllm-project/vllm-ascend/actions/runs/26711299101",
-        "report_url": "https://github.com/winson-00178005/build-eye/blob/main/reports/2026/05/31/pr/pr-9782/report.md",
-        "pr_number": 9782
-      },
-      {
-        "run_id": 26711298252,
-        "workflow_name": "E2E-Full",
-        "pipeline_type": "pr",
-        "status": "skipped",
-        "classification": "infrastructure",
-        "confidence": "low",
-        "detail": "无失败job信息",
-        "started_at": "2026-05-31T11:26:15Z",
-        "key_errors": [],
-        "run_url": "https://github.com/vllm-project/vllm-ascend/actions/runs/26711298252",
-        "report_url": "https://github.com/winson-00178005/build-eye/blob/main/reports/2026/05/31/pr/run-26711298252/report.md",
-        "pr_number": null
-      },
-      {
-        "run_id": 26711284173,
-        "workflow_name": "E2E-Light",
-        "pipeline_type": "pr",
-        "status": "failure",
-        "classification": "code",
-        "confidence": "high",
-        "detail": "编译错误",
-        "started_at": "2026-05-31T11:25:30Z",
-        "key_errors": [],
-        "run_url": "https://github.com/vllm-project/vllm-ascend/actions/runs/26711284173",
-        "report_url": "https://github.com/winson-00178005/build-eye/blob/main/reports/2026/05/31/pr/run-26711284173/report.md",
-        "pr_number": null
-      },
-      {
-        "run_id": 26711284186,
-        "workflow_name": "E2E-Full",
-        "pipeline_type": "pr",
-        "status": "skipped",
-        "classification": "infrastructure",
-        "confidence": "low",
-        "detail": "无失败job信息",
-        "started_at": "2026-05-31T11:25:30Z",
-        "key_errors": [],
-        "run_url": "https://github.com/vllm-project/vllm-ascend/actions/runs/26711284186",
-        "report_url": "https://github.com/winson-00178005/build-eye/blob/main/reports/2026/05/31/pr/run-26711284186/report.md",
-        "pr_number": null
-      },
-      {
-        "run_id": 26709659693,
+        "run_id": 26715429116,
         "workflow_name": "E2E-Light",
         "pipeline_type": "pr",
         "status": "failure",
         "classification": "code",
         "confidence": "high",
         "detail": "测试断言失败",
-        "started_at": "2026-05-31T10:05:16Z",
+        "started_at": "2026-05-31T14:34:16Z",
         "key_errors": [
           "pip's dependency resolver does not currently take into account all the packages",
           "to put key ['k1'],error:'MooncakeBackend' object has no attr",
           "to check keys ['k1']: fail"
         ],
-        "run_url": "https://github.com/vllm-project/vllm-ascend/actions/runs/26709659693",
-        "report_url": "https://github.com/winson-00178005/build-eye/blob/main/reports/2026/05/31/pr/run-26709659693/report.md",
+        "run_url": "https://github.com/vllm-project/vllm-ascend/actions/runs/26715429116",
+        "report_url": "https://github.com/winson-00178005/build-eye/blob/main/reports/2026/05/31/pr/run-26715429116/report.md",
         "pr_number": null
       },
       {
-        "run_id": 26708248111,
+        "run_id": 26715419643,
         "workflow_name": "E2E-Full",
         "pipeline_type": "pr",
         "status": "skipped",
         "classification": "infrastructure",
         "confidence": "low",
         "detail": "无失败job信息",
-        "started_at": "2026-05-31T08:55:20Z",
+        "started_at": "2026-05-31T14:33:54Z",
         "key_errors": [],
-        "run_url": "https://github.com/vllm-project/vllm-ascend/actions/runs/26708248111",
-        "report_url": "https://github.com/winson-00178005/build-eye/blob/main/reports/2026/05/31/pr/run-26708248111/report.md",
+        "run_url": "https://github.com/vllm-project/vllm-ascend/actions/runs/26715419643",
+        "report_url": "https://github.com/winson-00178005/build-eye/blob/main/reports/2026/05/31/pr/run-26715419643/report.md",
         "pr_number": null
       },
       {
-        "run_id": 26708248095,
+        "run_id": 26715419654,
         "workflow_name": "E2E-Light",
         "pipeline_type": "pr",
-        "status": "failure",
+        "status": "cancelled",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "detail": "无失败job信息",
+        "started_at": "2026-05-31T14:33:54Z",
+        "key_errors": [],
+        "run_url": "https://github.com/vllm-project/vllm-ascend/actions/runs/26715419654",
+        "report_url": "https://github.com/winson-00178005/build-eye/blob/main/reports/2026/05/31/pr/run-26715419654/report.md",
+        "pr_number": null
+      },
+      {
+        "run_id": 26715406957,
+        "workflow_name": "E2E-Light",
+        "pipeline_type": "pr",
+        "status": "cancelled",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "detail": "无失败job信息",
+        "started_at": "2026-05-31T14:33:21Z",
+        "key_errors": [],
+        "run_url": "https://github.com/vllm-project/vllm-ascend/actions/runs/26715406957",
+        "report_url": "https://github.com/winson-00178005/build-eye/blob/main/reports/2026/05/31/pr/run-26715406957/report.md",
+        "pr_number": null
+      },
+      {
+        "run_id": 26714506605,
+        "workflow_name": "E2E-Full",
+        "pipeline_type": "pr",
+        "status": "skipped",
+        "classification": "infrastructure",
+        "confidence": "low",
+        "detail": "无失败job信息",
+        "started_at": "2026-05-31T13:53:44Z",
+        "key_errors": [],
+        "run_url": "https://github.com/vllm-project/vllm-ascend/actions/runs/26714506605",
+        "report_url": "https://github.com/winson-00178005/build-eye/blob/main/reports/2026/05/31/pr/run-26714506605/report.md",
+        "pr_number": null
+      },
+      {
+        "run_id": 26714506623,
+        "workflow_name": "E2E-Light",
+        "pipeline_type": "pr",
+        "status": "cancelled",
         "classification": "code",
         "confidence": "high",
         "detail": "测试断言失败",
-        "started_at": "2026-05-31T08:55:20Z",
+        "started_at": "2026-05-31T13:53:44Z",
         "key_errors": [
           "pip's dependency resolver does not currently take into account all the packages",
           "to put key ['k1'],error:'MooncakeBackend' object has no attr",
           "to check keys ['k1']: fail"
         ],
-        "run_url": "https://github.com/vllm-project/vllm-ascend/actions/runs/26708248095",
-        "report_url": "https://github.com/winson-00178005/build-eye/blob/main/reports/2026/05/31/pr/run-26708248095/report.md",
+        "run_url": "https://github.com/vllm-project/vllm-ascend/actions/runs/26714506623",
+        "report_url": "https://github.com/winson-00178005/build-eye/blob/main/reports/2026/05/31/pr/run-26714506623/report.md",
         "pr_number": null
       },
       {
-        "run_id": 26708240929,
-        "workflow_name": "E2E-Light",
-        "pipeline_type": "pr",
-        "status": "failure",
-        "classification": "code",
-        "confidence": "high",
-        "detail": "测试断言失败",
-        "started_at": "2026-05-31T08:54:59Z",
-        "key_errors": [
-          "pip's dependency resolver does not currently take into account all the packages",
-          "to put key ['k1'],error:'MooncakeBackend' object has no attr",
-          "to check keys ['k1']: fail"
-        ],
-        "run_url": "https://github.com/vllm-project/vllm-ascend/actions/runs/26708240929",
-        "report_url": "https://github.com/winson-00178005/build-eye/blob/main/reports/2026/05/31/pr/run-26708240929/report.md",
-        "pr_number": null
-      },
-      {
-        "run_id": 26708240922,
+        "run_id": 26714474381,
         "workflow_name": "E2E-Full",
         "pipeline_type": "pr",
         "status": "skipped",
         "classification": "infrastructure",
         "confidence": "low",
         "detail": "无失败job信息",
-        "started_at": "2026-05-31T08:54:59Z",
+        "started_at": "2026-05-31T13:52:17Z",
         "key_errors": [],
-        "run_url": "https://github.com/vllm-project/vllm-ascend/actions/runs/26708240922",
-        "report_url": "https://github.com/winson-00178005/build-eye/blob/main/reports/2026/05/31/pr/run-26708240922/report.md",
+        "run_url": "https://github.com/vllm-project/vllm-ascend/actions/runs/26714474381",
+        "report_url": "https://github.com/winson-00178005/build-eye/blob/main/reports/2026/05/31/pr/run-26714474381/report.md",
         "pr_number": null
       },
       {
-        "run_id": 26707808456,
-        "workflow_name": "E2E-Full",
-        "pipeline_type": "pr",
-        "status": "skipped",
-        "classification": "infrastructure",
-        "confidence": "low",
-        "detail": "无失败job信息",
-        "started_at": "2026-05-31T08:33:16Z",
-        "key_errors": [],
-        "run_url": "https://github.com/vllm-project/vllm-ascend/actions/runs/26707808456",
-        "report_url": "https://github.com/winson-00178005/build-eye/blob/main/reports/2026/05/31/pr/run-26707808456/report.md",
-        "pr_number": null
-      },
-      {
-        "run_id": 26707808457,
+        "run_id": 26714474393,
         "workflow_name": "E2E-Light",
         "pipeline_type": "pr",
         "status": "failure",
         "classification": "code",
         "confidence": "high",
         "detail": "编译错误",
-        "started_at": "2026-05-31T08:33:16Z",
-        "key_errors": [],
-        "run_url": "https://github.com/vllm-project/vllm-ascend/actions/runs/26707808457",
-        "report_url": "https://github.com/winson-00178005/build-eye/blob/main/reports/2026/05/31/pr/run-26707808457/report.md",
+        "started_at": "2026-05-31T13:52:17Z",
+        "key_errors": [
+          "Cannot determine type of \"hidden_size\"  [has-type]",
+          "Argument 3 to \"getattr\" has incompatible type \"tuple[()]\"; expected \"bool\"  [arg",
+          "Value of type \"Any | None\" is not indexable  [index]"
+        ],
+        "run_url": "https://github.com/vllm-project/vllm-ascend/actions/runs/26714474393",
+        "report_url": "https://github.com/winson-00178005/build-eye/blob/main/reports/2026/05/31/pr/run-26714474393/report.md",
         "pr_number": null
       },
       {
-        "run_id": 26707774401,
+        "run_id": 26714398621,
         "workflow_name": "E2E-Light",
         "pipeline_type": "pr",
+        "status": "cancelled",
+        "classification": "code",
+        "confidence": "high",
+        "detail": "编译错误",
+        "started_at": "2026-05-31T13:49:02Z",
+        "key_errors": [
+          "Cannot determine type of \"hidden_size\"  [has-type]",
+          "Argument 3 to \"getattr\" has incompatible type \"tuple[()]\"; expected \"bool\"  [arg",
+          "Value of type \"Any | None\" is not indexable  [index]"
+        ],
+        "run_url": "https://github.com/vllm-project/vllm-ascend/actions/runs/26714398621",
+        "report_url": "https://github.com/winson-00178005/build-eye/blob/main/reports/2026/05/31/pr/run-26714398621/report.md",
+        "pr_number": null
+      },
+      {
+        "run_id": 26709886079,
+        "workflow_name": "Release Code and Wheel",
+        "pipeline_type": "nightly",
+        "status": "failure",
+        "classification": "code",
+        "confidence": "high",
+        "detail": "编译错误",
+        "started_at": "2026-05-31T10:16:57Z",
+        "key_errors": [
+          "quay.io/ascend/manylinux:9.1.0-beta.1-310p-manylinux_2_28-py3.10: not found",
+          "to build: failed to solve: quay.io/ascend/manylinux:9.1.0-be"
+        ],
+        "run_url": "https://github.com/vllm-project/vllm-ascend/actions/runs/26709886079",
+        "report_url": "https://github.com/winson-00178005/build-eye/blob/main/reports/2026/05/31/nightly/report.md",
+        "pr_number": null
+      },
+      {
+        "run_id": 26709805060,
+        "workflow_name": "E2E-upstream",
+        "pipeline_type": "nightly",
         "status": "failure",
         "classification": "code",
         "confidence": "high",
         "detail": "测试断言失败",
-        "started_at": "2026-05-31T08:31:36Z",
+        "started_at": "2026-05-31T10:12:49Z",
+        "key_errors": [
+          "type[Exception] = jsonschema.RefResolutionError,",
+          "'NoneType' object has no attribute 'hf_config'"
+        ],
+        "run_url": "https://github.com/vllm-project/vllm-ascend/actions/runs/26709805060",
+        "report_url": "https://github.com/winson-00178005/build-eye/blob/main/reports/2026/05/31/nightly/report.md",
+        "pr_number": null
+      },
+      {
+        "run_id": 26709765529,
+        "workflow_name": "vLLM Main Schedule Test",
+        "pipeline_type": "nightly",
+        "status": "failure",
+        "classification": "code",
+        "confidence": "high",
+        "detail": "编译错误",
+        "started_at": "2026-05-31T10:10:52Z",
+        "key_errors": [
+          "false",
+          "cannot import name 'CustomOp' from 'vllm.model_executor.layers.mamba.linear_attn",
+          "(exit code 4)  tests/e2e/multicard/4-cards/long_sequence/tes"
+        ],
+        "run_url": "https://github.com/vllm-project/vllm-ascend/actions/runs/26709765529",
+        "report_url": "https://github.com/winson-00178005/build-eye/blob/main/reports/2026/05/31/nightly/report.md",
+        "pr_number": null
+      },
+      {
+        "run_id": 26705231654,
+        "workflow_name": "Release Code and Wheel",
+        "pipeline_type": "nightly",
+        "status": "failure",
+        "classification": "code",
+        "confidence": "high",
+        "detail": "编译错误",
+        "started_at": "2026-05-31T06:20:33Z",
+        "key_errors": [
+          "quay.io/ascend/manylinux:9.1.0-beta.1-310p-manylinux_2_28-py3.10: not found",
+          "to build: failed to solve: quay.io/ascend/manylinux:9.1.0-be"
+        ],
+        "run_url": "https://github.com/vllm-project/vllm-ascend/actions/runs/26705231654",
+        "report_url": "https://github.com/winson-00178005/build-eye/blob/main/reports/2026/05/31/nightly/report.md",
+        "pr_number": null
+      },
+      {
+        "run_id": 26705099570,
+        "workflow_name": "vLLM Main Schedule Test",
+        "pipeline_type": "nightly",
+        "status": "failure",
+        "classification": "code",
+        "confidence": "high",
+        "detail": "编译错误",
+        "started_at": "2026-05-31T06:13:25Z",
+        "key_errors": [
+          "false",
+          "cannot import name 'CustomOp' from 'vllm.model_executor.layers.mamba.linear_attn",
+          "(exit code 4)  tests/e2e/multicard/4-cards/long_sequence/tes"
+        ],
+        "run_url": "https://github.com/vllm-project/vllm-ascend/actions/runs/26705099570",
+        "report_url": "https://github.com/winson-00178005/build-eye/blob/main/reports/2026/05/31/nightly/report.md",
+        "pr_number": null
+      },
+      {
+        "run_id": 26694603784,
+        "workflow_name": "vLLM Main Schedule Test",
+        "pipeline_type": "nightly",
+        "status": "failure",
+        "classification": "code",
+        "confidence": "high",
+        "detail": "编译错误",
+        "started_at": "2026-05-30T20:50:33Z",
+        "key_errors": [
+          "false",
+          "cannot import name 'CustomOp' from 'vllm.model_executor.layers.mamba.linear_attn",
+          "(exit code 4)  tests/e2e/multicard/2-cards/test_qwen3_moe.py"
+        ],
+        "run_url": "https://github.com/vllm-project/vllm-ascend/actions/runs/26694603784",
+        "report_url": "https://github.com/winson-00178005/build-eye/blob/main/reports/2026/05/30/nightly/report.md",
+        "pr_number": null
+      },
+      {
+        "run_id": 26689307914,
+        "workflow_name": "Nightly-A2",
+        "pipeline_type": "nightly",
+        "status": "failure",
+        "classification": "code",
+        "confidence": "high",
+        "detail": "编译错误",
+        "started_at": "2026-05-30T16:43:10Z",
         "key_errors": [
           "pip's dependency resolver does not currently take into account all the packages",
-          "to put key ['k1'],error:'MooncakeBackend' object has no attr",
-          "to check keys ['k1']: fail"
+          "to import Triton kernels. Please make sure your triton versi",
+          "to compile {src_path}, error: {result.stderr}\")"
         ],
-        "run_url": "https://github.com/vllm-project/vllm-ascend/actions/runs/26707774401",
-        "report_url": "https://github.com/winson-00178005/build-eye/blob/main/reports/2026/05/31/pr/run-26707774401/report.md",
-        "pr_number": null
-      },
-      {
-        "run_id": 26707474045,
-        "workflow_name": "E2E-Light",
-        "pipeline_type": "pr",
-        "status": "failure",
-        "classification": "code",
-        "confidence": "high",
-        "detail": "编译错误",
-        "started_at": "2026-05-31T08:16:28Z",
-        "key_errors": [],
-        "run_url": "https://github.com/vllm-project/vllm-ascend/actions/runs/26707474045",
-        "report_url": "https://github.com/winson-00178005/build-eye/blob/main/reports/2026/05/31/pr/run-26707474045/report.md",
-        "pr_number": null
-      },
-      {
-        "run_id": 26707474042,
-        "workflow_name": "E2E-Full",
-        "pipeline_type": "pr",
-        "status": "skipped",
-        "classification": "infrastructure",
-        "confidence": "low",
-        "detail": "无失败job信息",
-        "started_at": "2026-05-31T08:16:28Z",
-        "key_errors": [],
-        "run_url": "https://github.com/vllm-project/vllm-ascend/actions/runs/26707474042",
-        "report_url": "https://github.com/winson-00178005/build-eye/blob/main/reports/2026/05/31/pr/run-26707474042/report.md",
-        "pr_number": null
-      },
-      {
-        "run_id": 26707330287,
-        "workflow_name": "E2E-Light",
-        "pipeline_type": "pr",
-        "status": "failure",
-        "classification": "code",
-        "confidence": "high",
-        "detail": "编译错误",
-        "started_at": "2026-05-31T08:09:18Z",
-        "key_errors": [],
-        "run_url": "https://github.com/vllm-project/vllm-ascend/actions/runs/26707330287",
-        "report_url": "https://github.com/winson-00178005/build-eye/blob/main/reports/2026/05/31/pr/run-26707330287/report.md",
+        "run_url": "https://github.com/vllm-project/vllm-ascend/actions/runs/26689307914",
+        "report_url": "https://github.com/winson-00178005/build-eye/blob/main/reports/2026/05/30/nightly/report.md",
         "pr_number": null
       },
       {
@@ -926,127 +1065,19 @@
         "run_url": "https://github.com/vllm-project/vllm-ascend/actions/runs/26435267753",
         "report_url": "https://github.com/winson-00178005/build-eye/blob/main/reports/2026/05/26/nightly/report.md",
         "pr_number": null
-      },
-      {
-        "run_id": 26419606840,
-        "workflow_name": "vLLM Main Schedule Test",
-        "pipeline_type": "nightly",
-        "status": "failure",
-        "classification": "code",
-        "confidence": "high",
-        "detail": "编译错误",
-        "started_at": "2026-05-25T21:00:28Z",
-        "key_errors": [
-          "false",
-          "No module named 'vllm.model_executor.layers.deepseek_compressor'",
-          "(exit code 4)  tests/e2e/multicard/2-cards/test_qwen3_moe.py"
-        ],
-        "run_url": "https://github.com/vllm-project/vllm-ascend/actions/runs/26419606840",
-        "report_url": "https://github.com/winson-00178005/build-eye/blob/main/reports/2026/05/25/nightly/report.md",
-        "pr_number": null
-      },
-      {
-        "run_id": 26412181441,
-        "workflow_name": "Nightly-A2",
-        "pipeline_type": "nightly",
-        "status": "failure",
-        "classification": "code",
-        "confidence": "high",
-        "detail": "编译错误",
-        "started_at": "2026-05-25T17:23:11Z",
-        "key_errors": [
-          "pip's dependency resolver does not currently take into account all the packages",
-          "to import Triton kernels. Please make sure your triton versi",
-          "to compile {src_path}, error: {result.stderr}\")"
-        ],
-        "run_url": "https://github.com/vllm-project/vllm-ascend/actions/runs/26412181441",
-        "report_url": "https://github.com/winson-00178005/build-eye/blob/main/reports/2026/05/25/nightly/report.md",
-        "pr_number": null
-      },
-      {
-        "run_id": 26412171661,
-        "workflow_name": "Nightly-A3",
-        "pipeline_type": "nightly",
-        "status": "failure",
-        "classification": "code",
-        "confidence": "high",
-        "detail": "编译错误",
-        "started_at": "2026-05-25T17:22:53Z",
-        "key_errors": [
-          "'deepseek_v32'",
-          "The checkpoint you are trying to load has model type `deepseek_v32` but Transfor",
-          "'PreTrainedConfig' object has no attribute 'max_position_embeddings'"
-        ],
-        "run_url": "https://github.com/vllm-project/vllm-ascend/actions/runs/26412171661",
-        "report_url": "https://github.com/winson-00178005/build-eye/blob/main/reports/2026/05/25/nightly/report.md",
-        "pr_number": null
-      },
-      {
-        "run_id": 26409927217,
-        "workflow_name": "vLLM Main Schedule Test",
-        "pipeline_type": "nightly",
-        "status": "failure",
-        "classification": "code",
-        "confidence": "high",
-        "detail": "编译错误",
-        "started_at": "2026-05-25T16:19:54Z",
-        "key_errors": [
-          "false",
-          "No module named 'vllm.model_executor.layers.deepseek_compressor'",
-          "(exit code 4)  tests/e2e/multicard/2-cards/test_qwen3_moe.py"
-        ],
-        "run_url": "https://github.com/vllm-project/vllm-ascend/actions/runs/26409927217",
-        "report_url": "https://github.com/winson-00178005/build-eye/blob/main/reports/2026/05/25/nightly/report.md",
-        "pr_number": null
-      },
-      {
-        "run_id": 26398978835,
-        "workflow_name": "vLLM Main Schedule Test",
-        "pipeline_type": "nightly",
-        "status": "failure",
-        "classification": "code",
-        "confidence": "high",
-        "detail": "编译错误",
-        "started_at": "2026-05-25T11:49:48Z",
-        "key_errors": [
-          "false",
-          "No module named 'vllm.model_executor.layers.deepseek_compressor'",
-          "(exit code 4)  tests/e2e/multicard/2-cards/test_qwen3_moe.py"
-        ],
-        "run_url": "https://github.com/vllm-project/vllm-ascend/actions/runs/26398978835",
-        "report_url": "https://github.com/winson-00178005/build-eye/blob/main/reports/2026/05/25/nightly/report.md",
-        "pr_number": null
-      },
-      {
-        "run_id": 26386592221,
-        "workflow_name": "vLLM Main Schedule Test",
-        "pipeline_type": "nightly",
-        "status": "failure",
-        "classification": "code",
-        "confidence": "high",
-        "detail": "编译错误",
-        "started_at": "2026-05-25T06:23:03Z",
-        "key_errors": [
-          "false",
-          "No module named 'vllm.model_executor.layers.deepseek_compressor'",
-          "(exit code 4)  tests/e2e/multicard/2-cards/test_qwen3_moe.py"
-        ],
-        "run_url": "https://github.com/vllm-project/vllm-ascend/actions/runs/26386592221",
-        "report_url": "https://github.com/winson-00178005/build-eye/blob/main/reports/2026/05/25/nightly/report.md",
-        "pr_number": null
       }
     ]
   },
   "health_scores": {
     "scores": {
       "pr": {
-        "score": 32.0,
+        "score": 34.0,
         "rating": "danger",
         "emoji": "🔴",
         "trend": "stable"
       },
       "nightly": {
-        "score": 41.2,
+        "score": 39.6,
         "rating": "danger",
         "emoji": "🔴",
         "trend": "stable"
@@ -1059,103 +1090,103 @@
     "pr": [
       {
         "date": "2026-05-31",
-        "url": "https://github.com/winson-00178005/build-eye/blob/main/reports/2026/05/31/pr/run-26711298252/report.md",
-        "raw_url": "https://github.com/winson-00178005/build-eye/raw/main/reports/2026/05/31/pr/run-26711298252/report.md",
+        "url": "https://github.com/winson-00178005/build-eye/blob/main/reports/2026/05/31/pr/run-26717938089/report.md",
+        "raw_url": "https://github.com/winson-00178005/build-eye/raw/main/reports/2026/05/31/pr/run-26717938089/report.md",
         "type": "pr",
-        "name": "run-26711298252",
-        "overall_classification": "infrastructure",
-        "workflow_name": "",
-        "preview": "run-26711298252 触发了 1 个 workflow，均失败。 - **基础设施问题**: 1 次"
-      },
-      {
-        "date": "2026-05-31",
-        "url": "https://github.com/winson-00178005/build-eye/blob/main/reports/2026/05/31/pr/run-26711284186/report.md",
-        "raw_url": "https://github.com/winson-00178005/build-eye/raw/main/reports/2026/05/31/pr/run-26711284186/report.md",
-        "type": "pr",
-        "name": "run-26711284186",
-        "overall_classification": "infrastructure",
-        "workflow_name": "",
-        "preview": "run-26711284186 触发了 1 个 workflow，均失败。 - **基础设施问题**: 1 次"
-      },
-      {
-        "date": "2026-05-31",
-        "url": "https://github.com/winson-00178005/build-eye/blob/main/reports/2026/05/31/pr/run-26711284173/report.md",
-        "raw_url": "https://github.com/winson-00178005/build-eye/raw/main/reports/2026/05/31/pr/run-26711284173/report.md",
-        "type": "pr",
-        "name": "run-26711284173",
+        "name": "run-26717938089",
         "overall_classification": "code",
         "workflow_name": "",
-        "preview": "run-26711284173 触发了 1 个 workflow，均失败。 - **代码问题**: 1 次"
+        "preview": "run-26717938089 触发了 1 个 workflow，均失败。 - **代码问题**: 1 次"
       },
       {
         "date": "2026-05-31",
-        "url": "https://github.com/winson-00178005/build-eye/blob/main/reports/2026/05/31/pr/run-26709659693/report.md",
-        "raw_url": "https://github.com/winson-00178005/build-eye/raw/main/reports/2026/05/31/pr/run-26709659693/report.md",
+        "url": "https://github.com/winson-00178005/build-eye/blob/main/reports/2026/05/31/pr/run-26717938088/report.md",
+        "raw_url": "https://github.com/winson-00178005/build-eye/raw/main/reports/2026/05/31/pr/run-26717938088/report.md",
         "type": "pr",
-        "name": "run-26709659693",
-        "overall_classification": "code",
-        "workflow_name": "",
-        "preview": "run-26709659693 触发了 1 个 workflow，均失败。 - **代码问题**: 1 次"
-      },
-      {
-        "date": "2026-05-31",
-        "url": "https://github.com/winson-00178005/build-eye/blob/main/reports/2026/05/31/pr/run-26708248111/report.md",
-        "raw_url": "https://github.com/winson-00178005/build-eye/raw/main/reports/2026/05/31/pr/run-26708248111/report.md",
-        "type": "pr",
-        "name": "run-26708248111",
+        "name": "run-26717938088",
         "overall_classification": "infrastructure",
         "workflow_name": "",
-        "preview": "run-26708248111 触发了 1 个 workflow，均失败。 - **基础设施问题**: 1 次"
+        "preview": "run-26717938088 触发了 1 个 workflow，均失败。 - **基础设施问题**: 1 次"
       },
       {
         "date": "2026-05-31",
-        "url": "https://github.com/winson-00178005/build-eye/blob/main/reports/2026/05/31/pr/run-26708248095/report.md",
-        "raw_url": "https://github.com/winson-00178005/build-eye/raw/main/reports/2026/05/31/pr/run-26708248095/report.md",
+        "url": "https://github.com/winson-00178005/build-eye/blob/main/reports/2026/05/31/pr/run-26717400912/report.md",
+        "raw_url": "https://github.com/winson-00178005/build-eye/raw/main/reports/2026/05/31/pr/run-26717400912/report.md",
         "type": "pr",
-        "name": "run-26708248095",
+        "name": "run-26717400912",
         "overall_classification": "code",
         "workflow_name": "",
-        "preview": "run-26708248095 触发了 1 个 workflow，均失败。 - **代码问题**: 1 次"
+        "preview": "run-26717400912 触发了 1 个 workflow，均失败。 - **代码问题**: 1 次"
       },
       {
         "date": "2026-05-31",
-        "url": "https://github.com/winson-00178005/build-eye/blob/main/reports/2026/05/31/pr/run-26708240929/report.md",
-        "raw_url": "https://github.com/winson-00178005/build-eye/raw/main/reports/2026/05/31/pr/run-26708240929/report.md",
+        "url": "https://github.com/winson-00178005/build-eye/blob/main/reports/2026/05/31/pr/run-26717400908/report.md",
+        "raw_url": "https://github.com/winson-00178005/build-eye/raw/main/reports/2026/05/31/pr/run-26717400908/report.md",
         "type": "pr",
-        "name": "run-26708240929",
-        "overall_classification": "code",
-        "workflow_name": "",
-        "preview": "run-26708240929 触发了 1 个 workflow，均失败。 - **代码问题**: 1 次"
-      },
-      {
-        "date": "2026-05-31",
-        "url": "https://github.com/winson-00178005/build-eye/blob/main/reports/2026/05/31/pr/run-26708240922/report.md",
-        "raw_url": "https://github.com/winson-00178005/build-eye/raw/main/reports/2026/05/31/pr/run-26708240922/report.md",
-        "type": "pr",
-        "name": "run-26708240922",
+        "name": "run-26717400908",
         "overall_classification": "infrastructure",
         "workflow_name": "",
-        "preview": "run-26708240922 触发了 1 个 workflow，均失败。 - **基础设施问题**: 1 次"
+        "preview": "run-26717400908 触发了 1 个 workflow，均失败。 - **基础设施问题**: 1 次"
       },
       {
         "date": "2026-05-31",
-        "url": "https://github.com/winson-00178005/build-eye/blob/main/reports/2026/05/31/pr/run-26707808457/report.md",
-        "raw_url": "https://github.com/winson-00178005/build-eye/raw/main/reports/2026/05/31/pr/run-26707808457/report.md",
+        "url": "https://github.com/winson-00178005/build-eye/blob/main/reports/2026/05/31/pr/run-26715657011/report.md",
+        "raw_url": "https://github.com/winson-00178005/build-eye/raw/main/reports/2026/05/31/pr/run-26715657011/report.md",
         "type": "pr",
-        "name": "run-26707808457",
-        "overall_classification": "code",
-        "workflow_name": "",
-        "preview": "run-26707808457 触发了 1 个 workflow，均失败。 - **代码问题**: 1 次"
-      },
-      {
-        "date": "2026-05-31",
-        "url": "https://github.com/winson-00178005/build-eye/blob/main/reports/2026/05/31/pr/run-26707808456/report.md",
-        "raw_url": "https://github.com/winson-00178005/build-eye/raw/main/reports/2026/05/31/pr/run-26707808456/report.md",
-        "type": "pr",
-        "name": "run-26707808456",
+        "name": "run-26715657011",
         "overall_classification": "infrastructure",
         "workflow_name": "",
-        "preview": "run-26707808456 触发了 1 个 workflow，均失败。 - **基础设施问题**: 1 次"
+        "preview": "run-26715657011 触发了 1 个 workflow，均失败。 - **基础设施问题**: 1 次"
+      },
+      {
+        "date": "2026-05-31",
+        "url": "https://github.com/winson-00178005/build-eye/blob/main/reports/2026/05/31/pr/run-26715656943/report.md",
+        "raw_url": "https://github.com/winson-00178005/build-eye/raw/main/reports/2026/05/31/pr/run-26715656943/report.md",
+        "type": "pr",
+        "name": "run-26715656943",
+        "overall_classification": "infrastructure",
+        "workflow_name": "",
+        "preview": "run-26715656943 触发了 1 个 workflow，均失败。 - **基础设施问题**: 1 次"
+      },
+      {
+        "date": "2026-05-31",
+        "url": "https://github.com/winson-00178005/build-eye/blob/main/reports/2026/05/31/pr/run-26715429116/report.md",
+        "raw_url": "https://github.com/winson-00178005/build-eye/raw/main/reports/2026/05/31/pr/run-26715429116/report.md",
+        "type": "pr",
+        "name": "run-26715429116",
+        "overall_classification": "code",
+        "workflow_name": "",
+        "preview": "run-26715429116 触发了 1 个 workflow，均失败。 - **代码问题**: 1 次"
+      },
+      {
+        "date": "2026-05-31",
+        "url": "https://github.com/winson-00178005/build-eye/blob/main/reports/2026/05/31/pr/run-26715419654/report.md",
+        "raw_url": "https://github.com/winson-00178005/build-eye/raw/main/reports/2026/05/31/pr/run-26715419654/report.md",
+        "type": "pr",
+        "name": "run-26715419654",
+        "overall_classification": "infrastructure",
+        "workflow_name": "",
+        "preview": "run-26715419654 触发了 1 个 workflow，均失败。 - **基础设施问题**: 1 次"
+      },
+      {
+        "date": "2026-05-31",
+        "url": "https://github.com/winson-00178005/build-eye/blob/main/reports/2026/05/31/pr/run-26715419643/report.md",
+        "raw_url": "https://github.com/winson-00178005/build-eye/raw/main/reports/2026/05/31/pr/run-26715419643/report.md",
+        "type": "pr",
+        "name": "run-26715419643",
+        "overall_classification": "infrastructure",
+        "workflow_name": "",
+        "preview": "run-26715419643 触发了 1 个 workflow，均失败。 - **基础设施问题**: 1 次"
+      },
+      {
+        "date": "2026-05-31",
+        "url": "https://github.com/winson-00178005/build-eye/blob/main/reports/2026/05/31/pr/run-26715406957/report.md",
+        "raw_url": "https://github.com/winson-00178005/build-eye/raw/main/reports/2026/05/31/pr/run-26715406957/report.md",
+        "type": "pr",
+        "name": "run-26715406957",
+        "overall_classification": "infrastructure",
+        "workflow_name": "",
+        "preview": "run-26715406957 触发了 1 个 workflow，均失败。 - **基础设施问题**: 1 次"
       },
       {
         "date": "2026-05-30",
@@ -1560,66 +1591,63 @@
     ]
   },
   "pr_lookup": {
-    "9481": [
+    "9721": [
       {
-        "run_id": 26711553242,
+        "run_id": 26717286208,
         "workflow_name": "E2E-Full",
         "status": "skipped",
         "classification": "infrastructure",
         "key_errors": [],
-        "started_at": "2026-05-31T11:38:17Z",
-        "run_url": "https://github.com/vllm-project/vllm-ascend/actions/runs/26711553242"
+        "started_at": "2026-05-31T15:54:43Z",
+        "run_url": "https://github.com/vllm-project/vllm-ascend/actions/runs/26717286208"
       },
       {
-        "run_id": 26711553193,
-        "workflow_name": "Docs link check",
-        "status": "success",
-        "classification": "infrastructure",
-        "key_errors": [],
-        "started_at": "2026-05-31T11:38:17Z",
-        "run_url": "https://github.com/vllm-project/vllm-ascend/actions/runs/26711553193"
-      }
-    ],
-    "9789": [
-      {
-        "run_id": 26711345237,
-        "workflow_name": "E2E-Full",
-        "status": "skipped",
-        "classification": "infrastructure",
-        "key_errors": [],
-        "started_at": "2026-05-31T11:28:34Z",
-        "run_url": "https://github.com/vllm-project/vllm-ascend/actions/runs/26711345237"
-      }
-    ],
-    "9189": [
-      {
-        "run_id": 26711333095,
-        "workflow_name": "E2E-Full",
-        "status": "skipped",
-        "classification": "infrastructure",
-        "key_errors": [],
-        "started_at": "2026-05-31T11:27:59Z",
-        "run_url": "https://github.com/vllm-project/vllm-ascend/actions/runs/26711333095"
-      },
-      {
-        "run_id": 26711333080,
+        "run_id": 26717286227,
         "workflow_name": "E2E-Light",
         "status": "failure",
         "classification": "code",
-        "key_errors": [],
-        "started_at": "2026-05-31T11:27:59Z",
-        "run_url": "https://github.com/vllm-project/vllm-ascend/actions/runs/26711333080"
+        "key_errors": [
+          "pip's dependency resolver does not currently take into account all the packages",
+          "to put key ['k1'],error:'MooncakeBackend' object has no attr",
+          "to check keys ['k1']: fail"
+        ],
+        "started_at": "2026-05-31T15:54:43Z",
+        "run_url": "https://github.com/vllm-project/vllm-ascend/actions/runs/26717286227"
       }
     ],
-    "9782": [
+    "9678": [
       {
-        "run_id": 26711299101,
+        "run_id": 26717277987,
         "workflow_name": "E2E-Full",
         "status": "skipped",
         "classification": "infrastructure",
         "key_errors": [],
-        "started_at": "2026-05-31T11:26:18Z",
-        "run_url": "https://github.com/vllm-project/vllm-ascend/actions/runs/26711299101"
+        "started_at": "2026-05-31T15:54:21Z",
+        "run_url": "https://github.com/vllm-project/vllm-ascend/actions/runs/26717277987"
+      },
+      {
+        "run_id": 26717277999,
+        "workflow_name": "E2E-Light",
+        "status": "failure",
+        "classification": "code",
+        "key_errors": [
+          "pip's dependency resolver does not currently take into account all the packages",
+          "to put key ['k1'],error:'MooncakeBackend' object has no attr",
+          "to check keys ['k1']: fail"
+        ],
+        "started_at": "2026-05-31T15:54:21Z",
+        "run_url": "https://github.com/vllm-project/vllm-ascend/actions/runs/26717277999"
+      }
+    ],
+    "9481": [
+      {
+        "run_id": 26715657016,
+        "workflow_name": "E2E-Full",
+        "status": "skipped",
+        "classification": "infrastructure",
+        "key_errors": [],
+        "started_at": "2026-05-31T14:44:18Z",
+        "run_url": "https://github.com/vllm-project/vllm-ascend/actions/runs/26715657016"
       }
     ]
   },
@@ -1627,17 +1655,12 @@
     {
       "level": "critical",
       "pipeline": "pr",
-      "message": "PR CI 成功率极低 (5.0%)，需要立即处理。"
+      "message": "PR CI 成功率极低 (10.0%)，需要立即处理。"
     },
     {
       "level": "warning",
       "pipeline": "nightly",
-      "message": "Nightly 成功率低于50% (28.0%)，需要排查。"
-    },
-    {
-      "level": "critical",
-      "pipeline": "nightly",
-      "message": "Nightly 连续 6 次失败。"
+      "message": "Nightly 成功率低于50% (24.0%)，需要排查。"
     }
   ],
   "notification_settings": {
