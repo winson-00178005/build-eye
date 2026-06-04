@@ -37,6 +37,14 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .stat-card .stat-main.green{color:#3fb950}.stat-card .stat-main.red{color:#f85149}.stat-card .stat-main.yellow{color:#d29922}.stat-card .stat-main.blue{color:#58a6ff}
 .stat-card .stat-label{font-size:12px;color:#8b949e;margin-top:4px}
 .stat-card .stat-sub{font-size:11px;color:#484f58;margin-top:2px}
+.stat-card .stat-info-btn{font-size:10px;color:#58a6ff;cursor:pointer;margin-top:4px;border:none;background:none;padding:0}
+.stat-card .stat-info-btn:hover{text-decoration:underline}
+.stat-detail{display:none;background:#0d1117;border:1px solid #30363d;border-radius:6px;padding:10px;margin-top:8px;font-size:11px;color:#8b949e;line-height:1.6}
+.stat-detail.show{display:block}
+.stat-detail code{background:#21262d;padding:1px 4px;border-radius:3px;font-size:11px;color:#f0f6fc}
+.stat-detail .formula{color:#58a6ff;font-weight:600}
+.stat-detail .source{color:#3fb950}
+.range-info{font-size:11px;color:#8b949e;margin-left:4px;padding:2px 8px;background:#21262d;border-radius:4px}
 .pipeline-breakdown{margin-bottom:16px}
 .pipeline-section{margin-bottom:12px}
 .pipeline-header{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid #30363d;font-size:13px;color:#f0f6fc;font-weight:600}
@@ -135,6 +143,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 <h1>vLLM-Ascend Build-Eye</h1>
 <span class="badge">CI Monitor</span>
 <div class="refresh-indicator" id="refreshIndicator"><span class="dot" id="refreshDot"></span> <span id="refreshText">加载中...</span></div>
+<span class="range-info" id="rangeInfo"></span>
 <div class="time-range">
 <div class="range-btn active" data-range="all" onclick="setTimeRange('all')">全历史</div>
 <div class="range-btn" data-range="1d" onclick="setTimeRange('1d')">近1天</div>
@@ -330,12 +339,17 @@ const avg=ov.avg_duration_minutes||0;
 const cancelled=ov.cancelled_runs||0;
 const successRuns=ov.success_runs||0;
 const failureRuns=ov.failure_runs||0;
-const totalJobs=D.meta?.total_jobs||0;
+const skippedTotal=ov.skipped_runs_total||0;
+const allTotal=ov.all_runs_total||0;
+const autoWfs=D.meta?.automation_workflows||[];
+const ciWfs=D.meta?.ci_workflows||[];
+const rangeLabel=D.meta?.time_range==='all'?'全历史':D.meta?.time_range==='1d'?'近1天':D.meta?.time_range==='7d'?'近7天':D.meta?.time_range==='30d'?'近30天':'自定义';
+document.getElementById('rangeInfo').textContent=rangeLabel+' | CI runs: '+total+' (skipped: '+skippedTotal+', automation: '+autoWfs.length+' wfs excluded) | DB total: '+allTotal;
 document.getElementById('wfStatCards').innerHTML=`
-<div class="stat-card"><div class="stat-main blue">${total}</div><div class="stat-label">总运行次数</div><div class="stat-sub">成功 ${successRuns} / 失败 ${failureRuns}</div></div>
-<div class="stat-card"><div class="stat-main ${sr>=80?'green':sr>=60?'yellow':'red'}">${sr.toFixed(1)}%</div><div class="stat-label">成功率</div><div class="stat-sub">排除跳过后计算</div></div>
-<div class="stat-card"><div class="stat-main">${avg.toFixed(0)}min</div><div class="stat-label">平均时长</div><div class="stat-sub">全部Workflow</div></div>
-<div class="stat-card"><div class="stat-main ${cancelled>0?'yellow':'green'}">${cancelled}</div><div class="stat-label">取消次数</div><div class="stat-sub">手动取消</div></div>`;
+<div class="stat-card"><div class="stat-main blue">${total}</div><div class="stat-label">CI总运行次数</div><div class="stat-sub">成功 ${successRuns} / 失败 ${failureRuns}</div><button class="stat-info-btn" onclick="toggleDetail('wfTotalDetail')">查看计算方式</button><div id="wfTotalDetail" class="stat-detail"><span class="formula">总运行 = success + failure + cancelled + timed_out</span><br>已排除: <span class="source">skipped(${skippedTotal})</span> 和 <span class="source">automation(${autoWfs.length} wfs: ${autoWfs.slice(0,5).join(', ')}...)</span><br>DB总记录: <code>${allTotal}</code> (含所有workflow所有conclusion)<br>时间范围: <code>${rangeLabel}</code></div></div>
+<div class="stat-card"><div class="stat-main ${sr>=80?'green':sr>=60?'yellow':'red'}">${sr.toFixed(1)}%</div><div class="stat-label">成功率</div><div class="stat-sub">排除跳过后计算</div><button class="stat-info-btn" onclick="toggleDetail('wfRateDetail')">查看计算方式</button><div id="wfRateDetail" class="stat-detail"><span class="formula">success_rate = success / (success + failure) × 100%</span><br>success=<code>${successRuns}</code>, failure=<code>${failureRuns}</code><br>cancelled(<code>${cancelled}</code>) 和 skipped 不计入成功率分母<br>数据源: <span class="source">SQLite workflow_runs表, conclusion字段</span></div></div>
+<div class="stat-card"><div class="stat-main">${avg.toFixed(0)}min</div><div class="stat-label">平均时长</div><div class="stat-sub">CI Workflow</div><button class="stat-info-btn" onclick="toggleDetail('wfDurDetail')">查看计算方式</button><div id="wfDurDetail" class="stat-detail"><span class="formula">avg = AVG(duration_seconds/60) WHERE duration_seconds > 0</span><br>仅计算 duration_seconds > 0 的 CI workflow<br>数据源: <span class="source">SQLite workflow_runs表, duration_seconds字段</span></div></div>
+<div class="stat-card"><div class="stat-main ${cancelled>0?'yellow':'green'}">${cancelled}</div><div class="stat-label">取消次数</div><div class="stat-sub">手动取消</div><button class="stat-info-btn" onclick="toggleDetail('wfCancelDetail')">查看计算方式</button><div id="wfCancelDetail" class="stat-detail"><span class="formula">cancelled = COUNT(*) WHERE conclusion='cancelled'</span><br>仅计CI workflow的cancelled, 不计入成功率分母<br>数据源: <span class="source">SQLite workflow_runs表, conclusion字段</span></div></div>`;
 }
 
 function renderPipelineBreakdown(){
@@ -417,6 +431,11 @@ if(c==='skipped')return'<span class="conclusion-icon conclusion-skipped">&#9197;
 return'<span class="conclusion-icon conclusion-skipped">?</span>';
 }
 
+function toggleDetail(id){
+const el=document.getElementById(id);
+if(el)el.classList.toggle('show');
+}
+
 function renderJobStats(){
 const jo=D.job_overview||{};
 const total=jo.total_jobs||0;
@@ -424,11 +443,14 @@ const sr=jo.job_success_rate||0;
 const avg=jo.avg_job_duration_minutes||0;
 const fail=jo.failure_jobs||0;
 const success=jo.success_jobs||0;
+const skippedTotal=jo.skipped_jobs_total||0;
+const allTotal=jo.all_jobs_total||0;
+const cancelled=jo.cancelled_jobs||0;
 document.getElementById('jobStatCards').innerHTML=`
-<div class="stat-card"><div class="stat-main blue">${total}</div><div class="stat-label">总Job数</div><div class="stat-sub">成功 ${success} / 失败 ${fail}</div></div>
-<div class="stat-card"><div class="stat-main ${sr>=80?'green':sr>=60?'yellow':'red'}">${sr.toFixed(1)}%</div><div class="stat-label">Job成功率</div><div class="stat-sub">排除跳过后计算</div></div>
-<div class="stat-card"><div class="stat-main">${avg.toFixed(1)}min</div><div class="stat-label">平均Job时长</div><div class="stat-sub">全部Job</div></div>
-<div class="stat-card"><div class="stat-main ${fail>0?'red':'green'}">${fail}</div><div class="stat-label">失败Job数</div><div class="stat-sub">需关注</div></div>`;
+<div class="stat-card"><div class="stat-main blue">${total}</div><div class="stat-label">CI Job总数</div><div class="stat-sub">成功 ${success} / 失败 ${fail}</div><button class="stat-info-btn" onclick="toggleDetail('jobTotalDetail')">查看计算方式</button><div id="jobTotalDetail" class="stat-detail"><span class="formula">total = success + failure + cancelled + timed_out</span><br>已排除: <span class="source">skipped(${skippedTotal})</span><br>DB总Job记录: <code>${allTotal}</code></div></div>
+<div class="stat-card"><div class="stat-main ${sr>=80?'green':sr>=60?'yellow':'red'}">${sr.toFixed(1)}%</div><div class="stat-label">Job成功率</div><div class="stat-sub">排除跳过后计算</div><button class="stat-info-btn" onclick="toggleDetail('jobRateDetail')">查看计算方式</button><div id="jobRateDetail" class="stat-detail"><span class="formula">job_success_rate = success_jobs / (success_jobs + failure_jobs) × 100%</span><br>success=<code>${success}</code>, failure=<code>${fail}</code><br>cancelled(<code>${cancelled}</code>) 不计入分母<br>数据源: <span class="source">SQLite job_records表, conclusion字段</span></div></div>
+<div class="stat-card"><div class="stat-main">${avg.toFixed(1)}min</div><div class="stat-label">平均Job时长</div><div class="stat-sub">非skipped Job</div><button class="stat-info-btn" onclick="toggleDetail('jobDurDetail')">查看计算方式</button><div id="jobDurDetail" class="stat-detail"><span class="formula">avg = AVG(duration_seconds/60) WHERE duration_seconds > 0 AND conclusion != 'skipped'</span><br>数据源: <span class="source">SQLite job_records表, duration_seconds字段</span></div></div>
+<div class="stat-card"><div class="stat-main ${fail>0?'red':'green'}">${fail}</div><div class="stat-label">失败Job数</div><div class="stat-sub">需关注</div><button class="stat-info-btn" onclick="toggleDetail('jobFailDetail')">查看计算方式</button><div id="jobFailDetail" class="stat-detail"><span class="formula">failure_jobs = COUNT(*) WHERE conclusion='failure'</span><br>数据源: <span class="source">SQLite job_records表, conclusion字段</span></div></div>`;
 renderJobTable();
 }
 
