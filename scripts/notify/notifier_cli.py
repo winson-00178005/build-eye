@@ -1,4 +1,4 @@
-"""Build-Eye 通知模块 CLI - 从环境变量或命令行发送通知，支持多收件人。"""
+"""Build-Eye 通知模块 CLI - 从环境变量或命令行发送邮件通知，支持多收件人。"""
 import argparse
 import json
 import os
@@ -14,13 +14,6 @@ def _parse_ids(id_str: str) -> list:
 
 def load_config_from_env() -> dict:
     return {
-        "feishu_app_id": os.environ.get("FEISHU_APP_ID", ""),
-        "feishu_app_secret": os.environ.get("FEISHU_APP_SECRET", ""),
-        "feishu_receive_ids": os.environ.get("FEISHU_RECEIVE_IDS", ""),
-        "dingtalk_app_key": os.environ.get("DINGTALK_APP_KEY", ""),
-        "dingtalk_app_secret": os.environ.get("DINGTALK_APP_SECRET", ""),
-        "dingtalk_agent_id": os.environ.get("DINGTALK_AGENT_ID", ""),
-        "dingtalk_receive_ids": os.environ.get("DINGTALK_RECEIVE_IDS", ""),
         "smtp_host": os.environ.get("SMTP_HOST", ""),
         "smtp_port": os.environ.get("SMTP_PORT", "465"),
         "smtp_user": os.environ.get("SMTP_USER", ""),
@@ -34,7 +27,7 @@ def main():
     parser = argparse.ArgumentParser(description="Build-Eye 通知发送工具")
     parser.add_argument("--config", help="通知配置 JSON 文件路径")
     parser.add_argument("--report-type", default="Nightly", help="报告类型 (Nightly/Weekly/PR)")
-    parser.add_argument("--summary", help="报告摘要 JSON 文件 (dashboard_data.json)")
+    parser.add_argument("--summary", help="报告摘要 JSON 文件 (dashboard_all.json)")
     parser.add_argument("--report-url", help="报告 URL")
     parser.add_argument("--title", help="自定义标题")
     parser.add_argument("--content", help="自定义内容 (markdown)")
@@ -49,20 +42,12 @@ def main():
                 config[k] = v
 
     enabled = []
-    if config["feishu_app_id"] and config["feishu_app_secret"] and config["feishu_receive_ids"]:
-        ids = _parse_ids(config["feishu_receive_ids"])
-        enabled.append(f"飞书 ({len(ids)} 人)")
-    if config["dingtalk_app_key"] and config["dingtalk_app_secret"] and config["dingtalk_agent_id"] and config["dingtalk_receive_ids"]:
-        ids = _parse_ids(config["dingtalk_receive_ids"])
-        enabled.append(f"钉钉 ({len(ids)} 人)")
     if config["smtp_host"] and config["smtp_to"]:
         ids = _parse_ids(config["smtp_to"])
         enabled.append(f"邮件 ({len(ids)} 人)")
 
     if args.dry_run:
         print(f"已启用通知渠道: {enabled or '无'}")
-        print(f"飞书: app_id={'已配置' if config['feishu_app_id'] else '未设置'}, 接收人={config['feishu_receive_ids'] or '未设置'}")
-        print(f"钉钉: app_key={'已配置' if config['dingtalk_app_key'] else '未设置'}, agent_id={'已配置' if config['dingtalk_agent_id'] else '未设置'}, 接收人={config['dingtalk_receive_ids'] or '未设置'}")
         print(f"邮件: smtp={'已配置' if config['smtp_host'] else '未设置'}, 收件人={config['smtp_to'] or '未设置'}")
         return
 

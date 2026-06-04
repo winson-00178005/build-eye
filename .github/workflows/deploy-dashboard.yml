@@ -8,6 +8,20 @@ on:
       - 'reports/**'
       - 'dashboard/**'
   workflow_dispatch:
+    inputs:
+      start_date:
+        description: 'Custom range start date (YYYY-MM-DD)'
+        required: false
+        type: string
+      end_date:
+        description: 'Custom range end date (YYYY-MM-DD)'
+        required: false
+        type: string
+      full_sync:
+        description: 'Run full sync instead of incremental'
+        required: false
+        type: boolean
+        default: false
   schedule:
     - cron: '0 4,10,16,22 * * *'
 
@@ -37,85 +51,56 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      - name: Check for monitor data availability
-        id: check_data
-        run: |
-          has_data="false"
-          for ptype in pr nightly weekly; do
-            if [ -f "data/${ptype}_metadata.json" ]; then
-              has_data="true"
-              echo "${ptype}_metadata_exists=true" >> $GITHUB_OUTPUT
-            fi
-          done
-          echo "has_monitor_data=${has_data}" >> $GITHUB_OUTPUT
-
-      - name: 'Fallback: Fetch ALL workflow runs (if no monitor data exists)'
-        if: ${{ steps.check_data.outputs.has_monitor_data == 'false' }}
+      - name: Sync data to SQLite
         env:
           GITHUB_TOKEN: ${{ secrets.VLLM_ASCEND_TOKEN || github.token }}
         run: |
-          python scripts/monitor/fetch_runs.py \
-            --output data/workflow_runs_all.json \
-            --pipeline-type all \
-            --status all \
-            --lookback 168 \
-            --timeout 60 || true
-
-      - name: 'Fallback: Collect build metadata'
-        if: ${{ steps.check_data.outputs.has_monitor_data == 'false' && hashFiles('data/workflow_runs_all.json') != '' }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.VLLM_ASCEND_TOKEN || github.token }}
-        run: |
-          python scripts/monitor/collect_metadata.py \
-            --input data/workflow_runs_all.json \
-            --output data/build_metadata.json \
-            --max-runs 200 \
-            --timeout 60 || true
-
-      - name: 'Fallback: Classify failure root causes'
-        if: ${{ steps.check_data.outputs.has_monitor_data == 'false' && hashFiles('data/build_metadata.json') != '' }}
-        run: |
-          python scripts/classify/classifier.py \
-            --input data/build_metadata.json \
-            --output data/classifications.json || true
-
-      - name: 'Fallback: Aggregate build metrics'
-        if: ${{ steps.check_data.outputs.has_monitor_data == 'false' && always() }}
-        run: |
-          python scripts/monitor/aggregator_cli.py \
-            --metadata data/build_metadata.json \
-            --classifications data/classifications.json \
-            --db data/build_metrics.db || true
-
-      - name: Generate rich dashboard data
-        if: ${{ always() }}
-        run: |
-          python scripts/report/dashboard_data_generator.py
-
-      - name: Persist dashboard data to repo
-        if: ${{ always() }}
-        run: |
-          if [ -f dashboard/dashboard_data.json ]; then
-            git config user.name "build-eye-dashboard"
-            git config user.email "build-eye-dashboard@users.noreply.github.com"
-            git add dashboard/dashboard_data.json || true
-            git diff --staged --quiet || git commit -m "Update dashboard data [skip ci]"
-            git stash -u || true
-            git pull --rebase --strategy-option ours || git rebase --abort || true
-            git stash pop || true
-            git push || true
+          if [ "${{ inputs.full_sync }}" = "true" ]; then
+            python scripts/monitor/sync_data.py --db data/build_metrics.db --full-sync --timeout 120
+          else
+            python scripts/monitor/sync_data.py --db data/build_metrics.db --lookback 168 --timeout 120
           fi
 
-      - name: Send notification for each pipeline type
+      - name: Export dashboard JSON files
+        env:
+          GITHUB_TOKEN: ${{ secrets.VLLM_ASCEND_TOKEN || github.token }}
+          SMTP_HOST: ${{ secrets.SMTP_HOST }}
+          SMTP_PORT: ${{ secrets.SMTP_PORT }}
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+          SMTP_TO: ${{ secrets.SMTP_TO }}
+          SMTP_SSL: ${{ secrets.SMTP_SSL }}
+        run: |
+          python scripts/report/export_dashboard.py --db data/build_metrics.db --range all --output dashboard/dashboard_all.json
+          python scripts/report/export_dashboard.py --db data/build_metrics.db --range 7d --output dashboard/dashboard_7d.json
+          python scripts/report/export_dashboard.py --db data/build_metrics.db --range 30d --output dashboard/dashboard_30d.json
+
+      - name: Export custom range (if requested)
+        if: ${{ inputs.start_date != '' && inputs.end_date != '' }}
+        env:
+          SMTP_HOST: ${{ secrets.SMTP_HOST }}
+          SMTP_PORT: ${{ secrets.SMTP_PORT }}
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+          SMTP_TO: ${{ secrets.SMTP_TO }}
+          SMTP_SSL: ${{ secrets.SMTP_SSL }}
+        run: |
+          python scripts/report/export_dashboard.py --db data/build_metrics.db --range custom --start-date "${{ inputs.start_date }}" --end-date "${{ inputs.end_date }}" --output dashboard/dashboard_custom.json
+
+      - name: Persist dashboard data to repo
+        run: |
+          git config user.name "build-eye-dashboard"
+          git config user.email "build-eye-dashboard@users.noreply.github.com"
+          git add dashboard/dashboard_all.json dashboard/dashboard_7d.json dashboard/dashboard_30d.json dashboard/dashboard_custom.json data/build_metrics.db || true
+          git diff --staged --quiet || git commit -m "Update dashboard data [skip ci]"
+          git stash -u || true
+          git pull --rebase --strategy-option ours || git rebase --abort || true
+          git stash pop || true
+          git push || true
+
+      - name: Send notification
         if: ${{ always() }}
         env:
-          FEISHU_APP_ID: ${{ secrets.FEISHU_APP_ID }}
-          FEISHU_APP_SECRET: ${{ secrets.FEISHU_APP_SECRET }}
-          FEISHU_RECEIVE_IDS: ${{ secrets.FEISHU_RECEIVE_IDS }}
-          DINGTALK_APP_KEY: ${{ secrets.DINGTALK_APP_KEY }}
-          DINGTALK_APP_SECRET: ${{ secrets.DINGTALK_APP_SECRET }}
-          DINGTALK_AGENT_ID: ${{ secrets.DINGTALK_AGENT_ID }}
-          DINGTALK_RECEIVE_IDS: ${{ secrets.DINGTALK_RECEIVE_IDS }}
           SMTP_HOST: ${{ secrets.SMTP_HOST }}
           SMTP_PORT: ${{ secrets.SMTP_PORT }}
           SMTP_USER: ${{ secrets.SMTP_USER }}
@@ -126,7 +111,7 @@ jobs:
           for ptype in Nightly Weekly PR; do
             python scripts/notify/notifier_cli.py \
               --report-type "$ptype" \
-              --summary dashboard/dashboard_data.json || true
+              --summary dashboard/dashboard_all.json || true
           done
 
       - name: Deploy to GitHub Pages

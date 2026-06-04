@@ -76,6 +76,114 @@ class BuildAggregator:
                     recorded_at TEXT NOT NULL
                 )
             """)
+            conn.execute("""
+                CREATE TABLE IF NOT EXISTS workflow_runs (
+                    id INTEGER PRIMARY KEY,
+                    name TEXT NOT NULL,
+                    workflow_id INTEGER,
+                    conclusion TEXT NOT NULL,
+                    status TEXT NOT NULL DEFAULT 'completed',
+                    event TEXT,
+                    head_branch TEXT,
+                    head_sha TEXT,
+                    triggering_actor TEXT DEFAULT 'unknown',
+                    html_url TEXT,
+                    started_at TEXT,
+                    completed_at TEXT,
+                    duration_seconds REAL,
+                    pipeline_type TEXT,
+                    hardware_label TEXT,
+                    created_at TEXT,
+                    updated_at TEXT
+                )
+            """)
+            conn.execute("""
+                CREATE TABLE IF NOT EXISTS job_records (
+                    id INTEGER PRIMARY KEY,
+                    workflow_run_id INTEGER NOT NULL,
+                    workflow_name TEXT NOT NULL,
+                    job_name TEXT NOT NULL,
+                    conclusion TEXT NOT NULL,
+                    status TEXT NOT NULL DEFAULT 'completed',
+                    started_at TEXT,
+                    completed_at TEXT,
+                    duration_seconds REAL,
+                    runner_name TEXT,
+                    runner_group_name TEXT,
+                    steps_count INTEGER DEFAULT 0,
+                    failed_step_name TEXT,
+                    hardware_label TEXT,
+                    FOREIGN KEY (workflow_run_id) REFERENCES workflow_runs(id)
+                )
+            """)
+            for idx_sql in [
+                "CREATE INDEX IF NOT EXISTS idx_job_workflow_run ON job_records(workflow_run_id)",
+                "CREATE INDEX IF NOT EXISTS idx_job_workflow_name ON job_records(workflow_name)",
+                "CREATE INDEX IF NOT EXISTS idx_job_conclusion ON job_records(conclusion)",
+                "CREATE INDEX IF NOT EXISTS idx_workflow_conclusion ON workflow_runs(conclusion)",
+                "CREATE INDEX IF NOT EXISTS idx_workflow_pipeline ON workflow_runs(pipeline_type)",
+                "CREATE INDEX IF NOT EXISTS idx_workflow_created ON workflow_runs(created_at)",
+                "CREATE INDEX IF NOT EXISTS idx_workflow_name ON workflow_runs(name)",
+            ]:
+                conn.execute(idx_sql)
+            conn.commit()
+        finally:
+            conn.close()
+
+    def record_workflow_run(self, run: Dict[str, Any], pipeline_type: str = "", hardware_label: str = "") -> None:
+        self._ensure_open()
+        run_id = run.get("id")
+        started_at = run.get("run_started_at", run.get("started_at"))
+        completed_at = run.get("completed_at")
+        duration = self._calc_duration(started_at, completed_at) if started_at and completed_at else 0
+        actor = (run.get("triggering_actor") or {}).get("login", "unknown")
+        conn = self._get_conn()
+        try:
+            conn.execute("""
+                INSERT OR REPLACE INTO workflow_runs
+                (id, name, workflow_id, conclusion, status, event, head_branch, head_sha,
+                 triggering_actor, html_url, started_at, completed_at, duration_seconds,
+                 pipeline_type, hardware_label, created_at, updated_at)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """, (
+                run_id, run.get("name", ""), run.get("workflow_id"), run.get("conclusion", ""),
+                run.get("status", "completed"), run.get("event"), run.get("head_branch", ""),
+                run.get("head_sha", ""), actor, run.get("html_url", ""),
+                started_at, completed_at, duration,
+                pipeline_type, hardware_label,
+                run.get("created_at"), run.get("updated_at")
+            ))
+            conn.commit()
+        finally:
+            conn.close()
+
+    def record_job(self, job: Dict[str, Any]) -> None:
+        self._ensure_open()
+        job_id = job.get("id")
+        started_at = job.get("started_at")
+        completed_at = job.get("completed_at")
+        duration = self._calc_duration(started_at, completed_at) if started_at and completed_at else 0
+        steps = job.get("steps", [])
+        failed_step = None
+        for step in steps:
+            if step.get("conclusion") == "failure":
+                failed_step = step.get("name")
+                break
+        conn = self._get_conn()
+        try:
+            conn.execute("""
+                INSERT OR REPLACE INTO job_records
+                (id, workflow_run_id, workflow_name, job_name, conclusion, status,
+                 started_at, completed_at, duration_seconds, runner_name, runner_group_name,
+                 steps_count, failed_step_name, hardware_label)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """, (
+                job_id, job.get("workflow_run_id"), job.get("workflow_name", ""),
+                job.get("job_name", job.get("name", "")), job.get("conclusion", ""),
+                job.get("status", "completed"), started_at, completed_at, duration,
+                job.get("runner_name", ""), job.get("runner_group_name", ""),
+                len(steps), failed_step, job.get("hardware_label", "")
+            ))
             conn.commit()
         finally:
             conn.close()

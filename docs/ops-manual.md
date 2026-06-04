@@ -86,47 +86,9 @@
 
 ## 七、通知配置
 
-Build-Eye 支持三种通知渠道：飞书、钉钉、邮件。通过 Dashboard 的 Settings 页面可查看配置状态，通过 `gh secret set` 命令配置敏感信息。
+Build-Eye 支持邮件通知渠道。通过 Dashboard 的 Settings 页面可查看配置状态，通过 `gh secret set` 命令配置敏感信息。
 
-### 7.1 飞书 (Feishu)
-
-#### 创建自定义机器人
-
-1. 打开飞书群 → 设置 → 群机器人 → 添加自定义机器人
-2. 设置机器人名称（如 "Build-Eye CI Monitor"）
-3. 选择安全设置：**加签**方式（推荐）
-4. 复制 Webhook URL 和签名密钥
-
-#### 配置 GitHub Secrets
-
-```bash
-gh secret set FEISHU_WEBHOOK_URL --repo winson-00178005/build-eye
-# 输入: https://open.feishu.cn/open-apis/bot/v2/hook/xxx
-
-gh secret set FEISHU_SIGN_SECRET --repo winson-00178005/build-eye
-# 输入: 签名密钥（如使用加签方式）
-```
-
-### 7.2 钉钉 (DingTalk)
-
-#### 创建自定义机器人
-
-1. 打开钉钉群 → 设置 → 智能群助手 → 添加机器人 → 自定义
-2. 设置机器人名称（如 "Build-Eye CI Monitor"）
-3. 安全设置：**加签**方式
-4. 复制 Webhook URL 和签名密钥
-
-#### 配置 GitHub Secrets
-
-```bash
-gh secret set DINGTALK_WEBHOOK_URL --repo winson-00178005/build-eye
-# 输入: https://oapi.dingtalk.com/robot/send?access_token=xxx
-
-gh secret set DINGTALK_SIGN_SECRET --repo winson-00178005/build-eye
-# 输入: 签名密钥
-```
-
-### 7.3 邮件 (Email)
+### 7.1 邮件 (Email)
 
 #### 配置 SMTP
 

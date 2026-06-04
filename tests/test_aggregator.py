@@ -135,5 +135,62 @@ def test_health_rating(aggregator):
     assert aggregator.get_health_rating(30)["rating"] == "危险"
 
 
+def test_workflow_runs_table_created(aggregator):
+    conn = aggregator._get_conn()
+    tables = conn.execute("SELECT name FROM sqlite_master WHERE type='table'").fetchall()
+    table_names = [t[0] for t in tables]
+    assert "workflow_runs" in table_names
+    assert "job_records" in table_names
+    conn.close()
+
+
+def test_record_workflow_run(aggregator):
+    aggregator.record_workflow_run({
+        "id": 12345,
+        "name": "Nightly-A2",
+        "workflow_id": 999,
+        "conclusion": "failure",
+        "status": "completed",
+        "event": "schedule",
+        "head_branch": "main",
+        "head_sha": "abc123",
+        "triggering_actor": {"login": "bot"},
+        "html_url": "https://github.com/...",
+        "run_started_at": "2026-06-03T03:03:08Z",
+        "completed_at": "2026-06-03T06:49:08Z",
+        "created_at": "2026-06-03T03:03:08Z",
+        "updated_at": "2026-06-03T06:49:08Z",
+    }, pipeline_type="nightly", hardware_label="A2")
+    conn = aggregator._get_conn()
+    row = conn.execute("SELECT conclusion, pipeline_type, hardware_label FROM workflow_runs WHERE id=12345").fetchone()
+    assert row[0] == "failure"
+    assert row[1] == "nightly"
+    assert row[2] == "A2"
+    conn.close()
+
+
+def test_record_job(aggregator):
+    aggregator.record_workflow_run({
+        "id": 12345, "name": "Nightly-A2", "workflow_id": 999, "conclusion": "failure",
+        "status": "completed", "event": "schedule", "head_branch": "main", "head_sha": "abc123",
+        "triggering_actor": {"login": "bot"}, "html_url": "...",
+        "run_started_at": "2026-06-03T03:03:08Z", "completed_at": "2026-06-03T06:49:08Z",
+        "created_at": "2026-06-03T03:03:08Z", "updated_at": "2026-06-03T06:49:08Z",
+    }, pipeline_type="nightly", hardware_label="A2")
+    aggregator.record_job({
+        "id": 100001, "workflow_run_id": 12345, "workflow_name": "Nightly-A2",
+        "job_name": "Build nightly-a2 image", "conclusion": "success", "status": "completed",
+        "started_at": "2026-06-03T03:03:19Z", "completed_at": "2026-06-03T03:19:47Z",
+        "runner_name": "self-hosted-A2", "runner_group_name": "Default",
+        "steps": [{"name": "Checkout", "conclusion": "success"}, {"name": "Build", "conclusion": "success"}],
+    })
+    conn = aggregator._get_conn()
+    row = conn.execute("SELECT job_name, conclusion, steps_count FROM job_records WHERE id=100001").fetchone()
+    assert row[0] == "Build nightly-a2 image"
+    assert row[1] == "success"
+    assert row[2] == 2
+    conn.close()
+
+
 if __name__ == "__main__":
     pytest.main([__file__, "-v"])

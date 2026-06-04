@@ -3,6 +3,8 @@ target_repository:
   repo: vllm-ascend
   url: https://github.com/vllm-project/vllm-ascend
   branch: main
+  # monitored_workflows is used by fetch_runs.py only.
+  # sync_data.py + export_dashboard.py monitor ALL workflows regardless of this list.
   monitored_workflows:
     - E2E-Light
     - E2E-Full

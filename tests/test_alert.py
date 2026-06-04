@@ -4,8 +4,8 @@ import tempfile
 from pathlib import Path
 from scripts.alert.alarm import AlertEngine, AlertRule
 from scripts.alert.notifier import (
-    NotificationDispatcher, WebhookNotifier, DingTalkNotifier,
-    LarkNotifier, EmailNotifier
+    NotificationDispatcher, WebhookNotifier,
+    EmailNotifier
 )
 
 
@@ -119,18 +119,6 @@ class TestNotificationDispatcher:
         assert result["channel"] == "webhook"
         assert result["status"] == "logged"
 
-    def test_dingtalk_notifier_no_url(self):
-        notifier = DingTalkNotifier()
-        result = notifier.send({"alert_id": "test-1", "message": "test alert"})
-        assert result["channel"] == "dingtalk"
-        assert result["status"] == "skipped"
-
-    def test_lark_notifier_no_url(self):
-        notifier = LarkNotifier()
-        result = notifier.send({"alert_id": "test-1", "message": "test alert"})
-        assert result["channel"] == "lark"
-        assert result["status"] == "skipped"
-
     def test_email_notifier_no_recipients(self):
         notifier = EmailNotifier()
         result = notifier.send({"alert_id": "test-1", "message": "test alert"})
@@ -169,7 +157,7 @@ class TestNotificationDispatcher:
         dispatcher = NotificationDispatcher()
         alert = {
             "alert_id": "test-1",
-            "channels": ["dingtalk"],
+            "channels": ["email"],
             "message": "test alert"
         }
         results = dispatcher.dispatch(alert)
