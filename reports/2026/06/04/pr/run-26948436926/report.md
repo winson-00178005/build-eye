@@ -1,8 +1,8 @@
 ---
-report_id: 08d83a71
+report_id: 412af3a5
 pr_number: null
 group_key: run-26948436926
-generated_at: 2026-06-04T12:47:43.924600+00:00
+generated_at: 2026-06-04T14:12:47.921332+00:00
 overall_classification: infrastructure
 total_failed_workflows: 1
 category_counts:
@@ -48,4 +48,4 @@ run-26948436926 触发了 1 个 workflow，均失败。
 - **Docs link check (#26948436926)**: 重新触发构建 (低成本) - 基础设施问题通常会自动恢复
 
 ---
-报告生成时间: 2026-06-04T12:47:43.924617+00:00
+报告生成时间: 2026-06-04T14:12:47.921369+00:00
