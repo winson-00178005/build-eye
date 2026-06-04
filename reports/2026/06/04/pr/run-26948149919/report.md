@@ -1,8 +1,8 @@
 ---
-report_id: 0435d13f
+report_id: 4c988d52
 pr_number: null
 group_key: run-26948149919
-generated_at: 2026-06-04T12:47:43.924806+00:00
+generated_at: 2026-06-04T14:12:47.921666+00:00
 overall_classification: code
 total_failed_workflows: 1
 category_counts:
@@ -69,4 +69,4 @@ run-26948149919 触发了 1 个 workflow，均失败。
 - **Docs link check (#26948149919)**: 检查编译错误位置 (低成本) - 查看 CMake 或 clang 报错的具体文件和行
 
 ---
-报告生成时间: 2026-06-04T12:47:43.924831+00:00
+报告生成时间: 2026-06-04T14:12:47.921697+00:00
