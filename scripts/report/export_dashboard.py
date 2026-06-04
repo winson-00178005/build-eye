@@ -2,13 +2,42 @@
 import argparse
 import json
 import os
+import re
 import sqlite3
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Dict, Any
 
+AUTOMATION_WORKFLOW_PATTERNS = [
+    re.compile(r"^Merge Conflict", re.IGNORECASE),
+    re.compile(r"^PR Create", re.IGNORECASE),
+    re.compile(r"^Issue Create", re.IGNORECASE),
+    re.compile(r"^Cancel runs", re.IGNORECASE),
+    re.compile(r"^Push on main$", re.IGNORECASE),
+    re.compile(r"^Graph Update", re.IGNORECASE),
+    re.compile(r"^\.github/workflows/pr_test_", re.IGNORECASE),
+]
 
-def _build_date_filter(range_type: str, start_date: str = None, end_date: str = None) -> str | None:
+CI_WORKFLOW_NAMES = set()
+AUTOMATION_WORKFLOW_NAMES = set()
+
+
+def _is_ci_workflow(name: str) -> bool:
+    if not name:
+        return False
+    if name in CI_WORKFLOW_NAMES:
+        return True
+    if name in AUTOMATION_WORKFLOW_NAMES:
+        return False
+    for pat in AUTOMATION_WORKFLOW_PATTERNS:
+        if pat.search(name):
+            AUTOMATION_WORKFLOW_NAMES.add(name)
+            return False
+    CI_WORKFLOW_NAMES.add(name)
+    return True
+
+
+def _build_date_filter(range_type: str, start_date: str | None = None, end_date: str | None = None) -> str | None:
     if range_type == "all":
         return None
     elif range_type == "7d":
@@ -22,24 +51,29 @@ def _build_date_filter(range_type: str, start_date: str = None, end_date: str = 
     return None
 
 
-def _wf_where(date_filter: str | None, extra: str = "") -> str:
+def _wf_where(date_filter: str | None, extra: str = "", exclude_skipped: bool = True, ci_only: bool = True) -> str:
     base = "1=1"
     if date_filter:
         base += f" AND created_at {date_filter}"
     if extra:
         base += f" AND {extra}"
+    if exclude_skipped:
+        base += " AND conclusion != 'skipped'"
+    if ci_only:
+        non_ci = "','".join(sorted(AUTOMATION_WORKFLOW_NAMES))
+        if non_ci:
+            base += f" AND name NOT IN ('{non_ci}')"
     return base
 
 
-def _job_where(date_filter: str | None, extra: str = "") -> str:
+def _job_where(date_filter: str | None, extra: str = "", exclude_skipped: bool = True) -> str:
     base = "1=1"
     if date_filter:
         base = f"workflow_run_id IN (SELECT id FROM workflow_runs WHERE created_at {date_filter})"
     if extra:
-        if base == "1=1":
-            base += f" AND {extra}"
-        else:
-            base += f" AND {extra}"
+        base += f" AND {extra}"
+    if exclude_skipped:
+        base += " AND conclusion != 'skipped'"
     return base
 
 
@@ -50,22 +84,32 @@ def _count(conn, table: str, where: str, extra_cond: str = "") -> int:
     return conn.execute(f"SELECT COUNT(*) FROM {table} WHERE {cond}").fetchone()[0]
 
 
+def _detect_automation_workflows(conn):
+    global AUTOMATION_WORKFLOW_NAMES, CI_WORKFLOW_NAMES
+    names = conn.execute("SELECT DISTINCT name FROM workflow_runs").fetchall()
+    for (name,) in names:
+        _is_ci_workflow(name)
+
+
 def _query_overview(conn, date_filter: str | None) -> Dict[str, Any]:
     wf_where = _wf_where(date_filter)
-    total = _count(conn, "workflow_runs", wf_where)
+    all_where = _wf_where(date_filter, exclude_skipped=False, ci_only=False)
+    total_all = _count(conn, "workflow_runs", all_where)
+    skipped_all = _count(conn, "workflow_runs", all_where, "conclusion='skipped'")
+    total_ci = _count(conn, "workflow_runs", wf_where)
     success = _count(conn, "workflow_runs", wf_where, "conclusion='success'")
     failure = _count(conn, "workflow_runs", wf_where, "conclusion='failure'")
     cancelled = _count(conn, "workflow_runs", wf_where, "conclusion='cancelled'")
-    skipped = _count(conn, "workflow_runs", wf_where, "conclusion='skipped'")
     timed_out = _count(conn, "workflow_runs", wf_where, "conclusion='timed_out'")
     action_req = _count(conn, "workflow_runs", wf_where, "conclusion='action_required'")
     success_rate = round(success / max(success + failure, 1) * 100, 1)
     avg_dur = conn.execute(f"SELECT COALESCE(AVG(duration_seconds),0) FROM workflow_runs WHERE {wf_where} AND duration_seconds > 0").fetchone()[0]
     avg_dur_min = round(avg_dur / 60, 1)
     return {
-        "total_runs": total, "success_runs": success, "failure_runs": failure,
-        "cancelled_runs": cancelled, "skipped_runs": skipped, "timed_out_runs": timed_out,
+        "total_runs": total_ci, "success_runs": success, "failure_runs": failure,
+        "cancelled_runs": cancelled, "timed_out_runs": timed_out,
         "action_required_runs": action_req,
+        "skipped_runs_total": skipped_all, "all_runs_total": total_all,
         "success_rate": success_rate, "avg_duration_minutes": avg_dur_min,
         "pipelines": _query_pipelines(conn, date_filter),
     }
@@ -91,23 +135,26 @@ def _query_pipelines(conn, date_filter: str | None) -> Dict[str, Any]:
 
 def _query_job_overview(conn, date_filter: str | None) -> Dict[str, Any]:
     job_where = _job_where(date_filter)
+    all_job_where = _job_where(date_filter, exclude_skipped=False)
+    total_all = _count(conn, "job_records", all_job_where)
+    skipped_all = _count(conn, "job_records", all_job_where, "conclusion='skipped'")
     total = _count(conn, "job_records", job_where)
     success = _count(conn, "job_records", job_where, "conclusion='success'")
     failure = _count(conn, "job_records", job_where, "conclusion='failure'")
     cancelled = _count(conn, "job_records", job_where, "conclusion='cancelled'")
-    skipped = _count(conn, "job_records", job_where, "conclusion='skipped'")
     timed_out = _count(conn, "job_records", job_where, "conclusion='timed_out'")
     success_rate = round(success / max(success + failure, 1) * 100, 1)
     avg_dur = conn.execute(f"SELECT COALESCE(AVG(duration_seconds),0) FROM job_records WHERE {job_where} AND duration_seconds > 0").fetchone()[0]
     return {
         "total_jobs": total, "success_jobs": success, "failure_jobs": failure,
-        "cancelled_jobs": cancelled, "skipped_jobs": skipped, "timed_out_jobs": timed_out,
+        "cancelled_jobs": cancelled, "timed_out_jobs": timed_out,
+        "skipped_jobs_total": skipped_all, "all_jobs_total": total_all,
         "job_success_rate": success_rate, "avg_job_duration_minutes": round(avg_dur / 60, 1),
     }
 
 
 def _query_workflow_runs(conn, date_filter: str | None) -> list:
-    wf_where = _wf_where(date_filter)
+    wf_where = _wf_where(date_filter, exclude_skipped=False, ci_only=False)
     rows = conn.execute(f"""
         SELECT wr.id, wr.name, wr.conclusion, wr.started_at, wr.completed_at,
                wr.duration_seconds, wr.pipeline_type, wr.hardware_label,
@@ -129,34 +176,35 @@ def _query_workflow_runs(conn, date_filter: str | None) -> list:
     result = []
     for row in rows:
         d = dict(zip(col_names, row))
+        d["is_ci"] = _is_ci_workflow(d["name"])
         d["duration_minutes"] = round(d["duration_seconds"] / 60, 1) if d["duration_seconds"] else 0
         result.append(d)
     return result
 
 
 def _query_job_stats(conn, date_filter: str | None) -> list:
-    job_where = _job_where(date_filter)
+    job_where = _job_where(date_filter, exclude_skipped=False)
     rows = conn.execute(f"""
         SELECT workflow_name, job_name,
                COUNT(*) as total_runs,
                SUM(CASE WHEN conclusion='success' THEN 1 ELSE 0 END) as success_runs,
                SUM(CASE WHEN conclusion='failure' THEN 1 ELSE 0 END) as failure_runs,
                SUM(CASE WHEN conclusion='cancelled' THEN 1 ELSE 0 END) as cancelled_runs,
+               SUM(CASE WHEN conclusion='skipped' THEN 1 ELSE 0 END) as skipped_runs,
                ROUND(SUM(CASE WHEN conclusion='success' THEN 1 ELSE 0 END) * 100.0 / MAX(SUM(CASE WHEN conclusion IN ('success','failure') THEN 1 ELSE 0 END), 1), 1) as success_rate,
                ROUND(AVG(CASE WHEN duration_seconds > 0 THEN duration_seconds / 60 ELSE NULL END), 1) as avg_duration_min,
                ROUND(MIN(CASE WHEN duration_seconds > 0 THEN duration_seconds / 60 ELSE NULL END), 1) as min_duration_min,
                ROUND(MAX(CASE WHEN duration_seconds > 0 THEN duration_seconds / 60 ELSE NULL END), 1) as max_duration_min,
-               MAX(started_at) as last_run_at,
-               (SELECT wr2.conclusion FROM workflow_runs wr2 WHERE wr2.id = (SELECT jr2.workflow_run_id FROM job_records jr2 WHERE jr2.workflow_name = j.workflow_name AND jr2.job_name = j.job_name ORDER BY jr2.started_at DESC LIMIT 1)) as wf_last_conclusion
+               MAX(started_at) as last_run_at
         FROM job_records j
         WHERE {job_where}
         GROUP BY workflow_name, job_name
         ORDER BY workflow_name, job_name
     """).fetchall()
     col_names = ["workflow_name", "job_name", "total_runs", "success_runs",
-                 "failure_runs", "cancelled_runs", "success_rate",
+                 "failure_runs", "cancelled_runs", "skipped_runs", "success_rate",
                  "avg_duration_min", "min_duration_min", "max_duration_min",
-                 "last_run_at", "wf_last_conclusion"]
+                 "last_run_at"]
     return [dict(zip(col_names, row)) for row in rows]
 
 
@@ -166,9 +214,13 @@ def _query_trends(conn) -> Dict[str, Any]:
         SELECT DATE(created_at) as date,
                COUNT(*) as total,
                SUM(CASE WHEN conclusion='success' THEN 1 ELSE 0 END) as success,
-               SUM(CASE WHEN conclusion='failure' THEN 1 ELSE 0 END) as failure
+               SUM(CASE WHEN conclusion='failure' THEN 1 ELSE 0 END) as failure,
+               SUM(CASE WHEN conclusion='cancelled' THEN 1 ELSE 0 END) as cancelled,
+               SUM(CASE WHEN conclusion='skipped' THEN 1 ELSE 0 END) as skipped
         FROM workflow_runs
         WHERE created_at >= '{cutoff}'
+          AND conclusion != 'skipped'
+          AND name NOT IN ('{ "','".join(sorted(AUTOMATION_WORKFLOW_NAMES)) }')
         GROUP BY DATE(created_at)
         ORDER BY date
     """).fetchall()
@@ -182,6 +234,7 @@ def _query_trends(conn) -> Dict[str, Any]:
                SUM(CASE WHEN jr.conclusion='failure' THEN 1 ELSE 0 END) as failure
         FROM job_records jr
         WHERE jr.started_at >= '{cutoff}'
+          AND jr.conclusion != 'skipped'
         GROUP BY DATE(jr.started_at)
         ORDER BY date
     """).fetchall()
@@ -206,9 +259,12 @@ def _load_notification_settings() -> Dict[str, Any]:
     }
 
 
-def export_dashboard_json(db_path: str, output_path: str, range_type: str = "all", start_date: str = None, end_date: str = None) -> dict:
+def export_dashboard_json(db_path: str, output_path: str, range_type: str = "all", start_date: str | None = None, end_date: str | None = None) -> dict:
     conn = sqlite3.connect(db_path)
     conn.row_factory = sqlite3.Row
+
+    _detect_automation_workflows(conn)
+
     date_filter = _build_date_filter(range_type, start_date, end_date)
 
     wf_total = conn.execute("SELECT COUNT(*) FROM workflow_runs").fetchone()[0]
@@ -222,6 +278,8 @@ def export_dashboard_json(db_path: str, output_path: str, range_type: str = "all
             "generated_at": datetime.now(timezone.utc).isoformat(),
             "total_workflows": wf_total,
             "total_jobs": job_total,
+            "ci_workflows": sorted(CI_WORKFLOW_NAMES),
+            "automation_workflows": sorted(AUTOMATION_WORKFLOW_NAMES),
         },
         "workflow_overview": _query_overview(conn, date_filter),
         "job_overview": _query_job_overview(conn, date_filter),

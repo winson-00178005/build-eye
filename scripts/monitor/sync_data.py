@@ -24,6 +24,28 @@ def extract_hardware_label(name: str | None) -> str:
     return match.group(1) if match else ""
 
 
+def _fetch_runs_batch(client, owner, repo, created_filter, max_pages=100):
+    kwargs = {
+        "owner": owner, "repo": repo,
+        "status": "completed",
+        "per_page": 100,
+        "max_pages": max_pages,
+    }
+    if created_filter:
+        kwargs["created"] = created_filter
+    return client.get_workflow_runs(**kwargs)
+
+
+def _generate_week_ranges(start_date, end_date):
+    ranges = []
+    current = start_date
+    while current < end_date:
+        range_end = min(current + timedelta(days=7), end_date + timedelta(days=1))
+        ranges.append((current, range_end))
+        current = range_end
+    return ranges
+
+
 def sync_runs_and_jobs(
     client: GitHubAPIClient,
     owner: str,
@@ -31,14 +53,32 @@ def sync_runs_and_jobs(
     aggregator: BuildAggregator,
     detector: PipelineDetector,
     full_sync: bool = False,
-    lookback_hours: int = None,
+    lookback_hours: int | None = None,
     skip_jobs: bool = False,
+    months_back: int = 6,
 ) -> dict:
+    total_runs = 0
+    total_jobs = 0
+
     if full_sync:
-        created_filter = None
+        end_date = datetime.now(timezone.utc)
+        start_date = end_date - timedelta(days=30 * months_back)
+        week_ranges = _generate_week_ranges(start_date, end_date)
+        print(f"Full sync: fetching {len(week_ranges)} week ranges from {start_date.strftime('%Y-%m-%d')} to {end_date.strftime('%Y-%m-%d')}")
+        for range_start, range_end in week_ranges:
+            created_filter = f"{range_start.strftime('%Y-%m-%dT%H:%M:%SZ')}..{range_end.strftime('%Y-%m-%dT%H:%M:%SZ')}"
+            runs = _fetch_runs_batch(client, owner, repo, created_filter)
+            print(f"  Week {range_start.strftime('%Y-%m-%d')}: fetched {len(runs)} runs")
+            new_runs, new_jobs = _process_runs(runs, client, owner, repo, aggregator, detector, skip_jobs)
+            total_runs += new_runs
+            total_jobs += new_jobs
     elif lookback_hours:
         cutoff = datetime.now(timezone.utc) - timedelta(hours=lookback_hours)
         created_filter = f">={cutoff.strftime('%Y-%m-%dT%H:%M:%SZ')}"
+        runs = _fetch_runs_batch(client, owner, repo, created_filter)
+        new_runs, new_jobs = _process_runs(runs, client, owner, repo, aggregator, detector, skip_jobs)
+        total_runs += new_runs
+        total_jobs += new_jobs
     else:
         conn = aggregator._get_conn()
         try:
@@ -48,24 +88,20 @@ def sync_runs_and_jobs(
         if last_sync:
             created_filter = f">={last_sync}"
         else:
-            cutoff = datetime.now(timezone.utc) - timedelta(hours=999999)
+            cutoff = datetime.now(timezone.utc) - timedelta(hours=168)
             created_filter = f">={cutoff.strftime('%Y-%m-%dT%H:%M:%SZ')}"
+        runs = _fetch_runs_batch(client, owner, repo, created_filter)
+        new_runs, new_jobs = _process_runs(runs, client, owner, repo, aggregator, detector, skip_jobs)
+        total_runs += new_runs
+        total_jobs += new_jobs
 
-    kwargs = {
-        "owner": owner, "repo": repo,
-        "status": "completed",
-        "per_page": 100,
-        "max_pages": 100
-    }
-    if created_filter:
-        kwargs["created"] = created_filter
-    runs = client.get_workflow_runs(**kwargs)
+    print(f"Synced {total_runs} workflow runs, {total_jobs} jobs total")
+    return {"workflow_runs": total_runs, "jobs": total_jobs}
 
-    print(f"Fetched {len(runs)} workflow runs")
 
+def _process_runs(runs, client, owner, repo, aggregator, detector, skip_jobs):
     new_runs = 0
     new_jobs = 0
-
     for run in runs:
         run_id = run.get("id") or 0
         enriched = detector.detect_all([dict(run)])
@@ -76,9 +112,7 @@ def sync_runs_and_jobs(
         aggregator.record_workflow_run(run, pipeline_type=ptype, hardware_label=hw)
         new_runs += 1
 
-        if not run_id:
-            continue
-        if skip_jobs:
+        if not run_id or skip_jobs:
             continue
         jobs = client.get_workflow_run_jobs(owner, repo, run_id)
         if jobs:
@@ -90,8 +124,7 @@ def sync_runs_and_jobs(
                 aggregator.record_job(job)
                 new_jobs += 1
 
-    print(f"Synced {new_runs} workflow runs, {new_jobs} jobs")
-    return {"workflow_runs": new_runs, "jobs": new_jobs}
+    return new_runs, new_jobs
 
 
 def main():
@@ -99,6 +132,7 @@ def main():
     parser.add_argument("--db", default="data/build_metrics.db", help="SQLite database path")
     parser.add_argument("--full-sync", action="store_true", help="Full sync (no time window)")
     parser.add_argument("--lookback", type=int, default=None, help="Lookback hours for partial sync")
+    parser.add_argument("--months-back", type=int, default=6, help="Months of history for full sync")
     parser.add_argument("--timeout", type=int, default=30, help="API timeout")
     parser.add_argument("--skip-jobs", action="store_true", help="Skip job fetching (only sync workflow runs)")
     args = parser.parse_args()
@@ -115,7 +149,8 @@ def main():
         client, owner, repo, aggregator, detector,
         full_sync=args.full_sync,
         lookback_hours=args.lookback,
-        skip_jobs=args.skip_jobs
+        skip_jobs=args.skip_jobs,
+        months_back=args.months_back,
     )
 
     aggregator.close()

@@ -56,7 +56,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.VLLM_ASCEND_TOKEN || github.token }}
         run: |
           if [ "${{ inputs.full_sync }}" = "true" ]; then
-            python scripts/monitor/sync_data.py --db data/build_metrics.db --full-sync --timeout 120
+            python scripts/monitor/sync_data.py --db data/build_metrics.db --full-sync --skip-jobs --months-back 3 --timeout 120
+            python scripts/monitor/sync_data.py --db data/build_metrics.db --lookback 168 --timeout 120
           else
             python scripts/monitor/sync_data.py --db data/build_metrics.db --lookback 168 --timeout 120
           fi
