@@ -7,7 +7,7 @@
       "threshold": 2,
       "pipeline_type": "",
       "severity": "critical",
-      "channels": ["webhook", "dingtalk"],
+      "channels": ["webhook", "email"],
       "cooldown_minutes": 60
     },
     {
@@ -37,20 +37,13 @@
       "threshold": 1,
       "pipeline_type": "nightly",
       "severity": "critical",
-      "channels": ["webhook", "dingtalk", "lark"],
+      "channels": ["webhook", "email"],
       "cooldown_minutes": 30
     }
   ],
   "channels": {
     "webhook": {
       "url": ""
-    },
-    "dingtalk": {
-      "webhook_url": "",
-      "secret": ""
-    },
-    "lark": {
-      "webhook_url": ""
     },
     "email": {
       "recipients": [],

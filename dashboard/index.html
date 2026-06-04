@@ -3,80 +3,49 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Build-Eye CI Monitor Dashboard</title>
+<title>vLLM-Ascend Build-Eye</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0d1117;color:#c9d1d9;min-height:100vh}
-.header{background:#161b22;border-bottom:1px solid #30363d;padding:12px 16px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.header h1{font-size:18px;color:#f0f6fc;cursor:pointer}
-.header .badge{background:#1f6feb;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px}
-.header .repo{color:#8b949e;font-size:13px;margin-left:auto;cursor:pointer}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0d1117;color:#c9d1d9;min-height:100vh;display:flex}
+.sidebar{width:220px;background:#161b22;border-right:1px solid #30363d;min-height:100vh;padding:16px 0;position:fixed;left:0;top:0;bottom:0;display:flex;flex-direction:column}
+.sidebar-logo{padding:12px 16px;border-bottom:1px solid #30363d;margin-bottom:8px;font-size:15px;color:#f0f6fc;font-weight:700;display:flex;align-items:center;gap:8px}
+.sidebar-logo .eye{font-size:18px}
+.nav-item{display:flex;align-items:center;gap:8px;padding:8px 16px;color:#8b949e;font-size:13px;cursor:pointer;border-left:3px solid transparent;transition:all .2s}
+.nav-item:hover{color:#f0f6fc;background:#1c2128;border-left-color:#58a6ff}
+.nav-item.active{color:#f0f6fc;background:#1c2128;border-left-color:#1f6feb}
+.nav-icon{width:16px;height:16px;display:flex;align-items:center;justify-content:center;font-size:14px}
+.sidebar-footer{padding:12px 16px;border-top:1px solid #30363d;margin-top:auto;font-size:11px;color:#484f58}
+.main{margin-left:220px;min-height:100vh;display:flex;flex-direction:column}
+.topbar{background:#161b22;border-bottom:1px solid #30363d;padding:12px 20px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.topbar h1{font-size:16px;color:#f0f6fc;font-weight:600}
+.topbar .badge{background:#1f6feb;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px}
+.time-range{display:flex;gap:4px;margin-left:auto;align-items:center}
+.range-btn{background:#21262d;border:1px solid #30363d;border-radius:5px;padding:4px 12px;color:#8b949e;font-size:12px;cursor:pointer;transition:all .2s}
+.range-btn:hover{border-color:#58a6ff;color:#58a6ff}
+.range-btn.active{background:#1f6feb;border-color:#1f6feb;color:#fff}
+.custom-range{display:flex;gap:6px;align-items:center;margin-left:6px}
+.custom-range input{background:#0d1117;border:1px solid #30363d;border-radius:5px;padding:4px 8px;color:#c9d1d9;font-size:12px;outline:none;width:130px}
+.custom-range input:focus{border-color:#58a6ff}
 .refresh-indicator{font-size:11px;color:#8b949e;display:flex;align-items:center;gap:4px}
 .refresh-indicator .dot{width:8px;height:8px;border-radius:50%;background:#3fb950;display:inline-block}
-.alert-banner{background:#f8514922;border:1px solid #f85149;border-radius:6px;padding:10px 16px;margin:12px 16px 0;display:flex;align-items:center;gap:8px;font-size:13px;color:#f85149}
-.alert-banner.warn{background:#d2992222;border-color:#d29922;color:#d29922}
-.container{max-width:1400px;margin:0 auto;padding:16px}
-.tabs{display:flex;gap:6px;margin-bottom:12px;border-bottom:1px solid #30363d;padding-bottom:6px;flex-wrap:wrap}
-.tab{background:#161b22;border:1px solid #30363d;border-radius:6px;padding:6px 14px;color:#8b949e;cursor:pointer;font-size:12px;transition:all .2s}
-.tab:hover{color:#f0f6fc;border-color:#58a6ff}
-.tab.active{background:#1f6feb;border-color:#1f6feb;color:#fff}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:12px;margin-bottom:16px}
+.content{padding:16px 20px;flex:1}
 .card{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:16px}
 .card-title{font-size:13px;color:#8b949e;margin-bottom:10px;display:flex;align-items:center;gap:6px}
-.stat-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid #21262d;cursor:pointer;transition:background .2s}
-.stat-row:hover{background:#1c2128;border-radius:4px}
-.stat-row:last-child{border:none}
-.stat-label{color:#8b949e;font-size:12px}
-.stat-value{font-size:16px;font-weight:600}
-.stat-value.green{color:#3fb950}.stat-value.red{color:#f85149}.stat-value.yellow{color:#d29922}.stat-value.blue{color:#58a6ff}
-.progress-bar{height:6px;background:#21262d;border-radius:3px;overflow:hidden;margin-top:6px}
-.progress-fill{height:100%;border-radius:3px;transition:width .3s}
+.stat-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
+.stat-card{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;text-align:center}
+.stat-card .stat-main{font-size:22px;font-weight:700;color:#f0f6fc}
+.stat-card .stat-main.green{color:#3fb950}.stat-card .stat-main.red{color:#f85149}.stat-card .stat-main.yellow{color:#d29922}.stat-card .stat-main.blue{color:#58a6ff}
+.stat-card .stat-label{font-size:12px;color:#8b949e;margin-top:4px}
+.stat-card .stat-sub{font-size:11px;color:#484f58;margin-top:2px}
+.pipeline-breakdown{margin-bottom:16px}
 .pipeline-section{margin-bottom:12px}
 .pipeline-header{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid #30363d;font-size:13px;color:#f0f6fc;font-weight:600}
-.pipeline-header .view-report{color:#58a6ff;font-size:11px;cursor:pointer;text-decoration:none}
-.pipeline-header .view-report:hover{text-decoration:underline}
 .pipeline-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;padding:6px 0}
-.pipeline-stat{text-align:center;padding:6px;background:#0d1117;border-radius:4px;cursor:pointer;transition:background .2s;font-size:12px}
-.pipeline-stat:hover{background:#161b22}
+.pipeline-stat{text-align:center;padding:6px;background:#0d1117;border-radius:4px;font-size:12px}
 .pipeline-stat .num{font-size:18px;font-weight:700}
 .pipeline-stat .label{font-size:10px;color:#8b949e}
-.health-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;text-align:center}
-.health-card{background:#0d1117;border-radius:6px;padding:12px;cursor:pointer;transition:border-color .2s}
-.health-card:hover{border:1px solid #58a6ff}
-.health-score{font-size:28px;font-weight:700}
-.health-label{font-size:11px;color:#8b949e;margin-top:2px}
-.failures-table{width:100%;border-collapse:collapse;font-size:12px}
-.failures-table th{text-align:left;color:#8b949e;padding:6px;border-bottom:1px solid #30363d;white-space:nowrap}
-.failures-table td{padding:6px;border-bottom:1px solid #21262d}
-.failures-table tr{cursor:pointer;transition:background .2s}
-.failures-table tr:hover{background:#1c2128}
-.tag{display:inline-block;padding:1px 6px;border-radius:10px;font-size:10px;font-weight:600}
-.tag-code{background:#1f6feb22;color:#58a6ff;border:1px solid #1f6feb}
-.tag-infra{background:#d2992222;color:#d29922;border:1px solid #d29922}
-.tag-inter{background:#f8514922;color:#f85149;border:1px solid #f85149}
-.tag-nightly{background:#3fb95022;color:#3fb950;border:1px solid #3fb950}
-.tag-pr{background:#58a6ff22;color:#58a6ff;border:1px solid #58a6ff}
-.tag-weekly{background:#d2992222;color:#d29922;border:1px solid #d29922}
-.tag-good,.tag-excellent{background:#3fb95022;color:#3fb950;border:1px solid #3fb950}
-.tag-fair,.tag-warning{background:#d2992222;color:#d29922;border:1px solid #d29922}
-.tag-danger{background:#f8514922;color:#f85149;border:1px solid #f85149}
-.status-badge{display:inline-flex;align-items:center;gap:2px;padding:1px 6px;border-radius:4px;font-size:10px;font-weight:600}
-.status-failure{background:#f8514922;color:#f85149;border:1px solid #f85149}
-.status-success{background:#3fb95022;color:#3fb950;border:1px solid #3fb950}
-.status-skipped{background:#8b949e22;color:#8b949e;border:1px solid #8b949e}
-.status-cancelled{background:#d2992222;color:#d29922;border:1px solid #d29922}
-.key-error{display:inline-block;background:#f8514911;color:#f85149;padding:1px 4px;border-radius:3px;font-size:10px;max-width:250px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.reports-table{width:100%;border-collapse:collapse;font-size:12px}
-.reports-table th{text-align:left;color:#8b949e;padding:6px;border-bottom:1px solid #30363d;white-space:nowrap}
-.reports-table td{padding:6px;border-bottom:1px solid #21262d}
-.reports-table tr{cursor:pointer;transition:background .2s}
-.reports-table tr:hover{background:#1c2128}
-.btn{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:5px;font-size:11px;cursor:pointer;border:1px solid #30363d;background:#21262d;color:#c9d1d9;transition:all .2s}
-.btn:hover{background:#30363d;color:#f0f6fc}
-.btn-primary{background:#1f6feb;border-color:#1f6feb;color:#fff}
-.btn-primary:hover{background:#388bfd}
-.btn-link{background:none;border:none;color:#58a6ff;font-size:11px;padding:2px 4px;cursor:pointer}
-.btn-link:hover{text-decoration:underline}
+.progress-bar{height:6px;background:#21262d;border-radius:3px;overflow:hidden;margin-top:6px}
+.progress-fill{height:100%;border-radius:3px;transition:width .3s}
 .filter-bar{display:flex;gap:6px;margin-bottom:10px;align-items:center;flex-wrap:wrap}
 .filter-btn{background:#21262d;border:1px solid #30363d;border-radius:5px;padding:3px 10px;color:#8b949e;font-size:11px;cursor:pointer;transition:all .2s}
 .filter-btn:hover{border-color:#58a6ff;color:#58a6ff}
@@ -84,26 +53,42 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .search-input{background:#0d1117;border:1px solid #30363d;border-radius:5px;padding:4px 8px;color:#c9d1d9;font-size:12px;outline:none;min-width:140px}
 .search-input:focus{border-color:#58a6ff}
 .search-input::placeholder{color:#484f58}
-.detail-modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.7);z-index:100;display:flex;justify-content:center;align-items:center;padding:12px}
-.detail-modal-content{background:#161b22;border:1px solid #30363d;border-radius:8px;max-width:700px;width:100%;max-height:80vh;overflow-y:auto;padding:20px}
-.detail-modal-content h3{font-size:16px;color:#f0f6fc;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center}
-.close-btn{background:none;border:none;color:#8b949e;font-size:18px;cursor:pointer;padding:4px 8px}
-.close-btn:hover{color:#f0f6fc}
-.detail-field{padding:6px 0;border-bottom:1px solid #21262d}
-.detail-field .field-label{font-size:11px;color:#8b949e;margin-bottom:1px}
-.detail-field .field-value{font-size:13px;color:#f0f6fc}
-.error-list .error-item{background:#f8514911;color:#f85149;padding:3px 6px;border-radius:3px;font-size:11px;margin:3px 0;font-family:monospace}
-.trend-chart{position:relative;height:200px;background:#0d1117;border-radius:4px;margin-top:10px}
-.chart-canvas{width:100%;height:100%}
-.empty-state{text-align:center;padding:30px;color:#8b949e;font-size:13px}
-.footer{text-align:center;padding:16px;color:#8b949e;font-size:11px;border-top:1px solid #30363d;margin-top:16px}
-.toolbar{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-bottom:12px}
-.pr-lookup{display:flex;gap:6px;align-items:center}
-.pr-lookup input{background:#0d1117;border:1px solid #30363d;border-radius:5px;padding:4px 8px;color:#c9d1d9;font-size:12px;width:120px;outline:none}
-.pr-lookup input:focus{border-color:#58a6ff}
-.pr-result{background:#161b22;border:1px solid #30363d;border-radius:6px;padding:12px;margin-top:8px}
-.pr-result .pr-title{font-size:14px;color:#f0f6fc;margin-bottom:8px}
-.pr-result .run-row{padding:6px 0;border-bottom:1px solid #21262d;font-size:12px;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.data-table{width:100%;border-collapse:collapse;font-size:12px}
+.data-table th{text-align:left;color:#8b949e;padding:6px 8px;border-bottom:1px solid #30363d;white-space:nowrap}
+.data-table td{padding:6px 8px;border-bottom:1px solid #21262d}
+.data-table tr{cursor:pointer;transition:background .2s}
+.data-table tr:hover{background:#1c2128}
+.tag{display:inline-block;padding:1px 6px;border-radius:10px;font-size:10px;font-weight:600}
+.tag-nightly{background:#3fb95022;color:#3fb950;border:1px solid #3fb950}
+.tag-pr{background:#58a6ff22;color:#58a6ff;border:1px solid #58a6ff}
+.tag-weekly{background:#d2992222;color:#d29922;border:1px solid #d29922}
+.tag-other{background:#8b949e22;color:#8b949e;border:1px solid #8b949e}
+.tag-code{background:#1f6feb22;color:#58a6ff;border:1px solid #1f6feb}
+.tag-infra{background:#d2992222;color:#d29922;border:1px solid #d29922}
+.tag-inter{background:#f8514922;color:#f85149;border:1px solid #f85149}
+.tag-excellent{background:#3fb95022;color:#3fb950;border:1px solid #3fb950}
+.tag-good{background:#3fb95022;color:#3fb950;border:1px solid #3fb950}
+.tag-fair{background:#d2992222;color:#d29922;border:1px solid #d29922}
+.tag-danger{background:#f8514922;color:#f85149;border:1px solid #f85149}
+.conclusion-icon{font-size:14px;font-weight:700}
+.conclusion-success{color:#3fb950}
+.conclusion-failure{color:#f85149}
+.conclusion-cancelled{color:#d29922}
+.conclusion-skipped{color:#8b949e}
+.bar-chart-item{margin-bottom:12px}
+.bar-chart-label{font-size:12px;color:#8b949e;margin-bottom:4px;display:flex;justify-content:space-between}
+.bar-chart-track{height:24px;background:#21262d;border-radius:4px;overflow:hidden;position:relative}
+.bar-chart-fill{height:100%;border-radius:4px;display:flex;align-items:center;padding-left:8px;font-size:11px;color:#fff;font-weight:600;min-width:30px}
+.health-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:16px}
+.health-card{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:16px;text-align:center}
+.health-score{font-size:28px;font-weight:700}
+.health-label{font-size:11px;color:#8b949e;margin-top:4px}
+.btn{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:5px;font-size:11px;cursor:pointer;border:1px solid #30363d;background:#21262d;color:#c9d1d9;transition:all .2s}
+.btn:hover{background:#30363d;color:#f0f6fc}
+.btn-primary{background:#1f6feb;border-color:#1f6feb;color:#fff}
+.btn-primary:hover{background:#388bfd}
+.btn-link{background:none;border:none;color:#58a6ff;font-size:11px;padding:2px 4px;cursor:pointer}
+.btn-link:hover{text-decoration:underline}
 .settings-form{display:flex;flex-direction:column;gap:8px}
 .settings-form label{font-size:12px;color:#8b949e;margin-bottom:2px}
 .settings-form input{background:#0d1117;border:1px solid #30363d;border-radius:5px;padding:6px 10px;color:#c9d1d9;font-size:12px;outline:none;width:100%}
@@ -115,116 +100,103 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .cmd-block{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:8px;font-family:monospace;font-size:11px;color:#c9d1d9;overflow-x:auto;margin:4px 0;white-space:nowrap}
 .copy-btn{float:right;font-size:10px;padding:2px 6px;background:#21262d;border:1px solid #30363d;border-radius:3px;color:#8b949e;cursor:pointer}
 .copy-btn:hover{color:#f0f6fc;border-color:#58a6ff}
+.empty-state{text-align:center;padding:30px;color:#8b949e;font-size:13px}
+.footer{text-align:center;padding:16px;color:#8b949e;font-size:11px;border-top:1px solid #30363d;margin-top:16px}
+.page{display:none}
+.page.active{display:block}
+@media(max-width:900px){
+.sidebar{width:180px}
+.main{margin-left:180px}
+.stat-cards{grid-template-columns:repeat(2,1fr)}
+}
 @media(max-width:640px){
-.header{padding:8px 12px}.header h1{font-size:16px}.header .repo{font-size:11px}
-.container{padding:8px}.grid{grid-template-columns:1fr}.health-grid{grid-template-columns:1fr}
-.pipeline-stats{grid-template-columns:1fr 1fr}.card{padding:12px}
-.failures-table,.reports-table{font-size:11px}.filter-bar{flex-wrap:wrap;gap:4px}
-.search-input,.pr-lookup input{width:100%;min-width:0}
-.tab{padding:4px 10px;font-size:11px}
-.detail-modal-content{max-width:100%;padding:16px}
-.toolbar{flex-wrap:wrap}.pr-lookup input{width:80px}
+.sidebar{display:none}
+.main{margin-left:0}
+.stat-cards{grid-template-columns:1fr}
+.health-grid{grid-template-columns:1fr}
+.content{padding:8px}
+.topbar{padding:8px 12px}
+.data-table{font-size:11px}
 }
 </style>
 </head>
 <body>
-<div class="header">
-<h1 onclick="switchTab('overview')">Build-Eye</h1>
-<span class="badge">CI 监控</span>
+<div class="sidebar">
+<div class="sidebar-logo"><span class="eye">&#128065;</span> Build-Eye</div>
+<div class="nav-item active" data-page="workflow" onclick="switchPage('workflow')"><span class="nav-icon">&#128202;</span> Workflow看板</div>
+<div class="nav-item" data-page="job" onclick="switchPage('job')"><span class="nav-icon">&#9989;</span> Job看板</div>
+<div class="nav-item" data-page="category" onclick="switchPage('category')"><span class="nav-icon">&#127856;</span> 分类统计</div>
+<div class="nav-item" data-page="health" onclick="switchPage('health')"><span class="nav-icon">&#10084;</span> 健康评分</div>
+<div class="nav-item" data-page="settings" onclick="switchPage('settings')"><span class="nav-icon">&#9881;</span> 设置</div>
+<div class="sidebar-footer">vLLM-Ascend CI Monitor</div>
+</div>
+<div class="main">
+<div class="topbar">
+<h1>vLLM-Ascend Build-Eye</h1>
+<span class="badge">CI Monitor</span>
 <div class="refresh-indicator" id="refreshIndicator"><span class="dot" id="refreshDot"></span> <span id="refreshText">加载中...</span></div>
-<span class="repo" id="repoName" onclick="window.open(VLLM_REPO,'_blank')">vllm-project/vllm-ascend</span>
+<div class="time-range">
+<div class="range-btn active" data-range="all" onclick="setTimeRange('all')">全历史</div>
+<div class="range-btn" data-range="7d" onclick="setTimeRange('7d')">近7天</div>
+<div class="range-btn" data-range="30d" onclick="setTimeRange('30d')">近30天</div>
+<div class="range-btn" data-range="custom" onclick="setTimeRange('custom')">自定义</div>
+<div class="custom-range" id="customRange" style="display:none">
+<input type="date" id="startDate" placeholder="开始日期">
+<input type="date" id="endDate" placeholder="结束日期">
+<button class="btn btn-primary" onclick="loadCustomRange()">加载</button>
 </div>
-<div id="alertBanner" style="display:none"></div>
-<div class="container">
-<div id="loadingIndicator" style="text-align:center;padding:30px;color:#58a6ff">加载中...</div>
+</div>
+</div>
+<div class="content">
+<div id="loadingIndicator" style="text-align:center;padding:40px;color:#58a6ff;font-size:14px">加载中...</div>
 <div id="dashboardContent" style="display:none">
-<div class="tabs">
-<div class="tab active" data-tab="overview" onclick="switchTab('overview')">概览</div>
-<div class="tab" data-tab="failures" onclick="switchTab('failures')">失败记录</div>
-<div class="tab" data-tab="trends" onclick="switchTab('trends')">趋势</div>
-<div class="tab" data-tab="reports" onclick="switchTab('reports')">报告</div>
-<div class="tab" data-tab="prlookup" onclick="switchTab('prlookup')">PR 查询</div>
-<div class="tab" data-tab="settings" onclick="switchTab('settings')">设置</div>
-</div>
-<div id="overviewPanel">
-<div class="grid">
-<div class="card"><div class="card-title">概要</div><div id="summaryStats"></div></div>
-<div class="card"><div class="card-title">健康评分</div><div class="health-grid" id="healthScores"></div></div>
-<div class="card"><div class="card-title">根因分布</div><div id="categoryDistribution"></div></div>
-</div>
-<div class="card"><div class="card-title">流水线详情</div><div id="pipelineBreakdown"></div></div>
-</div>
-<div id="failuresPanel" style="display:none">
-<div class="filter-bar">
-<div class="filter-btn active" data-filter="all" onclick="filterFailures('all')">全部</div>
-<div class="filter-btn" data-filter="nightly" onclick="filterFailures('nightly')">Nightly</div>
-<div class="filter-btn" data-filter="pr" onclick="filterFailures('pr')">PR</div>
-<div class="filter-btn" data-filter="weekly" onclick="filterFailures('weekly')">Weekly</div>
-<input type="text" class="search-input" placeholder="搜索工作流..." oninput="searchFailures(this.value)">
+
+<div id="workflowPage" class="page active">
+<div class="stat-cards" id="wfStatCards"></div>
+<div class="pipeline-breakdown" id="pipelineBreakdown"></div>
+<div class="filter-bar" id="wfFilterBar">
+<select class="search-input" id="wfNameFilter" onchange="filterWorkflowRuns()"><option value="">全部Workflow</option></select>
+<select class="search-input" id="wfConclusionFilter" onchange="filterWorkflowRuns()"><option value="">全部结果</option><option value="success">success</option><option value="failure">failure</option><option value="cancelled">cancelled</option><option value="skipped">skipped</option></select>
+<select class="search-input" id="wfHardwareFilter" onchange="filterWorkflowRuns()"><option value="">全部硬件</option></select>
 </div>
 <div class="card">
-<table class="failures-table">
-<thead><tr><th>工作流</th><th>状态</th><th>根因</th><th>关键错误</th><th>时间</th><th>流水线</th><th>操作</th></tr></thead>
-<tbody id="failuresBody"></tbody>
+<table class="data-table">
+<thead><tr><th>开始时间</th><th>Workflow名称</th><th>硬件</th><th>结果</th><th>时长</th><th>Job统计</th></tr></thead>
+<tbody id="wfRunsBody"></tbody>
 </table>
 </div>
 </div>
-<div id="trendsPanel" style="display:none">
-<div class="grid">
-<div class="card"><div class="card-title">成功率 (7天)</div><div class="trend-chart"><canvas class="chart-canvas" id="successRateChart"></canvas></div></div>
-<div class="card"><div class="card-title">失败数 (7天)</div><div class="trend-chart"><canvas class="chart-canvas" id="failureChart"></canvas></div></div>
-<div class="card"><div class="card-title">健康评分 (7天)</div><div class="trend-chart"><canvas class="chart-canvas" id="healthChart"></canvas></div></div>
-</div>
-</div>
-<div id="reportsPanel" style="display:none">
-<div class="filter-bar">
-<div class="filter-btn active" data-rfilter="all" onclick="filterReports('all')">全部</div>
-<div class="filter-btn" data-rfilter="nightly" onclick="filterReports('nightly')">Nightly</div>
-<div class="filter-btn" data-rfilter="weekly" onclick="filterReports('weekly')">Weekly</div>
-<div class="filter-btn" data-rfilter="pr" onclick="filterReports('pr')">PR</div>
-<button class="btn" onclick="exportCSV()" style="margin-left:auto">导出 CSV</button>
-<button class="btn" onclick="exportJSON()">导出 JSON</button>
+
+<div id="jobPage" class="page">
+<div class="stat-cards" id="jobStatCards"></div>
+<div class="filter-bar" id="jobFilterBar">
+<select class="search-input" id="jobWorkflowFilter" onchange="filterJobStats()"><option value="">全部Workflow</option></select>
+<input type="text" class="search-input" id="jobNameSearch" placeholder="搜索Job名称..." oninput="filterJobStats()">
+<select class="search-input" id="jobConclusionFilter" onchange="filterJobStats()"><option value="">全部结果</option><option value="success">success</option><option value="failure">failure</option><option value="cancelled">cancelled</option></select>
 </div>
 <div class="card">
-<table class="reports-table">
-<thead><tr><th>流水线</th><th>名称</th><th>日期</th><th>统计</th><th>预览</th><th>操作</th></tr></thead>
-<tbody id="reportsBody"></tbody>
+<table class="data-table">
+<thead><tr><th>Workflow</th><th>Job名称</th><th>总运行</th><th>成功</th><th>失败</th><th>取消</th><th>成功率</th><th>平均时长</th><th>最小/最大</th><th>最近运行</th></tr></thead>
+<tbody id="jobStatsBody"></tbody>
 </table>
 </div>
 </div>
-<div id="prlookupPanel" style="display:none">
-<div class="toolbar">
-<div class="pr-lookup"><input id="prSearchInput" placeholder="PR号 例如 9549" onkeyup="if(event.key==='Enter')doPrLookup()"><button class="btn btn-primary" onclick="doPrLookup()">查询</button></div>
-<button class="btn" onclick="exportCSV()">导出 CSV</button>
-<button class="btn" onclick="exportJSON()">导出 JSON</button>
-</div>
-<div class="card" id="prLookupResult"><div class="empty-state">输入 PR 号查看相关工作流运行、失败记录和错误详情。</div></div>
-</div>
-<div id="settingsPanel" style="display:none">
+
+<div id="categoryPage" class="page">
 <div class="card">
-<div class="card-title">通知设置</div>
-<p style="font-size:13px;color:#8b949e;margin-bottom:12px">配置构建失败告警的通知渠道，均支持多收件人。在输入框中填写值，点击「复制并设置」按钮，将生成的命令在终端执行即可完成配置。<br>飞书/钉钉使用应用 API 发送个人消息；邮件使用 SMTP 发送。已配置的敏感值仅显示「已配置」。</p>
-<div class="settings-section">
-<h4><span class="status-dot" id="feishuDot"></span> 飞书 (个人消息)</h4>
-<div class="settings-form">
-<label>App ID</label><input id="feishuAppId" placeholder="飞书自建应用的 App ID">
-<label>App Secret</label><input id="feishuAppSecret" placeholder="飞书自建应用的 App Secret">
-<label>接收人 open_id (多人逗号分隔)</label><input id="feishuReceiveIds" placeholder="如 ou_xxxx1,ou_xxxx2">
+<div class="card-title">Failure 分类分布</div>
+<div id="categoryBars"></div>
 </div>
-<div style="margin-top:8px"><button class="btn btn-primary" onclick="copySecretCmd('FEISHU_APP_ID','feishuAppId')">复制并设置 (App ID)</button> <button class="btn" onclick="copySecretCmd('FEISHU_APP_SECRET','feishuAppSecret')">复制并设置 (App Secret)</button> <button class="btn" onclick="copySecretCmd('FEISHU_RECEIVE_IDS','feishuReceiveIds')">复制并设置 (接收人)</button></div>
-<div class="cmd-block">gh secret set FEISHU_APP_ID --repo winson-00178005/build-eye <button class="copy-btn" onclick="copyText('gh secret set FEISHU_APP_ID --repo winson-00178005/build-eye')">复制</button></div>
 </div>
-<div class="settings-section">
-<h4><span class="status-dot" id="dingtalkDot"></span> 钉钉 (个人消息)</h4>
-<div class="settings-form">
-<label>AppKey</label><input id="dingtalkAppKey" placeholder="钉钉企业内部应用的 AppKey">
-<label>AppSecret</label><input id="dingtalkAppSecret" placeholder="钉钉企业内部应用的 AppSecret">
-<label>AgentId</label><input id="dingtalkAgentId" placeholder="工作通知的应用 AgentId">
-<label>接收人 userid (多人逗号分隔)</label><input id="dingtalkReceiveIds" placeholder="如 user001,user002">
+
+<div id="healthPage" class="page">
+<div class="health-grid" id="healthCards"></div>
 </div>
-<div style="margin-top:8px"><button class="btn btn-primary" onclick="copySecretCmd('DINGTALK_APP_KEY','dingtalkAppKey')">复制并设置 (AppKey)</button> <button class="btn" onclick="copySecretCmd('DINGTALK_APP_SECRET','dingtalkAppSecret')">复制并设置 (AppSecret)</button> <button class="btn" onclick="copySecretCmd('DINGTALK_AGENT_ID','dingtalkAgentId')">复制并设置 (AgentId)</button> <button class="btn" onclick="copySecretCmd('DINGTALK_RECEIVE_IDS','dingtalkReceiveIds')">复制并设置 (接收人)</button></div>
-<div class="cmd-block">gh secret set DINGTALK_APP_KEY --repo winson-00178005/build-eye <button class="copy-btn" onclick="copyText('gh secret set DINGTALK_APP_KEY --repo winson-00178005/build-eye')">复制</button></div>
-</div>
+
+<div id="settingsPage" class="page">
+<div class="card">
+<div class="card-title">Email 通知设置</div>
+<p style="font-size:13px;color:#8b949e;margin-bottom:12px">配置构建失败告警的邮件通知渠道。在输入框中填写值，点击「复制并设置」按钮，将生成的命令在终端执行即可完成配置。已配置的敏感值仅显示「已配置」。</p>
 <div class="settings-section">
 <h4><span class="status-dot" id="emailDot"></span> Email (邮件)</h4>
 <div class="settings-form">
@@ -243,7 +215,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 <button class="btn" onclick="copySecretCmd('SMTP_TO','smtpTo')">复制并设置 (收件人)</button>
 <button class="btn" onclick="copySecretCmd('SMTP_SSL','smtpSSL')">复制并设置 (SSL)</button>
 </div>
-<div class="cmd-block" id="smtpCmdBlock">gh secret set SMTP_HOST --repo winson-00178005/build-eye <button class="copy-btn" onclick="copyText('gh secret set SMTP_HOST --repo winson-00178005/build-eye')">复制</button></div>
+<div class="cmd-block" id="smtpCmdBlock">gh secret set SMTP_HOST --repo vllm-project/vllm-ascend <button class="copy-btn" onclick="copyText('gh secret set SMTP_HOST --repo vllm-project/vllm-ascend')">复制</button></div>
 </div>
 <div class="settings-section">
 <h4>测试通知</h4>
@@ -252,21 +224,19 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 </div>
 </div>
 </div>
+
 </div>
+<div class="footer">Build-Eye CI Monitor | 每5分钟自动刷新 | <span id="updateTime"></span></div>
 </div>
-<div id="detailModal" class="detail-modal" style="display:none" onclick="if(event.target===this)closeModal()">
-<div class="detail-modal-content"><h3><span id="modalTitle"></span><button class="close-btn" onclick="closeModal()">&times;</button></h3><div id="modalBody"></div></div>
-</div>
-<div class="footer">Build-Eye CI 监控 | 每5分钟自动刷新 | <span id="updateTime"></span></div>
+
 <script>
-const REPO_URL='https://github.com/winson-00178005/build-eye';
-const VLLM_REPO='https://github.com/vllm-project/vllm-ascend';
-let D=null;let currentTab='overview';let currentFailureFilter='all';let currentReportFilter='all';let searchQuery='';
-const TYPE_LABELS={pr:'PR CI',nightly:'Nightly',weekly:'Weekly'};
-const TYPE_COLORS={pr:'#58a6ff',nightly:'#3fb950',weekly:'#d29922'};
-const STATUS_LABELS={success:'成功',failure:'失败',skipped:'跳过',cancelled:'取消',timed_out:'超时',action_required:'需人工干预'};
-const CAT_LABELS={code:'代码',infrastructure:'基础设施',interference:'干扰',unknown:'未知'};
-const CONF_LABELS={high:'高',medium:'中',low:'低'};
+let D=null;
+let currentPage='workflow';
+let currentRange='all';
+const PIPELINE_LABELS={nightly:'Nightly',weekly:'Weekly',pr:'PR CI',other:'Other'};
+const PIPELINE_COLORS={nightly:'#3fb950',weekly:'#d29922',pr:'#58a6ff',other:'#8b949e'};
+const CATEGORY_LABELS={code:'代码',infrastructure:'基础设施',interference:'干扰',unknown:'未知'};
+const CATEGORY_COLORS={code:'#58a6ff',infrastructure:'#d29922',interference:'#f85149',unknown:'#8b949e'};
 let refreshInterval=300;let refreshTimer=refreshInterval;let refreshTimerId=null;
 
 function startAutoRefresh(){
@@ -278,294 +248,316 @@ document.getElementById('refreshText').textContent=refreshTimer+'秒后刷新';
 },1000);
 }
 
-function switchTab(tab){
-currentTab=tab;
-document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-const el=document.querySelector(`.tab[data-tab="${tab}"]`);
-if(el)el.classList.add('active');
-['overview','failures','trends','reports','prlookup','settings'].forEach(p=>{
-document.getElementById(p+'Panel').style.display=p===tab?'block':'none';
-});
-if(tab==='trends'&&D)renderCharts();
-if(tab==='prlookup')document.getElementById('prSearchInput').focus();
-if(tab==='settings')renderSettings();
+function switchPage(page){
+currentPage=page;
+document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+const nav=document.querySelector(`.nav-item[data-page="${page}"]`);
+if(nav)nav.classList.add('active');
+document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+document.getElementById(page+'Page').classList.add('active');
+if(page==='settings')renderSettings();
 }
 
-function filterFailures(filter){currentFailureFilter=filter;document.querySelectorAll('.filter-btn[data-filter]').forEach(b=>b.classList.toggle('active',b.dataset.filter===filter));renderFailures();}
-function filterReports(filter){currentReportFilter=filter;document.querySelectorAll('.filter-btn[data-rfilter]').forEach(b=>b.classList.toggle('active',b.dataset.rfilter===filter));renderReports();}
-function searchFailures(q){searchQuery=q.toLowerCase();renderFailures();}
-
-function getCatTag(cat){const cls=cat==='code'?'tag-code':cat==='infrastructure'?'tag-infra':cat==='interference'?'tag-inter':'tag-danger';return`<span class="tag ${cls}">${CAT_LABELS[cat]||cat}</span>`;}
-function getStatusTag(s){return`<span class="status-badge status-${s}">${STATUS_LABELS[s]||s}</span>`;}
-function getTypeTag(t){return`<span class="tag tag-${t}">${TYPE_LABELS[t]||t}</span>`;}
-
-function showFailureDetail(f){
-const catTag=getCatTag(f.classification);const statusTag=getStatusTag(f.status);
-const keyErrors=f.key_errors||[];
-let errHtml=keyErrors.length?keyErrors.map(e=>`<div class="error-item">${e}</div>`).join(''):'<span style="color:#8b949e">未提取到关键错误</span>';
-let html=`<div class="detail-field"><div class="field-label">工作流</div><div class="field-value">${f.workflow_name}</div></div>
-<div class="detail-field"><div class="field-label">状态</div><div class="field-value">${statusTag}</div></div>
-<div class="detail-field"><div class="field-label">根因</div><div class="field-value">${catTag} (${f.detail||'N/A'})</div></div>
-<div class="detail-field"><div class="field-label">置信度</div><div class="field-value">${f.confidence}</div></div>
-<div class="detail-field"><div class="field-label">关键错误</div><div class="error-list">${errHtml}</div></div>
-<div class="detail-field"><div class="field-label">启动时间</div><div class="field-value">${(f.started_at||'N/A').substring(0,19).replace('T',' ')}</div></div>
-<div class="detail-field"><div class="field-label">流水线</div><div class="field-value">${TYPE_LABELS[f.pipeline_type]||f.pipeline_type}</div></div>
-<div style="margin-top:12px;display:flex;gap:6px"><a class="btn btn-primary" href="${f.run_url}" target="_blank">查看运行</a><a class="btn" href="${f.report_url}" target="_blank">查看报告</a></div>`;
-document.getElementById('modalTitle').textContent=f.workflow_name+' #'+f.run_id;
-document.getElementById('modalBody').innerHTML=html;
-document.getElementById('detailModal').style.display='flex';
+function setTimeRange(range){
+currentRange=range;
+document.querySelectorAll('.range-btn').forEach(b=>b.classList.toggle('active',b.dataset.range===range));
+document.getElementById('customRange').style.display=range==='custom'?'flex':'none';
+const fileMap={all:'dashboard_all.json','7d':'dashboard_7d.json','30d':'dashboard_30d.json',custom:'dashboard_custom.json'};
+if(range!=='custom'){
+loadDataFromFile(fileMap[range]);
+}
 }
 
-function showReportDetail(r){
-const typeTag=getTypeTag(r._type||r.type);
-let statsHtml='';
-if(r.total_runs!==undefined)statsHtml=`<div class="detail-field"><div class="field-label">统计</div><div class="field-value">总计: ${r.total_runs} | 成功: ${r.success_runs} | 失败: ${r.failure_runs}</div></div>`;
-let html=`<div class="detail-field"><div class="field-label">类型</div><div class="field-value">${typeTag}</div></div>
-<div class="detail-field"><div class="field-label">日期</div><div class="field-value">${r.date}</div></div>
-${statsHtml}
-<div class="detail-field"><div class="field-label">预览</div><div class="field-value" style="font-size:12px;color:#8b949e">${r.preview||''}</div></div>
-<div style="margin-top:12px;display:flex;gap:6px"><a class="btn btn-primary" href="${r.url}" target="_blank">查看报告</a><a class="btn" href="${r.raw_url}" target="_blank">原始 Markdown</a></div>`;
-document.getElementById('modalTitle').textContent=(r.name||r.date)+' 报告';
-document.getElementById('modalBody').innerHTML=html;
-document.getElementById('detailModal').style.display='flex';
+function loadCustomRange(){
+loadDataFromFile('dashboard_custom.json');
 }
 
-function closeModal(){document.getElementById('detailModal').style.display='none';}
+function getJsonUrl(filename){
+return filename;
+}
 
-function doPrLookup(){
-const prNum=document.getElementById('prSearchInput').value.trim();
-if(!prNum||!D)return;
-const prData=D.pr_lookup?.[prNum];
-const panel=document.getElementById('prLookupResult');
-if(!prData||prData.length===0){
-panel.innerHTML=`<div class="empty-state">未找到 PR #${prNum} 的数据。<br><a class="btn-link" href="${VLLM_REPO}/pull/${prNum}" target="_blank">在 GitHub 上查看</a></div>`;
+async function loadDataFromFile(filename){
+const url=getJsonUrl(filename);
+try{
+const res=await fetch(url);
+if(res.ok){
+D=await res.json();
+renderDashboard();
 return;
 }
-let html=`<div class="pr-title">PR #${prNum} — ${prData.length} 次工作流运行 <a class="btn-link" href="${VLLM_REPO}/pull/${prNum}" target="_blank">在 GitHub 查看</a></div>`;
-for(const r of prData){
-const statusTag=getStatusTag(r.status);const catTag=getCatTag(r.classification);
-const keyErr=r.key_errors&&r.key_errors.length?`<span class="key-error">${r.key_errors[0]}</span>`:'<span style="color:#8b949e;font-size:11px">'+(r.detail||r.status)+'</span>';
-html+=`<div class="run-row"><span>${r.workflow_name}</span><span>${statusTag}</span><span>${catTag}</span><span>${keyErr}</span><span style="font-size:11px;color:#8b949e">${(r.started_at||'').substring(0,10)}</span><a class="btn-link" href="${r.run_url}" target="_blank">运行</a></div>`;
-}
-if(prData.some(r=>r.key_errors&&r.key_errors.length>0)){
-html+=`<div style="margin-top:10px"><strong style="color:#f85149;font-size:13px">关键错误:</strong>`;
-for(const r of prData){for(const e of (r.key_errors||[])){html+=`<div style="font-family:monospace;font-size:11px;color:#f85149;padding:2px 4px;margin:2px 0;background:#f8514911;border-radius:3px">${e}</div>`;}}
-html+=`</div>`;
-}
-panel.innerHTML=html;
-}
-
-function exportCSV(){
-if(!D||!D.recent_failures)return;
-const failures=D.recent_failures.failures;
-let csv='Workflow,Status,Classification,Confidence,Detail,Key Errors,Started At,Pipeline,Run URL,Report URL\n';
-for(const f of failures){csv+=`"${f.workflow_name}","${f.status}","${f.classification}","${f.confidence}","${f.detail||''}","${(f.key_errors||[]).join(';')}","${f.started_at||''}","${f.pipeline_type}","${f.run_url}","${f.report_url}"\n`;}
-downloadFile(csv,'build-eye-failures.csv','text/csv');
-}
-
-function exportJSON(){
-if(!D)return;
-downloadFile(JSON.stringify(D,null,2),'build-eye-dashboard.json','application/json');
-}
-
-function downloadFile(content,name,type){
-const blob=new Blob([content],{type:type});const url=URL.createObjectURL(blob);
-const a=document.createElement('a');a.href=url;a.download=name;document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(url);
-}
-
-async function loadData(){
-const urls=['dashboard_data.json',REPO_URL+'/raw/main/dashboard/dashboard_data.json'];
-for(const url of urls){try{const res=await fetch(url);if(res.ok){D=await res.json();
-if(D.overview&&D.overview.summary&&D.overview.summary.total_runs>0){renderDashboard();startAutoRefresh();return;}
-}}catch(e){continue}}
-document.getElementById('loadingIndicator').innerHTML='<div class="empty-state">No monitoring data available.</div>';
+}catch(e){}
+document.getElementById('loadingIndicator').innerHTML='<div class="empty-state">数据加载失败</div>';
 }
 
 async function loadDataSilent(){
-const urls=['dashboard_data.json',REPO_URL+'/raw/main/dashboard/dashboard_data.json'];
-for(const url of urls){try{const res=await fetch(url);if(res.ok){const nd=await res.json();
-if(nd.overview&&nd.overview.summary&&nd.overview.summary.total_runs>0){D=nd;renderDashboard();
+const fileMap={all:'dashboard_all.json','7d':'dashboard_7d.json','30d':'dashboard_30d.json',custom:'dashboard_custom.json'};
+const url=getJsonUrl(fileMap[currentRange]);
+try{
+const res=await fetch(url);
+if(res.ok){
+D=await res.json();
+renderDashboard();
 document.getElementById('refreshDot').className='dot';
-document.getElementById('refreshText').textContent='Updated! Refresh in '+refreshTimer+'s';return;}
-}}catch(e){continue}}
+document.getElementById('refreshText').textContent='Updated!';
+return;
+}
+}catch(e){}
 }
 
 function renderDashboard(){
 document.getElementById('loadingIndicator').style.display='none';
 document.getElementById('dashboardContent').style.display='block';
 if(!D)return;
-const ts=D.overview?.timestamp||'';
+const ts=D.meta?.generated_at||'';
 document.getElementById('updateTime').textContent=ts?ts.substring(0,19).replace('T',' ')+' UTC':'N/A';
-renderAlerts();renderSummary(D.overview);renderHealth(D.health_scores);renderCategories(D.categories);renderPipelineBreakdown(D.overview);renderFailures();renderReports();
+renderWorkflowStats();
+renderPipelineBreakdown();
+renderWorkflowRuns();
+populateWorkflowFilters();
+renderJobStats();
+populateJobFilters();
+renderCategories();
+renderHealth();
+renderSettings();
 }
 
-function renderAlerts(){
-const alerts=D?.alerts||[];
-if(!alerts.length){document.getElementById('alertBanner').style.display='none';return;}
+function renderWorkflowStats(){
+const ov=D.workflow_overview||{};
+const total=ov.total_runs||0;
+const sr=ov.success_rate||0;
+const avg=ov.avg_duration_minutes||0;
+const cancelled=ov.cancelled_runs||0;
+const successRuns=ov.success_runs||0;
+const failureRuns=ov.failure_runs||0;
+const totalJobs=D.meta?.total_jobs||0;
+document.getElementById('wfStatCards').innerHTML=`
+<div class="stat-card"><div class="stat-main blue">${total}</div><div class="stat-label">总运行次数</div><div class="stat-sub">成功 ${successRuns} / 失败 ${failureRuns}</div></div>
+<div class="stat-card"><div class="stat-main ${sr>=80?'green':sr>=60?'yellow':'red'}">${sr.toFixed(1)}%</div><div class="stat-label">成功率</div><div class="stat-sub">排除跳过后计算</div></div>
+<div class="stat-card"><div class="stat-main">${avg.toFixed(0)}min</div><div class="stat-label">平均时长</div><div class="stat-sub">全部Workflow</div></div>
+<div class="stat-card"><div class="stat-main ${cancelled>0?'yellow':'green'}">${cancelled}</div><div class="stat-label">取消次数</div><div class="stat-sub">手动取消</div></div>`;
+}
+
+function renderPipelineBreakdown(){
+const pipes=D.workflow_overview?.pipelines||{};
 let html='';
-for(const a of alerts.filter(a=>a.level==='critical'))html+=`<div class="alert-banner" style="margin:0 0 4px">&#9888; ${a.message}</div>`;
-for(const a of alerts.filter(a=>a.level==='warning'))html+=`<div class="alert-banner warn" style="margin:0 0 4px">&#9888; ${a.message}</div>`;
-document.getElementById('alertBanner').innerHTML=html;
-document.getElementById('alertBanner').style.display='block';
-}
-
-function renderSummary(ov){
-const s=ov.summary||{};const total=s.total_runs||0;const success=s.success_runs||0;const failure=s.failure_runs||0;const rate=s.overall_success_rate||0;
-let html=`<div class="stat-row" onclick="switchTab('failures')"><span class="stat-label">总运行数</span><span class="stat-value blue">${total}</span></div>
-<div class="stat-row" onclick="switchTab('failures')"><span class="stat-label">成功</span><span class="stat-value green">${success}</span></div>
-<div class="stat-row" onclick="switchTab('failures')"><span class="stat-label">失败</span><span class="stat-value red">${failure}</span></div>
-<div class="stat-row" onclick="switchTab('trends')"><span class="stat-label">成功率</span><span class="stat-value ${rate>=80?'green':rate>=60?'yellow':'red'}">${rate}%</span></div>
-<div class="progress-bar" onclick="switchTab('trends')"><div class="progress-fill" style="width:${rate}%;background:${rate>=80?'#3fb950':rate>=60?'#d29922':'#f85149'}"></div></div>`;
-document.getElementById('summaryStats').innerHTML=html;
-}
-
-function renderPipelineBreakdown(ov){
-const pipes=ov.pipelines||{};let html='';
 for(const[type,data]of Object.entries(pipes)){
-const r=data.success_rate||0;const total=data.total_runs||0;const succ=data.success_runs||0;const fail=data.failure_runs||0;
-const reportUrl=data.latest_report_url||'';const vllmUrl=data.vllm_actions_url||VLLM_REPO+'/actions';
-const reportLink=reportUrl?`<a class="view-report" href="${reportUrl}" target="_blank">查看报告 &rarr;</a>`:`<span style="color:#484f58;font-size:11px">暂无报告</span>`;
+const r=data.success_rate||0;
+const total=data.total_runs||0;
+const succ=data.success_runs||0;
+const fail=data.failure_runs||0;
+const avg=data.avg_duration_minutes||0;
+const label=PIPELINE_LABELS[type]||type;
+const color=PIPELINE_COLORS[type]||'#58a6ff';
 html+=`<div class="pipeline-section">
-<div class="pipeline-header"><span>${TYPE_LABELS[type]||type}</span>${reportLink}</div>
+<div class="pipeline-header"><span>${label}</span><span style="font-size:11px;color:#8b949e">平均 ${avg.toFixed(0)}min</span></div>
 <div class="pipeline-stats">
-<div class="pipeline-stat" onclick="switchTab('failures');filterFailures('${type}')"><div class="num" style="color:#58a6ff">${total}</div><div class="label">总数</div></div>
-<div class="pipeline-stat" onclick="switchTab('failures');filterFailures('${type}')"><div class="num" style="color:#3fb950">${succ}</div><div class="label">成功</div></div>
-<div class="pipeline-stat" onclick="switchTab('failures');filterFailures('${type}')"><div class="num" style="color:#f85149">${fail}</div><div class="label">失败</div></div>
-<div class="pipeline-stat" onclick="switchTab('trends')"><div class="num" style="color:${r>=80?'#3fb950':r>=60?'#d29922':'#f85149'}">${r}%</div><div class="label">成功率</div></div>
+<div class="pipeline-stat"><div class="num" style="color:#58a6ff">${total}</div><div class="label">总数</div></div>
+<div class="pipeline-stat"><div class="num" style="color:#3fb950">${succ}</div><div class="label">成功</div></div>
+<div class="pipeline-stat"><div class="num" style="color:#f85149">${fail}</div><div class="label">失败</div></div>
+<div class="pipeline-stat"><div class="num" style="color:${r>=80?'#3fb950':r>=60?'#d29922':'#f85149'}">${r.toFixed(1)}%</div><div class="label">成功率</div></div>
 </div>
-<div class="progress-bar"><div class="progress-fill" style="width:${r}%;background:${TYPE_COLORS[type]||'#58a6ff'}"></div></div>
-<div style="margin-top:4px"><a class="btn-link" href="${vllmUrl}" target="_blank">vllm-ascend Actions</a></div>
+<div class="progress-bar"><div class="progress-fill" style="width:${r}%;background:${color}"></div></div>
 </div>`;
 }
 if(!html)html='<div class="empty-state">暂无流水线数据</div>';
-document.getElementById('pipelineBreakdown').innerHTML=html;
+document.getElementById('pipelineBreakdown').innerHTML=`<div class="card"><div class="card-title">Pipeline Breakdown</div>${html}</div>`;
 }
 
-function renderHealth(hs){
-const scores=hs?.scores||{};let html='';
-for(const[type,data]of Object.entries(scores)){
-const s=data.score||0;const rating=data.rating||'unknown';
-const ratingTag=`<span class="tag tag-${rating}">${rating}</span>`;
-html+=`<div class="health-card" onclick="switchTab('trends')"><div class="health-score" style="color:${s>=80?'#3fb950':s>=60?'#d29922':'#f85149'}">${s}</div>
-<div class="health-label">${TYPE_LABELS[type]||type} | ${ratingTag}</div></div>`;
+function populateWorkflowFilters(){
+const runs=D.workflow_runs||[];
+const names=new Set();const hw=new Set();
+for(const r of runs){names.add(r.name||'');hw.add(r.hardware_label||'');}
+const nameSelect=document.getElementById('wfNameFilter');
+nameSelect.innerHTML='<option value="">全部Workflow</option>';
+for(const n of [...names].sort()){nameSelect.innerHTML+=`<option value="${n}">${n}</option>`;}
+const hwSelect=document.getElementById('wfHardwareFilter');
+hwSelect.innerHTML='<option value="">全部硬件</option>';
+for(const h of [...hw].sort()){hwSelect.innerHTML+=`<option value="${h}">${h}</option>`;}
+}
+
+function filterWorkflowRuns(){
+const name=document.getElementById('wfNameFilter').value;
+const conclusion=document.getElementById('wfConclusionFilter').value;
+const hw=document.getElementById('wfHardwareFilter').value;
+renderWorkflowRuns(name,conclusion,hw);
+}
+
+function renderWorkflowRuns(nameFilter='',conclusionFilter='',hwFilter=''){
+const runs=D.workflow_runs||[];
+let filtered=runs;
+if(nameFilter)filtered=filtered.filter(r=>r.name===nameFilter);
+if(conclusionFilter)filtered=filtered.filter(r=>r.conclusion===conclusionFilter);
+if(hwFilter)filtered=filtered.filter(r=>r.hardware_label===hwFilter);
+let html='';
+for(const r of filtered.slice(0,50)){
+const icon=conclusionIcon(r.conclusion);
+const time=(r.started_at||'').substring(0,16).replace('T',' ');
+const dur=r.duration_minutes?r.duration_minutes.toFixed(0)+'min':'-';
+const jobStat=`<span style="color:#3fb950">${r.job_success||0}</span>/<span style="color:#f85149">${r.job_failure||0}</span>/<span style="color:#d29922">${r.job_cancelled||0}</span>`;
+const url=r.html_url||'#';
+html+=`<tr onclick="window.open('${url}','_blank')">
+<td>${time}</td>
+<td style="color:#f0f6fc">${r.name||'N/A'}</td>
+<td>${r.hardware_label||'-'}</td>
+<td>${icon}</td>
+<td>${dur}</td>
+<td>${jobStat} (${r.job_count||0})</td>
+</tr>`;
+}
+if(!html)html='<tr><td colspan="6" class="empty-state">暂无Workflow运行数据</td></tr>';
+document.getElementById('wfRunsBody').innerHTML=html;
+}
+
+function conclusionIcon(c){
+if(c==='success')return'<span class="conclusion-icon conclusion-success">&#10004;</span>';
+if(c==='failure')return'<span class="conclusion-icon conclusion-failure">&#10008;</span>';
+if(c==='cancelled')return'<span class="conclusion-icon conclusion-cancelled">&#9208;</span>';
+if(c==='skipped')return'<span class="conclusion-icon conclusion-skipped">&#9197;</span>';
+return'<span class="conclusion-icon conclusion-skipped">?</span>';
+}
+
+function renderJobStats(){
+const jo=D.job_overview||{};
+const total=jo.total_jobs||0;
+const sr=jo.job_success_rate||0;
+const avg=jo.avg_job_duration_minutes||0;
+const fail=jo.failure_jobs||0;
+const success=jo.success_jobs||0;
+document.getElementById('jobStatCards').innerHTML=`
+<div class="stat-card"><div class="stat-main blue">${total}</div><div class="stat-label">总Job数</div><div class="stat-sub">成功 ${success} / 失败 ${fail}</div></div>
+<div class="stat-card"><div class="stat-main ${sr>=80?'green':sr>=60?'yellow':'red'}">${sr.toFixed(1)}%</div><div class="stat-label">Job成功率</div><div class="stat-sub">排除跳过后计算</div></div>
+<div class="stat-card"><div class="stat-main">${avg.toFixed(1)}min</div><div class="stat-label">平均Job时长</div><div class="stat-sub">全部Job</div></div>
+<div class="stat-card"><div class="stat-main ${fail>0?'red':'green'}">${fail}</div><div class="stat-label">失败Job数</div><div class="stat-sub">需关注</div></div>`;
+renderJobTable();
+}
+
+function populateJobFilters(){
+const stats=D.job_stats||[];
+const wfNames=new Set();
+for(const s of stats){wfNames.add(s.workflow_name||'');}
+const select=document.getElementById('jobWorkflowFilter');
+select.innerHTML='<option value="">全部Workflow</option>';
+for(const n of [...wfNames].sort()){select.innerHTML+=`<option value="${n}">${n}</option>`;}
+}
+
+function filterJobStats(){
+const wf=document.getElementById('jobWorkflowFilter').value;
+const search=document.getElementById('jobNameSearch').value.toLowerCase();
+const conclusion=document.getElementById('jobConclusionFilter').value;
+renderJobTable(wf,search,conclusion);
+}
+
+function renderJobTable(wfFilter='',nameSearch='',conclusionFilter=''){
+const stats=D.job_stats||[];
+let filtered=stats;
+if(wfFilter)filtered=filtered.filter(s=>s.workflow_name===wfFilter);
+if(nameSearch)filtered=filtered.filter(s=>(s.job_name||'').toLowerCase().includes(nameSearch));
+if(conclusionFilter==='success')filtered=filtered.filter(s=>(s.success_rate||0)>=99);
+if(conclusionFilter==='failure')filtered=filtered.filter(s=>(s.failure_runs||0)>0);
+if(conclusionFilter==='cancelled')filtered=filtered.filter(s=>(s.cancelled_runs||0)>0);
+let html='';
+for(const s of filtered.slice(0,80)){
+const sr=s.success_rate||0;
+const avg=s.avg_duration_min? s.avg_duration_min.toFixed(1)+'min':'-';
+const minmax=s.min_duration_min&&s.max_duration_min? s.min_duration_min.toFixed(1)+'/'+s.max_duration_min.toFixed(1)+'min':'-';
+const last=(s.last_run_at||'').substring(0,10);
+const srColor=sr>=90?'#3fb950':sr>=70?'#d29922':'#f85149';
+html+=`<tr>
+<td>${s.workflow_name||'-'}</td>
+<td style="color:#f0f6fc">${s.job_name||'-'}</td>
+<td>${s.total_runs||0}</td>
+<td style="color:#3fb950">${s.success_runs||0}</td>
+<td style="color:#f85149">${s.failure_runs||0}</td>
+<td style="color:#d29922">${s.cancelled_runs||0}</td>
+<td style="color:${srColor};font-weight:600">${sr.toFixed(1)}%</td>
+<td>${avg}</td>
+<td>${minmax}</td>
+<td>${last}</td>
+</tr>`;
+}
+if(!html)html='<tr><td colspan="10" class="empty-state">暂无Job统计数据</td></tr>';
+document.getElementById('jobStatsBody').innerHTML=html;
+}
+
+function renderCategories(){
+const stats=D.job_stats||[];
+const catCounts={code:0,infrastructure:0,interference:0};
+let totalClassified=0;
+for(const s of stats){
+if(s.failure_runs>0){
+const cat=s.failure_classification||'unknown';
+if(catCounts[cat]!==undefined)catCounts[cat]+=s.failure_runs;
+else catCounts.unknown=(catCounts.unknown||0)+s.failure_runs;
+totalClassified+=s.failure_runs;
+}
+}
+const dist=D.workflow_overview?.failure_classification_distribution||catCounts;
+const total=Object.values(dist).reduce((a,b)=>a+b,0)||1;
+let html='';
+for(const[cat,count]of Object.entries(dist)){
+const pct=((count/total)*100).toFixed(1);
+const label=CATEGORY_LABELS[cat]||cat;
+const color=CATEGORY_COLORS[cat]||'#8b949e';
+html+=`<div class="bar-chart-item">
+<div class="bar-chart-label"><span>${getCatTag(cat)} ${label}</span><span>${count} (${pct}%)</span></div>
+<div class="bar-chart-track"><div class="bar-chart-fill" style="width:${pct}%;background:${color}">${pct}%</div></div>
+</div>`;
+}
+if(!html)html='<div class="empty-state">暂无分类数据</div>';
+document.getElementById('categoryBars').innerHTML=html;
+}
+
+function getCatTag(cat){
+const cls=cat==='code'?'tag-code':cat==='infrastructure'?'tag-infra':cat==='interference'?'tag-inter':'tag-danger';
+return`<span class="tag ${cls}">${CATEGORY_LABELS[cat]||cat}</span>`;
+}
+
+function renderHealth(){
+const pipes=D.workflow_overview?.pipelines||{};
+let html='';
+for(const[type,data]of Object.entries(pipes)){
+const score=data.health_score||data.success_rate||0;
+const label=PIPELINE_LABELS[type]||type;
+let rating='danger',ratingLabel='危险';
+if(score>=90){rating='excellent';ratingLabel='优秀';}
+else if(score>=80){rating='good';ratingLabel='良好';}
+else if(score>=70){rating='fair';ratingLabel='一般';}
+else if(score>=60){rating='fair';ratingLabel='一般';}
+const scoreColor=score>=90?'#3fb950':score>=80?'#3fb950':score>=70?'#d29922':score>=60?'#d29922':'#f85149';
+html+=`<div class="health-card">
+<div class="health-score" style="color:${scoreColor}">${score.toFixed(0)}</div>
+<div class="health-label">${label}</div>
+<div style="margin-top:6px"><span class="tag tag-${rating}">${ratingLabel}</span></div>
+<div class="progress-bar" style="margin-top:8px"><div class="progress-fill" style="width:${score}%;background:${scoreColor}"></div></div>
+</div>`;
 }
 if(!html)html='<div class="empty-state">暂无健康评分</div>';
-document.getElementById('healthScores').innerHTML=html;
+document.getElementById('healthCards').innerHTML=html;
 }
-
-function renderCategories(cat){
-const dist=cat.distribution||{};let html='';
-const total=Object.values(dist).reduce((a,b)=>a+b,0)||1;
-for(const[k,v]of Object.entries(dist)){const pct=((v/total)*100).toFixed(1);html+=`<div class="stat-row" onclick="switchTab('failures')"><span class="stat-label">${getCatTag(k)}</span><span class="stat-value">${v} (${pct}%)</span></div>`;}
-if(!html)html='<div class="empty-state">暂无分类数据</div>';
-document.getElementById('categoryDistribution').innerHTML=html;
-}
-
-function renderFailures(){
-const list=D?.recent_failures?.failures||[];
-let filtered=currentFailureFilter==='all'?list:list.filter(f=>f.pipeline_type===currentFailureFilter);
-if(searchQuery)filtered=filtered.filter(f=>(f.workflow_name||'').toLowerCase().includes(searchQuery));
-let html='';
-for(const f of filtered.slice(0,30)){
-const catTag=getCatTag(f.classification);const statusTag=getStatusTag(f.status);const typeTag=getTypeTag(f.pipeline_type);
-const keyErr=f.key_errors&&f.key_errors.length?`<span class="key-error">${f.key_errors[0]}</span>`:(f.status==='skipped'?`<span style="color:#8b949e;font-size:11px">跳过</span>`:f.status==='cancelled'?`<span style="color:#d29922;font-size:11px">取消</span>`:f.detail?`<span style="color:#8b949e;font-size:11px">${f.detail.substring(0,40)}</span>`:'<span style="color:#484f58">-</span>');
-const time=(f.started_at||'').substring(0,10);
-html+=`<tr onclick="showFailureDetail(D.recent_failures.failures.find(x=>x.run_id===${f.run_id}))">
-<td>${f.workflow_name||'N/A'}</td><td>${statusTag}</td><td>${catTag}</td><td>${keyErr}</td><td>${time}</td><td>${typeTag}</td>
-<td><a class="btn-link" href="${f.run_url}" target="_blank">运行</a> <a class="btn-link" href="${f.report_url}" target="_blank">报告</a></td></tr>`;
-}
-if(!html)html='<tr><td colspan="7" class="empty-state">暂无匹配的失败记录</td></tr>';
-document.getElementById('failuresBody').innerHTML=html;
-}
-
-function renderReports(){
-const reports=D?.reports||{};let allReports=[];
-for(const type of['nightly','weekly','pr']){const list=reports[type]||[];for(const r of list){r._type=type;allReports.push(r);}}
-let filtered=currentReportFilter==='all'?allReports:allReports.filter(r=>r._type===currentReportFilter);
-filtered.sort((a,b)=>b.date.localeCompare(a.date));
-let html='';
-for(const r of filtered){
-const typeTag=getTypeTag(r._type);const name=r.name?`PR ${r.name}`:`${TYPE_LABELS[r._type]} ${r.date}`;
-const stats=r.total_runs!==undefined?`${r.total_runs} 总计, ${r.success_runs} 成功, ${r.failure_runs} 失败`:(r.overall_classification||'');
-const preview=r.preview?r.preview.substring(0,80)+'...':'';
-html+=`<tr onclick="showReportDetail(${JSON.stringify(r).replace(/"/g,'&quot;')})">
-<td>${typeTag}</td><td style="color:#f0f6fc">${name}</td><td>${r.date}</td><td style="font-size:11px;color:#8b949e">${stats}</td>
-<td style="font-size:11px;color:#8b949e;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${preview}</td>
-<td><a class="btn-link" href="${r.url}" target="_blank">查看</a> <a class="btn-link" href="${r.raw_url}" target="_blank">原始</a></td></tr>`;
-}
-if(!html)html='<tr><td colspan="6" class="empty-state">暂无报告</td></tr>';
-document.getElementById('reportsBody').innerHTML=html;
-}
-
-function renderCharts(){
-if(!D||!D.trends)return;
-const pipes=D.trends.pipelines||{};
-drawLineChart('successRateChart',pipes,'success_rate_trend','dates','Success Rate (%)','#3fb950');
-drawLineChart('failureChart',pipes,'failure_count_trend','dates','Failures','#f85149');
-drawLineChart('healthChart',pipes,'health_score_trend','dates','Health Score','#58a6ff');
-}
-
-function drawLineChart(canvasId,pipes,dataKey,dateKey,label,color){
-const canvas=document.getElementById(canvasId);if(!canvas)return;
-const ctx=canvas.getContext('2d');const dpr=window.devicePixelRatio||1;
-const rect=canvas.parentElement.getBoundingClientRect();
-canvas.width=rect.width*dpr;canvas.height=rect.height*dpr;ctx.scale(dpr,dpr);
-canvas.style.width=rect.width+'px';canvas.style.height=rect.height+'px';
-ctx.clearRect(0,0,rect.width,rect.height);
-const allTypes=['pr','nightly','weekly'];const pad=40;const w=rect.width-pad*2;const h=rect.height-pad*2;
-let maxVal=10,minVal=0;
-for(const type of allTypes){const p=pipes[type];if(p&&p[dataKey]){maxVal=Math.max(maxVal,...p[dataKey]);minVal=Math.min(minVal,...p[dataKey]);}}
-maxVal=Math.max(maxVal,minVal+10);
-ctx.strokeStyle='#30363d';ctx.lineWidth=1;
-ctx.beginPath();ctx.moveTo(pad,pad);ctx.lineTo(pad,rect.height-pad);ctx.lineTo(rect.width-pad,rect.height-pad);ctx.stroke();
-ctx.fillStyle='#8b949e';ctx.font='10px sans-serif';
-ctx.fillText(maxVal.toFixed(0),2,pad+4);ctx.fillText(minVal.toFixed(0),2,rect.height-pad);
-const range=maxVal-minVal||1;let legendY=pad+12;
-for(const type of allTypes){
-const p=pipes[type];if(!p||!p[dataKey]||!p[dateKey])continue;
-const data=p[dataKey];ctx.beginPath();ctx.strokeStyle=TYPE_COLORS[type]||color;ctx.lineWidth=2;
-for(let i=0;i<data.length;i++){
-const x=pad+i*Math.max(w/(Math.max(data.length-1,1)),0);
-const y=rect.height-pad-(data[i]-minVal)/range*h;
-if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);
-}
-ctx.stroke();
-for(let i=0;i<data.length;i++){
-const x=pad+i*Math.max(w/(Math.max(data.length-1,1)),0);
-const y=rect.height-pad-(data[i]-minVal)/range*h;
-ctx.beginPath();ctx.arc(x,y,3,0,2*Math.PI);ctx.fillStyle=TYPE_COLORS[type];ctx.fill();
-}
-ctx.fillStyle=TYPE_COLORS[type];ctx.fillText(TYPE_LABELS[type]+' '+label,rect.width-pad-90,legendY);legendY+=12;
-}
-if(pipes.pr&&pipes.pr[dateKey]){ctx.fillStyle='#484f58';ctx.font='9px sans-serif';const dates=pipes.pr[dateKey];
-for(let i=0;i<dates.length;i++){const x=pad+i*Math.max(w/(Math.max(dates.length-1,1)),0);ctx.fillText(dates[i].substring(5),x-12,rect.height-pad+12);}
-}}
 
 function renderSettings(){
 const ns=D?.notification_settings||{};
-document.getElementById('feishuDot').className='status-dot '+((ns.feishu_enabled)?'on':'off');
-if(ns.feishu_app_id){document.getElementById('feishuAppId').placeholder='已配置 (输入新值可覆盖)';}
-if(ns.feishu_app_secret){document.getElementById('feishuAppSecret').placeholder='已配置 (输入新值可覆盖)';}
-if(ns.feishu_receive_ids){document.getElementById('feishuReceiveIds').placeholder='已配置: '+ns.feishu_receive_ids+' (输入新值可覆盖)';}
-document.getElementById('dingtalkDot').className='status-dot '+((ns.dingtalk_enabled)?'on':'off');
-if(ns.dingtalk_app_key){document.getElementById('dingtalkAppKey').placeholder='已配置 (输入新值可覆盖)';}
-if(ns.dingtalk_app_secret){document.getElementById('dingtalkAppSecret').placeholder='已配置 (输入新值可覆盖)';}
-if(ns.dingtalk_agent_id){document.getElementById('dingtalkAgentId').placeholder='已配置 (输入新值可覆盖)';}
-if(ns.dingtalk_receive_ids){document.getElementById('dingtalkReceiveIds').placeholder='已配置: '+ns.dingtalk_receive_ids+' (输入新值可覆盖)';}
-document.getElementById('emailDot').className='status-dot '+((ns.email_enabled)?'on':'off');
-if(ns.smtp_host){document.getElementById('smtpHost').placeholder='已配置 (输入新值可覆盖)';}
-if(ns.smtp_port){document.getElementById('smtpPort').placeholder='已配置: '+ns.smtp_port+' (输入新值可覆盖)';}
-if(ns.smtp_user){document.getElementById('smtpUser').placeholder='已配置: '+ns.smtp_user+' (输入新值可覆盖)';}
-if(ns.smtp_password){document.getElementById('smtpPassword').placeholder='已配置 (输入新值可覆盖)';}
-if(ns.smtp_to){document.getElementById('smtpTo').placeholder='已配置 (输入新值可覆盖)';}
-if(ns.smtp_ssl){document.getElementById('smtpSSL').placeholder='已配置: '+ns.smtp_ssl+' (输入新值可覆盖)';}
+const dot=document.getElementById('emailDot');
+if(dot)dot.className='status-dot '+((ns.email_enabled)?'on':'off');
+const host=document.getElementById('smtpHost');
+const port=document.getElementById('smtpPort');
+const user=document.getElementById('smtpUser');
+const pwd=document.getElementById('smtpPassword');
+const to=document.getElementById('smtpTo');
+const ssl=document.getElementById('smtpSSL');
+if(host&&ns.smtp_host)host.placeholder='已配置 (输入新值可覆盖)';
+if(port&&ns.smtp_port)port.placeholder='已配置: '+ns.smtp_port+' (输入新值可覆盖)';
+if(user&&ns.smtp_user)user.placeholder='已配置: '+ns.smtp_user+' (输入新值可覆盖)';
+if(pwd&&ns.smtp_password)pwd.placeholder='已配置 (输入新值可覆盖)';
+if(to&&ns.smtp_to)to.placeholder='已配置 (输入新值可覆盖)';
+if(ssl&&ns.smtp_ssl)ssl.placeholder='已配置: '+ns.smtp_ssl+' (输入新值可覆盖)';
 }
 
 function copySecretCmd(secretName,inputId){
 const input=document.getElementById(inputId);
 const value=input.value;
 if(!value){alert('请先在输入框中填写值，再点击此按钮。');return;}
-const cmd=`gh secret set ${secretName} --repo winson-00178005/build-eye --body '${value}'`;
+const cmd=`gh secret set ${secretName} --repo vllm-project/vllm-ascend --body '${value}'`;
 navigator.clipboard.writeText(cmd).then(()=>{
 alert('已复制命令到剪贴板:\n\n'+cmd+'\n\n请在终端中执行此命令。');
 });
@@ -576,12 +568,12 @@ navigator.clipboard.writeText(text);
 }
 
 function testNotification(){
-const url='https://github.com/winson-00178005/build-eye/actions/workflows/test-notification.yml';
+const url='https://github.com/vllm-project/vllm-ascend/actions/workflows/test-notification.yml';
 window.open(url,'_blank');
 }
 
-document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
-loadData();
+loadDataFromFile('dashboard_all.json');
+startAutoRefresh();
 </script>
 </body>
 </html>
