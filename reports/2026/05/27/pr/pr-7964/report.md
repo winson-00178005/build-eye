@@ -1,13 +1,13 @@
 ---
-report_id: 0588fbed
+report_id: 57b2aaac
 pr_number: 7964
 group_key: pr-7964
-generated_at: 2026-05-27T05:14:43.376705+00:00
-overall_classification: code
-total_failed_workflows: 3
+generated_at: 2026-05-27T12:57:08.185495+00:00
+overall_classification: infrastructure
+total_failed_workflows: 4
 category_counts:
-  code: 3
-  infrastructure: 0
+  code: 0
+  infrastructure: 4
   interference: 0
 ---
 
@@ -15,116 +15,85 @@ category_counts:
 
 ## 概要
 
-PR #7964 触发了 3 个 workflow，均失败。
+PR #7964 触发了 4 个 workflow，均失败。
 
-- **代码问题**: 3 次
+- **基础设施问题**: 4 次
 
 | # | Workflow | 根因分类 | 置信度 | 具体问题 |
 |---|---|---|---|---|
-| 1 | E2E-Light (#26488723152) | PR代码问题 | 中 | 编译错误 |
-| 2 | E2E-Light (#26486547891) | PR代码问题 | 高 | 编译错误 |
-| 3 | E2E-Light (#26486387997) | PR代码问题 | 中 | 编译错误 |
+| 1 | E2E-Full (#26511025303) | 基础设施问题 | 低 | 无失败job信息 |
+| 2 | Docs link check (#26511025099) | 基础设施问题 | 低 | 无失败job信息 |
+| 3 | E2E-Full (#26510937449) | 基础设施问题 | 低 | 无失败job信息 |
+| 4 | E2E-Light (#26510937755) | 基础设施问题 | 低 | 无失败job信息 |
 
 
 ## Workflow 详细分析
-### 1. E2E-Light (Run #26488723152)
+### 1. E2E-Full (Run #26511025303)
 
-- **根因分类**: PR代码问题
-- **置信度**: 中
-- **具体问题**: 编译错误
+- **根因分类**: 基础设施问题
+- **置信度**: 低
+- **具体问题**: 无失败job信息
 
-**分析推理**: 检测到代码问题模式: compilation。 问题出现在 PR #7964 代码中。 建议检查 PR 的代码修改和测试用例。
+**分析推理**: 无法获取job详情，默认归类为基础设施问题
 
-**匹配模式**:
-- compilation: `error:\s+`
-
-[查看 Workflow Run](https://github.com/vllm-project/vllm-ascend/actions/runs/26488723152)
-[查看 Job: lint / pre-commit](https://github.com/vllm-project/vllm-ascend/actions/runs/26488723152/job/78002195714)
-
-**日志片段**:
-```
-2026-05-27T03:28:01.1643237Z      FusedExpertsResult,[m
-2026-05-27T03:28:01.1643510Z      _MoECommMethods,[m
-2026-05-27T03:28:01.1643706Z  )[m
-2026-05-27T03:28:01.2132170Z ##[error]Error: failed to run script step: Error: command terminated with non-zero exit code: command terminated with exit code 1
-2026-05-27T03:28:01.2184804Z ##[error]Process completed with exit code 1.
-2026-05-27T03:28:01.2401932Z ##[error]Executing the custom container implementation failed. Please contact your self host
-```
+[查看 Workflow Run](https://github.com/vllm-project/vllm-ascend/actions/runs/26511025303)
 
 **建议**:
-- 优先: 检查编译错误位置 (低成本)
-- 检查编译错误位置 (低成本)
-- 修复编译问题 (中等成本)
+- 优先: 重新触发构建 (低成本)
+- 重新触发构建 (低成本)
 
-### 2. E2E-Light (Run #26486547891)
+### 2. Docs link check (Run #26511025099)
 
-- **根因分类**: PR代码问题
-- **置信度**: 高
-- **具体问题**: 编译错误
+- **根因分类**: 基础设施问题
+- **置信度**: 低
+- **具体问题**: 无失败job信息
 
-**分析推理**: 检测到代码问题模式: compilation。 问题出现在 PR #7964 代码中。 建议检查 PR 的代码修改和测试用例。
+**分析推理**: 无法获取job详情，默认归类为基础设施问题
 
-**匹配模式**:
-- compilation: `error:\s+`
-
-[查看 Workflow Run](https://github.com/vllm-project/vllm-ascend/actions/runs/26486547891)
-[查看 Job: e2e-light (v0.20.2) / 310p multicards 4cards](https://github.com/vllm-project/vllm-ascend/actions/runs/26486547891/job/77995552930)
-
-**日志片段**:
-```
-2026-05-27T02:16:00.0759376Z   image_310p: swr.cn-southwest-2.myhuaweicloud.com/base_image/ascend-ci/cann:9.0.0-310p-ubuntu22.04-py3.11
-2026-05-27T02:16:00.0760439Z   type: light
-2026-05-27T02:16:00.0762014Z   contains_310: true
-2026-05-27T02:16:00.0762607Z   continue_on_error: false
-2026-05-27T02:16:00.0763196Z   ref: 
-2026-05-27T02:16:00.0763710Z   singlecard_tests: 
-2026-05-27T02:16:00.0764284Z   multicard_2_tests: 
-...
-2026-05-27T02:33:14.3589701Z [rank3]:[W527 02:33:14.992903269 ArgSortKern
-```
+[查看 Workflow Run](https://github.com/vllm-project/vllm-ascend/actions/runs/26511025099)
 
 **建议**:
-- 优先: 检查编译错误位置 (低成本)
-- 检查编译错误位置 (低成本)
-- 修复编译问题 (中等成本)
+- 优先: 重新触发构建 (低成本)
+- 重新触发构建 (低成本)
 
-### 3. E2E-Light (Run #26486387997)
+### 3. E2E-Full (Run #26510937449)
 
-- **根因分类**: PR代码问题
-- **置信度**: 中
-- **具体问题**: 编译错误
+- **根因分类**: 基础设施问题
+- **置信度**: 低
+- **具体问题**: 无失败job信息
 
-**分析推理**: 检测到代码问题模式: compilation。 问题出现在 PR #7964 代码中。 建议检查 PR 的代码修改和测试用例。
+**分析推理**: 无法获取job详情，默认归类为基础设施问题
 
-**匹配模式**:
-- compilation: `error:\s+`
-
-[查看 Workflow Run](https://github.com/vllm-project/vllm-ascend/actions/runs/26486387997)
-[查看 Job: lint / pre-commit](https://github.com/vllm-project/vllm-ascend/actions/runs/26486387997/job/77994747246)
-
-**日志片段**:
-```
-2026-05-27T02:08:18.8076359Z          if self.model_config is not None and is_swa:[m
-2026-05-27T02:08:18.8076841Z              swa_mask = self.attn_mask_builder.get_swa_mask([m
-2026-05-27T02:08:18.8077476Z                  self.model_config.dtype, self.model_config.hf_text_config.sliding_window[m
-2026-05-27T02:08:18.8566328Z ##[error]Error: failed to run script step: Error: command terminated with non-zero exit code: command terminated with exit code 1
-2026-05-27T02:08:18.8629012Z ##[error]Pr
-```
+[查看 Workflow Run](https://github.com/vllm-project/vllm-ascend/actions/runs/26510937449)
 
 **建议**:
-- 优先: 检查编译错误位置 (低成本)
-- 检查编译错误位置 (低成本)
-- 修复编译问题 (中等成本)
+- 优先: 重新触发构建 (低成本)
+- 重新触发构建 (低成本)
+
+### 4. E2E-Light (Run #26510937755)
+
+- **根因分类**: 基础设施问题
+- **置信度**: 低
+- **具体问题**: 无失败job信息
+
+**分析推理**: 无法获取job详情，默认归类为基础设施问题
+
+[查看 Workflow Run](https://github.com/vllm-project/vllm-ascend/actions/runs/26510937755)
+
+**建议**:
+- 优先: 重新触发构建 (低成本)
+- 重新触发构建 (低成本)
 
 ## 修复建议
 
-**整体根因**: PR代码问题
+**整体根因**: 基础设施问题
 
 ### 优先建议
 
-- **E2E-Light (#26488723152)**: 检查编译错误位置 (低成本) - 查看 CMake 或 clang 报错的具体文件和行
-- **E2E-Light (#26486547891)**: 检查编译错误位置 (低成本) - 查看 CMake 或 clang 报错的具体文件和行
-- **E2E-Light (#26486387997)**: 检查编译错误位置 (低成本) - 查看 CMake 或 clang 报错的具体文件和行
+- **E2E-Full (#26511025303)**: 重新触发构建 (低成本) - 基础设施问题通常会自动恢复
+- **Docs link check (#26511025099)**: 重新触发构建 (低成本) - 基础设施问题通常会自动恢复
+- **E2E-Full (#26510937449)**: 重新触发构建 (低成本) - 基础设施问题通常会自动恢复
+- **E2E-Light (#26510937755)**: 重新触发构建 (低成本) - 基础设施问题通常会自动恢复
 
 ---
-报告生成时间: 2026-05-27T05:14:43.376742+00:00
+报告生成时间: 2026-05-27T12:57:08.185556+00:00
