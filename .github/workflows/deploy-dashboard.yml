@@ -1,12 +1,9 @@
 name: Deploy Dashboard
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - 'data/**'
-      - 'reports/**'
-      - 'dashboard/**'
+  schedule:
+    - cron: '0 0 * * *'
+    - cron: '0 6,12,18 * * *'
   workflow_dispatch:
     inputs:
       start_date:
@@ -18,12 +15,10 @@ on:
         required: false
         type: string
       full_sync:
-        description: 'Run full sync instead of incremental'
+        description: 'Run full 3-month sync instead of incremental'
         required: false
         type: boolean
         default: false
-  schedule:
-    - cron: '0 4,10,16,22 * * *'
 
 concurrency:
   group: deploy-dashboard
@@ -34,7 +29,7 @@ permissions:
   actions: read
 
 jobs:
-  deploy:
+  collect-and-deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -51,16 +46,44 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      - name: Sync data to SQLite
+      - name: Determine sync mode
+        id: sync_mode
+        run: |
+          if [ "${{ inputs.full_sync }}" = "true" ]; then
+            echo "mode=full" >> $GITHUB_OUTPUT
+          elif [ "$(date +%H)" = "00" ]; then
+            echo "mode=nightly" >> $GITHUB_OUTPUT
+          else
+            echo "mode=incremental" >> $GITHUB_OUTPUT
+          fi
+          echo "hour=$(date +%H)" >> $GITHUB_OUTPUT
+
+      - name: Nightly full sync — fetch runs (skip jobs for speed)
+        if: steps.sync_mode.outputs.mode == 'full' || steps.sync_mode.outputs.mode == 'nightly'
         env:
           GITHUB_TOKEN: ${{ secrets.VLLM_ASCEND_TOKEN || github.token }}
         run: |
-          if [ "${{ inputs.full_sync }}" = "true" ]; then
-            python scripts/monitor/sync_data.py --db data/build_metrics.db --full-sync --skip-jobs --months-back 3 --timeout 120
-            python scripts/monitor/sync_data.py --db data/build_metrics.db --lookback 168 --timeout 120
-          else
-            python scripts/monitor/sync_data.py --db data/build_metrics.db --lookback 168 --timeout 120
-          fi
+          echo "::group::Full sync: fetching workflow runs (3 months)"
+          python scripts/monitor/sync_data.py --db data/build_metrics.db --full-sync --skip-jobs --months-back 3 --timeout 120
+          echo "::endgroup::"
+
+      - name: Nightly full sync — fetch jobs for recent runs
+        if: steps.sync_mode.outputs.mode == 'full' || steps.sync_mode.outputs.mode == 'nightly'
+        env:
+          GITHUB_TOKEN: ${{ secrets.VLLM_ASCEND_TOKEN || github.token }}
+        run: |
+          echo "::group::Fetching jobs for runs in last 7 days"
+          python scripts/monitor/sync_data.py --db data/build_metrics.db --lookback 168 --timeout 120
+          echo "::endgroup::"
+
+      - name: Incremental sync — recent runs + jobs
+        if: steps.sync_mode.outputs.mode == 'incremental'
+        env:
+          GITHUB_TOKEN: ${{ secrets.VLLM_ASCEND_TOKEN || github.token }}
+        run: |
+          echo "::group::Incremental sync: last 24 hours"
+          python scripts/monitor/sync_data.py --db data/build_metrics.db --lookback 24 --timeout 60
+          echo "::endgroup::"
 
       - name: Export dashboard JSON files
         env:
@@ -123,3 +146,17 @@ jobs:
           publish_dir: ./dashboard
           publish_branch: gh-pages
           cname: false
+
+      - name: Summary
+        if: ${{ always() }}
+        run: |
+          echo "## Dashboard Deploy Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Sync mode: **${{ steps.sync_mode.outputs.mode }}**" >> $GITHUB_STEP_SUMMARY
+          echo "Trigger hour: **${{ steps.sync_mode.outputs.hour }}** UTC" >> $GITHUB_STEP_SUMMARY
+          if [ "${{ steps.sync_mode.outputs.mode }}" = "nightly" ] || [ "${{ steps.sync_mode.outputs.mode }}" = "full" ]; then
+            echo "Actions: full 3-month runs sync + 7-day jobs sync" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "Actions: incremental 24-hour sync" >> $GITHUB_STEP_SUMMARY
+          fi
+          echo "Source repo: vllm-project/vllm-ascend" >> $GITHUB_STEP_SUMMARY
