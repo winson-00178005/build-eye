@@ -1,8 +1,8 @@
 ---
-report_id: 9a15f841
+report_id: 858b1ac7
 pr_number: null
 group_key: run-26947844103
-generated_at: 2026-06-04T12:47:43.924917+00:00
+generated_at: 2026-06-04T14:12:47.921841+00:00
 overall_classification: infrastructure
 total_failed_workflows: 1
 category_counts:
@@ -48,4 +48,4 @@ run-26947844103 触发了 1 个 workflow，均失败。
 - **E2E-Full (#26947844103)**: 重新触发构建 (低成本) - 基础设施问题通常会自动恢复
 
 ---
-报告生成时间: 2026-06-04T12:47:43.924935+00:00
+报告生成时间: 2026-06-04T14:12:47.921868+00:00
