@@ -137,6 +137,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 <div class="refresh-indicator" id="refreshIndicator"><span class="dot" id="refreshDot"></span> <span id="refreshText">加载中...</span></div>
 <div class="time-range">
 <div class="range-btn active" data-range="all" onclick="setTimeRange('all')">全历史</div>
+<div class="range-btn" data-range="1d" onclick="setTimeRange('1d')">近1天</div>
 <div class="range-btn" data-range="7d" onclick="setTimeRange('7d')">近7天</div>
 <div class="range-btn" data-range="30d" onclick="setTimeRange('30d')">近30天</div>
 <div class="range-btn" data-range="custom" onclick="setTimeRange('custom')">自定义</div>
@@ -262,7 +263,7 @@ function setTimeRange(range){
 currentRange=range;
 document.querySelectorAll('.range-btn').forEach(b=>b.classList.toggle('active',b.dataset.range===range));
 document.getElementById('customRange').style.display=range==='custom'?'flex':'none';
-const fileMap={all:'dashboard_all.json','7d':'dashboard_7d.json','30d':'dashboard_30d.json',custom:'dashboard_custom.json'};
+const fileMap={all:'dashboard_all.json','1d':'dashboard_1d.json','7d':'dashboard_7d.json','30d':'dashboard_30d.json',custom:'dashboard_custom.json'};
 if(range!=='custom'){
 loadDataFromFile(fileMap[range]);
 }
@@ -290,7 +291,7 @@ document.getElementById('loadingIndicator').innerHTML='<div class="empty-state">
 }
 
 async function loadDataSilent(){
-const fileMap={all:'dashboard_all.json','7d':'dashboard_7d.json','30d':'dashboard_30d.json',custom:'dashboard_custom.json'};
+const fileMap={all:'dashboard_all.json','1d':'dashboard_1d.json','7d':'dashboard_7d.json','30d':'dashboard_30d.json',custom:'dashboard_custom.json'};
 const url=getJsonUrl(fileMap[currentRange]);
 try{
 const res=await fetch(url);

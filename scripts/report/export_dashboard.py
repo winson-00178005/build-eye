@@ -40,6 +40,9 @@ def _is_ci_workflow(name: str) -> bool:
 def _build_date_filter(range_type: str, start_date: str | None = None, end_date: str | None = None) -> str | None:
     if range_type == "all":
         return None
+    elif range_type == "1d":
+        cutoff = (datetime.now(timezone.utc) - timedelta(days=1)).strftime('%Y-%m-%dT%H:%M:%SZ')
+        return f">='{cutoff}'"
     elif range_type == "7d":
         cutoff = (datetime.now(timezone.utc) - timedelta(days=7)).strftime('%Y-%m-%dT%H:%M:%SZ')
         return f">='{cutoff}'"
@@ -301,7 +304,7 @@ def main():
     parser = argparse.ArgumentParser(description="Export dashboard JSON from SQLite")
     parser.add_argument("--db", default="data/build_metrics.db")
     parser.add_argument("--output", required=True)
-    parser.add_argument("--range", choices=["all", "7d", "30d", "custom"], default="all")
+    parser.add_argument("--range", choices=["all", "1d", "7d", "30d", "custom"], default="all")
     parser.add_argument("--start-date", help="Start date (YYYY-MM-DD) for custom range")
     parser.add_argument("--end-date", help="End date (YYYY-MM-DD) for custom range")
     args = parser.parse_args()

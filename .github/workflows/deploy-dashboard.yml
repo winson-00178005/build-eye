@@ -73,6 +73,7 @@ jobs:
           SMTP_SSL: ${{ secrets.SMTP_SSL }}
         run: |
           python scripts/report/export_dashboard.py --db data/build_metrics.db --range all --output dashboard/dashboard_all.json
+          python scripts/report/export_dashboard.py --db data/build_metrics.db --range 1d --output dashboard/dashboard_1d.json
           python scripts/report/export_dashboard.py --db data/build_metrics.db --range 7d --output dashboard/dashboard_7d.json
           python scripts/report/export_dashboard.py --db data/build_metrics.db --range 30d --output dashboard/dashboard_30d.json
 
@@ -92,7 +93,7 @@ jobs:
         run: |
           git config user.name "build-eye-dashboard"
           git config user.email "build-eye-dashboard@users.noreply.github.com"
-          git add dashboard/dashboard_all.json dashboard/dashboard_7d.json dashboard/dashboard_30d.json dashboard/dashboard_custom.json data/build_metrics.db || true
+          git add dashboard/dashboard_all.json dashboard/dashboard_1d.json dashboard/dashboard_7d.json dashboard/dashboard_30d.json dashboard/dashboard_custom.json data/build_metrics.db || true
           git diff --staged --quiet || git commit -m "Update dashboard data [skip ci]"
           git stash -u || true
           git pull --rebase --strategy-option ours || git rebase --abort || true

@@ -79,3 +79,12 @@ class TestExportDashboard:
         assert "pr" in pipelines
         assert pipelines["nightly"]["total_runs"] >= 2
         Path(output).unlink(missing_ok=True)
+
+    def test_1d_range_export(self):
+        output = tempfile.mktemp(suffix=".json")
+        export_dashboard_json(self.db_path, output, range_type="1d")
+        data = json.loads(Path(output).read_text(encoding="utf-8"))
+        assert data["meta"]["time_range"] == "1d"
+        assert "workflow_overview" in data
+        assert "job_overview" in data
+        Path(output).unlink(missing_ok=True)
