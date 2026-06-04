@@ -1,8 +1,8 @@
 ---
-report_id: ec8afde0
+report_id: 89d82b62
 pr_number: null
 group_key: run-26947394030
-generated_at: 2026-06-04T12:47:43.925149+00:00
+generated_at: 2026-06-04T14:12:47.922139+00:00
 overall_classification: infrastructure
 total_failed_workflows: 1
 category_counts:
@@ -48,4 +48,4 @@ run-26947394030 触发了 1 个 workflow，均失败。
 - **E2E-Light (#26947394030)**: 重新触发构建 (低成本) - 基础设施问题通常会自动恢复
 
 ---
-报告生成时间: 2026-06-04T12:47:43.925167+00:00
+报告生成时间: 2026-06-04T14:12:47.922160+00:00
