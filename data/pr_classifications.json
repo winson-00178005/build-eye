@@ -146,67 +146,6 @@
     }
   },
   {
-    "workflow_run_id": 27023377793,
-    "workflow_name": "E2E-Full",
-    "pr_number": null,
-    "pipeline_type": "pr",
-    "classification": {
-      "classification": "infrastructure",
-      "confidence": "low",
-      "category_detail": "无失败job信息",
-      "evidence": [],
-      "reasoning": "无法获取job详情，默认归类为基础设施问题"
-    },
-    "metadata": {
-      "workflow_run": {
-        "id": 27023377793,
-        "name": "E2E-Full",
-        "workflow_id": 215695704,
-        "status": "completed",
-        "conclusion": "skipped",
-        "started_at": "2026-06-05T15:16:43Z",
-        "completed_at": "2026-06-05T15:16:44Z",
-        "head_sha": "004589ccb7aff86201248db4cbbfb248d8a7084f",
-        "head_branch": "v0.18.0",
-        "url": "https://github.com/vllm-project/vllm-ascend/actions/runs/27023377793",
-        "triggering_actor": "drslark"
-      },
-      "pipeline_info": {
-        "pipeline_type": "pr",
-        "pipeline_type_label": "PR 流水线",
-        "source": "event_pr"
-      },
-      "pr": null,
-      "jobs": [
-        {
-          "id": 79756961409,
-          "name": "changes",
-          "status": "completed",
-          "conclusion": "skipped",
-          "started_at": "2026-06-05T15:16:44Z",
-          "completed_at": "2026-06-05T15:16:43Z",
-          "runner_name": null,
-          "runner_group": null,
-          "steps": [],
-          "url": "https://github.com/vllm-project/vllm-ascend/actions/runs/27023377793/job/79756961409"
-        },
-        {
-          "id": 79756961525,
-          "name": "e2e-full",
-          "status": "completed",
-          "conclusion": "skipped",
-          "started_at": "2026-06-05T15:16:44Z",
-          "completed_at": "2026-06-05T15:16:44Z",
-          "runner_name": null,
-          "runner_group": null,
-          "steps": [],
-          "url": "https://github.com/vllm-project/vllm-ascend/actions/runs/27023377793/job/79756961525"
-        }
-      ],
-      "failed_jobs": []
-    }
-  },
-  {
     "workflow_run_id": 27023377822,
     "workflow_name": "E2E-Light",
     "pr_number": null,
@@ -1317,6 +1256,67 @@
           "log_url": "https://github.com/vllm-project/vllm-ascend/actions/runs/27023377822/job/79757888200"
         }
       ]
+    }
+  },
+  {
+    "workflow_run_id": 27023377793,
+    "workflow_name": "E2E-Full",
+    "pr_number": null,
+    "pipeline_type": "pr",
+    "classification": {
+      "classification": "infrastructure",
+      "confidence": "low",
+      "category_detail": "无失败job信息",
+      "evidence": [],
+      "reasoning": "无法获取job详情，默认归类为基础设施问题"
+    },
+    "metadata": {
+      "workflow_run": {
+        "id": 27023377793,
+        "name": "E2E-Full",
+        "workflow_id": 215695704,
+        "status": "completed",
+        "conclusion": "skipped",
+        "started_at": "2026-06-05T15:16:43Z",
+        "completed_at": "2026-06-05T15:16:44Z",
+        "head_sha": "004589ccb7aff86201248db4cbbfb248d8a7084f",
+        "head_branch": "v0.18.0",
+        "url": "https://github.com/vllm-project/vllm-ascend/actions/runs/27023377793",
+        "triggering_actor": "drslark"
+      },
+      "pipeline_info": {
+        "pipeline_type": "pr",
+        "pipeline_type_label": "PR 流水线",
+        "source": "event_pr"
+      },
+      "pr": null,
+      "jobs": [
+        {
+          "id": 79756961409,
+          "name": "changes",
+          "status": "completed",
+          "conclusion": "skipped",
+          "started_at": "2026-06-05T15:16:44Z",
+          "completed_at": "2026-06-05T15:16:43Z",
+          "runner_name": null,
+          "runner_group": null,
+          "steps": [],
+          "url": "https://github.com/vllm-project/vllm-ascend/actions/runs/27023377793/job/79756961409"
+        },
+        {
+          "id": 79756961525,
+          "name": "e2e-full",
+          "status": "completed",
+          "conclusion": "skipped",
+          "started_at": "2026-06-05T15:16:44Z",
+          "completed_at": "2026-06-05T15:16:44Z",
+          "runner_name": null,
+          "runner_group": null,
+          "steps": [],
+          "url": "https://github.com/vllm-project/vllm-ascend/actions/runs/27023377793/job/79756961525"
+        }
+      ],
+      "failed_jobs": []
     }
   },
   {
@@ -8536,11 +8536,11 @@
   {
     "workflow_run_id": 27018057729,
     "workflow_name": "Cache csrc Build Artifacts",
-    "pr_number": null,
+    "pr_number": 10114,
     "pipeline_type": "pr",
     "classification": {
       "detected": true,
-      "confidence": "high",
+      "confidence": "medium",
       "category_detail": "编译错误",
       "evidence": [
         {
@@ -8555,8 +8555,8 @@
           ]
         }
       ],
-      "reasoning": "检测到代码问题模式: compilation。 建议检查 PR 的代码修改和测试用例。",
-      "is_pr_code": true,
+      "reasoning": "检测到代码问题模式: compilation。 问题出现在 PR #10114 代码中。 建议检查 PR 的代码修改和测试用例。",
+      "is_pr_code": false,
       "job_name": "build-X64-a3-openeuler-cache",
       "job_id": 79738316552,
       "classification": "code"
@@ -8580,7 +8580,16 @@
         "pipeline_type_label": "PR 流水线",
         "source": "event_pr"
       },
-      "pr": null,
+      "pr": {
+        "number": 10114,
+        "title": "[CI] Fix csrc cache build error",
+        "author": "wangxiyuan",
+        "merged_at": null,
+        "merge_commit_sha": null,
+        "url": "",
+        "base_ref": "main",
+        "head_ref": ""
+      },
       "jobs": [
         {
           "id": 79738316552,
@@ -18968,7 +18977,7 @@
   {
     "workflow_run_id": 27015453915,
     "workflow_name": "E2E-Light",
-    "pr_number": 10112,
+    "pr_number": null,
     "pipeline_type": "pr",
     "classification": {
       "classification": "infrastructure",
@@ -18996,16 +19005,7 @@
         "pipeline_type_label": "PR 流水线",
         "source": "event_pr"
       },
-      "pr": {
-        "number": 10112,
-        "title": "[0.18.0][BugFix] Avoid the issue of moe hanging in multi-DP scenarios without introducing new problems",
-        "author": "drslark",
-        "merged_at": null,
-        "merge_commit_sha": null,
-        "url": "",
-        "base_ref": "main",
-        "head_ref": ""
-      },
+      "pr": null,
       "jobs": [
         {
           "id": 79729315173,
