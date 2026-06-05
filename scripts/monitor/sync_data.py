@@ -1,4 +1,4 @@
-"""Build-Eye 数据同步 - 从 GitHub API 全量/增量同步 workflow runs + jobs 到 SQLite。"""
+"""Build-Eye 数据同步 - 使用 gh CLI 从 GitHub 全量/增量同步 workflow runs + jobs 到 SQLite。"""
 import argparse
 import json
 import os
@@ -11,7 +11,7 @@ repo_root = Path(__file__).parent.parent.parent
 sys.path.insert(0, str(repo_root))
 sys.path.insert(0, str(repo_root / "scripts"))
 
-from monitor.github_client import GitHubAPIClient
+from monitor.gh_cli_client import GhCLIClient
 from monitor.aggregator import BuildAggregator
 from monitor.pipeline_detector import PipelineDetector
 from monitor.config_loader import config
@@ -47,7 +47,7 @@ def _generate_week_ranges(start_date, end_date):
 
 
 def sync_runs_and_jobs(
-    client: GitHubAPIClient,
+    client,
     owner: str,
     repo: str,
     aggregator: BuildAggregator,
@@ -137,10 +137,11 @@ def main():
     parser.add_argument("--skip-jobs", action="store_true", help="Skip job fetching (only sync workflow runs)")
     args = parser.parse_args()
 
-    client = GitHubAPIClient(timeout=args.timeout)
     target = config.target_repo
     owner = target["owner"]
     repo = target["repo"]
+
+    client = GhCLIClient(owner=owner, repo=repo, timeout=args.timeout)
 
     aggregator = BuildAggregator(db_path=args.db)
     detector = PipelineDetector(config.pipeline_types)
