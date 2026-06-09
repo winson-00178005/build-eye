@@ -1,6 +1,7 @@
 """Build-Eye 通知模块 - 支持邮件通知，支持多收件人。"""
 import json
 import smtplib
+import ssl
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from typing import Dict, List
@@ -24,18 +25,38 @@ def send_email(
     msg.attach(html_part)
 
     try:
-        if use_ssl:
-            server = smtplib.SMTP_SSL(smtp_host, smtp_port, timeout=10)
+        ssl_context = ssl.create_default_context()
+        ssl_context.check_hostname = False
+        ssl_context.verify_mode = ssl.CERT_NONE
+
+        if use_ssl and smtp_port == 465:
+            server = smtplib.SMTP_SSL(smtp_host, smtp_port, context=ssl_context, timeout=30)
+        elif use_ssl:
+            server = smtplib.SMTP(smtp_host, smtp_port, timeout=30)
+            server.ehlo()
+            server.starttls(context=ssl_context)
+            server.ehlo()
         else:
-            server = smtplib.SMTP(smtp_host, smtp_port, timeout=10)
-            server.starttls()
+            server = smtplib.SMTP(smtp_host, smtp_port, timeout=30)
+            server.ehlo()
         server.login(smtp_user, smtp_password)
         server.sendmail(smtp_user, to_addresses, msg.as_string())
         server.quit()
         return {addr: True for addr in to_addresses}
     except Exception as e:
         print(f"邮件发送失败: {e}")
-        return {addr: False for addr in to_addresses}
+        try:
+            server = smtplib.SMTP(smtp_host, 25, timeout=30)
+            server.ehlo()
+            server.starttls(context=ssl.create_default_context())
+            server.ehlo()
+            server.login(smtp_user, smtp_password)
+            server.sendmail(smtp_user, to_addresses, msg.as_string())
+            server.quit()
+            return {addr: True for addr in to_addresses}
+        except Exception as e2:
+            print(f"邮件发送也失败(端口25+STARTTLS): {e2}")
+            return {addr: False for addr in to_addresses}
 
 
 def _parse_ids(id_str: str) -> List[str]:
