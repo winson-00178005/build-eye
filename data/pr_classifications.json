@@ -6773,7 +6773,7 @@
   {
     "workflow_run_id": 27462772828,
     "workflow_name": "E2E-Light",
-    "pr_number": 10438,
+    "pr_number": null,
     "pipeline_type": "pr",
     "classification": {
       "classification": "infrastructure",
@@ -6801,16 +6801,7 @@
         "pipeline_type_label": "PR 流水线",
         "source": "event_pr"
       },
-      "pr": {
-        "number": 10438,
-        "title": "[BugFix][KV Pool] Avoid logging KV store keys at error level",
-        "author": "Pz1116",
-        "merged_at": null,
-        "merge_commit_sha": null,
-        "url": "",
-        "base_ref": "main",
-        "head_ref": ""
-      },
+      "pr": null,
       "jobs": [
         {
           "id": 81179564866,
@@ -8852,11 +8843,11 @@
   {
     "workflow_run_id": 27461640037,
     "workflow_name": "E2E-Light",
-    "pr_number": 10437,
+    "pr_number": null,
     "pipeline_type": "pr",
     "classification": {
       "detected": true,
-      "confidence": "medium",
+      "confidence": "high",
       "category_detail": "编译错误",
       "evidence": [
         {
@@ -8868,8 +8859,8 @@
           ]
         }
       ],
-      "reasoning": "检测到代码问题模式: compilation。 问题出现在 PR #10437 代码中。 建议检查 PR 的代码修改和测试用例。",
-      "is_pr_code": false,
+      "reasoning": "检测到代码问题模式: compilation。 建议检查 PR 的代码修改和测试用例。",
+      "is_pr_code": true,
       "job_name": "lint / pre-commit",
       "job_id": 81176458797,
       "classification": "code"
@@ -8893,16 +8884,7 @@
         "pipeline_type_label": "PR 流水线",
         "source": "event_pr"
       },
-      "pr": {
-        "number": 10437,
-        "title": "[Feature] add kv transfer dfx",
-        "author": "zzzzzmeng",
-        "merged_at": null,
-        "merge_commit_sha": null,
-        "url": "",
-        "base_ref": "main",
-        "head_ref": ""
-      },
+      "pr": null,
       "jobs": [
         {
           "id": 81176458780,
@@ -9283,7 +9265,7 @@
   {
     "workflow_run_id": 27461578868,
     "workflow_name": "E2E-Light",
-    "pr_number": 10436,
+    "pr_number": null,
     "pipeline_type": "pr",
     "classification": {
       "classification": "infrastructure",
@@ -9311,16 +9293,7 @@
         "pipeline_type_label": "PR 流水线",
         "source": "event_pr"
       },
-      "pr": {
-        "number": 10436,
-        "title": "[Feature][20.2] Support AscendStore load masks",
-        "author": "Pz1116",
-        "merged_at": null,
-        "merge_commit_sha": null,
-        "url": "",
-        "base_ref": "main",
-        "head_ref": ""
-      },
+      "pr": null,
       "jobs": [
         {
           "id": 81176298843,
@@ -11360,67 +11333,6 @@
     }
   },
   {
-    "workflow_run_id": 27459434262,
-    "workflow_name": "E2E-Full",
-    "pr_number": null,
-    "pipeline_type": "pr",
-    "classification": {
-      "classification": "infrastructure",
-      "confidence": "low",
-      "category_detail": "无失败job信息",
-      "evidence": [],
-      "reasoning": "无法获取job详情，默认归类为基础设施问题"
-    },
-    "metadata": {
-      "workflow_run": {
-        "id": 27459434262,
-        "name": "E2E-Full",
-        "workflow_id": 215695704,
-        "status": "completed",
-        "conclusion": "skipped",
-        "started_at": "2026-06-13T06:44:57Z",
-        "completed_at": "2026-06-13T06:44:58Z",
-        "head_sha": "78e9a0fc72e8b77d6492c9e82dbc3cb03459e9a1",
-        "head_branch": "0180_fa3",
-        "url": "https://github.com/vllm-project/vllm-ascend/actions/runs/27459434262",
-        "triggering_actor": "wangx700"
-      },
-      "pipeline_info": {
-        "pipeline_type": "pr",
-        "pipeline_type_label": "PR 流水线",
-        "source": "event_pr"
-      },
-      "pr": null,
-      "jobs": [
-        {
-          "id": 81170196626,
-          "name": "changes",
-          "status": "completed",
-          "conclusion": "skipped",
-          "started_at": "2026-06-13T06:44:58Z",
-          "completed_at": "2026-06-13T06:44:57Z",
-          "runner_name": null,
-          "runner_group": null,
-          "steps": [],
-          "url": "https://github.com/vllm-project/vllm-ascend/actions/runs/27459434262/job/81170196626"
-        },
-        {
-          "id": 81170201564,
-          "name": "e2e-full",
-          "status": "completed",
-          "conclusion": "skipped",
-          "started_at": "2026-06-13T06:45:03Z",
-          "completed_at": "2026-06-13T06:44:57Z",
-          "runner_name": null,
-          "runner_group": null,
-          "steps": [],
-          "url": "https://github.com/vllm-project/vllm-ascend/actions/runs/27459434262/job/81170201564"
-        }
-      ],
-      "failed_jobs": []
-    }
-  },
-  {
     "workflow_run_id": 27459434285,
     "workflow_name": "E2E-Light",
     "pr_number": null,
@@ -12430,6 +12342,67 @@
           "log_url": "https://github.com/vllm-project/vllm-ascend/actions/runs/27459434285/job/81170402115"
         }
       ]
+    }
+  },
+  {
+    "workflow_run_id": 27459434262,
+    "workflow_name": "E2E-Full",
+    "pr_number": null,
+    "pipeline_type": "pr",
+    "classification": {
+      "classification": "infrastructure",
+      "confidence": "low",
+      "category_detail": "无失败job信息",
+      "evidence": [],
+      "reasoning": "无法获取job详情，默认归类为基础设施问题"
+    },
+    "metadata": {
+      "workflow_run": {
+        "id": 27459434262,
+        "name": "E2E-Full",
+        "workflow_id": 215695704,
+        "status": "completed",
+        "conclusion": "skipped",
+        "started_at": "2026-06-13T06:44:57Z",
+        "completed_at": "2026-06-13T06:44:58Z",
+        "head_sha": "78e9a0fc72e8b77d6492c9e82dbc3cb03459e9a1",
+        "head_branch": "0180_fa3",
+        "url": "https://github.com/vllm-project/vllm-ascend/actions/runs/27459434262",
+        "triggering_actor": "wangx700"
+      },
+      "pipeline_info": {
+        "pipeline_type": "pr",
+        "pipeline_type_label": "PR 流水线",
+        "source": "event_pr"
+      },
+      "pr": null,
+      "jobs": [
+        {
+          "id": 81170196626,
+          "name": "changes",
+          "status": "completed",
+          "conclusion": "skipped",
+          "started_at": "2026-06-13T06:44:58Z",
+          "completed_at": "2026-06-13T06:44:57Z",
+          "runner_name": null,
+          "runner_group": null,
+          "steps": [],
+          "url": "https://github.com/vllm-project/vllm-ascend/actions/runs/27459434262/job/81170196626"
+        },
+        {
+          "id": 81170201564,
+          "name": "e2e-full",
+          "status": "completed",
+          "conclusion": "skipped",
+          "started_at": "2026-06-13T06:45:03Z",
+          "completed_at": "2026-06-13T06:44:57Z",
+          "runner_name": null,
+          "runner_group": null,
+          "steps": [],
+          "url": "https://github.com/vllm-project/vllm-ascend/actions/runs/27459434262/job/81170201564"
+        }
+      ],
+      "failed_jobs": []
     }
   },
   {
