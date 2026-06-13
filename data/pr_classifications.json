@@ -1,8 +1,163 @@
 [
   {
+    "workflow_run_id": 27469886760,
+    "workflow_name": "Docs link check",
+    "pr_number": 8865,
+    "pipeline_type": "pr",
+    "classification": {
+      "classification": "infrastructure",
+      "confidence": "low",
+      "category_detail": "无失败job信息",
+      "evidence": [],
+      "reasoning": "无法获取job详情，默认归类为基础设施问题"
+    },
+    "metadata": {
+      "workflow_run": {
+        "id": 27469886760,
+        "name": "Docs link check",
+        "workflow_id": 264532256,
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-06-13T14:44:48Z",
+        "completed_at": "2026-06-13T14:46:36Z",
+        "head_sha": "99a86f7f29040a7ba548bb4856a948ac37dc6691",
+        "head_branch": "main",
+        "url": "https://github.com/vllm-project/vllm-ascend/actions/runs/27469886760",
+        "triggering_actor": "wangshiqi-2026"
+      },
+      "pipeline_info": {
+        "pipeline_type": "pr",
+        "pipeline_type_label": "PR 流水线",
+        "source": "event_pr"
+      },
+      "pr": {
+        "number": 8865,
+        "title": "[Feature]: Verify / Support zai-org/GLM-4.1V-9B-Thinking",
+        "author": "wangshiqi-2026",
+        "merged_at": null,
+        "merge_commit_sha": null,
+        "url": "",
+        "base_ref": "main",
+        "head_ref": ""
+      },
+      "jobs": [
+        {
+          "id": 81198757518,
+          "name": "Sphinx linkcheck",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-06-13T14:45:13Z",
+          "completed_at": "2026-06-13T14:46:35Z",
+          "runner_name": "linux-aarch64-a2b3-0-bdg2g-runner-nzsx2",
+          "runner_group": "Default",
+          "steps": [
+            {
+              "name": "Set up job",
+              "number": 1,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-06-13T14:45:15Z",
+              "completed_at": "2026-06-13T14:45:27Z"
+            },
+            {
+              "name": "Initialize containers",
+              "number": 2,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-06-13T14:45:27Z",
+              "completed_at": "2026-06-13T14:45:37Z"
+            },
+            {
+              "name": "Checkout vllm-project/vllm-ascend repo",
+              "number": 3,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-06-13T14:45:37Z",
+              "completed_at": "2026-06-13T14:45:42Z"
+            },
+            {
+              "name": "Collect changed docs files",
+              "number": 4,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-06-13T14:45:42Z",
+              "completed_at": "2026-06-13T14:45:45Z"
+            },
+            {
+              "name": "Install docs dependencies",
+              "number": 5,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-06-13T14:45:45Z",
+              "completed_at": "2026-06-13T14:46:01Z"
+            },
+            {
+              "name": "Prepare linkcheck retry helper",
+              "number": 6,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-06-13T14:46:01Z",
+              "completed_at": "2026-06-13T14:46:02Z"
+            },
+            {
+              "name": "Run full Sphinx linkcheck",
+              "number": 7,
+              "status": "completed",
+              "conclusion": "skipped",
+              "started_at": "2026-06-13T14:46:02Z",
+              "completed_at": "2026-06-13T14:46:02Z"
+            },
+            {
+              "name": "Run Sphinx linkcheck for changed docs",
+              "number": 8,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-06-13T14:46:02Z",
+              "completed_at": "2026-06-13T14:46:11Z"
+            },
+            {
+              "name": "Upload linkcheck reports",
+              "number": 9,
+              "status": "completed",
+              "conclusion": "skipped",
+              "started_at": "2026-06-13T14:46:11Z",
+              "completed_at": "2026-06-13T14:46:11Z"
+            },
+            {
+              "name": "Post Checkout vllm-project/vllm-ascend repo",
+              "number": 17,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-06-13T14:46:11Z",
+              "completed_at": "2026-06-13T14:46:29Z"
+            },
+            {
+              "name": "Stop containers",
+              "number": 18,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-06-13T14:46:29Z",
+              "completed_at": "2026-06-13T14:46:30Z"
+            },
+            {
+              "name": "Complete job",
+              "number": 19,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-06-13T14:46:30Z",
+              "completed_at": "2026-06-13T14:46:30Z"
+            }
+          ],
+          "url": "https://github.com/vllm-project/vllm-ascend/actions/runs/27469886760/job/81198757518"
+        }
+      ],
+      "failed_jobs": []
+    }
+  },
+  {
     "workflow_run_id": 27465685037,
     "workflow_name": "Docs link check",
-    "pr_number": 10332,
+    "pr_number": null,
     "pipeline_type": "pr",
     "classification": {
       "classification": "infrastructure",
@@ -30,16 +185,7 @@
         "pipeline_type_label": "PR 流水线",
         "source": "event_pr"
       },
-      "pr": {
-        "number": 10332,
-        "title": "[Doc] Optimize documentation for context parallel, EPLB, and speculative decoding; remove Multi-Token Prediction guide",
-        "author": "li1how",
-        "merged_at": null,
-        "merge_commit_sha": null,
-        "url": "",
-        "base_ref": "main",
-        "head_ref": ""
-      },
+      "pr": null,
       "jobs": [
         {
           "id": 81187483849,
@@ -157,7 +303,7 @@
   {
     "workflow_run_id": 27464999251,
     "workflow_name": "E2E-Full",
-    "pr_number": 10437,
+    "pr_number": null,
     "pipeline_type": "pr",
     "classification": {
       "classification": "infrastructure",
@@ -185,16 +331,7 @@
         "pipeline_type_label": "PR 流水线",
         "source": "event_pr"
       },
-      "pr": {
-        "number": 10437,
-        "title": "[Feature] add kv transfer dfx",
-        "author": "zzzzzmeng",
-        "merged_at": null,
-        "merge_commit_sha": null,
-        "url": "",
-        "base_ref": "main",
-        "head_ref": ""
-      },
+      "pr": null,
       "jobs": [
         {
           "id": 81185672156,
@@ -227,11 +364,11 @@
   {
     "workflow_run_id": 27464999256,
     "workflow_name": "E2E-Light",
-    "pr_number": 10437,
+    "pr_number": null,
     "pipeline_type": "pr",
     "classification": {
       "detected": true,
-      "confidence": "medium",
+      "confidence": "high",
       "category_detail": "编译错误",
       "evidence": [
         {
@@ -243,8 +380,8 @@
           ]
         }
       ],
-      "reasoning": "检测到代码问题模式: compilation。 问题出现在 PR #10437 代码中。 建议检查 PR 的代码修改和测试用例。",
-      "is_pr_code": false,
+      "reasoning": "检测到代码问题模式: compilation。 建议检查 PR 的代码修改和测试用例。",
+      "is_pr_code": true,
       "job_name": "lint / pre-commit",
       "job_id": 81185672034,
       "classification": "code"
@@ -268,16 +405,7 @@
         "pipeline_type_label": "PR 流水线",
         "source": "event_pr"
       },
-      "pr": {
-        "number": 10437,
-        "title": "[Feature] add kv transfer dfx",
-        "author": "zzzzzmeng",
-        "merged_at": null,
-        "merge_commit_sha": null,
-        "url": "",
-        "base_ref": "main",
-        "head_ref": ""
-      },
+      "pr": null,
       "jobs": [
         {
           "id": 81185671988,
@@ -658,7 +786,7 @@
   {
     "workflow_run_id": 27464669193,
     "workflow_name": "E2E-Full",
-    "pr_number": 10437,
+    "pr_number": null,
     "pipeline_type": "pr",
     "classification": {
       "classification": "infrastructure",
@@ -686,16 +814,7 @@
         "pipeline_type_label": "PR 流水线",
         "source": "event_pr"
       },
-      "pr": {
-        "number": 10437,
-        "title": "[Feature] add kv transfer dfx",
-        "author": "zzzzzmeng",
-        "merged_at": null,
-        "merge_commit_sha": null,
-        "url": "",
-        "base_ref": "main",
-        "head_ref": ""
-      },
+      "pr": null,
       "jobs": [
         {
           "id": 81184747349,
@@ -728,11 +847,11 @@
   {
     "workflow_run_id": 27464669177,
     "workflow_name": "E2E-Light",
-    "pr_number": 10437,
+    "pr_number": null,
     "pipeline_type": "pr",
     "classification": {
       "detected": true,
-      "confidence": "medium",
+      "confidence": "high",
       "category_detail": "编译错误",
       "evidence": [
         {
@@ -744,8 +863,8 @@
           ]
         }
       ],
-      "reasoning": "检测到代码问题模式: compilation。 问题出现在 PR #10437 代码中。 建议检查 PR 的代码修改和测试用例。",
-      "is_pr_code": false,
+      "reasoning": "检测到代码问题模式: compilation。 建议检查 PR 的代码修改和测试用例。",
+      "is_pr_code": true,
       "job_name": "lint / pre-commit",
       "job_id": 81184747133,
       "classification": "code"
@@ -769,16 +888,7 @@
         "pipeline_type_label": "PR 流水线",
         "source": "event_pr"
       },
-      "pr": {
-        "number": 10437,
-        "title": "[Feature] add kv transfer dfx",
-        "author": "zzzzzmeng",
-        "merged_at": null,
-        "merge_commit_sha": null,
-        "url": "",
-        "base_ref": "main",
-        "head_ref": ""
-      },
+      "pr": null,
       "jobs": [
         {
           "id": 81184747069,
@@ -1159,7 +1269,7 @@
   {
     "workflow_run_id": 27464192927,
     "workflow_name": "E2E-Full",
-    "pr_number": 10439,
+    "pr_number": null,
     "pipeline_type": "pr",
     "classification": {
       "classification": "infrastructure",
@@ -1187,16 +1297,7 @@
         "pipeline_type_label": "PR 流水线",
         "source": "event_pr"
       },
-      "pr": {
-        "number": 10439,
-        "title": "[Feature] Support AscendStore retention masks for v0.20.2",
-        "author": "Pz1116",
-        "merged_at": null,
-        "merge_commit_sha": null,
-        "url": "",
-        "base_ref": "main",
-        "head_ref": ""
-      },
+      "pr": null,
       "jobs": [
         {
           "id": 81183453312,
@@ -1253,7 +1354,7 @@
   {
     "workflow_run_id": 27464192914,
     "workflow_name": "E2E-Light",
-    "pr_number": 10439,
+    "pr_number": null,
     "pipeline_type": "pr",
     "classification": {
       "detected": true,
@@ -1272,7 +1373,7 @@
           ]
         }
       ],
-      "reasoning": "检测到代码问题模式: compilation。 问题出现在 PR #10439 代码中。 建议检查 PR 的代码修改和测试用例。",
+      "reasoning": "检测到代码问题模式: compilation。 建议检查 PR 的代码修改和测试用例。",
       "is_pr_code": true,
       "job_name": "lint / pre-commit",
       "job_id": 81183559473,
@@ -1297,16 +1398,7 @@
         "pipeline_type_label": "PR 流水线",
         "source": "event_pr"
       },
-      "pr": {
-        "number": 10439,
-        "title": "[Feature] Support AscendStore retention masks for v0.20.2",
-        "author": "Pz1116",
-        "merged_at": null,
-        "merge_commit_sha": null,
-        "url": "",
-        "base_ref": "main",
-        "head_ref": ""
-      },
+      "pr": null,
       "jobs": [
         {
           "id": 81183514868,
@@ -6681,7 +6773,7 @@
   {
     "workflow_run_id": 27462772828,
     "workflow_name": "E2E-Light",
-    "pr_number": null,
+    "pr_number": 10438,
     "pipeline_type": "pr",
     "classification": {
       "classification": "infrastructure",
@@ -6709,7 +6801,16 @@
         "pipeline_type_label": "PR 流水线",
         "source": "event_pr"
       },
-      "pr": null,
+      "pr": {
+        "number": 10438,
+        "title": "[BugFix][KV Pool] Avoid logging KV store keys at error level",
+        "author": "Pz1116",
+        "merged_at": null,
+        "merge_commit_sha": null,
+        "url": "",
+        "base_ref": "main",
+        "head_ref": ""
+      },
       "jobs": [
         {
           "id": 81179564866,
@@ -8751,11 +8852,11 @@
   {
     "workflow_run_id": 27461640037,
     "workflow_name": "E2E-Light",
-    "pr_number": null,
+    "pr_number": 10437,
     "pipeline_type": "pr",
     "classification": {
       "detected": true,
-      "confidence": "high",
+      "confidence": "medium",
       "category_detail": "编译错误",
       "evidence": [
         {
@@ -8767,8 +8868,8 @@
           ]
         }
       ],
-      "reasoning": "检测到代码问题模式: compilation。 建议检查 PR 的代码修改和测试用例。",
-      "is_pr_code": true,
+      "reasoning": "检测到代码问题模式: compilation。 问题出现在 PR #10437 代码中。 建议检查 PR 的代码修改和测试用例。",
+      "is_pr_code": false,
       "job_name": "lint / pre-commit",
       "job_id": 81176458797,
       "classification": "code"
@@ -8792,7 +8893,16 @@
         "pipeline_type_label": "PR 流水线",
         "source": "event_pr"
       },
-      "pr": null,
+      "pr": {
+        "number": 10437,
+        "title": "[Feature] add kv transfer dfx",
+        "author": "zzzzzmeng",
+        "merged_at": null,
+        "merge_commit_sha": null,
+        "url": "",
+        "base_ref": "main",
+        "head_ref": ""
+      },
       "jobs": [
         {
           "id": 81176458780,
@@ -9173,7 +9283,7 @@
   {
     "workflow_run_id": 27461578868,
     "workflow_name": "E2E-Light",
-    "pr_number": null,
+    "pr_number": 10436,
     "pipeline_type": "pr",
     "classification": {
       "classification": "infrastructure",
@@ -9201,7 +9311,16 @@
         "pipeline_type_label": "PR 流水线",
         "source": "event_pr"
       },
-      "pr": null,
+      "pr": {
+        "number": 10436,
+        "title": "[Feature][20.2] Support AscendStore load masks",
+        "author": "Pz1116",
+        "merged_at": null,
+        "merge_commit_sha": null,
+        "url": "",
+        "base_ref": "main",
+        "head_ref": ""
+      },
       "jobs": [
         {
           "id": 81176298843,
@@ -12454,152 +12573,6 @@
             }
           ],
           "url": "https://github.com/vllm-project/vllm-ascend/actions/runs/27456662622/job/81162387586"
-        }
-      ],
-      "failed_jobs": []
-    }
-  },
-  {
-    "workflow_run_id": 27452099112,
-    "workflow_name": "Docs link check",
-    "pr_number": null,
-    "pipeline_type": "pr",
-    "classification": {
-      "classification": "infrastructure",
-      "confidence": "low",
-      "category_detail": "无失败job信息",
-      "evidence": [],
-      "reasoning": "无法获取job详情，默认归类为基础设施问题"
-    },
-    "metadata": {
-      "workflow_run": {
-        "id": 27452099112,
-        "name": "Docs link check",
-        "workflow_id": 264532256,
-        "status": "completed",
-        "conclusion": "success",
-        "started_at": "2026-06-13T01:13:25Z",
-        "completed_at": "2026-06-13T01:15:16Z",
-        "head_sha": "ed66d67be07f4b322f05eb7a21b6b0bc7c62710c",
-        "head_branch": "main",
-        "url": "https://github.com/vllm-project/vllm-ascend/actions/runs/27452099112",
-        "triggering_actor": "ZRICHARD9527"
-      },
-      "pipeline_info": {
-        "pipeline_type": "pr",
-        "pipeline_type_label": "PR 流水线",
-        "source": "event_pr"
-      },
-      "pr": null,
-      "jobs": [
-        {
-          "id": 81149327242,
-          "name": "Sphinx linkcheck",
-          "status": "completed",
-          "conclusion": "success",
-          "started_at": "2026-06-13T01:13:47Z",
-          "completed_at": "2026-06-13T01:15:15Z",
-          "runner_name": "linux-aarch64-a2b3-0-bdg2g-runner-p59x9",
-          "runner_group": "Default",
-          "steps": [
-            {
-              "name": "Set up job",
-              "number": 1,
-              "status": "completed",
-              "conclusion": "success",
-              "started_at": "2026-06-13T01:13:48Z",
-              "completed_at": "2026-06-13T01:13:58Z"
-            },
-            {
-              "name": "Initialize containers",
-              "number": 2,
-              "status": "completed",
-              "conclusion": "success",
-              "started_at": "2026-06-13T01:13:58Z",
-              "completed_at": "2026-06-13T01:14:16Z"
-            },
-            {
-              "name": "Checkout vllm-project/vllm-ascend repo",
-              "number": 3,
-              "status": "completed",
-              "conclusion": "success",
-              "started_at": "2026-06-13T01:14:16Z",
-              "completed_at": "2026-06-13T01:14:21Z"
-            },
-            {
-              "name": "Collect changed docs files",
-              "number": 4,
-              "status": "completed",
-              "conclusion": "success",
-              "started_at": "2026-06-13T01:14:21Z",
-              "completed_at": "2026-06-13T01:14:22Z"
-            },
-            {
-              "name": "Install docs dependencies",
-              "number": 5,
-              "status": "completed",
-              "conclusion": "success",
-              "started_at": "2026-06-13T01:14:22Z",
-              "completed_at": "2026-06-13T01:14:40Z"
-            },
-            {
-              "name": "Prepare linkcheck retry helper",
-              "number": 6,
-              "status": "completed",
-              "conclusion": "success",
-              "started_at": "2026-06-13T01:14:40Z",
-              "completed_at": "2026-06-13T01:14:41Z"
-            },
-            {
-              "name": "Run full Sphinx linkcheck",
-              "number": 7,
-              "status": "completed",
-              "conclusion": "skipped",
-              "started_at": "2026-06-13T01:14:41Z",
-              "completed_at": "2026-06-13T01:14:41Z"
-            },
-            {
-              "name": "Run Sphinx linkcheck for changed docs",
-              "number": 8,
-              "status": "completed",
-              "conclusion": "success",
-              "started_at": "2026-06-13T01:14:41Z",
-              "completed_at": "2026-06-13T01:14:50Z"
-            },
-            {
-              "name": "Upload linkcheck reports",
-              "number": 9,
-              "status": "completed",
-              "conclusion": "skipped",
-              "started_at": "2026-06-13T01:14:50Z",
-              "completed_at": "2026-06-13T01:14:50Z"
-            },
-            {
-              "name": "Post Checkout vllm-project/vllm-ascend repo",
-              "number": 17,
-              "status": "completed",
-              "conclusion": "success",
-              "started_at": "2026-06-13T01:14:50Z",
-              "completed_at": "2026-06-13T01:15:09Z"
-            },
-            {
-              "name": "Stop containers",
-              "number": 18,
-              "status": "completed",
-              "conclusion": "success",
-              "started_at": "2026-06-13T01:15:09Z",
-              "completed_at": "2026-06-13T01:15:10Z"
-            },
-            {
-              "name": "Complete job",
-              "number": 19,
-              "status": "completed",
-              "conclusion": "success",
-              "started_at": "2026-06-13T01:15:10Z",
-              "completed_at": "2026-06-13T01:15:10Z"
-            }
-          ],
-          "url": "https://github.com/vllm-project/vllm-ascend/actions/runs/27452099112/job/81149327242"
         }
       ],
       "failed_jobs": []
