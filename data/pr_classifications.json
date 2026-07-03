@@ -1,8 +1,154 @@
 [
   {
-    "workflow_run_id": 28660998916,
+    "workflow_run_id": 28677384185,
     "workflow_name": "Docs link check",
     "pr_number": null,
+    "pipeline_type": "pr",
+    "classification": {
+      "classification": "infrastructure",
+      "confidence": "low",
+      "category_detail": "无失败job信息",
+      "evidence": [],
+      "reasoning": "无法获取job详情，默认归类为基础设施问题"
+    },
+    "metadata": {
+      "workflow_run": {
+        "id": 28677384185,
+        "name": "Docs link check",
+        "workflow_id": 264532256,
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-07-03T18:24:51Z",
+        "completed_at": "2026-07-03T18:26:39Z",
+        "head_sha": "f780f6b947cf9124e6d760067055ab4efe05f2fe",
+        "head_branch": "issue-10666-quant",
+        "url": "https://github.com/vllm-project/vllm-ascend/actions/runs/28677384185",
+        "triggering_actor": "treason258"
+      },
+      "pipeline_info": {
+        "pipeline_type": "pr",
+        "pipeline_type_label": "PR 流水线",
+        "source": "event_pr"
+      },
+      "pr": null,
+      "jobs": [
+        {
+          "id": 85053523327,
+          "name": "Sphinx linkcheck",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-07-03T18:25:15Z",
+          "completed_at": "2026-07-03T18:26:38Z",
+          "runner_name": "linux-aarch64-a2b3-0-bdg2g-runner-mnrnb",
+          "runner_group": "Default",
+          "steps": [
+            {
+              "name": "Set up job",
+              "number": 1,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-07-03T18:25:17Z",
+              "completed_at": "2026-07-03T18:25:28Z"
+            },
+            {
+              "name": "Initialize containers",
+              "number": 2,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-07-03T18:25:28Z",
+              "completed_at": "2026-07-03T18:25:37Z"
+            },
+            {
+              "name": "Checkout vllm-project/vllm-ascend repo",
+              "number": 3,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-07-03T18:25:37Z",
+              "completed_at": "2026-07-03T18:25:41Z"
+            },
+            {
+              "name": "Collect changed docs files",
+              "number": 4,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-07-03T18:25:41Z",
+              "completed_at": "2026-07-03T18:25:45Z"
+            },
+            {
+              "name": "Install docs dependencies",
+              "number": 5,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-07-03T18:25:45Z",
+              "completed_at": "2026-07-03T18:26:02Z"
+            },
+            {
+              "name": "Prepare linkcheck retry helper",
+              "number": 6,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-07-03T18:26:02Z",
+              "completed_at": "2026-07-03T18:26:04Z"
+            },
+            {
+              "name": "Run full Sphinx linkcheck",
+              "number": 7,
+              "status": "completed",
+              "conclusion": "skipped",
+              "started_at": "2026-07-03T18:26:04Z",
+              "completed_at": "2026-07-03T18:26:04Z"
+            },
+            {
+              "name": "Run Sphinx linkcheck for changed docs",
+              "number": 8,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-07-03T18:26:04Z",
+              "completed_at": "2026-07-03T18:26:14Z"
+            },
+            {
+              "name": "Upload linkcheck reports",
+              "number": 9,
+              "status": "completed",
+              "conclusion": "skipped",
+              "started_at": "2026-07-03T18:26:14Z",
+              "completed_at": "2026-07-03T18:26:14Z"
+            },
+            {
+              "name": "Post Checkout vllm-project/vllm-ascend repo",
+              "number": 17,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-07-03T18:26:14Z",
+              "completed_at": "2026-07-03T18:26:33Z"
+            },
+            {
+              "name": "Stop containers",
+              "number": 18,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-07-03T18:26:33Z",
+              "completed_at": "2026-07-03T18:26:34Z"
+            },
+            {
+              "name": "Complete job",
+              "number": 19,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-07-03T18:26:34Z",
+              "completed_at": "2026-07-03T18:26:34Z"
+            }
+          ],
+          "url": "https://github.com/vllm-project/vllm-ascend/actions/runs/28677384185/job/85053523327"
+        }
+      ],
+      "failed_jobs": []
+    }
+  },
+  {
+    "workflow_run_id": 28660998916,
+    "workflow_name": "Docs link check",
+    "pr_number": 11424,
     "pipeline_type": "pr",
     "classification": {
       "classification": "infrastructure",
@@ -30,7 +176,16 @@
         "pipeline_type_label": "PR 流水线",
         "source": "event_pr"
       },
-      "pr": null,
+      "pr": {
+        "number": 11424,
+        "title": "[BugFix][Model] Support DeepSeek-OCR2 on 310P",
+        "author": "treason258",
+        "merged_at": null,
+        "merge_commit_sha": null,
+        "url": "",
+        "base_ref": "main",
+        "head_ref": ""
+      },
       "jobs": [
         {
           "id": 85001302260,
@@ -148,7 +303,7 @@
   {
     "workflow_run_id": 28659522090,
     "workflow_name": "Docs link check",
-    "pr_number": null,
+    "pr_number": 11418,
     "pipeline_type": "pr",
     "classification": {
       "classification": "infrastructure",
@@ -176,7 +331,16 @@
         "pipeline_type_label": "PR 流水线",
         "source": "event_pr"
       },
-      "pr": null,
+      "pr": {
+        "number": 11418,
+        "title": "[TEST]test for pr_test.yaml changes",
+        "author": "Xuyzhen",
+        "merged_at": null,
+        "merge_commit_sha": null,
+        "url": "",
+        "base_ref": "main",
+        "head_ref": ""
+      },
       "jobs": [],
       "failed_jobs": []
     }
@@ -184,7 +348,7 @@
   {
     "workflow_run_id": 28657885693,
     "workflow_name": "E2E-Light",
-    "pr_number": 10439,
+    "pr_number": null,
     "pipeline_type": "pr",
     "classification": {
       "detected": true,
@@ -211,7 +375,7 @@
           ]
         }
       ],
-      "reasoning": "检测到代码问题模式: test_assertion, compilation。 问题出现在 PR #10439 代码中。 建议检查 PR 的代码修改和测试用例。",
+      "reasoning": "检测到代码问题模式: test_assertion, compilation。 建议检查 PR 的代码修改和测试用例。",
       "is_pr_code": true,
       "job_name": "smart test (v0.20.2) / smart-ut (cpu x0)",
       "job_id": 84991951652,
@@ -236,16 +400,7 @@
         "pipeline_type_label": "PR 流水线",
         "source": "event_pr"
       },
-      "pr": {
-        "number": 10439,
-        "title": "[Feature] Support AscendStore retention masks for v0.20.2",
-        "author": "Pz1116",
-        "merged_at": null,
-        "merge_commit_sha": null,
-        "url": "",
-        "base_ref": "main",
-        "head_ref": ""
-      },
+      "pr": null,
       "jobs": [
         {
           "id": 84991280296,
@@ -4630,7 +4785,7 @@
   {
     "workflow_run_id": 28657885557,
     "workflow_name": "E2E-Full",
-    "pr_number": 10439,
+    "pr_number": null,
     "pipeline_type": "pr",
     "classification": {
       "classification": "infrastructure",
@@ -4658,16 +4813,7 @@
         "pipeline_type_label": "PR 流水线",
         "source": "event_pr"
       },
-      "pr": {
-        "number": 10439,
-        "title": "[Feature] Support AscendStore retention masks for v0.20.2",
-        "author": "Pz1116",
-        "merged_at": null,
-        "merge_commit_sha": null,
-        "url": "",
-        "base_ref": "main",
-        "head_ref": ""
-      },
+      "pr": null,
       "jobs": [
         {
           "id": 84991280469,
@@ -4870,7 +5016,7 @@
   {
     "workflow_run_id": 28652069140,
     "workflow_name": "Docs link check",
-    "pr_number": 11411,
+    "pr_number": null,
     "pipeline_type": "pr",
     "classification": {
       "classification": "infrastructure",
@@ -4898,16 +5044,7 @@
         "pipeline_type_label": "PR 流水线",
         "source": "event_pr"
       },
-      "pr": {
-        "number": 11411,
-        "title": "[Test][Misc] Merge two test cases for batch invariance into one",
-        "author": "wangx700",
-        "merged_at": null,
-        "merge_commit_sha": null,
-        "url": "",
-        "base_ref": "main",
-        "head_ref": ""
-      },
+      "pr": null,
       "jobs": [
         {
           "id": 84972252191,
@@ -5025,7 +5162,7 @@
   {
     "workflow_run_id": 28651857658,
     "workflow_name": "Docs link check",
-    "pr_number": 11237,
+    "pr_number": null,
     "pipeline_type": "pr",
     "classification": {
       "classification": "infrastructure",
@@ -5053,16 +5190,7 @@
         "pipeline_type_label": "PR 流水线",
         "source": "event_pr"
       },
-      "pr": {
-        "number": 11237,
-        "title": "[Bugfix] Fix msprobe dump lifecycle and build instructions",
-        "author": "Tjh-UKN",
-        "merged_at": null,
-        "merge_commit_sha": null,
-        "url": "",
-        "base_ref": "main",
-        "head_ref": ""
-      },
+      "pr": null,
       "jobs": [
         {
           "id": 84971557184,
@@ -5618,7 +5746,7 @@
   {
     "workflow_run_id": 28650107597,
     "workflow_name": "Docs link check",
-    "pr_number": null,
+    "pr_number": 11335,
     "pipeline_type": "pr",
     "classification": {
       "classification": "infrastructure",
@@ -5646,7 +5774,16 @@
         "pipeline_type_label": "PR 流水线",
         "source": "event_pr"
       },
-      "pr": null,
+      "pr": {
+        "number": 11335,
+        "title": "[Doc][Misc] Update and standardize model deployment tutorials for DeepSeek, GLM, and Kimi",
+        "author": "wangzhishenghw",
+        "merged_at": null,
+        "merge_commit_sha": null,
+        "url": "",
+        "base_ref": "main",
+        "head_ref": ""
+      },
       "jobs": [
         {
           "id": 84965824072,
@@ -5764,7 +5901,7 @@
   {
     "workflow_run_id": 28650030503,
     "workflow_name": "Docs link check",
-    "pr_number": null,
+    "pr_number": 11276,
     "pipeline_type": "pr",
     "classification": {
       "classification": "infrastructure",
@@ -5792,7 +5929,16 @@
         "pipeline_type_label": "PR 流水线",
         "source": "event_pr"
       },
-      "pr": null,
+      "pr": {
+        "number": 11276,
+        "title": "[CI] Add Kimi-K2.5 EP weekly case",
+        "author": "chen-commits",
+        "merged_at": null,
+        "merge_commit_sha": null,
+        "url": "",
+        "base_ref": "main",
+        "head_ref": ""
+      },
       "jobs": [
         {
           "id": 84965577620,
@@ -6278,7 +6424,7 @@
   {
     "workflow_run_id": 28649623524,
     "workflow_name": "Docs link check",
-    "pr_number": 11335,
+    "pr_number": null,
     "pipeline_type": "pr",
     "classification": {
       "classification": "infrastructure",
@@ -6306,16 +6452,7 @@
         "pipeline_type_label": "PR 流水线",
         "source": "event_pr"
       },
-      "pr": {
-        "number": 11335,
-        "title": "[Doc][Misc] Update and standardize model deployment tutorials for DeepSeek, GLM, and Kimi",
-        "author": "wangzhishenghw",
-        "merged_at": null,
-        "merge_commit_sha": null,
-        "url": "",
-        "base_ref": "main",
-        "head_ref": ""
-      },
+      "pr": null,
       "jobs": [
         {
           "id": 84964253006,
