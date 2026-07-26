@@ -1,5 +1,144 @@
 [
   {
+    "workflow_run_id": 30187118389,
+    "workflow_name": "Docs link check",
+    "pr_number": 11487,
+    "pipeline_type": "pr",
+    "classification": {
+      "classification": "infrastructure",
+      "confidence": "low",
+      "category_detail": "无失败job信息",
+      "evidence": [],
+      "reasoning": "无法获取job详情，默认归类为基础设施问题"
+    },
+    "metadata": {
+      "workflow_run": {
+        "id": 30187118389,
+        "name": "Docs link check",
+        "workflow_id": 264532256,
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-07-26T04:02:02Z",
+        "completed_at": "2026-07-26T04:03:34Z",
+        "head_sha": "328025b1932b085aab19df09fa6387dc80b3e861",
+        "head_branch": "codex-doc-300i-duo-model-support",
+        "url": "https://github.com/vllm-project/vllm-ascend/actions/runs/30187118389",
+        "triggering_actor": "FuZoe"
+      },
+      "pipeline_info": {
+        "pipeline_type": "pr",
+        "pipeline_type_label": "PR 流水线",
+        "source": "event_pr"
+      },
+      "pr": {
+        "number": 11487,
+        "title": "[Doc][Misc] Add 300I Duo model support reference",
+        "author": "FuZoe",
+        "merged_at": null,
+        "merge_commit_sha": null,
+        "url": "",
+        "base_ref": "main",
+        "head_ref": ""
+      },
+      "jobs": [
+        {
+          "id": 89753685060,
+          "name": "Markdown link check",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-07-26T04:02:27Z",
+          "completed_at": "2026-07-26T04:03:33Z",
+          "runner_name": "linux-amd64-cpu-2-hk-bsqsv-runner-tzvck",
+          "runner_group": "Default",
+          "steps": [
+            {
+              "name": "Set up job",
+              "number": 1,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-07-26T04:02:28Z",
+              "completed_at": "2026-07-26T04:02:35Z"
+            },
+            {
+              "name": "Initialize containers",
+              "number": 2,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-07-26T04:02:35Z",
+              "completed_at": "2026-07-26T04:02:44Z"
+            },
+            {
+              "name": "Checkout vllm-project/vllm-ascend repo",
+              "number": 3,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-07-26T04:02:44Z",
+              "completed_at": "2026-07-26T04:02:52Z"
+            },
+            {
+              "name": "Collect changed docs files",
+              "number": 4,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-07-26T04:02:52Z",
+              "completed_at": "2026-07-26T04:02:54Z"
+            },
+            {
+              "name": "Install docs dependencies",
+              "number": 5,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-07-26T04:02:54Z",
+              "completed_at": "2026-07-26T04:03:07Z"
+            },
+            {
+              "name": "Run full link check",
+              "number": 6,
+              "status": "completed",
+              "conclusion": "skipped",
+              "started_at": "2026-07-26T04:03:07Z",
+              "completed_at": "2026-07-26T04:03:07Z"
+            },
+            {
+              "name": "Run link check for changed docs",
+              "number": 7,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-07-26T04:03:07Z",
+              "completed_at": "2026-07-26T04:03:10Z"
+            },
+            {
+              "name": "Post Checkout vllm-project/vllm-ascend repo",
+              "number": 13,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-07-26T04:03:10Z",
+              "completed_at": "2026-07-26T04:03:28Z"
+            },
+            {
+              "name": "Stop containers",
+              "number": 14,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-07-26T04:03:28Z",
+              "completed_at": "2026-07-26T04:03:29Z"
+            },
+            {
+              "name": "Complete job",
+              "number": 15,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-07-26T04:03:29Z",
+              "completed_at": "2026-07-26T04:03:29Z"
+            }
+          ],
+          "url": "https://github.com/vllm-project/vllm-ascend/actions/runs/30187118389/job/89753685060"
+        }
+      ],
+      "failed_jobs": []
+    }
+  },
+  {
     "workflow_run_id": 30159596330,
     "workflow_name": "Docs link check",
     "pr_number": null,
@@ -2170,7 +2309,7 @@
   {
     "workflow_run_id": 30153973037,
     "workflow_name": "Docs link check",
-    "pr_number": 10336,
+    "pr_number": null,
     "pipeline_type": "pr",
     "classification": {
       "classification": "infrastructure",
@@ -2198,16 +2337,7 @@
         "pipeline_type_label": "PR 流水线",
         "source": "event_pr"
       },
-      "pr": {
-        "number": 10336,
-        "title": "[Feature] Support Mamba-Codestral-7B-v0.1 on Ascend",
-        "author": "bingli-2026",
-        "merged_at": null,
-        "merge_commit_sha": null,
-        "url": "",
-        "base_ref": "main",
-        "head_ref": ""
-      },
+      "pr": null,
       "jobs": [
         {
           "id": 89668928807,
