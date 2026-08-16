@@ -1,16 +1,16 @@
 [
   {
     "workflow_run": {
-      "id": 31956976408,
+      "id": 31960052041,
       "name": "Docs link check",
       "workflow_id": 264532256,
       "status": "completed",
       "conclusion": "success",
-      "started_at": "2026-08-16T15:53:06Z",
-      "completed_at": "2026-08-16T15:55:18Z",
-      "head_sha": "11d87aac5e79abce39e675ba6d3282ccd53f8833",
+      "started_at": "2026-08-16T16:55:42Z",
+      "completed_at": "2026-08-16T16:57:43Z",
+      "head_sha": "c6a0a28e208017530a3a653eb059fe5509d59437",
       "head_branch": "delete-flashcomm",
-      "url": "https://github.com/vllm-project/vllm-ascend/actions/runs/31956976408",
+      "url": "https://github.com/vllm-project/vllm-ascend/actions/runs/31960052041",
       "triggering_actor": "jiaqi-lee"
     },
     "pipeline_info": {
@@ -28,6 +28,123 @@
       "base_ref": "main",
       "head_ref": ""
     },
+    "jobs": [
+      {
+        "id": 95196540879,
+        "name": "Markdown link check",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-08-16T16:56:05Z",
+        "completed_at": "2026-08-16T16:57:42Z",
+        "runner_name": "linux-amd64-cpu-2-hk-lwxb6-runner-w4vqp",
+        "runner_group": "Default",
+        "steps": [
+          {
+            "name": "Set up job",
+            "number": 1,
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-08-16T16:56:07Z",
+            "completed_at": "2026-08-16T16:56:19Z"
+          },
+          {
+            "name": "Initialize containers",
+            "number": 2,
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-08-16T16:56:19Z",
+            "completed_at": "2026-08-16T16:56:28Z"
+          },
+          {
+            "name": "Checkout vllm-project/vllm-ascend repo",
+            "number": 3,
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-08-16T16:56:28Z",
+            "completed_at": "2026-08-16T16:56:33Z"
+          },
+          {
+            "name": "Collect changed docs files",
+            "number": 4,
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-08-16T16:56:33Z",
+            "completed_at": "2026-08-16T16:56:36Z"
+          },
+          {
+            "name": "Install docs dependencies",
+            "number": 5,
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-08-16T16:56:36Z",
+            "completed_at": "2026-08-16T16:56:50Z"
+          },
+          {
+            "name": "Run full link check",
+            "number": 6,
+            "status": "completed",
+            "conclusion": "skipped",
+            "started_at": "2026-08-16T16:56:50Z",
+            "completed_at": "2026-08-16T16:56:50Z"
+          },
+          {
+            "name": "Run link check for changed docs",
+            "number": 7,
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-08-16T16:56:50Z",
+            "completed_at": "2026-08-16T16:57:19Z"
+          },
+          {
+            "name": "Post Checkout vllm-project/vllm-ascend repo",
+            "number": 13,
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-08-16T16:57:19Z",
+            "completed_at": "2026-08-16T16:57:37Z"
+          },
+          {
+            "name": "Stop containers",
+            "number": 14,
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-08-16T16:57:37Z",
+            "completed_at": "2026-08-16T16:57:38Z"
+          },
+          {
+            "name": "Complete job",
+            "number": 15,
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-08-16T16:57:38Z",
+            "completed_at": "2026-08-16T16:57:38Z"
+          }
+        ],
+        "url": "https://github.com/vllm-project/vllm-ascend/actions/runs/31960052041/job/95196540879"
+      }
+    ],
+    "failed_jobs": []
+  },
+  {
+    "workflow_run": {
+      "id": 31956976408,
+      "name": "Docs link check",
+      "workflow_id": 264532256,
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-08-16T15:53:06Z",
+      "completed_at": "2026-08-16T15:55:18Z",
+      "head_sha": "11d87aac5e79abce39e675ba6d3282ccd53f8833",
+      "head_branch": "delete-flashcomm",
+      "url": "https://github.com/vllm-project/vllm-ascend/actions/runs/31956976408",
+      "triggering_actor": "jiaqi-lee"
+    },
+    "pipeline_info": {
+      "pipeline_type": "pr",
+      "pipeline_type_label": "PR 流水线",
+      "source": "event_pr"
+    },
+    "pr": null,
     "jobs": [
       {
         "id": 95188984207,
@@ -612,16 +729,7 @@
       "pipeline_type_label": "PR 流水线",
       "source": "event_pr"
     },
-    "pr": {
-      "number": 13946,
-      "title": "[Refactor] remove FlashComm v1",
-      "author": "jiaqi-lee",
-      "merged_at": null,
-      "merge_commit_sha": null,
-      "url": "",
-      "base_ref": "main",
-      "head_ref": ""
-    },
+    "pr": null,
     "jobs": [
       {
         "id": 95138555709,
@@ -738,16 +846,7 @@
       "pipeline_type_label": "PR 流水线",
       "source": "event_pr"
     },
-    "pr": {
-      "number": 13946,
-      "title": "[Refactor] remove FlashComm v1",
-      "author": "jiaqi-lee",
-      "merged_at": null,
-      "merge_commit_sha": null,
-      "url": "",
-      "base_ref": "main",
-      "head_ref": ""
-    },
+    "pr": null,
     "jobs": [
       {
         "id": 95136217683,
@@ -1449,7 +1548,16 @@
       "pipeline_type_label": "PR 流水线",
       "source": "event_pr"
     },
-    "pr": null,
+    "pr": {
+      "number": 12378,
+      "title": "[Feature] Support Mistral Large 3 NVFP4",
+      "author": "chunlei-2026",
+      "merged_at": null,
+      "merge_commit_sha": null,
+      "url": "",
+      "base_ref": "main",
+      "head_ref": ""
+    },
     "jobs": [
       {
         "id": 95101891845,
@@ -1683,7 +1791,16 @@
       "pipeline_type_label": "PR 流水线",
       "source": "event_pr"
     },
-    "pr": null,
+    "pr": {
+      "number": 13946,
+      "title": "[Refactor] remove FlashComm v1",
+      "author": "jiaqi-lee",
+      "merged_at": null,
+      "merge_commit_sha": null,
+      "url": "",
+      "base_ref": "main",
+      "head_ref": ""
+    },
     "jobs": [
       {
         "id": 95088525566,
@@ -1777,357 +1894,6 @@
           }
         ],
         "url": "https://github.com/vllm-project/vllm-ascend/actions/runs/31916319376/job/95088525566"
-      }
-    ],
-    "failed_jobs": []
-  },
-  {
-    "workflow_run": {
-      "id": 31914064012,
-      "name": "Docs link check",
-      "workflow_id": 264532256,
-      "status": "completed",
-      "conclusion": "success",
-      "started_at": "2026-08-15T23:10:54Z",
-      "completed_at": "2026-08-15T23:13:06Z",
-      "head_sha": "8c07667e9e643c4f69d979de1625fd2c6dfa9327",
-      "head_branch": "delete-flashcomm",
-      "url": "https://github.com/vllm-project/vllm-ascend/actions/runs/31914064012",
-      "triggering_actor": "jiaqi-lee"
-    },
-    "pipeline_info": {
-      "pipeline_type": "pr",
-      "pipeline_type_label": "PR 流水线",
-      "source": "event_pr"
-    },
-    "pr": null,
-    "jobs": [
-      {
-        "id": 95083283501,
-        "name": "Markdown link check",
-        "status": "completed",
-        "conclusion": "success",
-        "started_at": "2026-08-15T23:11:21Z",
-        "completed_at": "2026-08-15T23:13:05Z",
-        "runner_name": "linux-amd64-cpu-2-hk-lwxb6-runner-w49p8",
-        "runner_group": "Default",
-        "steps": [
-          {
-            "name": "Set up job",
-            "number": 1,
-            "status": "completed",
-            "conclusion": "success",
-            "started_at": "2026-08-15T23:11:23Z",
-            "completed_at": "2026-08-15T23:11:34Z"
-          },
-          {
-            "name": "Initialize containers",
-            "number": 2,
-            "status": "completed",
-            "conclusion": "success",
-            "started_at": "2026-08-15T23:11:34Z",
-            "completed_at": "2026-08-15T23:11:52Z"
-          },
-          {
-            "name": "Checkout vllm-project/vllm-ascend repo",
-            "number": 3,
-            "status": "completed",
-            "conclusion": "success",
-            "started_at": "2026-08-15T23:11:52Z",
-            "completed_at": "2026-08-15T23:11:55Z"
-          },
-          {
-            "name": "Collect changed docs files",
-            "number": 4,
-            "status": "completed",
-            "conclusion": "success",
-            "started_at": "2026-08-15T23:11:55Z",
-            "completed_at": "2026-08-15T23:11:59Z"
-          },
-          {
-            "name": "Install docs dependencies",
-            "number": 5,
-            "status": "completed",
-            "conclusion": "success",
-            "started_at": "2026-08-15T23:11:59Z",
-            "completed_at": "2026-08-15T23:12:12Z"
-          },
-          {
-            "name": "Run full link check",
-            "number": 6,
-            "status": "completed",
-            "conclusion": "skipped",
-            "started_at": "2026-08-15T23:12:12Z",
-            "completed_at": "2026-08-15T23:12:12Z"
-          },
-          {
-            "name": "Run link check for changed docs",
-            "number": 7,
-            "status": "completed",
-            "conclusion": "success",
-            "started_at": "2026-08-15T23:12:12Z",
-            "completed_at": "2026-08-15T23:12:40Z"
-          },
-          {
-            "name": "Post Checkout vllm-project/vllm-ascend repo",
-            "number": 13,
-            "status": "completed",
-            "conclusion": "success",
-            "started_at": "2026-08-15T23:12:40Z",
-            "completed_at": "2026-08-15T23:13:00Z"
-          },
-          {
-            "name": "Stop containers",
-            "number": 14,
-            "status": "completed",
-            "conclusion": "success",
-            "started_at": "2026-08-15T23:13:00Z",
-            "completed_at": "2026-08-15T23:13:00Z"
-          },
-          {
-            "name": "Complete job",
-            "number": 15,
-            "status": "completed",
-            "conclusion": "success",
-            "started_at": "2026-08-15T23:13:00Z",
-            "completed_at": "2026-08-15T23:13:00Z"
-          }
-        ],
-        "url": "https://github.com/vllm-project/vllm-ascend/actions/runs/31914064012/job/95083283501"
-      }
-    ],
-    "failed_jobs": []
-  },
-  {
-    "workflow_run": {
-      "id": 31913685992,
-      "name": "Docs link check",
-      "workflow_id": 264532256,
-      "status": "completed",
-      "conclusion": "success",
-      "started_at": "2026-08-15T23:02:08Z",
-      "completed_at": "2026-08-15T23:04:03Z",
-      "head_sha": "804b2b14b270ad2033d355065c43c451cb0ff035",
-      "head_branch": "delete-flashcomm",
-      "url": "https://github.com/vllm-project/vllm-ascend/actions/runs/31913685992",
-      "triggering_actor": "jiaqi-lee"
-    },
-    "pipeline_info": {
-      "pipeline_type": "pr",
-      "pipeline_type_label": "PR 流水线",
-      "source": "event_pr"
-    },
-    "pr": null,
-    "jobs": [
-      {
-        "id": 95082360969,
-        "name": "Markdown link check",
-        "status": "completed",
-        "conclusion": "success",
-        "started_at": "2026-08-15T23:02:33Z",
-        "completed_at": "2026-08-15T23:04:02Z",
-        "runner_name": "linux-amd64-cpu-2-hk-lwxb6-runner-fm5ps",
-        "runner_group": "Default",
-        "steps": [
-          {
-            "name": "Set up job",
-            "number": 1,
-            "status": "completed",
-            "conclusion": "success",
-            "started_at": "2026-08-15T23:02:35Z",
-            "completed_at": "2026-08-15T23:02:47Z"
-          },
-          {
-            "name": "Initialize containers",
-            "number": 2,
-            "status": "completed",
-            "conclusion": "success",
-            "started_at": "2026-08-15T23:02:47Z",
-            "completed_at": "2026-08-15T23:02:56Z"
-          },
-          {
-            "name": "Checkout vllm-project/vllm-ascend repo",
-            "number": 3,
-            "status": "completed",
-            "conclusion": "success",
-            "started_at": "2026-08-15T23:02:56Z",
-            "completed_at": "2026-08-15T23:03:00Z"
-          },
-          {
-            "name": "Collect changed docs files",
-            "number": 4,
-            "status": "completed",
-            "conclusion": "success",
-            "started_at": "2026-08-15T23:03:00Z",
-            "completed_at": "2026-08-15T23:03:04Z"
-          },
-          {
-            "name": "Install docs dependencies",
-            "number": 5,
-            "status": "completed",
-            "conclusion": "success",
-            "started_at": "2026-08-15T23:03:04Z",
-            "completed_at": "2026-08-15T23:03:20Z"
-          },
-          {
-            "name": "Run full link check",
-            "number": 6,
-            "status": "completed",
-            "conclusion": "skipped",
-            "started_at": "2026-08-15T23:03:20Z",
-            "completed_at": "2026-08-15T23:03:20Z"
-          },
-          {
-            "name": "Run link check for changed docs",
-            "number": 7,
-            "status": "completed",
-            "conclusion": "success",
-            "started_at": "2026-08-15T23:03:20Z",
-            "completed_at": "2026-08-15T23:03:37Z"
-          },
-          {
-            "name": "Post Checkout vllm-project/vllm-ascend repo",
-            "number": 13,
-            "status": "completed",
-            "conclusion": "success",
-            "started_at": "2026-08-15T23:03:37Z",
-            "completed_at": "2026-08-15T23:03:57Z"
-          },
-          {
-            "name": "Stop containers",
-            "number": 14,
-            "status": "completed",
-            "conclusion": "success",
-            "started_at": "2026-08-15T23:03:57Z",
-            "completed_at": "2026-08-15T23:03:57Z"
-          },
-          {
-            "name": "Complete job",
-            "number": 15,
-            "status": "completed",
-            "conclusion": "success",
-            "started_at": "2026-08-15T23:03:57Z",
-            "completed_at": "2026-08-15T23:03:57Z"
-          }
-        ],
-        "url": "https://github.com/vllm-project/vllm-ascend/actions/runs/31913685992/job/95082360969"
-      }
-    ],
-    "failed_jobs": []
-  },
-  {
-    "workflow_run": {
-      "id": 31908191025,
-      "name": "Docs link check",
-      "workflow_id": 264532256,
-      "status": "completed",
-      "conclusion": "success",
-      "started_at": "2026-08-15T20:59:30Z",
-      "completed_at": "2026-08-15T21:01:46Z",
-      "head_sha": "717bab9d21fe68a19c42ef3952b3e61a82e59dd0",
-      "head_branch": "delete-flashcomm",
-      "url": "https://github.com/vllm-project/vllm-ascend/actions/runs/31908191025",
-      "triggering_actor": "jiaqi-lee"
-    },
-    "pipeline_info": {
-      "pipeline_type": "pr",
-      "pipeline_type_label": "PR 流水线",
-      "source": "event_pr"
-    },
-    "pr": null,
-    "jobs": [
-      {
-        "id": 95069156800,
-        "name": "Markdown link check",
-        "status": "completed",
-        "conclusion": "success",
-        "started_at": "2026-08-15T20:59:58Z",
-        "completed_at": "2026-08-15T21:01:46Z",
-        "runner_name": "linux-amd64-cpu-2-hk-lwxb6-runner-9k27d",
-        "runner_group": "Default",
-        "steps": [
-          {
-            "name": "Set up job",
-            "number": 1,
-            "status": "completed",
-            "conclusion": "success",
-            "started_at": "2026-08-15T21:00:00Z",
-            "completed_at": "2026-08-15T21:00:11Z"
-          },
-          {
-            "name": "Initialize containers",
-            "number": 2,
-            "status": "completed",
-            "conclusion": "success",
-            "started_at": "2026-08-15T21:00:11Z",
-            "completed_at": "2026-08-15T21:00:21Z"
-          },
-          {
-            "name": "Checkout vllm-project/vllm-ascend repo",
-            "number": 3,
-            "status": "completed",
-            "conclusion": "success",
-            "started_at": "2026-08-15T21:00:21Z",
-            "completed_at": "2026-08-15T21:00:24Z"
-          },
-          {
-            "name": "Collect changed docs files",
-            "number": 4,
-            "status": "completed",
-            "conclusion": "success",
-            "started_at": "2026-08-15T21:00:24Z",
-            "completed_at": "2026-08-15T21:00:28Z"
-          },
-          {
-            "name": "Install docs dependencies",
-            "number": 5,
-            "status": "completed",
-            "conclusion": "success",
-            "started_at": "2026-08-15T21:00:28Z",
-            "completed_at": "2026-08-15T21:00:44Z"
-          },
-          {
-            "name": "Run full link check",
-            "number": 6,
-            "status": "completed",
-            "conclusion": "skipped",
-            "started_at": "2026-08-15T21:00:44Z",
-            "completed_at": "2026-08-15T21:00:44Z"
-          },
-          {
-            "name": "Run link check for changed docs",
-            "number": 7,
-            "status": "completed",
-            "conclusion": "success",
-            "started_at": "2026-08-15T21:00:44Z",
-            "completed_at": "2026-08-15T21:01:21Z"
-          },
-          {
-            "name": "Post Checkout vllm-project/vllm-ascend repo",
-            "number": 13,
-            "status": "completed",
-            "conclusion": "success",
-            "started_at": "2026-08-15T21:01:21Z",
-            "completed_at": "2026-08-15T21:01:40Z"
-          },
-          {
-            "name": "Stop containers",
-            "number": 14,
-            "status": "completed",
-            "conclusion": "success",
-            "started_at": "2026-08-15T21:01:40Z",
-            "completed_at": "2026-08-15T21:01:41Z"
-          },
-          {
-            "name": "Complete job",
-            "number": 15,
-            "status": "completed",
-            "conclusion": "success",
-            "started_at": "2026-08-15T21:01:41Z",
-            "completed_at": "2026-08-15T21:01:41Z"
-          }
-        ],
-        "url": "https://github.com/vllm-project/vllm-ascend/actions/runs/31908191025/job/95069156800"
       }
     ],
     "failed_jobs": []
