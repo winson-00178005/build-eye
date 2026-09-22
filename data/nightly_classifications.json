@@ -1,5 +1,183 @@
 [
   {
+    "workflow_run_id": 35665430841,
+    "workflow_name": "Image build lint",
+    "pr_number": null,
+    "pipeline_type": "nightly",
+    "classification": {
+      "classification": "infrastructure",
+      "confidence": "low",
+      "category_detail": "无失败job信息",
+      "evidence": [],
+      "reasoning": "无法获取job详情，默认归类为基础设施问题"
+    },
+    "metadata": {
+      "workflow_run": {
+        "id": 35665430841,
+        "name": "Image build lint",
+        "workflow_id": 225921536,
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-09-21T22:59:38Z",
+        "completed_at": "2026-09-21T23:09:31Z",
+        "head_sha": "baa023ada41a5b889cac6249845a688aab130892",
+        "head_branch": "main",
+        "url": "https://github.com/vllm-project/vllm-ascend/actions/runs/35665430841",
+        "triggering_actor": "wangxiyuan"
+      },
+      "pipeline_info": {
+        "pipeline_type": "nightly",
+        "pipeline_type_label": "每日定时",
+        "source": "event_fallback"
+      },
+      "pr": null,
+      "jobs": [
+        {
+          "id": 106550025326,
+          "name": "vllm-ascend lint image build",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-09-21T22:59:42Z",
+          "completed_at": "2026-09-21T23:09:30Z",
+          "runner_name": "GitHub Actions 1001527710",
+          "runner_group": "GitHub Actions",
+          "steps": [
+            {
+              "name": "Set up job",
+              "number": 1,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-09-21T22:59:43Z",
+              "completed_at": "2026-09-21T22:59:45Z"
+            },
+            {
+              "name": "Run actions/checkout@v7",
+              "number": 2,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-09-21T22:59:45Z",
+              "completed_at": "2026-09-21T22:59:50Z"
+            },
+            {
+              "name": "Print",
+              "number": 3,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-09-21T22:59:50Z",
+              "completed_at": "2026-09-21T22:59:50Z"
+            },
+            {
+              "name": "Docker meta",
+              "number": 4,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-09-21T22:59:50Z",
+              "completed_at": "2026-09-21T22:59:51Z"
+            },
+            {
+              "name": "Read verified vLLM commit",
+              "number": 5,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-09-21T22:59:51Z",
+              "completed_at": "2026-09-21T22:59:51Z"
+            },
+            {
+              "name": "Build - Set up QEMU",
+              "number": 6,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-09-21T22:59:51Z",
+              "completed_at": "2026-09-21T22:59:55Z"
+            },
+            {
+              "name": "Build - Set up Docker Buildx",
+              "number": 7,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-09-21T22:59:55Z",
+              "completed_at": "2026-09-21T22:59:59Z"
+            },
+            {
+              "name": "Publish - Login to Quay Container Registry",
+              "number": 8,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-09-21T22:59:59Z",
+              "completed_at": "2026-09-21T22:59:59Z"
+            },
+            {
+              "name": "Build and push",
+              "number": 9,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-09-21T22:59:59Z",
+              "completed_at": "2026-09-21T23:09:20Z"
+            },
+            {
+              "name": "Build and push",
+              "number": 10,
+              "status": "completed",
+              "conclusion": "skipped",
+              "started_at": "2026-09-21T23:09:20Z",
+              "completed_at": "2026-09-21T23:09:20Z"
+            },
+            {
+              "name": "Post Build and push",
+              "number": 16,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-09-21T23:09:20Z",
+              "completed_at": "2026-09-21T23:09:22Z"
+            },
+            {
+              "name": "Post Publish - Login to Quay Container Registry",
+              "number": 17,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-09-21T23:09:22Z",
+              "completed_at": "2026-09-21T23:09:22Z"
+            },
+            {
+              "name": "Post Build - Set up Docker Buildx",
+              "number": 18,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-09-21T23:09:22Z",
+              "completed_at": "2026-09-21T23:09:28Z"
+            },
+            {
+              "name": "Post Build - Set up QEMU",
+              "number": 19,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-09-21T23:09:28Z",
+              "completed_at": "2026-09-21T23:09:28Z"
+            },
+            {
+              "name": "Post Run actions/checkout@v7",
+              "number": 20,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-09-21T23:09:28Z",
+              "completed_at": "2026-09-21T23:09:29Z"
+            },
+            {
+              "name": "Complete job",
+              "number": 21,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-09-21T23:09:29Z",
+              "completed_at": "2026-09-21T23:09:29Z"
+            }
+          ],
+          "url": "https://github.com/vllm-project/vllm-ascend/actions/runs/35665430841/job/106550025326"
+        }
+      ],
+      "failed_jobs": []
+    }
+  },
+  {
     "workflow_run_id": 35540877739,
     "workflow_name": "Image build lint",
     "pr_number": null,
@@ -3538,345 +3716,6 @@
         }
       ],
       "failed_jobs": []
-    }
-  },
-  {
-    "workflow_run_id": 34906500592,
-    "workflow_name": "Image build lint",
-    "pr_number": null,
-    "pipeline_type": "nightly",
-    "classification": {
-      "detected": true,
-      "confidence": "high",
-      "category_detail": "编译错误",
-      "evidence": [
-        {
-          "category": "compilation",
-          "pattern": "error:\\s+",
-          "matches": [
-            "ERROR: ",
-            "ERROR: ",
-            "ERROR: ",
-            "ERROR: "
-          ]
-        }
-      ],
-      "reasoning": "检测到代码问题模式: compilation。 建议检查 PR 的代码修改和测试用例。",
-      "is_pr_code": true,
-      "job_name": "vllm-ascend lint image build",
-      "job_id": 104184281763,
-      "classification": "code"
-    },
-    "metadata": {
-      "workflow_run": {
-        "id": 34906500592,
-        "name": "Image build lint",
-        "workflow_id": 225921536,
-        "status": "completed",
-        "conclusion": "failure",
-        "started_at": "2026-09-14T22:56:15Z",
-        "completed_at": "2026-09-14T23:22:09Z",
-        "head_sha": "26f1363f7180dfcbeac1230679976cede6010fc8",
-        "head_branch": "main",
-        "url": "https://github.com/vllm-project/vllm-ascend/actions/runs/34906500592",
-        "triggering_actor": "wangxiyuan"
-      },
-      "pipeline_info": {
-        "pipeline_type": "nightly",
-        "pipeline_type_label": "每日定时",
-        "source": "event_fallback"
-      },
-      "pr": null,
-      "jobs": [
-        {
-          "id": 104184281763,
-          "name": "vllm-ascend lint image build",
-          "status": "completed",
-          "conclusion": "failure",
-          "started_at": "2026-09-14T23:11:22Z",
-          "completed_at": "2026-09-14T23:22:08Z",
-          "runner_name": "GitHub Actions 1001489723",
-          "runner_group": "GitHub Actions",
-          "steps": [
-            {
-              "name": "Set up job",
-              "number": 1,
-              "status": "completed",
-              "conclusion": "success",
-              "started_at": "2026-09-14T23:11:23Z",
-              "completed_at": "2026-09-14T23:11:28Z"
-            },
-            {
-              "name": "Run actions/checkout@v7",
-              "number": 2,
-              "status": "completed",
-              "conclusion": "success",
-              "started_at": "2026-09-14T23:11:28Z",
-              "completed_at": "2026-09-14T23:11:34Z"
-            },
-            {
-              "name": "Print",
-              "number": 3,
-              "status": "completed",
-              "conclusion": "success",
-              "started_at": "2026-09-14T23:11:34Z",
-              "completed_at": "2026-09-14T23:11:34Z"
-            },
-            {
-              "name": "Docker meta",
-              "number": 4,
-              "status": "completed",
-              "conclusion": "success",
-              "started_at": "2026-09-14T23:11:34Z",
-              "completed_at": "2026-09-14T23:11:35Z"
-            },
-            {
-              "name": "Read verified vLLM commit",
-              "number": 5,
-              "status": "completed",
-              "conclusion": "success",
-              "started_at": "2026-09-14T23:11:35Z",
-              "completed_at": "2026-09-14T23:11:35Z"
-            },
-            {
-              "name": "Build - Set up QEMU",
-              "number": 6,
-              "status": "completed",
-              "conclusion": "success",
-              "started_at": "2026-09-14T23:11:35Z",
-              "completed_at": "2026-09-14T23:11:43Z"
-            },
-            {
-              "name": "Build - Set up Docker Buildx",
-              "number": 7,
-              "status": "completed",
-              "conclusion": "success",
-              "started_at": "2026-09-14T23:11:43Z",
-              "completed_at": "2026-09-14T23:11:49Z"
-            },
-            {
-              "name": "Publish - Login to Quay Container Registry",
-              "number": 8,
-              "status": "completed",
-              "conclusion": "success",
-              "started_at": "2026-09-14T23:11:49Z",
-              "completed_at": "2026-09-14T23:11:50Z"
-            },
-            {
-              "name": "Build and push",
-              "number": 9,
-              "status": "completed",
-              "conclusion": "failure",
-              "started_at": "2026-09-14T23:11:50Z",
-              "completed_at": "2026-09-14T23:22:00Z"
-            },
-            {
-              "name": "Build and push",
-              "number": 10,
-              "status": "completed",
-              "conclusion": "skipped",
-              "started_at": "2026-09-14T23:22:00Z",
-              "completed_at": "2026-09-14T23:22:00Z"
-            },
-            {
-              "name": "Post Build and push",
-              "number": 16,
-              "status": "completed",
-              "conclusion": "success",
-              "started_at": "2026-09-14T23:22:00Z",
-              "completed_at": "2026-09-14T23:22:02Z"
-            },
-            {
-              "name": "Post Publish - Login to Quay Container Registry",
-              "number": 17,
-              "status": "completed",
-              "conclusion": "success",
-              "started_at": "2026-09-14T23:22:02Z",
-              "completed_at": "2026-09-14T23:22:02Z"
-            },
-            {
-              "name": "Post Build - Set up Docker Buildx",
-              "number": 18,
-              "status": "completed",
-              "conclusion": "success",
-              "started_at": "2026-09-14T23:22:02Z",
-              "completed_at": "2026-09-14T23:22:05Z"
-            },
-            {
-              "name": "Post Build - Set up QEMU",
-              "number": 19,
-              "status": "completed",
-              "conclusion": "success",
-              "started_at": "2026-09-14T23:22:05Z",
-              "completed_at": "2026-09-14T23:22:06Z"
-            },
-            {
-              "name": "Post Run actions/checkout@v7",
-              "number": 20,
-              "status": "completed",
-              "conclusion": "success",
-              "started_at": "2026-09-14T23:22:06Z",
-              "completed_at": "2026-09-14T23:22:06Z"
-            },
-            {
-              "name": "Complete job",
-              "number": 21,
-              "status": "completed",
-              "conclusion": "success",
-              "started_at": "2026-09-14T23:22:06Z",
-              "completed_at": "2026-09-14T23:22:06Z"
-            }
-          ],
-          "url": "https://github.com/vllm-project/vllm-ascend/actions/runs/34906500592/job/104184281763",
-          "log_excerpt": "2026-09-14T23:19:55.6021060Z #11 366.1     Found existing installation: transformers 5.17.0\n2026-09-14T23:19:55.6223403Z #11 366.3     Uninstalling transformers-5.17.0:\n2026-09-14T23:19:56.6537378Z #11 367.3       Successfully uninstalled transformers-5.17.0\n2026-09-14T23:20:10.6186781Z #11 381.3 ERROR: pip's dependency resolver does not currently take into account all the packages that are installed. This behaviour is the source of the following dependency conflicts.\n2026-09-14T23:20:10.6188277Z #11 381.3 opencv-python-headless 5.0.0.93 requires numpy>=2; python_version >= \"3.9\", but you have numpy 1.26.4 which is incompatible.\n2026-09-14T23:20:10.6189740Z #11 381.3 prometheus-fastapi-instrumentator 8.1.0 requires starlette<2.0.0,>=1.0.0, but you have starlette 0.50.0 which is incompatible.\n2026-09-14T23:20:10.8234710Z #11 381.3 Successfully installed DataProperty-1.1.1 absl-py-2.5.0 aiofiles-25.1.0 arctic-inference-0.1.1 attrs-24.2.0 audioread-3.1.0 blinker-1.9.0 cfgv-3.5.0 chardet-6.0.0.post1 cmake-4.4.3 colorama-0.4.6 contourpy-1.3.3 coverage-7.16.1 cycler-0.12.1 datasets-5.0.1 decorator-5.1.1 defusedxml-0.7.1 distlib-0.4.3 et-xmlfile-2.0.0 evaluate-0.4.6 execnet-2.1.2 fastapi-0.123.10 flask-3.1.3 fonttools-4.65.0 fsspec-2026.6.0 h2-4.4.1 hpack-4.2.0 hypercorn-0.18.0 hyperframe-6.1.0 identify-2.6.19 iniconfig-2.3.0 itsdangerous-2.2.0 jiwer-4.0.0 joblib-1.6.0 kiwisolver-1.5.1 lazy_loader-0.5 librosa-0.11.0 llvmlite-0.49.0 lm-eval-0.4.12 lxml-6.1.3 markdown-3.10.3 matplotlib-3.11.2 mbstrdecoder-1.1.5 memcache_hybrid-1.2.0 memfabric_hybrid-1.2.0 mindstudio-probe-26.1.0.post1 ml_dtypes-0.5.4 modelscope-1.37.1 more_itertools-11.1.0 msgpack-1.2.2 multiprocess-0.70.19 mypy-1.11.1 mypy-extensions-1.1.0 narwhals-2.26.0 nltk-3.10.3 nodeenv-1.10.0 numba-0.67.0 numpy-1.26.4 onnx-1.22.0 openpyxl-3.1.5 pandas-3.0.5 pandas-stubs-3.0.5.260914 pathvalidate-3.3.1 platformdirs-4.11.8 pluggy-1.6.0 pooch-1.9.0 portalocker-4.3.2 pre-commit-4.0.1 priority-2.0.0 psutil-6.0.0 pyarrow-25.0.1 pybind11-3.1.0 pyparsing-3.3.2 pytablewriter-1.2.1 pytest-8.3.2 pytest-asyncio-1.3.0 pytest-cov-7.1.0 pytest-mock-3.15.1 pytest-xdist-3.6.1 python-dateutil-2.9.0.post0 python-discovery-1.6.0 pytz-2026.3.post1 quart-0.22.0 rapidfuzz-3.14.6 ray-2.48.0 rouge-score-0.1.2 sacrebleu-2.6.0 scikit-learn-1.9.1 scipy-1.13.1 sentence_transformers-6.0.1 setuptools-scm-10.3.2 skl2onnx-1.20.0 soundfile-0.14.0 soxr-1.1.0 sqlitedict-2.1.0 starlette-0.50.0 tabledata-1.3.5 tabulate-0.10.0 tcolorpy-0.1.7 tensorboard-2.21.0 tensorboard-data-server-0.7.2 threadpoolctl-3.6.0 tokenizers-0.22.2 torch-2.10.0+cpu torch-npu-2.10.0.post4 torchaudio-2.10.0+cpu torchvision-0.25.0+cpu transformers-5.14.1 triton-3.2.0 triton-ascend-3.2.2 typepy-1.3.5 types-PyYAML-6.0.12.20260906 types-jsonschema-4.26.0.20260518 types-psutil-7.2.2.20260906 types-regex-2026.9.10.20260911 types-requests-2.33.0.20260906 types-setuptools-84.0.0.20260812 uc-manager-0.5.0 vcs-versioning-2.4.0 virtualenv-21.7.9 werkzeug-3.1.8 wheel-0.48.0 word2number-1.1 wrapt-1.17.2 wsproto-1.3.2 xlite-0.2.0rc1 xxhash-4.0.1 zmq-0.0.0\n...\n2026-09-14T23:21:59.8203646Z \n2026-09-14T23:21:59.8203818Z #12 exporting to image\n2026-09-14T23:22:00.2929849Z #12 pushing layers 0.9s done\n2026-09-14T23:22:00.2931247Z #12 ERROR: failed to push quay.io/ascend-ci/vllm-ascend:lint: denied: System is currently read-only. Pulls will succeed but all write operations are currently suspended.\n2026-09-14T23:22:00.3197180Z ------\n2026-09-14T23:22:00.3197946Z  > exporting to image:\n2026-09-14T23:22:00.3198488Z ------\n2026-09-14T23:22:00.3212009Z ERROR: failed to build: failed to solve: failed to push quay.io/ascend-ci/vllm-ascend:lint: denied: System is currently read-only. Pulls will succeed but all write operations are currently suspended.\n2026-09-14T23:22:00.4223607Z ##[group]Reference\n2026-09-14T23:22:00.5191866Z builder-3ab30e44-4595-458a-abb1-c19598ebddbe/builder-3ab30e44-4595-458a-abb1-c19598ebddbe0/092u4ikm5ju42qxwz2dezvyh3\n2026-09-14T23:22:00.5193821Z ##[endgroup]\n2026-09-14T23:22:00.5194810Z ##[group]Check build summary support\n2026-09-14T23:22:00.5196425Z Build summary supported!\n2026-09-14T23:22:00.5204183Z ##[endgroup]\n2026-09-14T23:22:00.5231713Z ##[error]buildx failed with: ERROR: failed to build: failed to solve: failed to push quay.io/ascend-ci/vllm-ascend:lint: denied: System is currently read-only. Pulls will succeed but all write operations are currently suspended.\n2026-09-14T23:22:00.5387766Z Post job cleanup.\n2026-09-14T23:22:00.7445320Z ##[group]Generating build summary\n2026-09-14T23:22:00.8084965Z exporting build record to /home/runner/work/_temp/docker-actions-toolkit-Zfv3Ym/export",
-          "log_url": "https://github.com/vllm-project/vllm-ascend/actions/runs/34906500592/job/104184281763"
-        }
-      ],
-      "failed_jobs": [
-        {
-          "id": 104184281763,
-          "name": "vllm-ascend lint image build",
-          "status": "completed",
-          "conclusion": "failure",
-          "started_at": "2026-09-14T23:11:22Z",
-          "completed_at": "2026-09-14T23:22:08Z",
-          "runner_name": "GitHub Actions 1001489723",
-          "runner_group": "GitHub Actions",
-          "steps": [
-            {
-              "name": "Set up job",
-              "number": 1,
-              "status": "completed",
-              "conclusion": "success",
-              "started_at": "2026-09-14T23:11:23Z",
-              "completed_at": "2026-09-14T23:11:28Z"
-            },
-            {
-              "name": "Run actions/checkout@v7",
-              "number": 2,
-              "status": "completed",
-              "conclusion": "success",
-              "started_at": "2026-09-14T23:11:28Z",
-              "completed_at": "2026-09-14T23:11:34Z"
-            },
-            {
-              "name": "Print",
-              "number": 3,
-              "status": "completed",
-              "conclusion": "success",
-              "started_at": "2026-09-14T23:11:34Z",
-              "completed_at": "2026-09-14T23:11:34Z"
-            },
-            {
-              "name": "Docker meta",
-              "number": 4,
-              "status": "completed",
-              "conclusion": "success",
-              "started_at": "2026-09-14T23:11:34Z",
-              "completed_at": "2026-09-14T23:11:35Z"
-            },
-            {
-              "name": "Read verified vLLM commit",
-              "number": 5,
-              "status": "completed",
-              "conclusion": "success",
-              "started_at": "2026-09-14T23:11:35Z",
-              "completed_at": "2026-09-14T23:11:35Z"
-            },
-            {
-              "name": "Build - Set up QEMU",
-              "number": 6,
-              "status": "completed",
-              "conclusion": "success",
-              "started_at": "2026-09-14T23:11:35Z",
-              "completed_at": "2026-09-14T23:11:43Z"
-            },
-            {
-              "name": "Build - Set up Docker Buildx",
-              "number": 7,
-              "status": "completed",
-              "conclusion": "success",
-              "started_at": "2026-09-14T23:11:43Z",
-              "completed_at": "2026-09-14T23:11:49Z"
-            },
-            {
-              "name": "Publish - Login to Quay Container Registry",
-              "number": 8,
-              "status": "completed",
-              "conclusion": "success",
-              "started_at": "2026-09-14T23:11:49Z",
-              "completed_at": "2026-09-14T23:11:50Z"
-            },
-            {
-              "name": "Build and push",
-              "number": 9,
-              "status": "completed",
-              "conclusion": "failure",
-              "started_at": "2026-09-14T23:11:50Z",
-              "completed_at": "2026-09-14T23:22:00Z"
-            },
-            {
-              "name": "Build and push",
-              "number": 10,
-              "status": "completed",
-              "conclusion": "skipped",
-              "started_at": "2026-09-14T23:22:00Z",
-              "completed_at": "2026-09-14T23:22:00Z"
-            },
-            {
-              "name": "Post Build and push",
-              "number": 16,
-              "status": "completed",
-              "conclusion": "success",
-              "started_at": "2026-09-14T23:22:00Z",
-              "completed_at": "2026-09-14T23:22:02Z"
-            },
-            {
-              "name": "Post Publish - Login to Quay Container Registry",
-              "number": 17,
-              "status": "completed",
-              "conclusion": "success",
-              "started_at": "2026-09-14T23:22:02Z",
-              "completed_at": "2026-09-14T23:22:02Z"
-            },
-            {
-              "name": "Post Build - Set up Docker Buildx",
-              "number": 18,
-              "status": "completed",
-              "conclusion": "success",
-              "started_at": "2026-09-14T23:22:02Z",
-              "completed_at": "2026-09-14T23:22:05Z"
-            },
-            {
-              "name": "Post Build - Set up QEMU",
-              "number": 19,
-              "status": "completed",
-              "conclusion": "success",
-              "started_at": "2026-09-14T23:22:05Z",
-              "completed_at": "2026-09-14T23:22:06Z"
-            },
-            {
-              "name": "Post Run actions/checkout@v7",
-              "number": 20,
-              "status": "completed",
-              "conclusion": "success",
-              "started_at": "2026-09-14T23:22:06Z",
-              "completed_at": "2026-09-14T23:22:06Z"
-            },
-            {
-              "name": "Complete job",
-              "number": 21,
-              "status": "completed",
-              "conclusion": "success",
-              "started_at": "2026-09-14T23:22:06Z",
-              "completed_at": "2026-09-14T23:22:06Z"
-            }
-          ],
-          "url": "https://github.com/vllm-project/vllm-ascend/actions/runs/34906500592/job/104184281763",
-          "log_excerpt": "2026-09-14T23:19:55.6021060Z #11 366.1     Found existing installation: transformers 5.17.0\n2026-09-14T23:19:55.6223403Z #11 366.3     Uninstalling transformers-5.17.0:\n2026-09-14T23:19:56.6537378Z #11 367.3       Successfully uninstalled transformers-5.17.0\n2026-09-14T23:20:10.6186781Z #11 381.3 ERROR: pip's dependency resolver does not currently take into account all the packages that are installed. This behaviour is the source of the following dependency conflicts.\n2026-09-14T23:20:10.6188277Z #11 381.3 opencv-python-headless 5.0.0.93 requires numpy>=2; python_version >= \"3.9\", but you have numpy 1.26.4 which is incompatible.\n2026-09-14T23:20:10.6189740Z #11 381.3 prometheus-fastapi-instrumentator 8.1.0 requires starlette<2.0.0,>=1.0.0, but you have starlette 0.50.0 which is incompatible.\n2026-09-14T23:20:10.8234710Z #11 381.3 Successfully installed DataProperty-1.1.1 absl-py-2.5.0 aiofiles-25.1.0 arctic-inference-0.1.1 attrs-24.2.0 audioread-3.1.0 blinker-1.9.0 cfgv-3.5.0 chardet-6.0.0.post1 cmake-4.4.3 colorama-0.4.6 contourpy-1.3.3 coverage-7.16.1 cycler-0.12.1 datasets-5.0.1 decorator-5.1.1 defusedxml-0.7.1 distlib-0.4.3 et-xmlfile-2.0.0 evaluate-0.4.6 execnet-2.1.2 fastapi-0.123.10 flask-3.1.3 fonttools-4.65.0 fsspec-2026.6.0 h2-4.4.1 hpack-4.2.0 hypercorn-0.18.0 hyperframe-6.1.0 identify-2.6.19 iniconfig-2.3.0 itsdangerous-2.2.0 jiwer-4.0.0 joblib-1.6.0 kiwisolver-1.5.1 lazy_loader-0.5 librosa-0.11.0 llvmlite-0.49.0 lm-eval-0.4.12 lxml-6.1.3 markdown-3.10.3 matplotlib-3.11.2 mbstrdecoder-1.1.5 memcache_hybrid-1.2.0 memfabric_hybrid-1.2.0 mindstudio-probe-26.1.0.post1 ml_dtypes-0.5.4 modelscope-1.37.1 more_itertools-11.1.0 msgpack-1.2.2 multiprocess-0.70.19 mypy-1.11.1 mypy-extensions-1.1.0 narwhals-2.26.0 nltk-3.10.3 nodeenv-1.10.0 numba-0.67.0 numpy-1.26.4 onnx-1.22.0 openpyxl-3.1.5 pandas-3.0.5 pandas-stubs-3.0.5.260914 pathvalidate-3.3.1 platformdirs-4.11.8 pluggy-1.6.0 pooch-1.9.0 portalocker-4.3.2 pre-commit-4.0.1 priority-2.0.0 psutil-6.0.0 pyarrow-25.0.1 pybind11-3.1.0 pyparsing-3.3.2 pytablewriter-1.2.1 pytest-8.3.2 pytest-asyncio-1.3.0 pytest-cov-7.1.0 pytest-mock-3.15.1 pytest-xdist-3.6.1 python-dateutil-2.9.0.post0 python-discovery-1.6.0 pytz-2026.3.post1 quart-0.22.0 rapidfuzz-3.14.6 ray-2.48.0 rouge-score-0.1.2 sacrebleu-2.6.0 scikit-learn-1.9.1 scipy-1.13.1 sentence_transformers-6.0.1 setuptools-scm-10.3.2 skl2onnx-1.20.0 soundfile-0.14.0 soxr-1.1.0 sqlitedict-2.1.0 starlette-0.50.0 tabledata-1.3.5 tabulate-0.10.0 tcolorpy-0.1.7 tensorboard-2.21.0 tensorboard-data-server-0.7.2 threadpoolctl-3.6.0 tokenizers-0.22.2 torch-2.10.0+cpu torch-npu-2.10.0.post4 torchaudio-2.10.0+cpu torchvision-0.25.0+cpu transformers-5.14.1 triton-3.2.0 triton-ascend-3.2.2 typepy-1.3.5 types-PyYAML-6.0.12.20260906 types-jsonschema-4.26.0.20260518 types-psutil-7.2.2.20260906 types-regex-2026.9.10.20260911 types-requests-2.33.0.20260906 types-setuptools-84.0.0.20260812 uc-manager-0.5.0 vcs-versioning-2.4.0 virtualenv-21.7.9 werkzeug-3.1.8 wheel-0.48.0 word2number-1.1 wrapt-1.17.2 wsproto-1.3.2 xlite-0.2.0rc1 xxhash-4.0.1 zmq-0.0.0\n...\n2026-09-14T23:21:59.8203646Z \n2026-09-14T23:21:59.8203818Z #12 exporting to image\n2026-09-14T23:22:00.2929849Z #12 pushing layers 0.9s done\n2026-09-14T23:22:00.2931247Z #12 ERROR: failed to push quay.io/ascend-ci/vllm-ascend:lint: denied: System is currently read-only. Pulls will succeed but all write operations are currently suspended.\n2026-09-14T23:22:00.3197180Z ------\n2026-09-14T23:22:00.3197946Z  > exporting to image:\n2026-09-14T23:22:00.3198488Z ------\n2026-09-14T23:22:00.3212009Z ERROR: failed to build: failed to solve: failed to push quay.io/ascend-ci/vllm-ascend:lint: denied: System is currently read-only. Pulls will succeed but all write operations are currently suspended.\n2026-09-14T23:22:00.4223607Z ##[group]Reference\n2026-09-14T23:22:00.5191866Z builder-3ab30e44-4595-458a-abb1-c19598ebddbe/builder-3ab30e44-4595-458a-abb1-c19598ebddbe0/092u4ikm5ju42qxwz2dezvyh3\n2026-09-14T23:22:00.5193821Z ##[endgroup]\n2026-09-14T23:22:00.5194810Z ##[group]Check build summary support\n2026-09-14T23:22:00.5196425Z Build summary supported!\n2026-09-14T23:22:00.5204183Z ##[endgroup]\n2026-09-14T23:22:00.5231713Z ##[error]buildx failed with: ERROR: failed to build: failed to solve: failed to push quay.io/ascend-ci/vllm-ascend:lint: denied: System is currently read-only. Pulls will succeed but all write operations are currently suspended.\n2026-09-14T23:22:00.5387766Z Post job cleanup.\n2026-09-14T23:22:00.7445320Z ##[group]Generating build summary\n2026-09-14T23:22:00.8084965Z exporting build record to /home/runner/work/_temp/docker-actions-toolkit-Zfv3Ym/export",
-          "log_url": "https://github.com/vllm-project/vllm-ascend/actions/runs/34906500592/job/104184281763"
-        }
-      ]
     }
   }
 ]
