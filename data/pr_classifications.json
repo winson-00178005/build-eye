@@ -1,5 +1,144 @@
 [
   {
+    "workflow_run_id": 37229908379,
+    "workflow_name": "Docs link check",
+    "pr_number": 17860,
+    "pipeline_type": "pr",
+    "classification": {
+      "classification": "infrastructure",
+      "confidence": "low",
+      "category_detail": "无失败job信息",
+      "evidence": [],
+      "reasoning": "无法获取job详情，默认归类为基础设施问题"
+    },
+    "metadata": {
+      "workflow_run": {
+        "id": 37229908379,
+        "name": "Docs link check",
+        "workflow_id": 264532256,
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-10-04T19:52:13Z",
+        "completed_at": "2026-10-04T19:56:20Z",
+        "head_sha": "f0b514277d84568df937931cb9eecda045a52866",
+        "head_branch": "ci/remove-nonexistent-test-names",
+        "url": "https://github.com/vllm-project/vllm-ascend/actions/runs/37229908379",
+        "triggering_actor": "awesome-pro"
+      },
+      "pipeline_info": {
+        "pipeline_type": "pr",
+        "pipeline_type_label": "PR 流水线",
+        "source": "event_pr"
+      },
+      "pr": {
+        "number": 17860,
+        "title": "[CI] Remove references to non-existent nightly test cases",
+        "author": "awesome-pro",
+        "merged_at": null,
+        "merge_commit_sha": null,
+        "url": "",
+        "base_ref": "main",
+        "head_ref": ""
+      },
+      "jobs": [
+        {
+          "id": 111517218539,
+          "name": "Markdown link check",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-04T19:52:36Z",
+          "completed_at": "2026-10-04T19:56:19Z",
+          "runner_name": "linux-amd64-cpu-2-hk-mgm2b-runner-jcrmc",
+          "runner_group": "Default",
+          "steps": [
+            {
+              "name": "Set up job",
+              "number": 1,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-04T19:52:38Z",
+              "completed_at": "2026-10-04T19:52:46Z"
+            },
+            {
+              "name": "Initialize containers",
+              "number": 2,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-04T19:52:46Z",
+              "completed_at": "2026-10-04T19:55:40Z"
+            },
+            {
+              "name": "Checkout vllm-project/vllm-ascend repo",
+              "number": 3,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-04T19:55:40Z",
+              "completed_at": "2026-10-04T19:55:45Z"
+            },
+            {
+              "name": "Collect changed docs files",
+              "number": 4,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-04T19:55:45Z",
+              "completed_at": "2026-10-04T19:55:48Z"
+            },
+            {
+              "name": "Install docs dependencies",
+              "number": 5,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-04T19:55:48Z",
+              "completed_at": "2026-10-04T19:56:09Z"
+            },
+            {
+              "name": "Run full link check",
+              "number": 6,
+              "status": "completed",
+              "conclusion": "skipped",
+              "started_at": "2026-10-04T19:56:09Z",
+              "completed_at": "2026-10-04T19:56:09Z"
+            },
+            {
+              "name": "Run link check for changed docs",
+              "number": 7,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-04T19:56:09Z",
+              "completed_at": "2026-10-04T19:56:12Z"
+            },
+            {
+              "name": "Post Checkout vllm-project/vllm-ascend repo",
+              "number": 13,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-04T19:56:12Z",
+              "completed_at": "2026-10-04T19:56:14Z"
+            },
+            {
+              "name": "Stop containers",
+              "number": 14,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-04T19:56:14Z",
+              "completed_at": "2026-10-04T19:56:15Z"
+            },
+            {
+              "name": "Complete job",
+              "number": 15,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-04T19:56:15Z",
+              "completed_at": "2026-10-04T19:56:15Z"
+            }
+          ],
+          "url": "https://github.com/vllm-project/vllm-ascend/actions/runs/37229908379/job/111517218539"
+        }
+      ],
+      "failed_jobs": []
+    }
+  },
+  {
     "workflow_run_id": 37209052149,
     "workflow_name": "Docs link check",
     "pr_number": null,
@@ -262,7 +401,7 @@
   {
     "workflow_run_id": 37206268023,
     "workflow_name": "Docs link check",
-    "pr_number": null,
+    "pr_number": 17598,
     "pipeline_type": "pr",
     "classification": {
       "classification": "infrastructure",
@@ -290,7 +429,16 @@
         "pipeline_type_label": "PR 流水线",
         "source": "event_pr"
       },
-      "pr": null,
+      "pr": {
+        "number": 17598,
+        "title": "[Feature][PCP] Shard O projection weights across PCP",
+        "author": "li1how",
+        "merged_at": null,
+        "merge_commit_sha": null,
+        "url": "",
+        "base_ref": "main",
+        "head_ref": ""
+      },
       "jobs": [
         {
           "id": 111447982563,
