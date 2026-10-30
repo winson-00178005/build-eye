@@ -1,5 +1,144 @@
 [
   {
+    "workflow_run_id": 40985601240,
+    "workflow_name": "Docs link check",
+    "pr_number": 20292,
+    "pipeline_type": "pr",
+    "classification": {
+      "classification": "infrastructure",
+      "confidence": "low",
+      "category_detail": "无失败job信息",
+      "evidence": [],
+      "reasoning": "无法获取job详情，默认归类为基础设施问题"
+    },
+    "metadata": {
+      "workflow_run": {
+        "id": 40985601240,
+        "name": "Docs link check",
+        "workflow_id": 264532256,
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-10-30T01:23:52Z",
+        "completed_at": "2026-10-30T01:29:30Z",
+        "head_sha": "f717c2b5d1467c248db0c496af193a83c1045860",
+        "head_branch": "main-dsv41-a2-1025",
+        "url": "https://github.com/vllm-project/vllm-ascend/actions/runs/40985601240",
+        "triggering_actor": "ylyhyqsl"
+      },
+      "pipeline_info": {
+        "pipeline_type": "pr",
+        "pipeline_type_label": "PR 流水线",
+        "source": "event_pr"
+      },
+      "pr": {
+        "number": 20292,
+        "title": "[Doc][Feature] Update A2 deployment for DeepSeek-V4.1-Flash",
+        "author": "ylyhyqsl",
+        "merged_at": null,
+        "merge_commit_sha": null,
+        "url": "",
+        "base_ref": "main",
+        "head_ref": ""
+      },
+      "jobs": [
+        {
+          "id": 123835769302,
+          "name": "Markdown link check",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-30T01:24:13Z",
+          "completed_at": "2026-10-30T01:29:29Z",
+          "runner_name": "linux-amd64-cpu-2-hk-8dnk5-runner-m6zkf",
+          "runner_group": "Default",
+          "steps": [
+            {
+              "name": "Set up job",
+              "number": 1,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-30T01:24:14Z",
+              "completed_at": "2026-10-30T01:24:22Z"
+            },
+            {
+              "name": "Initialize containers",
+              "number": 2,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-30T01:24:22Z",
+              "completed_at": "2026-10-30T01:28:15Z"
+            },
+            {
+              "name": "Checkout vllm-project/vllm-ascend repo",
+              "number": 3,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-30T01:28:15Z",
+              "completed_at": "2026-10-30T01:28:20Z"
+            },
+            {
+              "name": "Collect changed docs files",
+              "number": 4,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-30T01:28:20Z",
+              "completed_at": "2026-10-30T01:28:22Z"
+            },
+            {
+              "name": "Install docs dependencies",
+              "number": 5,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-30T01:28:22Z",
+              "completed_at": "2026-10-30T01:28:45Z"
+            },
+            {
+              "name": "Run full link check",
+              "number": 6,
+              "status": "completed",
+              "conclusion": "skipped",
+              "started_at": "2026-10-30T01:28:45Z",
+              "completed_at": "2026-10-30T01:28:45Z"
+            },
+            {
+              "name": "Run link check for changed docs",
+              "number": 7,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-30T01:28:45Z",
+              "completed_at": "2026-10-30T01:29:20Z"
+            },
+            {
+              "name": "Post Checkout vllm-project/vllm-ascend repo",
+              "number": 13,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-30T01:29:20Z",
+              "completed_at": "2026-10-30T01:29:23Z"
+            },
+            {
+              "name": "Stop containers",
+              "number": 14,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-30T01:29:23Z",
+              "completed_at": "2026-10-30T01:29:23Z"
+            },
+            {
+              "name": "Complete job",
+              "number": 15,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-30T01:29:23Z",
+              "completed_at": "2026-10-30T01:29:23Z"
+            }
+          ],
+          "url": "https://github.com/vllm-project/vllm-ascend/actions/runs/40985601240/job/123835769302"
+        }
+      ],
+      "failed_jobs": []
+    }
+  },
+  {
     "workflow_run_id": 40906443740,
     "workflow_name": "Docs link check",
     "pr_number": null,
@@ -262,7 +401,7 @@
   {
     "workflow_run_id": 40898099933,
     "workflow_name": "Docs link check",
-    "pr_number": null,
+    "pr_number": 16981,
     "pipeline_type": "pr",
     "classification": {
       "classification": "infrastructure",
@@ -290,7 +429,16 @@
         "pipeline_type_label": "PR 流水线",
         "source": "event_pr"
       },
-      "pr": null,
+      "pr": {
+        "number": 16981,
+        "title": "[Feature][Model] Add Qwen3.8 Flash Next support",
+        "author": "shaopeng-666",
+        "merged_at": null,
+        "merge_commit_sha": null,
+        "url": "",
+        "base_ref": "main",
+        "head_ref": ""
+      },
       "jobs": [
         {
           "id": 123532608466,
@@ -774,7 +922,7 @@
   {
     "workflow_run_id": 40896837811,
     "workflow_name": "Docs link check",
-    "pr_number": null,
+    "pr_number": 16981,
     "pipeline_type": "pr",
     "classification": {
       "classification": "infrastructure",
@@ -802,7 +950,16 @@
         "pipeline_type_label": "PR 流水线",
         "source": "event_pr"
       },
-      "pr": null,
+      "pr": {
+        "number": 16981,
+        "title": "[Feature][Model] Add Qwen3.8 Flash Next support",
+        "author": "shaopeng-666",
+        "merged_at": null,
+        "merge_commit_sha": null,
+        "url": "",
+        "base_ref": "main",
+        "head_ref": ""
+      },
       "jobs": [
         {
           "id": 123528166460,
@@ -2357,9 +2514,3112 @@
     }
   },
   {
+    "workflow_run_id": 40888310830,
+    "workflow_name": "Release Code and Wheel",
+    "pr_number": 19344,
+    "pipeline_type": "pr",
+    "classification": {
+      "detected": true,
+      "confidence": "high",
+      "category_detail": "编译错误",
+      "evidence": [
+        {
+          "category": "compilation",
+          "pattern": "error:\\s+",
+          "matches": [
+            "ERROR: ",
+            "ERROR: ",
+            "ERROR: "
+          ]
+        }
+      ],
+      "reasoning": "检测到代码问题模式: compilation。 问题出现在 PR #19344 代码中。 建议检查 PR 的代码修改和测试用例。",
+      "is_pr_code": true,
+      "job_name": "build and release wheel (A5) (ubuntu-24.04, 3.10)",
+      "job_id": 123688399967,
+      "classification": "code"
+    },
+    "metadata": {
+      "workflow_run": {
+        "id": 40888310830,
+        "name": "Release Code and Wheel",
+        "workflow_id": 221367733,
+        "status": "completed",
+        "conclusion": "failure",
+        "started_at": "2026-10-29T19:40:48Z",
+        "completed_at": "2026-10-29T21:23:12Z",
+        "head_sha": "c09d3e20b9c45c80b34ae3781440d90904a44023",
+        "head_branch": "v0.30.0",
+        "url": "https://github.com/vllm-project/vllm-ascend/actions/runs/40888310830",
+        "triggering_actor": "vllm-ascend-ci"
+      },
+      "pipeline_info": {
+        "pipeline_type": "pr",
+        "pipeline_type_label": "PR 流水线",
+        "source": "head_branch"
+      },
+      "pr": {
+        "number": 19344,
+        "title": "[Doc] add release note for v0.30.0",
+        "author": "zzzzwwjj",
+        "merged_at": "2026-10-29T14:03:20Z",
+        "merge_commit_sha": "c09d3e20b9c45c80b34ae3781440d90904a44023",
+        "url": "https://github.com/vllm-project/vllm-ascend/pull/19344",
+        "base_ref": "releases/v0.30.0",
+        "head_ref": "release_note_030"
+      },
+      "jobs": [
+        {
+          "id": 123688399630,
+          "name": "build and release wheel (A5) (ubuntu-24.04, 3.12)",
+          "status": "completed",
+          "conclusion": "cancelled",
+          "started_at": "2026-10-29T19:41:01Z",
+          "completed_at": "2026-10-29T21:22:40Z",
+          "runner_name": "GitHub Actions 1001725792",
+          "runner_group": "GitHub Actions",
+          "steps": [
+            {
+              "name": "Set up job",
+              "number": 1,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T19:41:02Z",
+              "completed_at": "2026-10-29T19:41:03Z"
+            },
+            {
+              "name": "checkout vllm-ascend",
+              "number": 2,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T19:41:03Z",
+              "completed_at": "2026-10-29T19:41:24Z"
+            },
+            {
+              "name": "checkout vllm-ascend ",
+              "number": 3,
+              "status": "completed",
+              "conclusion": "skipped",
+              "started_at": "2026-10-29T19:41:24Z",
+              "completed_at": "2026-10-29T19:41:24Z"
+            },
+            {
+              "name": "Free up disk space",
+              "number": 4,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T19:41:24Z",
+              "completed_at": "2026-10-29T19:43:43Z"
+            },
+            {
+              "name": "Build wheel",
+              "number": 5,
+              "status": "completed",
+              "conclusion": "cancelled",
+              "started_at": "2026-10-29T19:43:43Z",
+              "completed_at": "2026-10-29T21:22:36Z"
+            },
+            {
+              "name": "Set up Python 3.12",
+              "number": 6,
+              "status": "completed",
+              "conclusion": "skipped",
+              "started_at": "2026-10-29T21:22:36Z",
+              "completed_at": "2026-10-29T21:22:36Z"
+            },
+            {
+              "name": "Repair wheels with auditwheel",
+              "number": 7,
+              "status": "completed",
+              "conclusion": "skipped",
+              "started_at": "2026-10-29T21:22:36Z",
+              "completed_at": "2026-10-29T21:22:36Z"
+            },
+            {
+              "name": "Verify automatic platform tags",
+              "number": 8,
+              "status": "completed",
+              "conclusion": "skipped",
+              "started_at": "2026-10-29T21:22:36Z",
+              "completed_at": "2026-10-29T21:22:36Z"
+            },
+            {
+              "name": "Generate variant wheels",
+              "number": 9,
+              "status": "completed",
+              "conclusion": "skipped",
+              "started_at": "2026-10-29T21:22:36Z",
+              "completed_at": "2026-10-29T21:22:36Z"
+            },
+            {
+              "name": "Archive wheel",
+              "number": 10,
+              "status": "completed",
+              "conclusion": "skipped",
+              "started_at": "2026-10-29T21:22:36Z",
+              "completed_at": "2026-10-29T21:22:36Z"
+            },
+            {
+              "name": "Post checkout vllm-ascend",
+              "number": 20,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T21:22:36Z",
+              "completed_at": "2026-10-29T21:22:37Z"
+            },
+            {
+              "name": "Complete job",
+              "number": 21,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T21:22:37Z",
+              "completed_at": "2026-10-29T21:22:37Z"
+            }
+          ],
+          "url": "https://github.com/vllm-project/vllm-ascend/actions/runs/40888310830/job/123688399630"
+        },
+        {
+          "id": 123688399967,
+          "name": "build and release wheel (A5) (ubuntu-24.04, 3.10)",
+          "status": "completed",
+          "conclusion": "failure",
+          "started_at": "2026-10-29T19:41:09Z",
+          "completed_at": "2026-10-29T21:21:45Z",
+          "runner_name": "GitHub Actions 1001725796",
+          "runner_group": "GitHub Actions",
+          "steps": [
+            {
+              "name": "Set up job",
+              "number": 1,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T19:41:10Z",
+              "completed_at": "2026-10-29T19:41:11Z"
+            },
+            {
+              "name": "checkout vllm-ascend",
+              "number": 2,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T19:41:11Z",
+              "completed_at": "2026-10-29T19:41:33Z"
+            },
+            {
+              "name": "checkout vllm-ascend ",
+              "number": 3,
+              "status": "completed",
+              "conclusion": "skipped",
+              "started_at": "2026-10-29T19:41:33Z",
+              "completed_at": "2026-10-29T19:41:33Z"
+            },
+            {
+              "name": "Free up disk space",
+              "number": 4,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T19:41:33Z",
+              "completed_at": "2026-10-29T19:43:50Z"
+            },
+            {
+              "name": "Build wheel",
+              "number": 5,
+              "status": "completed",
+              "conclusion": "failure",
+              "started_at": "2026-10-29T19:43:50Z",
+              "completed_at": "2026-10-29T21:21:43Z"
+            },
+            {
+              "name": "Set up Python 3.10",
+              "number": 6,
+              "status": "completed",
+              "conclusion": "skipped",
+              "started_at": "2026-10-29T21:21:43Z",
+              "completed_at": "2026-10-29T21:21:43Z"
+            },
+            {
+              "name": "Repair wheels with auditwheel",
+              "number": 7,
+              "status": "completed",
+              "conclusion": "skipped",
+              "started_at": "2026-10-29T21:21:43Z",
+              "completed_at": "2026-10-29T21:21:43Z"
+            },
+            {
+              "name": "Verify automatic platform tags",
+              "number": 8,
+              "status": "completed",
+              "conclusion": "skipped",
+              "started_at": "2026-10-29T21:21:43Z",
+              "completed_at": "2026-10-29T21:21:43Z"
+            },
+            {
+              "name": "Generate variant wheels",
+              "number": 9,
+              "status": "completed",
+              "conclusion": "skipped",
+              "started_at": "2026-10-29T21:21:43Z",
+              "completed_at": "2026-10-29T21:21:43Z"
+            },
+            {
+              "name": "Archive wheel",
+              "number": 10,
+              "status": "completed",
+              "conclusion": "skipped",
+              "started_at": "2026-10-29T21:21:43Z",
+              "completed_at": "2026-10-29T21:21:43Z"
+            },
+            {
+              "name": "Post checkout vllm-ascend",
+              "number": 20,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T21:21:43Z",
+              "completed_at": "2026-10-29T21:21:43Z"
+            },
+            {
+              "name": "Complete job",
+              "number": 21,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T21:21:43Z",
+              "completed_at": "2026-10-29T21:21:43Z"
+            }
+          ],
+          "url": "https://github.com/vllm-project/vllm-ascend/actions/runs/40888310830/job/123688399967",
+          "log_excerpt": "2026-10-29T19:48:33.3848824Z #9 118.2     Uninstalling scipy-1.15.3:\n2026-10-29T19:48:33.3849648Z #9 118.2       Successfully uninstalled scipy-1.15.3\n2026-10-29T19:49:03.3728214Z #9 148.4 \n2026-10-29T19:49:03.5343418Z #9 148.4 ERROR: pip's dependency resolver does not currently take into account all the packages that are installed. This behaviour is the source of the following dependency conflicts.\n2026-10-29T19:49:03.5344149Z #9 148.4 cann-ops-nn 1.0.1 requires ninja, which is not installed.\n2026-10-29T19:49:03.5344416Z #9 148.4 cannsim 0.1.0 requires plotly, which is not installed.\n2026-10-29T19:49:03.5344805Z #9 148.4 mindstudio-kpp 26.2.0 requires plotly>=5.11.0, which is not installed.\n...\n2026-10-29T21:21:42.7575559Z #10 5549.2 [ops_custom] [2026-10-29 21:21:42] [INFO] create /workspace/vllm-ascend/vllm_ascend/_cann_ops_custom/vendors.\n2026-10-29T21:21:42.7576095Z #10 5549.2 [ops_custom] [2026-10-29 21:21:42] [INFO] create /workspace/vllm-ascend/vllm_ascend/_cann_ops_custom/vendors/custom_transformer.\n2026-10-29T21:21:42.7576521Z #10 5549.2 [ops_custom] [2026-10-29 21:21:42] [INFO] validate shared libraries before installation\n2026-10-29T21:21:42.7577152Z #10 5549.3 [ops_custom] [2026-10-29 21:21:42] [ERROR] Failed to load libcust_opmaster_rt2.0.so wish env ASCEND_HOME_PATH(/usr/local/Ascend/cann-9.2.1),error message is liboptiling.so: cannot open shared object file: No such file or directory.\n2026-10-29T21:21:42.7578018Z #10 5549.3 [ops_custom] [2026-10-29 21:21:42] [ERROR] Shared library validation failed. To skip this validation and continue installation, run this package again with --force.\n2026-10-29T21:21:42.7578388Z #10 5549.3 Running bash build_aclnn.sh ...\n2026-10-29T21:21:42.7578826Z #10 5549.3 Error running build_aclnn.sh: Command '['bash', 'csrc/build_aclnn.sh', '/workspace/vllm-ascend', 'ascend950dt_9582']' returned non-zero exit status 1.\n2026-10-29T21:21:43.5008630Z #10 5550.1 /detail/kfc/../../../../include/adv_api/matmul/../../../impl/adv_api/detail/matmul/../../../../include/basic_api/kernel_tensor.h:192:23: warning: candidate function not viable: callee function can only call callee function; called from GetTile\n...\n2026-10-29T21:21:43.6062919Z #10 5550.1    15 |     \"Warning: ge_error_codes.h is deprecated and will be removed after 2027-06. Include \\\"graph/error_codes.h\\\" instead.\")\n2026-10-29T21:21:43.6063030Z #10 5550.1       |                                                                                                                          ^\n2026-10-29T21:21:43.6063405Z #10 5550.1      0% \b\b\b\b\b\b\b   18% \b\b\b\b\b\b\b   37% \b\b\b\b\b\b\b   55% \b\b\b\b\b\b\b   74% \b\b\b\b\b\b\b   93% \b\b\b\b\b\b\b 100%   SHA256 checksums are OK.     0% \b\b\b\b\b\b\b   18% \b\b\b\b\b\b\b   37% \b\b\b\b\b\b\b   55% \b\b\b\b\b\b\b   74% \b\b\b\b\b\b\b   93% \b\b\b\b\b\b\b 100%  \n2026-10-29T21:21:43.6064203Z #10 ERROR: process \"/bin/bash -c source /usr/local/Ascend/ascend-toolkit/set_env.sh &&     source /usr/local/Ascend/nnal/atb/set_env.sh &&     export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/Ascend/ascend-toolkit/latest/`uname -i`-linux/devlib &&     cd vllm-ascend &&     python3 setup.py bdist_wheel &&     ls -l dist\" did not complete successfully: exit code: 1\n2026-10-29T21:21:43.6064273Z ------\n2026-10-29T21:21:43.6066596Z  > [6/6] RUN source /usr/local/Ascend/ascend-toolkit/set_env.sh &&     source /usr/local/Ascend/nnal/atb/set_env.sh &&     export LD_LIBRARY_PATH=/usr/local/Ascend/cann-9.2.1/lib64:/usr/local/Ascend/cann-9.2.1/lib64/plugin/opskernel:/usr/local/Ascend/cann-9.2.1/lib64/plugin/nnengine:/usr/local/Ascend/cann-9.2.1/opp/built-in/op_impl/ai_core/tbe/op_tiling:/usr/local/Ascend/driver/lib64:/usr/local/Ascend/driver/lib64/common:/usr/local/Ascend/driver/lib64/driver:/usr/local/Ascend/nnal/atb/latest/atb/cxx_abi_1/lib:/usr/local/Ascend/nnal/atb/latest/atb/cxx_abi_1/examples:/usr/local/Ascend/nnal/atb/latest/atb/cxx_abi_1/tests/atbopstest:/usr/local/Ascend/ascend-toolkit/latest/tools/aml/lib64:/usr/local/Ascend/ascend-toolkit/latest/tools/aml/lib64/plugin:/usr/local/Ascend/ascend-toolkit/latest/lib64:/usr/local/Ascend/ascend-toolkit/latest/lib64/plugin/opskernel:/usr/local/Ascend/ascend-toolkit/latest/lib64/plugin/nnengine:/usr/local/Ascend/ascend-toolkit/latest/opp/built-in/op_impl/ai_core/tbe/op_tiling:/opt/rh/gcc-toolset-14/root/usr/lib64:/opt/rh/gcc-toolset-14/root/usr/lib:/opt/rh/gcc-toolset-14/root/usr/lib64/dyninst:/opt/rh/gcc-toolset-14/root/usr/lib/dyninst:/usr/local/Ascend/ascend-toolkit/latest/`uname -i`-linux/devlib &&     cd vllm-ascend &&     python3 setup.py bdist_wheel &&     ls -l dist:\n2026-10-29T21:21:43.6066925Z 5550.1      0% \b\b\b\b\b\b\b   18% \b\b\b\b\b\b\b   37% \b\b\b\b\b\b\b   55% \b\b\b\b\b\b\b   74% \b\b\b\b\b\b\b   93% \b\b\b\b\b\b\b 100%   SHA256 checksums are OK.     0% \b\b\b\b\b\b\b   18% \b\b\b\b\b\b\b   37% \b\b\b\b\b\b\b   55% \b\b\b\b\b\b\b   74% \b\b\b\b\b\b\b   93% \b\b\b\b\b\b\b 100%  \n...\n2026-10-29T21:21:43.6067165Z 5549.2 [ops_custom] [2026-10-29 21:21:42] [INFO] create /workspace/vllm-ascend/vllm_ascend/_cann_ops_custom/vendors.\n2026-10-29T21:21:43.6067401Z 5549.2 [ops_custom] [2026-10-29 21:21:42] [INFO] create /workspace/vllm-ascend/vllm_ascend/_cann_ops_custom/vendors/custom_transformer.\n2026-10-29T21:21:43.6067529Z 5549.2 [ops_custom] [2026-10-29 21:21:42] [INFO] validate shared libraries before installation\n2026-10-29T21:21:43.6067905Z 5549.3 [ops_custom] [2026-10-29 21:21:42] [ERROR] Failed to load libcust_opmaster_rt2.0.so wish env ASCEND_HOME_PATH(/usr/local/Ascend/cann-9.2.1),error message is liboptiling.so: cannot open shared object file: No such file or directory.\n2026-10-29T21:21:43.6068174Z 5549.3 [ops_custom] [2026-10-29 21:21:42] [ERROR] Shared library validation failed. To skip this validation and continue installation, run this package again with --force.\n2026-10-29T21:21:43.6068235Z 5549.3 Running bash build_aclnn.sh ...\n2026-10-29T21:21:43.6068515Z 5549.3 Error running build_aclnn.sh: Command '['bash', 'csrc/build_aclnn.sh', '/workspace/vllm-ascend', 'ascend950dt_9582']' returned non-zero exit status 1.\n2026-10-29T21:21:43.6068559Z ------\n...\n2026-10-29T21:21:43.6069444Z   46 | >>>     ls -l dist\n2026-10-29T21:21:43.6069513Z   47 |     \n2026-10-29T21:21:43.6069564Z --------------------\n2026-10-29T21:21:43.6070195Z ERROR: failed to build: failed to solve: process \"/bin/bash -c source /usr/local/Ascend/ascend-toolkit/set_env.sh &&     source /usr/local/Ascend/nnal/atb/set_env.sh &&     export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/Ascend/ascend-toolkit/latest/`uname -i`-linux/devlib &&     cd vllm-ascend &&     python3 setup.py bdist_wheel &&     ls -l dist\" did not complete successfully: exit code: 1\n2026-10-29T21:21:43.6080782Z ##[error]Process completed with exit code 1.\n2026-10-29T21:21:43.6197170Z Post job cleanup.\n...\n2026-10-29T21:21:43.6933957Z git version 2.56.0",
+          "log_url": "https://github.com/vllm-project/vllm-ascend/actions/runs/40888310830/job/123688399967"
+        },
+        {
+          "id": 123688399968,
+          "name": "build and release wheel (A5) (ubuntu-24.04, 3.11)",
+          "status": "completed",
+          "conclusion": "cancelled",
+          "started_at": "2026-10-29T19:41:05Z",
+          "completed_at": "2026-10-29T21:22:42Z",
+          "runner_name": "GitHub Actions 1001725794",
+          "runner_group": "GitHub Actions",
+          "steps": [
+            {
+              "name": "Set up job",
+              "number": 1,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T19:41:06Z",
+              "completed_at": "2026-10-29T19:41:07Z"
+            },
+            {
+              "name": "checkout vllm-ascend",
+              "number": 2,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T19:41:07Z",
+              "completed_at": "2026-10-29T19:41:30Z"
+            },
+            {
+              "name": "checkout vllm-ascend ",
+              "number": 3,
+              "status": "completed",
+              "conclusion": "skipped",
+              "started_at": "2026-10-29T19:41:30Z",
+              "completed_at": "2026-10-29T19:41:30Z"
+            },
+            {
+              "name": "Free up disk space",
+              "number": 4,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T19:41:30Z",
+              "completed_at": "2026-10-29T19:45:09Z"
+            },
+            {
+              "name": "Build wheel",
+              "number": 5,
+              "status": "completed",
+              "conclusion": "cancelled",
+              "started_at": "2026-10-29T19:45:09Z",
+              "completed_at": "2026-10-29T21:22:39Z"
+            },
+            {
+              "name": "Set up Python 3.11",
+              "number": 6,
+              "status": "completed",
+              "conclusion": "skipped",
+              "started_at": "2026-10-29T21:22:39Z",
+              "completed_at": "2026-10-29T21:22:39Z"
+            },
+            {
+              "name": "Repair wheels with auditwheel",
+              "number": 7,
+              "status": "completed",
+              "conclusion": "skipped",
+              "started_at": "2026-10-29T21:22:39Z",
+              "completed_at": "2026-10-29T21:22:39Z"
+            },
+            {
+              "name": "Verify automatic platform tags",
+              "number": 8,
+              "status": "completed",
+              "conclusion": "skipped",
+              "started_at": "2026-10-29T21:22:39Z",
+              "completed_at": "2026-10-29T21:22:39Z"
+            },
+            {
+              "name": "Generate variant wheels",
+              "number": 9,
+              "status": "completed",
+              "conclusion": "skipped",
+              "started_at": "2026-10-29T21:22:39Z",
+              "completed_at": "2026-10-29T21:22:39Z"
+            },
+            {
+              "name": "Archive wheel",
+              "number": 10,
+              "status": "completed",
+              "conclusion": "skipped",
+              "started_at": "2026-10-29T21:22:39Z",
+              "completed_at": "2026-10-29T21:22:39Z"
+            },
+            {
+              "name": "Post checkout vllm-ascend",
+              "number": 20,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T21:22:39Z",
+              "completed_at": "2026-10-29T21:22:40Z"
+            },
+            {
+              "name": "Complete job",
+              "number": 21,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T21:22:40Z",
+              "completed_at": "2026-10-29T21:22:40Z"
+            }
+          ],
+          "url": "https://github.com/vllm-project/vllm-ascend/actions/runs/40888310830/job/123688399968"
+        },
+        {
+          "id": 123688400077,
+          "name": "build and release wheel (A5) (ubuntu-24.04-arm, 3.11)",
+          "status": "completed",
+          "conclusion": "cancelled",
+          "started_at": "2026-10-29T19:41:21Z",
+          "completed_at": "2026-10-29T21:22:55Z",
+          "runner_name": "GitHub Actions 1001725797",
+          "runner_group": "GitHub Actions",
+          "steps": [
+            {
+              "name": "Set up job",
+              "number": 1,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T19:41:22Z",
+              "completed_at": "2026-10-29T19:41:23Z"
+            },
+            {
+              "name": "checkout vllm-ascend",
+              "number": 2,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T19:41:23Z",
+              "completed_at": "2026-10-29T19:41:46Z"
+            },
+            {
+              "name": "checkout vllm-ascend ",
+              "number": 3,
+              "status": "completed",
+              "conclusion": "skipped",
+              "started_at": "2026-10-29T19:41:46Z",
+              "completed_at": "2026-10-29T19:41:46Z"
+            },
+            {
+              "name": "Free up disk space",
+              "number": 4,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T19:41:46Z",
+              "completed_at": "2026-10-29T19:43:12Z"
+            },
+            {
+              "name": "Build wheel",
+              "number": 5,
+              "status": "completed",
+              "conclusion": "cancelled",
+              "started_at": "2026-10-29T19:43:12Z",
+              "completed_at": "2026-10-29T21:22:53Z"
+            },
+            {
+              "name": "Set up Python 3.11",
+              "number": 6,
+              "status": "completed",
+              "conclusion": "skipped",
+              "started_at": "2026-10-29T21:22:53Z",
+              "completed_at": "2026-10-29T21:22:53Z"
+            },
+            {
+              "name": "Repair wheels with auditwheel",
+              "number": 7,
+              "status": "completed",
+              "conclusion": "skipped",
+              "started_at": "2026-10-29T21:22:53Z",
+              "completed_at": "2026-10-29T21:22:53Z"
+            },
+            {
+              "name": "Verify automatic platform tags",
+              "number": 8,
+              "status": "completed",
+              "conclusion": "skipped",
+              "started_at": "2026-10-29T21:22:53Z",
+              "completed_at": "2026-10-29T21:22:53Z"
+            },
+            {
+              "name": "Generate variant wheels",
+              "number": 9,
+              "status": "completed",
+              "conclusion": "skipped",
+              "started_at": "2026-10-29T21:22:53Z",
+              "completed_at": "2026-10-29T21:22:53Z"
+            },
+            {
+              "name": "Archive wheel",
+              "number": 10,
+              "status": "completed",
+              "conclusion": "skipped",
+              "started_at": "2026-10-29T21:22:53Z",
+              "completed_at": "2026-10-29T21:22:53Z"
+            },
+            {
+              "name": "Post checkout vllm-ascend",
+              "number": 20,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T21:22:53Z",
+              "completed_at": "2026-10-29T21:22:53Z"
+            },
+            {
+              "name": "Complete job",
+              "number": 21,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T21:22:53Z",
+              "completed_at": "2026-10-29T21:22:53Z"
+            }
+          ],
+          "url": "https://github.com/vllm-project/vllm-ascend/actions/runs/40888310830/job/123688400077"
+        },
+        {
+          "id": 123688400093,
+          "name": "build and release wheel (A5) (ubuntu-24.04-arm, 3.12)",
+          "status": "completed",
+          "conclusion": "cancelled",
+          "started_at": "2026-10-29T19:41:37Z",
+          "completed_at": "2026-10-29T21:23:11Z",
+          "runner_name": "GitHub Actions 1001725799",
+          "runner_group": "GitHub Actions",
+          "steps": [
+            {
+              "name": "Set up job",
+              "number": 1,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T19:41:38Z",
+              "completed_at": "2026-10-29T19:41:39Z"
+            },
+            {
+              "name": "checkout vllm-ascend",
+              "number": 2,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T19:41:39Z",
+              "completed_at": "2026-10-29T19:42:01Z"
+            },
+            {
+              "name": "checkout vllm-ascend ",
+              "number": 3,
+              "status": "completed",
+              "conclusion": "skipped",
+              "started_at": "2026-10-29T19:42:01Z",
+              "completed_at": "2026-10-29T19:42:01Z"
+            },
+            {
+              "name": "Free up disk space",
+              "number": 4,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T19:42:01Z",
+              "completed_at": "2026-10-29T19:43:33Z"
+            },
+            {
+              "name": "Build wheel",
+              "number": 5,
+              "status": "completed",
+              "conclusion": "cancelled",
+              "started_at": "2026-10-29T19:43:33Z",
+              "completed_at": "2026-10-29T21:23:08Z"
+            },
+            {
+              "name": "Set up Python 3.12",
+              "number": 6,
+              "status": "completed",
+              "conclusion": "skipped",
+              "started_at": "2026-10-29T21:23:08Z",
+              "completed_at": "2026-10-29T21:23:08Z"
+            },
+            {
+              "name": "Repair wheels with auditwheel",
+              "number": 7,
+              "status": "completed",
+              "conclusion": "skipped",
+              "started_at": "2026-10-29T21:23:08Z",
+              "completed_at": "2026-10-29T21:23:08Z"
+            },
+            {
+              "name": "Verify automatic platform tags",
+              "number": 8,
+              "status": "completed",
+              "conclusion": "skipped",
+              "started_at": "2026-10-29T21:23:08Z",
+              "completed_at": "2026-10-29T21:23:08Z"
+            },
+            {
+              "name": "Generate variant wheels",
+              "number": 9,
+              "status": "completed",
+              "conclusion": "skipped",
+              "started_at": "2026-10-29T21:23:08Z",
+              "completed_at": "2026-10-29T21:23:08Z"
+            },
+            {
+              "name": "Archive wheel",
+              "number": 10,
+              "status": "completed",
+              "conclusion": "skipped",
+              "started_at": "2026-10-29T21:23:08Z",
+              "completed_at": "2026-10-29T21:23:08Z"
+            },
+            {
+              "name": "Post checkout vllm-ascend",
+              "number": 20,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T21:23:08Z",
+              "completed_at": "2026-10-29T21:23:09Z"
+            },
+            {
+              "name": "Complete job",
+              "number": 21,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T21:23:09Z",
+              "completed_at": "2026-10-29T21:23:09Z"
+            }
+          ],
+          "url": "https://github.com/vllm-project/vllm-ascend/actions/runs/40888310830/job/123688400093"
+        },
+        {
+          "id": 123688400113,
+          "name": "build and release wheel (A5) (ubuntu-24.04-arm, 3.10)",
+          "status": "completed",
+          "conclusion": "cancelled",
+          "started_at": "2026-10-29T19:43:12Z",
+          "completed_at": "2026-10-29T21:22:17Z",
+          "runner_name": "GitHub Actions 1001725808",
+          "runner_group": "GitHub Actions",
+          "steps": [
+            {
+              "name": "Set up job",
+              "number": 1,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T19:43:13Z",
+              "completed_at": "2026-10-29T19:43:15Z"
+            },
+            {
+              "name": "checkout vllm-ascend",
+              "number": 2,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T19:43:15Z",
+              "completed_at": "2026-10-29T19:43:38Z"
+            },
+            {
+              "name": "checkout vllm-ascend ",
+              "number": 3,
+              "status": "completed",
+              "conclusion": "skipped",
+              "started_at": "2026-10-29T19:43:38Z",
+              "completed_at": "2026-10-29T19:43:38Z"
+            },
+            {
+              "name": "Free up disk space",
+              "number": 4,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T19:43:38Z",
+              "completed_at": "2026-10-29T19:45:08Z"
+            },
+            {
+              "name": "Build wheel",
+              "number": 5,
+              "status": "completed",
+              "conclusion": "cancelled",
+              "started_at": "2026-10-29T19:45:08Z",
+              "completed_at": "2026-10-29T21:22:14Z"
+            },
+            {
+              "name": "Set up Python 3.10",
+              "number": 6,
+              "status": "completed",
+              "conclusion": "skipped",
+              "started_at": "2026-10-29T21:22:14Z",
+              "completed_at": "2026-10-29T21:22:14Z"
+            },
+            {
+              "name": "Repair wheels with auditwheel",
+              "number": 7,
+              "status": "completed",
+              "conclusion": "skipped",
+              "started_at": "2026-10-29T21:22:14Z",
+              "completed_at": "2026-10-29T21:22:14Z"
+            },
+            {
+              "name": "Verify automatic platform tags",
+              "number": 8,
+              "status": "completed",
+              "conclusion": "skipped",
+              "started_at": "2026-10-29T21:22:14Z",
+              "completed_at": "2026-10-29T21:22:14Z"
+            },
+            {
+              "name": "Generate variant wheels",
+              "number": 9,
+              "status": "completed",
+              "conclusion": "skipped",
+              "started_at": "2026-10-29T21:22:14Z",
+              "completed_at": "2026-10-29T21:22:14Z"
+            },
+            {
+              "name": "Archive wheel",
+              "number": 10,
+              "status": "completed",
+              "conclusion": "skipped",
+              "started_at": "2026-10-29T21:22:14Z",
+              "completed_at": "2026-10-29T21:22:14Z"
+            },
+            {
+              "name": "Post checkout vllm-ascend",
+              "number": 20,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T21:22:14Z",
+              "completed_at": "2026-10-29T21:22:14Z"
+            },
+            {
+              "name": "Complete job",
+              "number": 21,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T21:22:14Z",
+              "completed_at": "2026-10-29T21:22:14Z"
+            }
+          ],
+          "url": "https://github.com/vllm-project/vllm-ascend/actions/runs/40888310830/job/123688400113"
+        },
+        {
+          "id": 123688401649,
+          "name": "build and release wheel (ubuntu-24.04, 3.11)",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-29T14:37:40Z",
+          "completed_at": "2026-10-29T16:47:46Z",
+          "runner_name": "GitHub Actions 1001724637",
+          "runner_group": "GitHub Actions",
+          "steps": [
+            {
+              "name": "Set up job",
+              "number": 1,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T14:37:40Z",
+              "completed_at": "2026-10-29T14:37:42Z"
+            },
+            {
+              "name": "checkout vllm-ascend",
+              "number": 2,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T14:37:42Z",
+              "completed_at": "2026-10-29T14:38:05Z"
+            },
+            {
+              "name": "checkout vllm-ascend ",
+              "number": 3,
+              "status": "completed",
+              "conclusion": "skipped",
+              "started_at": "2026-10-29T14:38:05Z",
+              "completed_at": "2026-10-29T14:38:05Z"
+            },
+            {
+              "name": "Free up disk space",
+              "number": 4,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T14:38:05Z",
+              "completed_at": "2026-10-29T14:41:09Z"
+            },
+            {
+              "name": "Build wheel",
+              "number": 5,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T14:41:09Z",
+              "completed_at": "2026-10-29T16:47:06Z"
+            },
+            {
+              "name": "Set up Python 3.11",
+              "number": 6,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T16:47:06Z",
+              "completed_at": "2026-10-29T16:47:14Z"
+            },
+            {
+              "name": "Repair wheels with auditwheel",
+              "number": 7,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T16:47:14Z",
+              "completed_at": "2026-10-29T16:47:22Z"
+            },
+            {
+              "name": "Verify automatic platform tags",
+              "number": 8,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T16:47:22Z",
+              "completed_at": "2026-10-29T16:47:24Z"
+            },
+            {
+              "name": "Generate variant wheels",
+              "number": 9,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T16:47:24Z",
+              "completed_at": "2026-10-29T16:47:30Z"
+            },
+            {
+              "name": "Archive wheel",
+              "number": 10,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T16:47:30Z",
+              "completed_at": "2026-10-29T16:47:33Z"
+            },
+            {
+              "name": "Release",
+              "number": 11,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T16:47:33Z",
+              "completed_at": "2026-10-29T16:47:42Z"
+            },
+            {
+              "name": "Post Set up Python 3.11",
+              "number": 21,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T16:47:42Z",
+              "completed_at": "2026-10-29T16:47:42Z"
+            },
+            {
+              "name": "Post checkout vllm-ascend",
+              "number": 22,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T16:47:42Z",
+              "completed_at": "2026-10-29T16:47:43Z"
+            },
+            {
+              "name": "Complete job",
+              "number": 23,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T16:47:43Z",
+              "completed_at": "2026-10-29T16:47:43Z"
+            }
+          ],
+          "url": "https://github.com/vllm-project/vllm-ascend/actions/runs/40888310830/job/123688401649"
+        },
+        {
+          "id": 123688402790,
+          "name": "build and release wheel (310P) (ubuntu-24.04-arm, 3.10)",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-29T14:10:09Z",
+          "completed_at": "2026-10-29T14:38:39Z",
+          "runner_name": "GitHub Actions 1001724551",
+          "runner_group": "GitHub Actions",
+          "steps": [
+            {
+              "name": "Set up job",
+              "number": 1,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T14:10:10Z",
+              "completed_at": "2026-10-29T14:10:11Z"
+            },
+            {
+              "name": "checkout vllm-ascend",
+              "number": 2,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T14:10:11Z",
+              "completed_at": "2026-10-29T14:10:36Z"
+            },
+            {
+              "name": "checkout vllm-ascend ",
+              "number": 3,
+              "status": "completed",
+              "conclusion": "skipped",
+              "started_at": "2026-10-29T14:10:36Z",
+              "completed_at": "2026-10-29T14:10:36Z"
+            },
+            {
+              "name": "Free up disk space",
+              "number": 4,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T14:10:36Z",
+              "completed_at": "2026-10-29T14:11:37Z"
+            },
+            {
+              "name": "Build wheel",
+              "number": 5,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T14:11:37Z",
+              "completed_at": "2026-10-29T14:38:20Z"
+            },
+            {
+              "name": "Set up Python 3.10",
+              "number": 6,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T14:38:20Z",
+              "completed_at": "2026-10-29T14:38:26Z"
+            },
+            {
+              "name": "Repair wheels with auditwheel",
+              "number": 7,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T14:38:26Z",
+              "completed_at": "2026-10-29T14:38:28Z"
+            },
+            {
+              "name": "Verify automatic platform tags",
+              "number": 8,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T14:38:28Z",
+              "completed_at": "2026-10-29T14:38:29Z"
+            },
+            {
+              "name": "Generate variant wheels",
+              "number": 9,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T14:38:29Z",
+              "completed_at": "2026-10-29T14:38:33Z"
+            },
+            {
+              "name": "Archive wheel",
+              "number": 10,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T14:38:33Z",
+              "completed_at": "2026-10-29T14:38:36Z"
+            },
+            {
+              "name": "Post Set up Python 3.10",
+              "number": 19,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T14:38:36Z",
+              "completed_at": "2026-10-29T14:38:36Z"
+            },
+            {
+              "name": "Post checkout vllm-ascend",
+              "number": 20,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T14:38:36Z",
+              "completed_at": "2026-10-29T14:38:36Z"
+            },
+            {
+              "name": "Complete job",
+              "number": 21,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T14:38:36Z",
+              "completed_at": "2026-10-29T14:38:36Z"
+            }
+          ],
+          "url": "https://github.com/vllm-project/vllm-ascend/actions/runs/40888310830/job/123688402790"
+        },
+        {
+          "id": 123688402916,
+          "name": "build and release wheel (ubuntu-24.04-arm, 3.11)",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-29T14:35:47Z",
+          "completed_at": "2026-10-29T16:21:48Z",
+          "runner_name": "GitHub Actions 1001724632",
+          "runner_group": "GitHub Actions",
+          "steps": [
+            {
+              "name": "Set up job",
+              "number": 1,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T14:35:48Z",
+              "completed_at": "2026-10-29T14:35:49Z"
+            },
+            {
+              "name": "checkout vllm-ascend",
+              "number": 2,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T14:35:49Z",
+              "completed_at": "2026-10-29T14:36:11Z"
+            },
+            {
+              "name": "checkout vllm-ascend ",
+              "number": 3,
+              "status": "completed",
+              "conclusion": "skipped",
+              "started_at": "2026-10-29T14:36:11Z",
+              "completed_at": "2026-10-29T14:36:11Z"
+            },
+            {
+              "name": "Free up disk space",
+              "number": 4,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T14:36:11Z",
+              "completed_at": "2026-10-29T14:37:15Z"
+            },
+            {
+              "name": "Build wheel",
+              "number": 5,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T14:37:15Z",
+              "completed_at": "2026-10-29T16:21:17Z"
+            },
+            {
+              "name": "Set up Python 3.11",
+              "number": 6,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T16:21:17Z",
+              "completed_at": "2026-10-29T16:21:23Z"
+            },
+            {
+              "name": "Repair wheels with auditwheel",
+              "number": 7,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T16:21:23Z",
+              "completed_at": "2026-10-29T16:21:29Z"
+            },
+            {
+              "name": "Verify automatic platform tags",
+              "number": 8,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T16:21:29Z",
+              "completed_at": "2026-10-29T16:21:30Z"
+            },
+            {
+              "name": "Generate variant wheels",
+              "number": 9,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T16:21:30Z",
+              "completed_at": "2026-10-29T16:21:35Z"
+            },
+            {
+              "name": "Archive wheel",
+              "number": 10,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T16:21:35Z",
+              "completed_at": "2026-10-29T16:21:38Z"
+            },
+            {
+              "name": "Release",
+              "number": 11,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T16:21:38Z",
+              "completed_at": "2026-10-29T16:21:45Z"
+            },
+            {
+              "name": "Post Set up Python 3.11",
+              "number": 21,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T16:21:45Z",
+              "completed_at": "2026-10-29T16:21:46Z"
+            },
+            {
+              "name": "Post checkout vllm-ascend",
+              "number": 22,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T16:21:46Z",
+              "completed_at": "2026-10-29T16:21:46Z"
+            },
+            {
+              "name": "Complete job",
+              "number": 23,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T16:21:46Z",
+              "completed_at": "2026-10-29T16:21:46Z"
+            }
+          ],
+          "url": "https://github.com/vllm-project/vllm-ascend/actions/runs/40888310830/job/123688402916"
+        },
+        {
+          "id": 123688403015,
+          "name": "build and release wheel (ubuntu-24.04-arm, 3.10)",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-29T14:58:13Z",
+          "completed_at": "2026-10-29T16:44:27Z",
+          "runner_name": "GitHub Actions 1001724663",
+          "runner_group": "GitHub Actions",
+          "steps": [
+            {
+              "name": "Set up job",
+              "number": 1,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T14:58:13Z",
+              "completed_at": "2026-10-29T14:58:15Z"
+            },
+            {
+              "name": "checkout vllm-ascend",
+              "number": 2,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T14:58:15Z",
+              "completed_at": "2026-10-29T14:58:40Z"
+            },
+            {
+              "name": "checkout vllm-ascend ",
+              "number": 3,
+              "status": "completed",
+              "conclusion": "skipped",
+              "started_at": "2026-10-29T14:58:40Z",
+              "completed_at": "2026-10-29T14:58:40Z"
+            },
+            {
+              "name": "Free up disk space",
+              "number": 4,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T14:58:40Z",
+              "completed_at": "2026-10-29T15:00:11Z"
+            },
+            {
+              "name": "Build wheel",
+              "number": 5,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T15:00:11Z",
+              "completed_at": "2026-10-29T16:43:57Z"
+            },
+            {
+              "name": "Set up Python 3.10",
+              "number": 6,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T16:43:57Z",
+              "completed_at": "2026-10-29T16:44:03Z"
+            },
+            {
+              "name": "Repair wheels with auditwheel",
+              "number": 7,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T16:44:03Z",
+              "completed_at": "2026-10-29T16:44:08Z"
+            },
+            {
+              "name": "Verify automatic platform tags",
+              "number": 8,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T16:44:08Z",
+              "completed_at": "2026-10-29T16:44:10Z"
+            },
+            {
+              "name": "Generate variant wheels",
+              "number": 9,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T16:44:10Z",
+              "completed_at": "2026-10-29T16:44:16Z"
+            },
+            {
+              "name": "Archive wheel",
+              "number": 10,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T16:44:16Z",
+              "completed_at": "2026-10-29T16:44:18Z"
+            },
+            {
+              "name": "Release",
+              "number": 11,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T16:44:18Z",
+              "completed_at": "2026-10-29T16:44:24Z"
+            },
+            {
+              "name": "Post Set up Python 3.10",
+              "number": 21,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T16:44:24Z",
+              "completed_at": "2026-10-29T16:44:24Z"
+            },
+            {
+              "name": "Post checkout vllm-ascend",
+              "number": 22,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T16:44:24Z",
+              "completed_at": "2026-10-29T16:44:25Z"
+            },
+            {
+              "name": "Complete job",
+              "number": 23,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T16:44:25Z",
+              "completed_at": "2026-10-29T16:44:25Z"
+            }
+          ],
+          "url": "https://github.com/vllm-project/vllm-ascend/actions/runs/40888310830/job/123688403015"
+        },
+        {
+          "id": 123688403037,
+          "name": "build and release wheel (310P) (ubuntu-24.04, 3.12)",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-29T14:33:53Z",
+          "completed_at": "2026-10-29T15:05:32Z",
+          "runner_name": "GitHub Actions 1001724630",
+          "runner_group": "GitHub Actions",
+          "steps": [
+            {
+              "name": "Set up job",
+              "number": 1,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T14:33:54Z",
+              "completed_at": "2026-10-29T14:33:55Z"
+            },
+            {
+              "name": "checkout vllm-ascend",
+              "number": 2,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T14:33:55Z",
+              "completed_at": "2026-10-29T14:34:21Z"
+            },
+            {
+              "name": "checkout vllm-ascend ",
+              "number": 3,
+              "status": "completed",
+              "conclusion": "skipped",
+              "started_at": "2026-10-29T14:34:21Z",
+              "completed_at": "2026-10-29T14:34:21Z"
+            },
+            {
+              "name": "Free up disk space",
+              "number": 4,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T14:34:21Z",
+              "completed_at": "2026-10-29T14:37:48Z"
+            },
+            {
+              "name": "Build wheel",
+              "number": 5,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T14:37:48Z",
+              "completed_at": "2026-10-29T15:05:12Z"
+            },
+            {
+              "name": "Set up Python 3.12",
+              "number": 6,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T15:05:12Z",
+              "completed_at": "2026-10-29T15:05:19Z"
+            },
+            {
+              "name": "Repair wheels with auditwheel",
+              "number": 7,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T15:05:19Z",
+              "completed_at": "2026-10-29T15:05:23Z"
+            },
+            {
+              "name": "Verify automatic platform tags",
+              "number": 8,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T15:05:23Z",
+              "completed_at": "2026-10-29T15:05:24Z"
+            },
+            {
+              "name": "Generate variant wheels",
+              "number": 9,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T15:05:24Z",
+              "completed_at": "2026-10-29T15:05:28Z"
+            },
+            {
+              "name": "Archive wheel",
+              "number": 10,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T15:05:28Z",
+              "completed_at": "2026-10-29T15:05:29Z"
+            },
+            {
+              "name": "Post Set up Python 3.12",
+              "number": 19,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T15:05:29Z",
+              "completed_at": "2026-10-29T15:05:30Z"
+            },
+            {
+              "name": "Post checkout vllm-ascend",
+              "number": 20,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T15:05:30Z",
+              "completed_at": "2026-10-29T15:05:30Z"
+            },
+            {
+              "name": "Complete job",
+              "number": 21,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T15:05:30Z",
+              "completed_at": "2026-10-29T15:05:30Z"
+            }
+          ],
+          "url": "https://github.com/vllm-project/vllm-ascend/actions/runs/40888310830/job/123688403037"
+        },
+        {
+          "id": 123688403211,
+          "name": "build and release wheel (A3) (ubuntu-24.04, 3.12)",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-29T15:16:28Z",
+          "completed_at": "2026-10-29T17:18:54Z",
+          "runner_name": "GitHub Actions 1001724684",
+          "runner_group": "GitHub Actions",
+          "steps": [
+            {
+              "name": "Set up job",
+              "number": 1,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T15:16:28Z",
+              "completed_at": "2026-10-29T15:16:29Z"
+            },
+            {
+              "name": "checkout vllm-ascend",
+              "number": 2,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T15:16:29Z",
+              "completed_at": "2026-10-29T15:16:55Z"
+            },
+            {
+              "name": "checkout vllm-ascend ",
+              "number": 3,
+              "status": "completed",
+              "conclusion": "skipped",
+              "started_at": "2026-10-29T15:16:55Z",
+              "completed_at": "2026-10-29T15:16:55Z"
+            },
+            {
+              "name": "Free up disk space",
+              "number": 4,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T15:16:55Z",
+              "completed_at": "2026-10-29T15:20:45Z"
+            },
+            {
+              "name": "Build wheel",
+              "number": 5,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T15:20:45Z",
+              "completed_at": "2026-10-29T17:18:25Z"
+            },
+            {
+              "name": "Set up Python 3.12",
+              "number": 6,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T17:18:25Z",
+              "completed_at": "2026-10-29T17:18:32Z"
+            },
+            {
+              "name": "Repair wheels with auditwheel",
+              "number": 7,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T17:18:32Z",
+              "completed_at": "2026-10-29T17:18:41Z"
+            },
+            {
+              "name": "Verify automatic platform tags",
+              "number": 8,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T17:18:41Z",
+              "completed_at": "2026-10-29T17:18:43Z"
+            },
+            {
+              "name": "Generate variant wheels",
+              "number": 9,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T17:18:43Z",
+              "completed_at": "2026-10-29T17:18:49Z"
+            },
+            {
+              "name": "Archive wheel",
+              "number": 10,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T17:18:49Z",
+              "completed_at": "2026-10-29T17:18:51Z"
+            },
+            {
+              "name": "Post Set up Python 3.12",
+              "number": 19,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T17:18:51Z",
+              "completed_at": "2026-10-29T17:18:51Z"
+            },
+            {
+              "name": "Post checkout vllm-ascend",
+              "number": 20,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T17:18:51Z",
+              "completed_at": "2026-10-29T17:18:52Z"
+            },
+            {
+              "name": "Complete job",
+              "number": 21,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T17:18:52Z",
+              "completed_at": "2026-10-29T17:18:52Z"
+            }
+          ],
+          "url": "https://github.com/vllm-project/vllm-ascend/actions/runs/40888310830/job/123688403211"
+        },
+        {
+          "id": 123688403270,
+          "name": "build and release wheel (310P) (ubuntu-24.04, 3.11)",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-29T15:18:05Z",
+          "completed_at": "2026-10-29T15:46:02Z",
+          "runner_name": "GitHub Actions 1001724686",
+          "runner_group": "GitHub Actions",
+          "steps": [
+            {
+              "name": "Set up job",
+              "number": 1,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T15:18:06Z",
+              "completed_at": "2026-10-29T15:18:07Z"
+            },
+            {
+              "name": "checkout vllm-ascend",
+              "number": 2,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T15:18:07Z",
+              "completed_at": "2026-10-29T15:18:34Z"
+            },
+            {
+              "name": "checkout vllm-ascend ",
+              "number": 3,
+              "status": "completed",
+              "conclusion": "skipped",
+              "started_at": "2026-10-29T15:18:34Z",
+              "completed_at": "2026-10-29T15:18:34Z"
+            },
+            {
+              "name": "Free up disk space",
+              "number": 4,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T15:18:34Z",
+              "completed_at": "2026-10-29T15:20:21Z"
+            },
+            {
+              "name": "Build wheel",
+              "number": 5,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T15:20:21Z",
+              "completed_at": "2026-10-29T15:45:43Z"
+            },
+            {
+              "name": "Set up Python 3.11",
+              "number": 6,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T15:45:43Z",
+              "completed_at": "2026-10-29T15:45:50Z"
+            },
+            {
+              "name": "Repair wheels with auditwheel",
+              "number": 7,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T15:45:50Z",
+              "completed_at": "2026-10-29T15:45:54Z"
+            },
+            {
+              "name": "Verify automatic platform tags",
+              "number": 8,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T15:45:54Z",
+              "completed_at": "2026-10-29T15:45:55Z"
+            },
+            {
+              "name": "Generate variant wheels",
+              "number": 9,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T15:45:55Z",
+              "completed_at": "2026-10-29T15:45:58Z"
+            },
+            {
+              "name": "Archive wheel",
+              "number": 10,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T15:45:58Z",
+              "completed_at": "2026-10-29T15:46:00Z"
+            },
+            {
+              "name": "Post Set up Python 3.11",
+              "number": 19,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T15:46:00Z",
+              "completed_at": "2026-10-29T15:46:00Z"
+            },
+            {
+              "name": "Post checkout vllm-ascend",
+              "number": 20,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T15:46:00Z",
+              "completed_at": "2026-10-29T15:46:00Z"
+            },
+            {
+              "name": "Complete job",
+              "number": 21,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T15:46:00Z",
+              "completed_at": "2026-10-29T15:46:00Z"
+            }
+          ],
+          "url": "https://github.com/vllm-project/vllm-ascend/actions/runs/40888310830/job/123688403270"
+        },
+        {
+          "id": 123688403301,
+          "name": "build and release wheel (ubuntu-24.04-arm, 3.12)",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-29T14:14:28Z",
+          "completed_at": "2026-10-29T16:01:55Z",
+          "runner_name": "GitHub Actions 1001724580",
+          "runner_group": "GitHub Actions",
+          "steps": [
+            {
+              "name": "Set up job",
+              "number": 1,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T14:14:29Z",
+              "completed_at": "2026-10-29T14:14:30Z"
+            },
+            {
+              "name": "checkout vllm-ascend",
+              "number": 2,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T14:14:30Z",
+              "completed_at": "2026-10-29T14:15:02Z"
+            },
+            {
+              "name": "checkout vllm-ascend ",
+              "number": 3,
+              "status": "completed",
+              "conclusion": "skipped",
+              "started_at": "2026-10-29T14:15:02Z",
+              "completed_at": "2026-10-29T14:15:02Z"
+            },
+            {
+              "name": "Free up disk space",
+              "number": 4,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T14:15:02Z",
+              "completed_at": "2026-10-29T14:16:17Z"
+            },
+            {
+              "name": "Build wheel",
+              "number": 5,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T14:16:17Z",
+              "completed_at": "2026-10-29T16:01:27Z"
+            },
+            {
+              "name": "Set up Python 3.12",
+              "number": 6,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T16:01:27Z",
+              "completed_at": "2026-10-29T16:01:34Z"
+            },
+            {
+              "name": "Repair wheels with auditwheel",
+              "number": 7,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T16:01:34Z",
+              "completed_at": "2026-10-29T16:01:39Z"
+            },
+            {
+              "name": "Verify automatic platform tags",
+              "number": 8,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T16:01:39Z",
+              "completed_at": "2026-10-29T16:01:40Z"
+            },
+            {
+              "name": "Generate variant wheels",
+              "number": 9,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T16:01:40Z",
+              "completed_at": "2026-10-29T16:01:45Z"
+            },
+            {
+              "name": "Archive wheel",
+              "number": 10,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T16:01:45Z",
+              "completed_at": "2026-10-29T16:01:47Z"
+            },
+            {
+              "name": "Release",
+              "number": 11,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T16:01:47Z",
+              "completed_at": "2026-10-29T16:01:53Z"
+            },
+            {
+              "name": "Post Set up Python 3.12",
+              "number": 21,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T16:01:53Z",
+              "completed_at": "2026-10-29T16:01:53Z"
+            },
+            {
+              "name": "Post checkout vllm-ascend",
+              "number": 22,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T16:01:53Z",
+              "completed_at": "2026-10-29T16:01:53Z"
+            },
+            {
+              "name": "Complete job",
+              "number": 23,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T16:01:53Z",
+              "completed_at": "2026-10-29T16:01:53Z"
+            }
+          ],
+          "url": "https://github.com/vllm-project/vllm-ascend/actions/runs/40888310830/job/123688403301"
+        },
+        {
+          "id": 123688403530,
+          "name": "build and release wheel (A3) (ubuntu-24.04-arm, 3.11)",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-29T14:16:53Z",
+          "completed_at": "2026-10-29T16:10:03Z",
+          "runner_name": "GitHub Actions 1001724592",
+          "runner_group": "GitHub Actions",
+          "steps": [
+            {
+              "name": "Set up job",
+              "number": 1,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T14:16:54Z",
+              "completed_at": "2026-10-29T14:16:55Z"
+            },
+            {
+              "name": "checkout vllm-ascend",
+              "number": 2,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T14:16:55Z",
+              "completed_at": "2026-10-29T14:17:19Z"
+            },
+            {
+              "name": "checkout vllm-ascend ",
+              "number": 3,
+              "status": "completed",
+              "conclusion": "skipped",
+              "started_at": "2026-10-29T14:17:19Z",
+              "completed_at": "2026-10-29T14:17:19Z"
+            },
+            {
+              "name": "Free up disk space",
+              "number": 4,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T14:17:19Z",
+              "completed_at": "2026-10-29T14:18:23Z"
+            },
+            {
+              "name": "Build wheel",
+              "number": 5,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T14:18:23Z",
+              "completed_at": "2026-10-29T16:09:38Z"
+            },
+            {
+              "name": "Set up Python 3.11",
+              "number": 6,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T16:09:38Z",
+              "completed_at": "2026-10-29T16:09:45Z"
+            },
+            {
+              "name": "Repair wheels with auditwheel",
+              "number": 7,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T16:09:45Z",
+              "completed_at": "2026-10-29T16:09:51Z"
+            },
+            {
+              "name": "Verify automatic platform tags",
+              "number": 8,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T16:09:51Z",
+              "completed_at": "2026-10-29T16:09:52Z"
+            },
+            {
+              "name": "Generate variant wheels",
+              "number": 9,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T16:09:52Z",
+              "completed_at": "2026-10-29T16:09:59Z"
+            },
+            {
+              "name": "Archive wheel",
+              "number": 10,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T16:09:59Z",
+              "completed_at": "2026-10-29T16:10:02Z"
+            },
+            {
+              "name": "Post Set up Python 3.11",
+              "number": 19,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T16:10:02Z",
+              "completed_at": "2026-10-29T16:10:02Z"
+            },
+            {
+              "name": "Post checkout vllm-ascend",
+              "number": 20,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T16:10:02Z",
+              "completed_at": "2026-10-29T16:10:02Z"
+            },
+            {
+              "name": "Complete job",
+              "number": 21,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T16:10:02Z",
+              "completed_at": "2026-10-29T16:10:02Z"
+            }
+          ],
+          "url": "https://github.com/vllm-project/vllm-ascend/actions/runs/40888310830/job/123688403530"
+        },
+        {
+          "id": 123688404156,
+          "name": "build and release wheel (A3) (ubuntu-24.04-arm, 3.12)",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-29T15:12:38Z",
+          "completed_at": "2026-10-29T17:20:02Z",
+          "runner_name": "GitHub Actions 1001724677",
+          "runner_group": "GitHub Actions",
+          "steps": [
+            {
+              "name": "Set up job",
+              "number": 1,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T15:12:39Z",
+              "completed_at": "2026-10-29T15:12:40Z"
+            },
+            {
+              "name": "checkout vllm-ascend",
+              "number": 2,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T15:12:40Z",
+              "completed_at": "2026-10-29T15:12:59Z"
+            },
+            {
+              "name": "checkout vllm-ascend ",
+              "number": 3,
+              "status": "completed",
+              "conclusion": "skipped",
+              "started_at": "2026-10-29T15:12:59Z",
+              "completed_at": "2026-10-29T15:12:59Z"
+            },
+            {
+              "name": "Free up disk space",
+              "number": 4,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T15:12:59Z",
+              "completed_at": "2026-10-29T15:14:06Z"
+            },
+            {
+              "name": "Build wheel",
+              "number": 5,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T15:14:06Z",
+              "completed_at": "2026-10-29T17:19:35Z"
+            },
+            {
+              "name": "Set up Python 3.12",
+              "number": 6,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T17:19:35Z",
+              "completed_at": "2026-10-29T17:19:42Z"
+            },
+            {
+              "name": "Repair wheels with auditwheel",
+              "number": 7,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T17:19:42Z",
+              "completed_at": "2026-10-29T17:19:48Z"
+            },
+            {
+              "name": "Verify automatic platform tags",
+              "number": 8,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T17:19:48Z",
+              "completed_at": "2026-10-29T17:19:49Z"
+            },
+            {
+              "name": "Generate variant wheels",
+              "number": 9,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T17:19:49Z",
+              "completed_at": "2026-10-29T17:19:55Z"
+            },
+            {
+              "name": "Archive wheel",
+              "number": 10,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T17:19:55Z",
+              "completed_at": "2026-10-29T17:19:58Z"
+            },
+            {
+              "name": "Post Set up Python 3.12",
+              "number": 19,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T17:19:58Z",
+              "completed_at": "2026-10-29T17:19:59Z"
+            },
+            {
+              "name": "Post checkout vllm-ascend",
+              "number": 20,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T17:19:59Z",
+              "completed_at": "2026-10-29T17:19:59Z"
+            },
+            {
+              "name": "Complete job",
+              "number": 21,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T17:19:59Z",
+              "completed_at": "2026-10-29T17:19:59Z"
+            }
+          ],
+          "url": "https://github.com/vllm-project/vllm-ascend/actions/runs/40888310830/job/123688404156"
+        },
+        {
+          "id": 123688451238,
+          "name": "build and release wheel (310P) (ubuntu-24.04-arm, 3.11)",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-29T14:07:36Z",
+          "completed_at": "2026-10-29T15:00:24Z",
+          "runner_name": "GitHub Actions 1001724537",
+          "runner_group": "GitHub Actions",
+          "steps": [
+            {
+              "name": "Set up job",
+              "number": 1,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T14:07:37Z",
+              "completed_at": "2026-10-29T14:07:38Z"
+            },
+            {
+              "name": "checkout vllm-ascend",
+              "number": 2,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T14:07:38Z",
+              "completed_at": "2026-10-29T14:08:00Z"
+            },
+            {
+              "name": "checkout vllm-ascend ",
+              "number": 3,
+              "status": "completed",
+              "conclusion": "skipped",
+              "started_at": "2026-10-29T14:08:00Z",
+              "completed_at": "2026-10-29T14:08:00Z"
+            },
+            {
+              "name": "Free up disk space",
+              "number": 4,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T14:08:00Z",
+              "completed_at": "2026-10-29T14:09:33Z"
+            },
+            {
+              "name": "Build wheel",
+              "number": 5,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T14:09:33Z",
+              "completed_at": "2026-10-29T15:00:03Z"
+            },
+            {
+              "name": "Set up Python 3.11",
+              "number": 6,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T15:00:03Z",
+              "completed_at": "2026-10-29T15:00:10Z"
+            },
+            {
+              "name": "Repair wheels with auditwheel",
+              "number": 7,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T15:00:10Z",
+              "completed_at": "2026-10-29T15:00:12Z"
+            },
+            {
+              "name": "Verify automatic platform tags",
+              "number": 8,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T15:00:12Z",
+              "completed_at": "2026-10-29T15:00:13Z"
+            },
+            {
+              "name": "Generate variant wheels",
+              "number": 9,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T15:00:13Z",
+              "completed_at": "2026-10-29T15:00:18Z"
+            },
+            {
+              "name": "Archive wheel",
+              "number": 10,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T15:00:18Z",
+              "completed_at": "2026-10-29T15:00:21Z"
+            },
+            {
+              "name": "Post Set up Python 3.11",
+              "number": 19,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T15:00:21Z",
+              "completed_at": "2026-10-29T15:00:21Z"
+            },
+            {
+              "name": "Post checkout vllm-ascend",
+              "number": 20,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T15:00:21Z",
+              "completed_at": "2026-10-29T15:00:21Z"
+            },
+            {
+              "name": "Complete job",
+              "number": 21,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T15:00:21Z",
+              "completed_at": "2026-10-29T15:00:21Z"
+            }
+          ],
+          "url": "https://github.com/vllm-project/vllm-ascend/actions/runs/40888310830/job/123688451238"
+        },
+        {
+          "id": 123688455150,
+          "name": "build and release wheel (A3) (ubuntu-24.04, 3.10)",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-29T14:09:05Z",
+          "completed_at": "2026-10-29T15:32:33Z",
+          "runner_name": "GitHub Actions 1001724546",
+          "runner_group": "GitHub Actions",
+          "steps": [
+            {
+              "name": "Set up job",
+              "number": 1,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T14:09:06Z",
+              "completed_at": "2026-10-29T14:09:07Z"
+            },
+            {
+              "name": "checkout vllm-ascend",
+              "number": 2,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T14:09:07Z",
+              "completed_at": "2026-10-29T14:09:32Z"
+            },
+            {
+              "name": "checkout vllm-ascend ",
+              "number": 3,
+              "status": "completed",
+              "conclusion": "skipped",
+              "started_at": "2026-10-29T14:09:32Z",
+              "completed_at": "2026-10-29T14:09:32Z"
+            },
+            {
+              "name": "Free up disk space",
+              "number": 4,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T14:09:32Z",
+              "completed_at": "2026-10-29T14:12:49Z"
+            },
+            {
+              "name": "Build wheel",
+              "number": 5,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T14:12:49Z",
+              "completed_at": "2026-10-29T15:32:12Z"
+            },
+            {
+              "name": "Set up Python 3.10",
+              "number": 6,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T15:32:12Z",
+              "completed_at": "2026-10-29T15:32:17Z"
+            },
+            {
+              "name": "Repair wheels with auditwheel",
+              "number": 7,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T15:32:17Z",
+              "completed_at": "2026-10-29T15:32:22Z"
+            },
+            {
+              "name": "Verify automatic platform tags",
+              "number": 8,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T15:32:22Z",
+              "completed_at": "2026-10-29T15:32:23Z"
+            },
+            {
+              "name": "Generate variant wheels",
+              "number": 9,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T15:32:23Z",
+              "completed_at": "2026-10-29T15:32:28Z"
+            },
+            {
+              "name": "Archive wheel",
+              "number": 10,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T15:32:28Z",
+              "completed_at": "2026-10-29T15:32:31Z"
+            },
+            {
+              "name": "Post Set up Python 3.10",
+              "number": 19,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T15:32:31Z",
+              "completed_at": "2026-10-29T15:32:31Z"
+            },
+            {
+              "name": "Post checkout vllm-ascend",
+              "number": 20,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T15:32:31Z",
+              "completed_at": "2026-10-29T15:32:31Z"
+            },
+            {
+              "name": "Complete job",
+              "number": 21,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T15:32:31Z",
+              "completed_at": "2026-10-29T15:32:31Z"
+            }
+          ],
+          "url": "https://github.com/vllm-project/vllm-ascend/actions/runs/40888310830/job/123688455150"
+        },
+        {
+          "id": 123688457708,
+          "name": "build and release wheel (310P) (ubuntu-24.04-arm, 3.12)",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-29T14:58:12Z",
+          "completed_at": "2026-10-29T15:22:29Z",
+          "runner_name": "GitHub Actions 1001724662",
+          "runner_group": "GitHub Actions",
+          "steps": [
+            {
+              "name": "Set up job",
+              "number": 1,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T14:58:12Z",
+              "completed_at": "2026-10-29T14:58:13Z"
+            },
+            {
+              "name": "checkout vllm-ascend",
+              "number": 2,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T14:58:13Z",
+              "completed_at": "2026-10-29T14:58:38Z"
+            },
+            {
+              "name": "checkout vllm-ascend ",
+              "number": 3,
+              "status": "completed",
+              "conclusion": "skipped",
+              "started_at": "2026-10-29T14:58:38Z",
+              "completed_at": "2026-10-29T14:58:38Z"
+            },
+            {
+              "name": "Free up disk space",
+              "number": 4,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T14:58:38Z",
+              "completed_at": "2026-10-29T14:59:49Z"
+            },
+            {
+              "name": "Build wheel",
+              "number": 5,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T14:59:49Z",
+              "completed_at": "2026-10-29T15:22:12Z"
+            },
+            {
+              "name": "Set up Python 3.12",
+              "number": 6,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T15:22:12Z",
+              "completed_at": "2026-10-29T15:22:18Z"
+            },
+            {
+              "name": "Repair wheels with auditwheel",
+              "number": 7,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T15:22:18Z",
+              "completed_at": "2026-10-29T15:22:21Z"
+            },
+            {
+              "name": "Verify automatic platform tags",
+              "number": 8,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T15:22:21Z",
+              "completed_at": "2026-10-29T15:22:22Z"
+            },
+            {
+              "name": "Generate variant wheels",
+              "number": 9,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T15:22:22Z",
+              "completed_at": "2026-10-29T15:22:25Z"
+            },
+            {
+              "name": "Archive wheel",
+              "number": 10,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T15:22:25Z",
+              "completed_at": "2026-10-29T15:22:27Z"
+            },
+            {
+              "name": "Post Set up Python 3.12",
+              "number": 19,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T15:22:27Z",
+              "completed_at": "2026-10-29T15:22:27Z"
+            },
+            {
+              "name": "Post checkout vllm-ascend",
+              "number": 20,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T15:22:27Z",
+              "completed_at": "2026-10-29T15:22:27Z"
+            },
+            {
+              "name": "Complete job",
+              "number": 21,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T15:22:27Z",
+              "completed_at": "2026-10-29T15:22:27Z"
+            }
+          ],
+          "url": "https://github.com/vllm-project/vllm-ascend/actions/runs/40888310830/job/123688457708"
+        },
+        {
+          "id": 123688468197,
+          "name": "build and release wheel (310P) (ubuntu-24.04, 3.10)",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-29T16:51:16Z",
+          "completed_at": "2026-10-29T17:19:49Z",
+          "runner_name": "GitHub Actions 1001724855",
+          "runner_group": "GitHub Actions",
+          "steps": [
+            {
+              "name": "Set up job",
+              "number": 1,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T16:51:17Z",
+              "completed_at": "2026-10-29T16:51:18Z"
+            },
+            {
+              "name": "checkout vllm-ascend",
+              "number": 2,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T16:51:18Z",
+              "completed_at": "2026-10-29T16:51:48Z"
+            },
+            {
+              "name": "checkout vllm-ascend ",
+              "number": 3,
+              "status": "completed",
+              "conclusion": "skipped",
+              "started_at": "2026-10-29T16:51:48Z",
+              "completed_at": "2026-10-29T16:51:48Z"
+            },
+            {
+              "name": "Free up disk space",
+              "number": 4,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T16:51:48Z",
+              "completed_at": "2026-10-29T16:53:38Z"
+            },
+            {
+              "name": "Build wheel",
+              "number": 5,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T16:53:38Z",
+              "completed_at": "2026-10-29T17:19:24Z"
+            },
+            {
+              "name": "Set up Python 3.10",
+              "number": 6,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T17:19:24Z",
+              "completed_at": "2026-10-29T17:19:31Z"
+            },
+            {
+              "name": "Repair wheels with auditwheel",
+              "number": 7,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T17:19:31Z",
+              "completed_at": "2026-10-29T17:19:35Z"
+            },
+            {
+              "name": "Verify automatic platform tags",
+              "number": 8,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T17:19:35Z",
+              "completed_at": "2026-10-29T17:19:36Z"
+            },
+            {
+              "name": "Generate variant wheels",
+              "number": 9,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T17:19:36Z",
+              "completed_at": "2026-10-29T17:19:44Z"
+            },
+            {
+              "name": "Archive wheel",
+              "number": 10,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T17:19:44Z",
+              "completed_at": "2026-10-29T17:19:46Z"
+            },
+            {
+              "name": "Post Set up Python 3.10",
+              "number": 19,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T17:19:46Z",
+              "completed_at": "2026-10-29T17:19:47Z"
+            },
+            {
+              "name": "Post checkout vllm-ascend",
+              "number": 20,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T17:19:47Z",
+              "completed_at": "2026-10-29T17:19:47Z"
+            },
+            {
+              "name": "Complete job",
+              "number": 21,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T17:19:47Z",
+              "completed_at": "2026-10-29T17:19:47Z"
+            }
+          ],
+          "url": "https://github.com/vllm-project/vllm-ascend/actions/runs/40888310830/job/123688468197"
+        },
+        {
+          "id": 123688477490,
+          "name": "build and release wheel (A3) (ubuntu-24.04-arm, 3.10)",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-29T14:16:00Z",
+          "completed_at": "2026-10-29T16:19:34Z",
+          "runner_name": "GitHub Actions 1001724591",
+          "runner_group": "GitHub Actions",
+          "steps": [
+            {
+              "name": "Set up job",
+              "number": 1,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T14:16:01Z",
+              "completed_at": "2026-10-29T14:16:02Z"
+            },
+            {
+              "name": "checkout vllm-ascend",
+              "number": 2,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T14:16:02Z",
+              "completed_at": "2026-10-29T14:16:23Z"
+            },
+            {
+              "name": "checkout vllm-ascend ",
+              "number": 3,
+              "status": "completed",
+              "conclusion": "skipped",
+              "started_at": "2026-10-29T14:16:23Z",
+              "completed_at": "2026-10-29T14:16:23Z"
+            },
+            {
+              "name": "Free up disk space",
+              "number": 4,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T14:16:23Z",
+              "completed_at": "2026-10-29T14:17:48Z"
+            },
+            {
+              "name": "Build wheel",
+              "number": 5,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T14:17:48Z",
+              "completed_at": "2026-10-29T16:19:07Z"
+            },
+            {
+              "name": "Set up Python 3.10",
+              "number": 6,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T16:19:07Z",
+              "completed_at": "2026-10-29T16:19:13Z"
+            },
+            {
+              "name": "Repair wheels with auditwheel",
+              "number": 7,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T16:19:13Z",
+              "completed_at": "2026-10-29T16:19:20Z"
+            },
+            {
+              "name": "Verify automatic platform tags",
+              "number": 8,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T16:19:20Z",
+              "completed_at": "2026-10-29T16:19:21Z"
+            },
+            {
+              "name": "Generate variant wheels",
+              "number": 9,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T16:19:21Z",
+              "completed_at": "2026-10-29T16:19:28Z"
+            },
+            {
+              "name": "Archive wheel",
+              "number": 10,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T16:19:28Z",
+              "completed_at": "2026-10-29T16:19:31Z"
+            },
+            {
+              "name": "Post Set up Python 3.10",
+              "number": 19,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T16:19:31Z",
+              "completed_at": "2026-10-29T16:19:31Z"
+            },
+            {
+              "name": "Post checkout vllm-ascend",
+              "number": 20,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T16:19:31Z",
+              "completed_at": "2026-10-29T16:19:31Z"
+            },
+            {
+              "name": "Complete job",
+              "number": 21,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T16:19:31Z",
+              "completed_at": "2026-10-29T16:19:31Z"
+            }
+          ],
+          "url": "https://github.com/vllm-project/vllm-ascend/actions/runs/40888310830/job/123688477490"
+        },
+        {
+          "id": 123688479752,
+          "name": "build and release wheel (A3) (ubuntu-24.04, 3.11)",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-29T14:24:56Z",
+          "completed_at": "2026-10-29T16:53:58Z",
+          "runner_name": "GitHub Actions 1001724617",
+          "runner_group": "GitHub Actions",
+          "steps": [
+            {
+              "name": "Set up job",
+              "number": 1,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T14:24:57Z",
+              "completed_at": "2026-10-29T14:24:58Z"
+            },
+            {
+              "name": "checkout vllm-ascend",
+              "number": 2,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T14:24:58Z",
+              "completed_at": "2026-10-29T14:25:24Z"
+            },
+            {
+              "name": "checkout vllm-ascend ",
+              "number": 3,
+              "status": "completed",
+              "conclusion": "skipped",
+              "started_at": "2026-10-29T14:25:24Z",
+              "completed_at": "2026-10-29T14:25:24Z"
+            },
+            {
+              "name": "Free up disk space",
+              "number": 4,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T14:25:24Z",
+              "completed_at": "2026-10-29T14:28:18Z"
+            },
+            {
+              "name": "Build wheel",
+              "number": 5,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T14:28:18Z",
+              "completed_at": "2026-10-29T16:53:28Z"
+            },
+            {
+              "name": "Set up Python 3.11",
+              "number": 6,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T16:53:28Z",
+              "completed_at": "2026-10-29T16:53:35Z"
+            },
+            {
+              "name": "Repair wheels with auditwheel",
+              "number": 7,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T16:53:35Z",
+              "completed_at": "2026-10-29T16:53:44Z"
+            },
+            {
+              "name": "Verify automatic platform tags",
+              "number": 8,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T16:53:44Z",
+              "completed_at": "2026-10-29T16:53:46Z"
+            },
+            {
+              "name": "Generate variant wheels",
+              "number": 9,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T16:53:46Z",
+              "completed_at": "2026-10-29T16:53:52Z"
+            },
+            {
+              "name": "Archive wheel",
+              "number": 10,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T16:53:52Z",
+              "completed_at": "2026-10-29T16:53:55Z"
+            },
+            {
+              "name": "Post Set up Python 3.11",
+              "number": 19,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T16:53:55Z",
+              "completed_at": "2026-10-29T16:53:55Z"
+            },
+            {
+              "name": "Post checkout vllm-ascend",
+              "number": 20,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T16:53:55Z",
+              "completed_at": "2026-10-29T16:53:55Z"
+            },
+            {
+              "name": "Complete job",
+              "number": 21,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T16:53:55Z",
+              "completed_at": "2026-10-29T16:53:56Z"
+            }
+          ],
+          "url": "https://github.com/vllm-project/vllm-ascend/actions/runs/40888310830/job/123688479752"
+        },
+        {
+          "id": 123688480522,
+          "name": "build and release wheel (ubuntu-24.04, 3.12)",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-29T14:12:13Z",
+          "completed_at": "2026-10-29T16:09:40Z",
+          "runner_name": "GitHub Actions 1001724561",
+          "runner_group": "GitHub Actions",
+          "steps": [
+            {
+              "name": "Set up job",
+              "number": 1,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T14:12:14Z",
+              "completed_at": "2026-10-29T14:12:15Z"
+            },
+            {
+              "name": "checkout vllm-ascend",
+              "number": 2,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T14:12:15Z",
+              "completed_at": "2026-10-29T14:12:39Z"
+            },
+            {
+              "name": "checkout vllm-ascend ",
+              "number": 3,
+              "status": "completed",
+              "conclusion": "skipped",
+              "started_at": "2026-10-29T14:12:39Z",
+              "completed_at": "2026-10-29T14:12:39Z"
+            },
+            {
+              "name": "Free up disk space",
+              "number": 4,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T14:12:39Z",
+              "completed_at": "2026-10-29T14:14:21Z"
+            },
+            {
+              "name": "Build wheel",
+              "number": 5,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T14:14:21Z",
+              "completed_at": "2026-10-29T16:09:05Z"
+            },
+            {
+              "name": "Set up Python 3.12",
+              "number": 6,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T16:09:05Z",
+              "completed_at": "2026-10-29T16:09:12Z"
+            },
+            {
+              "name": "Repair wheels with auditwheel",
+              "number": 7,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T16:09:12Z",
+              "completed_at": "2026-10-29T16:09:19Z"
+            },
+            {
+              "name": "Verify automatic platform tags",
+              "number": 8,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T16:09:19Z",
+              "completed_at": "2026-10-29T16:09:20Z"
+            },
+            {
+              "name": "Generate variant wheels",
+              "number": 9,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T16:09:20Z",
+              "completed_at": "2026-10-29T16:09:27Z"
+            },
+            {
+              "name": "Archive wheel",
+              "number": 10,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T16:09:27Z",
+              "completed_at": "2026-10-29T16:09:30Z"
+            },
+            {
+              "name": "Release",
+              "number": 11,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T16:09:30Z",
+              "completed_at": "2026-10-29T16:09:37Z"
+            },
+            {
+              "name": "Post Set up Python 3.12",
+              "number": 21,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T16:09:37Z",
+              "completed_at": "2026-10-29T16:09:37Z"
+            },
+            {
+              "name": "Post checkout vllm-ascend",
+              "number": 22,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T16:09:37Z",
+              "completed_at": "2026-10-29T16:09:37Z"
+            },
+            {
+              "name": "Complete job",
+              "number": 23,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T16:09:37Z",
+              "completed_at": "2026-10-29T16:09:37Z"
+            }
+          ],
+          "url": "https://github.com/vllm-project/vllm-ascend/actions/runs/40888310830/job/123688480522"
+        },
+        {
+          "id": 123688485090,
+          "name": "release code (3.12)",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-29T14:07:29Z",
+          "completed_at": "2026-10-29T14:14:18Z",
+          "runner_name": "linux-amd64-cpu-8-hk-7mfx2-runner-b6t9z",
+          "runner_group": "Default",
+          "steps": [
+            {
+              "name": "Set up job",
+              "number": 1,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T14:07:31Z",
+              "completed_at": "2026-10-29T14:07:40Z"
+            },
+            {
+              "name": "checkout vllm-ascend",
+              "number": 2,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T14:07:40Z",
+              "completed_at": "2026-10-29T14:08:33Z"
+            },
+            {
+              "name": "checkout vllm-ascend ",
+              "number": 3,
+              "status": "completed",
+              "conclusion": "skipped",
+              "started_at": "2026-10-29T14:08:33Z",
+              "completed_at": "2026-10-29T14:08:33Z"
+            },
+            {
+              "name": "Print",
+              "number": 4,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T14:08:33Z",
+              "completed_at": "2026-10-29T14:08:33Z"
+            },
+            {
+              "name": "Set up Python 3.12",
+              "number": 5,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T14:08:33Z",
+              "completed_at": "2026-10-29T14:11:13Z"
+            },
+            {
+              "name": "Install dependencies",
+              "number": 6,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T14:11:13Z",
+              "completed_at": "2026-10-29T14:11:43Z"
+            },
+            {
+              "name": "Generate tar.gz",
+              "number": 7,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T14:11:43Z",
+              "completed_at": "2026-10-29T14:13:11Z"
+            },
+            {
+              "name": "Archive tar.gz",
+              "number": 8,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T14:13:11Z",
+              "completed_at": "2026-10-29T14:13:17Z"
+            },
+            {
+              "name": "Release",
+              "number": 9,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T14:13:17Z",
+              "completed_at": "2026-10-29T14:13:59Z"
+            },
+            {
+              "name": "Post Set up Python 3.12",
+              "number": 17,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T14:13:59Z",
+              "completed_at": "2026-10-29T14:13:59Z"
+            },
+            {
+              "name": "Post checkout vllm-ascend",
+              "number": 18,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T14:13:59Z",
+              "completed_at": "2026-10-29T14:13:59Z"
+            },
+            {
+              "name": "Complete job",
+              "number": 19,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T14:13:59Z",
+              "completed_at": "2026-10-29T14:13:59Z"
+            }
+          ],
+          "url": "https://github.com/vllm-project/vllm-ascend/actions/runs/40888310830/job/123688485090"
+        },
+        {
+          "id": 123688486596,
+          "name": "build and release wheel (ubuntu-24.04, 3.10)",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-29T16:04:21Z",
+          "completed_at": "2026-10-29T18:25:03Z",
+          "runner_name": "GitHub Actions 1001724764",
+          "runner_group": "GitHub Actions",
+          "steps": [
+            {
+              "name": "Set up job",
+              "number": 1,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T16:04:22Z",
+              "completed_at": "2026-10-29T16:04:23Z"
+            },
+            {
+              "name": "checkout vllm-ascend",
+              "number": 2,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T16:04:23Z",
+              "completed_at": "2026-10-29T16:04:45Z"
+            },
+            {
+              "name": "checkout vllm-ascend ",
+              "number": 3,
+              "status": "completed",
+              "conclusion": "skipped",
+              "started_at": "2026-10-29T16:04:45Z",
+              "completed_at": "2026-10-29T16:04:45Z"
+            },
+            {
+              "name": "Free up disk space",
+              "number": 4,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T16:04:45Z",
+              "completed_at": "2026-10-29T16:07:02Z"
+            },
+            {
+              "name": "Build wheel",
+              "number": 5,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T16:07:02Z",
+              "completed_at": "2026-10-29T18:24:24Z"
+            },
+            {
+              "name": "Set up Python 3.10",
+              "number": 6,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T18:24:24Z",
+              "completed_at": "2026-10-29T18:24:31Z"
+            },
+            {
+              "name": "Repair wheels with auditwheel",
+              "number": 7,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T18:24:31Z",
+              "completed_at": "2026-10-29T18:24:40Z"
+            },
+            {
+              "name": "Verify automatic platform tags",
+              "number": 8,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T18:24:40Z",
+              "completed_at": "2026-10-29T18:24:42Z"
+            },
+            {
+              "name": "Generate variant wheels",
+              "number": 9,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T18:24:42Z",
+              "completed_at": "2026-10-29T18:24:48Z"
+            },
+            {
+              "name": "Archive wheel",
+              "number": 10,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T18:24:48Z",
+              "completed_at": "2026-10-29T18:24:52Z"
+            },
+            {
+              "name": "Release",
+              "number": 11,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T18:24:52Z",
+              "completed_at": "2026-10-29T18:25:00Z"
+            },
+            {
+              "name": "Post Set up Python 3.10",
+              "number": 21,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T18:25:00Z",
+              "completed_at": "2026-10-29T18:25:00Z"
+            },
+            {
+              "name": "Post checkout vllm-ascend",
+              "number": 22,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T18:25:00Z",
+              "completed_at": "2026-10-29T18:25:00Z"
+            },
+            {
+              "name": "Complete job",
+              "number": 23,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T18:25:00Z",
+              "completed_at": "2026-10-29T18:25:01Z"
+            }
+          ],
+          "url": "https://github.com/vllm-project/vllm-ascend/actions/runs/40888310830/job/123688486596"
+        },
+        {
+          "id": 123740745091,
+          "name": "generate and upload variant index",
+          "status": "completed",
+          "conclusion": "skipped",
+          "started_at": "2026-10-29T21:23:12Z",
+          "completed_at": "2026-10-29T21:23:11Z",
+          "runner_name": null,
+          "runner_group": null,
+          "steps": [],
+          "url": "https://github.com/vllm-project/vllm-ascend/actions/runs/40888310830/job/123740745091"
+        }
+      ],
+      "failed_jobs": [
+        {
+          "id": 123688399967,
+          "name": "build and release wheel (A5) (ubuntu-24.04, 3.10)",
+          "status": "completed",
+          "conclusion": "failure",
+          "started_at": "2026-10-29T19:41:09Z",
+          "completed_at": "2026-10-29T21:21:45Z",
+          "runner_name": "GitHub Actions 1001725796",
+          "runner_group": "GitHub Actions",
+          "steps": [
+            {
+              "name": "Set up job",
+              "number": 1,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T19:41:10Z",
+              "completed_at": "2026-10-29T19:41:11Z"
+            },
+            {
+              "name": "checkout vllm-ascend",
+              "number": 2,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T19:41:11Z",
+              "completed_at": "2026-10-29T19:41:33Z"
+            },
+            {
+              "name": "checkout vllm-ascend ",
+              "number": 3,
+              "status": "completed",
+              "conclusion": "skipped",
+              "started_at": "2026-10-29T19:41:33Z",
+              "completed_at": "2026-10-29T19:41:33Z"
+            },
+            {
+              "name": "Free up disk space",
+              "number": 4,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T19:41:33Z",
+              "completed_at": "2026-10-29T19:43:50Z"
+            },
+            {
+              "name": "Build wheel",
+              "number": 5,
+              "status": "completed",
+              "conclusion": "failure",
+              "started_at": "2026-10-29T19:43:50Z",
+              "completed_at": "2026-10-29T21:21:43Z"
+            },
+            {
+              "name": "Set up Python 3.10",
+              "number": 6,
+              "status": "completed",
+              "conclusion": "skipped",
+              "started_at": "2026-10-29T21:21:43Z",
+              "completed_at": "2026-10-29T21:21:43Z"
+            },
+            {
+              "name": "Repair wheels with auditwheel",
+              "number": 7,
+              "status": "completed",
+              "conclusion": "skipped",
+              "started_at": "2026-10-29T21:21:43Z",
+              "completed_at": "2026-10-29T21:21:43Z"
+            },
+            {
+              "name": "Verify automatic platform tags",
+              "number": 8,
+              "status": "completed",
+              "conclusion": "skipped",
+              "started_at": "2026-10-29T21:21:43Z",
+              "completed_at": "2026-10-29T21:21:43Z"
+            },
+            {
+              "name": "Generate variant wheels",
+              "number": 9,
+              "status": "completed",
+              "conclusion": "skipped",
+              "started_at": "2026-10-29T21:21:43Z",
+              "completed_at": "2026-10-29T21:21:43Z"
+            },
+            {
+              "name": "Archive wheel",
+              "number": 10,
+              "status": "completed",
+              "conclusion": "skipped",
+              "started_at": "2026-10-29T21:21:43Z",
+              "completed_at": "2026-10-29T21:21:43Z"
+            },
+            {
+              "name": "Post checkout vllm-ascend",
+              "number": 20,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T21:21:43Z",
+              "completed_at": "2026-10-29T21:21:43Z"
+            },
+            {
+              "name": "Complete job",
+              "number": 21,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-10-29T21:21:43Z",
+              "completed_at": "2026-10-29T21:21:43Z"
+            }
+          ],
+          "url": "https://github.com/vllm-project/vllm-ascend/actions/runs/40888310830/job/123688399967",
+          "log_excerpt": "2026-10-29T19:48:33.3848824Z #9 118.2     Uninstalling scipy-1.15.3:\n2026-10-29T19:48:33.3849648Z #9 118.2       Successfully uninstalled scipy-1.15.3\n2026-10-29T19:49:03.3728214Z #9 148.4 \n2026-10-29T19:49:03.5343418Z #9 148.4 ERROR: pip's dependency resolver does not currently take into account all the packages that are installed. This behaviour is the source of the following dependency conflicts.\n2026-10-29T19:49:03.5344149Z #9 148.4 cann-ops-nn 1.0.1 requires ninja, which is not installed.\n2026-10-29T19:49:03.5344416Z #9 148.4 cannsim 0.1.0 requires plotly, which is not installed.\n2026-10-29T19:49:03.5344805Z #9 148.4 mindstudio-kpp 26.2.0 requires plotly>=5.11.0, which is not installed.\n...\n2026-10-29T21:21:42.7575559Z #10 5549.2 [ops_custom] [2026-10-29 21:21:42] [INFO] create /workspace/vllm-ascend/vllm_ascend/_cann_ops_custom/vendors.\n2026-10-29T21:21:42.7576095Z #10 5549.2 [ops_custom] [2026-10-29 21:21:42] [INFO] create /workspace/vllm-ascend/vllm_ascend/_cann_ops_custom/vendors/custom_transformer.\n2026-10-29T21:21:42.7576521Z #10 5549.2 [ops_custom] [2026-10-29 21:21:42] [INFO] validate shared libraries before installation\n2026-10-29T21:21:42.7577152Z #10 5549.3 [ops_custom] [2026-10-29 21:21:42] [ERROR] Failed to load libcust_opmaster_rt2.0.so wish env ASCEND_HOME_PATH(/usr/local/Ascend/cann-9.2.1),error message is liboptiling.so: cannot open shared object file: No such file or directory.\n2026-10-29T21:21:42.7578018Z #10 5549.3 [ops_custom] [2026-10-29 21:21:42] [ERROR] Shared library validation failed. To skip this validation and continue installation, run this package again with --force.\n2026-10-29T21:21:42.7578388Z #10 5549.3 Running bash build_aclnn.sh ...\n2026-10-29T21:21:42.7578826Z #10 5549.3 Error running build_aclnn.sh: Command '['bash', 'csrc/build_aclnn.sh', '/workspace/vllm-ascend', 'ascend950dt_9582']' returned non-zero exit status 1.\n2026-10-29T21:21:43.5008630Z #10 5550.1 /detail/kfc/../../../../include/adv_api/matmul/../../../impl/adv_api/detail/matmul/../../../../include/basic_api/kernel_tensor.h:192:23: warning: candidate function not viable: callee function can only call callee function; called from GetTile\n...\n2026-10-29T21:21:43.6062919Z #10 5550.1    15 |     \"Warning: ge_error_codes.h is deprecated and will be removed after 2027-06. Include \\\"graph/error_codes.h\\\" instead.\")\n2026-10-29T21:21:43.6063030Z #10 5550.1       |                                                                                                                          ^\n2026-10-29T21:21:43.6063405Z #10 5550.1      0% \b\b\b\b\b\b\b   18% \b\b\b\b\b\b\b   37% \b\b\b\b\b\b\b   55% \b\b\b\b\b\b\b   74% \b\b\b\b\b\b\b   93% \b\b\b\b\b\b\b 100%   SHA256 checksums are OK.     0% \b\b\b\b\b\b\b   18% \b\b\b\b\b\b\b   37% \b\b\b\b\b\b\b   55% \b\b\b\b\b\b\b   74% \b\b\b\b\b\b\b   93% \b\b\b\b\b\b\b 100%  \n2026-10-29T21:21:43.6064203Z #10 ERROR: process \"/bin/bash -c source /usr/local/Ascend/ascend-toolkit/set_env.sh &&     source /usr/local/Ascend/nnal/atb/set_env.sh &&     export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/Ascend/ascend-toolkit/latest/`uname -i`-linux/devlib &&     cd vllm-ascend &&     python3 setup.py bdist_wheel &&     ls -l dist\" did not complete successfully: exit code: 1\n2026-10-29T21:21:43.6064273Z ------\n2026-10-29T21:21:43.6066596Z  > [6/6] RUN source /usr/local/Ascend/ascend-toolkit/set_env.sh &&     source /usr/local/Ascend/nnal/atb/set_env.sh &&     export LD_LIBRARY_PATH=/usr/local/Ascend/cann-9.2.1/lib64:/usr/local/Ascend/cann-9.2.1/lib64/plugin/opskernel:/usr/local/Ascend/cann-9.2.1/lib64/plugin/nnengine:/usr/local/Ascend/cann-9.2.1/opp/built-in/op_impl/ai_core/tbe/op_tiling:/usr/local/Ascend/driver/lib64:/usr/local/Ascend/driver/lib64/common:/usr/local/Ascend/driver/lib64/driver:/usr/local/Ascend/nnal/atb/latest/atb/cxx_abi_1/lib:/usr/local/Ascend/nnal/atb/latest/atb/cxx_abi_1/examples:/usr/local/Ascend/nnal/atb/latest/atb/cxx_abi_1/tests/atbopstest:/usr/local/Ascend/ascend-toolkit/latest/tools/aml/lib64:/usr/local/Ascend/ascend-toolkit/latest/tools/aml/lib64/plugin:/usr/local/Ascend/ascend-toolkit/latest/lib64:/usr/local/Ascend/ascend-toolkit/latest/lib64/plugin/opskernel:/usr/local/Ascend/ascend-toolkit/latest/lib64/plugin/nnengine:/usr/local/Ascend/ascend-toolkit/latest/opp/built-in/op_impl/ai_core/tbe/op_tiling:/opt/rh/gcc-toolset-14/root/usr/lib64:/opt/rh/gcc-toolset-14/root/usr/lib:/opt/rh/gcc-toolset-14/root/usr/lib64/dyninst:/opt/rh/gcc-toolset-14/root/usr/lib/dyninst:/usr/local/Ascend/ascend-toolkit/latest/`uname -i`-linux/devlib &&     cd vllm-ascend &&     python3 setup.py bdist_wheel &&     ls -l dist:\n2026-10-29T21:21:43.6066925Z 5550.1      0% \b\b\b\b\b\b\b   18% \b\b\b\b\b\b\b   37% \b\b\b\b\b\b\b   55% \b\b\b\b\b\b\b   74% \b\b\b\b\b\b\b   93% \b\b\b\b\b\b\b 100%   SHA256 checksums are OK.     0% \b\b\b\b\b\b\b   18% \b\b\b\b\b\b\b   37% \b\b\b\b\b\b\b   55% \b\b\b\b\b\b\b   74% \b\b\b\b\b\b\b   93% \b\b\b\b\b\b\b 100%  \n...\n2026-10-29T21:21:43.6067165Z 5549.2 [ops_custom] [2026-10-29 21:21:42] [INFO] create /workspace/vllm-ascend/vllm_ascend/_cann_ops_custom/vendors.\n2026-10-29T21:21:43.6067401Z 5549.2 [ops_custom] [2026-10-29 21:21:42] [INFO] create /workspace/vllm-ascend/vllm_ascend/_cann_ops_custom/vendors/custom_transformer.\n2026-10-29T21:21:43.6067529Z 5549.2 [ops_custom] [2026-10-29 21:21:42] [INFO] validate shared libraries before installation\n2026-10-29T21:21:43.6067905Z 5549.3 [ops_custom] [2026-10-29 21:21:42] [ERROR] Failed to load libcust_opmaster_rt2.0.so wish env ASCEND_HOME_PATH(/usr/local/Ascend/cann-9.2.1),error message is liboptiling.so: cannot open shared object file: No such file or directory.\n2026-10-29T21:21:43.6068174Z 5549.3 [ops_custom] [2026-10-29 21:21:42] [ERROR] Shared library validation failed. To skip this validation and continue installation, run this package again with --force.\n2026-10-29T21:21:43.6068235Z 5549.3 Running bash build_aclnn.sh ...\n2026-10-29T21:21:43.6068515Z 5549.3 Error running build_aclnn.sh: Command '['bash', 'csrc/build_aclnn.sh', '/workspace/vllm-ascend', 'ascend950dt_9582']' returned non-zero exit status 1.\n2026-10-29T21:21:43.6068559Z ------\n...\n2026-10-29T21:21:43.6069444Z   46 | >>>     ls -l dist\n2026-10-29T21:21:43.6069513Z   47 |     \n2026-10-29T21:21:43.6069564Z --------------------\n2026-10-29T21:21:43.6070195Z ERROR: failed to build: failed to solve: process \"/bin/bash -c source /usr/local/Ascend/ascend-toolkit/set_env.sh &&     source /usr/local/Ascend/nnal/atb/set_env.sh &&     export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/Ascend/ascend-toolkit/latest/`uname -i`-linux/devlib &&     cd vllm-ascend &&     python3 setup.py bdist_wheel &&     ls -l dist\" did not complete successfully: exit code: 1\n2026-10-29T21:21:43.6080782Z ##[error]Process completed with exit code 1.\n2026-10-29T21:21:43.6197170Z Post job cleanup.\n...\n2026-10-29T21:21:43.6933957Z git version 2.56.0",
+          "log_url": "https://github.com/vllm-project/vllm-ascend/actions/runs/40888310830/job/123688399967"
+        }
+      ]
+    }
+  },
+  {
     "workflow_run_id": 40888305272,
     "workflow_name": "Docs link check",
-    "pr_number": 20284,
+    "pr_number": null,
     "pipeline_type": "pr",
     "classification": {
       "detected": true,
@@ -2386,7 +5646,7 @@
           ]
         }
       ],
-      "reasoning": "检测到代码问题模式: test_assertion, compilation。 问题出现在 PR #20284 代码中。 建议检查 PR 的代码修改和测试用例。",
+      "reasoning": "检测到代码问题模式: test_assertion, compilation。 建议检查 PR 的代码修改和测试用例。",
       "is_pr_code": true,
       "job_name": "Markdown link check",
       "job_id": 123497874682,
@@ -2411,16 +5671,7 @@
         "pipeline_type_label": "PR 流水线",
         "source": "event_pr"
       },
-      "pr": {
-        "number": 20284,
-        "title": "[Doc][Misc] Update GLM5.3-Flash tutorial with SSD offloading and configuration optimizations",
-        "author": "calyoung80",
-        "merged_at": null,
-        "merge_commit_sha": null,
-        "url": "",
-        "base_ref": "main",
-        "head_ref": ""
-      },
+      "pr": null,
       "jobs": [
         {
           "id": 123497874682,
@@ -2620,7 +5871,7 @@
   {
     "workflow_run_id": 40886977932,
     "workflow_name": "Docs link check",
-    "pr_number": 20284,
+    "pr_number": null,
     "pipeline_type": "pr",
     "classification": {
       "detected": true,
@@ -2647,7 +5898,7 @@
           ]
         }
       ],
-      "reasoning": "检测到代码问题模式: test_assertion, compilation。 问题出现在 PR #20284 代码中。 建议检查 PR 的代码修改和测试用例。",
+      "reasoning": "检测到代码问题模式: test_assertion, compilation。 建议检查 PR 的代码修改和测试用例。",
       "is_pr_code": true,
       "job_name": "Markdown link check",
       "job_id": 123493235743,
@@ -2672,16 +5923,7 @@
         "pipeline_type_label": "PR 流水线",
         "source": "event_pr"
       },
-      "pr": {
-        "number": 20284,
-        "title": "[Doc][Misc] Update GLM5.3-Flash tutorial with SSD offloading and configuration optimizations",
-        "author": "calyoung80",
-        "merged_at": null,
-        "merge_commit_sha": null,
-        "url": "",
-        "base_ref": "main",
-        "head_ref": ""
-      },
+      "pr": null,
       "jobs": [
         {
           "id": 123493235743,
@@ -2881,7 +6123,7 @@
   {
     "workflow_run_id": 40885080767,
     "workflow_name": "Docs link check",
-    "pr_number": 20284,
+    "pr_number": null,
     "pipeline_type": "pr",
     "classification": {
       "detected": true,
@@ -2908,7 +6150,7 @@
           ]
         }
       ],
-      "reasoning": "检测到代码问题模式: test_assertion, compilation。 问题出现在 PR #20284 代码中。 建议检查 PR 的代码修改和测试用例。",
+      "reasoning": "检测到代码问题模式: test_assertion, compilation。 建议检查 PR 的代码修改和测试用例。",
       "is_pr_code": true,
       "job_name": "Markdown link check",
       "job_id": 123486496016,
@@ -2933,16 +6175,7 @@
         "pipeline_type_label": "PR 流水线",
         "source": "event_pr"
       },
-      "pr": {
-        "number": 20284,
-        "title": "[Doc][Misc] Update GLM5.3-Flash tutorial with SSD offloading and configuration optimizations",
-        "author": "calyoung80",
-        "merged_at": null,
-        "merge_commit_sha": null,
-        "url": "",
-        "base_ref": "main",
-        "head_ref": ""
-      },
+      "pr": null,
       "jobs": [
         {
           "id": 123486496016,
@@ -3137,181 +6370,6 @@
           "log_url": "https://github.com/vllm-project/vllm-ascend/actions/runs/40885080767/job/123486496016"
         }
       ]
-    }
-  },
-  {
-    "workflow_run_id": 40884540757,
-    "workflow_name": "Docs link check",
-    "pr_number": null,
-    "pipeline_type": "pr",
-    "classification": {
-      "classification": "infrastructure",
-      "confidence": "low",
-      "category_detail": "无失败job信息",
-      "evidence": [],
-      "reasoning": "无法获取job详情，默认归类为基础设施问题"
-    },
-    "metadata": {
-      "workflow_run": {
-        "id": 40884540757,
-        "name": "Docs link check",
-        "workflow_id": 264532256,
-        "status": "completed",
-        "conclusion": "action_required",
-        "started_at": "2026-10-29T13:43:21Z",
-        "completed_at": "2026-10-29T13:43:21Z",
-        "head_sha": "a55e648ac0fff10c4ded5fc6b04181530bcb43a3",
-        "head_branch": "main",
-        "url": "https://github.com/vllm-project/vllm-ascend/actions/runs/40884540757",
-        "triggering_actor": "stella194ahsf-spec"
-      },
-      "pipeline_info": {
-        "pipeline_type": "pr",
-        "pipeline_type_label": "PR 流水线",
-        "source": "event_pr"
-      },
-      "pr": null,
-      "jobs": [],
-      "failed_jobs": []
-    }
-  },
-  {
-    "workflow_run_id": 40883808873,
-    "workflow_name": "Docs link check",
-    "pr_number": 20279,
-    "pipeline_type": "pr",
-    "classification": {
-      "classification": "infrastructure",
-      "confidence": "low",
-      "category_detail": "无失败job信息",
-      "evidence": [],
-      "reasoning": "无法获取job详情，默认归类为基础设施问题"
-    },
-    "metadata": {
-      "workflow_run": {
-        "id": 40883808873,
-        "name": "Docs link check",
-        "workflow_id": 264532256,
-        "status": "completed",
-        "conclusion": "success",
-        "started_at": "2026-10-29T13:38:35Z",
-        "completed_at": "2026-10-29T13:46:09Z",
-        "head_sha": "2e8592dd2626982757d55f56d34b91693d800722",
-        "head_branch": "dflash2_graph_1029",
-        "url": "https://github.com/vllm-project/vllm-ascend/actions/runs/40883808873",
-        "triggering_actor": "HF-001"
-      },
-      "pipeline_info": {
-        "pipeline_type": "pr",
-        "pipeline_type_label": "PR 流水线",
-        "source": "event_pr"
-      },
-      "pr": {
-        "number": 20279,
-        "title": "[Feature] add dflash2 acl graph",
-        "author": "HF-001",
-        "merged_at": null,
-        "merge_commit_sha": null,
-        "url": "",
-        "base_ref": "main",
-        "head_ref": ""
-      },
-      "jobs": [
-        {
-          "id": 123482043711,
-          "name": "Markdown link check",
-          "status": "completed",
-          "conclusion": "success",
-          "started_at": "2026-10-29T13:42:36Z",
-          "completed_at": "2026-10-29T13:46:09Z",
-          "runner_name": "linux-amd64-cpu-2-hk-8dnk5-runner-5t6rd",
-          "runner_group": "Default",
-          "steps": [
-            {
-              "name": "Set up job",
-              "number": 1,
-              "status": "completed",
-              "conclusion": "success",
-              "started_at": "2026-10-29T13:42:37Z",
-              "completed_at": "2026-10-29T13:42:44Z"
-            },
-            {
-              "name": "Initialize containers",
-              "number": 2,
-              "status": "completed",
-              "conclusion": "success",
-              "started_at": "2026-10-29T13:42:44Z",
-              "completed_at": "2026-10-29T13:45:37Z"
-            },
-            {
-              "name": "Checkout vllm-project/vllm-ascend repo",
-              "number": 3,
-              "status": "completed",
-              "conclusion": "success",
-              "started_at": "2026-10-29T13:45:37Z",
-              "completed_at": "2026-10-29T13:45:41Z"
-            },
-            {
-              "name": "Collect changed docs files",
-              "number": 4,
-              "status": "completed",
-              "conclusion": "success",
-              "started_at": "2026-10-29T13:45:41Z",
-              "completed_at": "2026-10-29T13:45:43Z"
-            },
-            {
-              "name": "Install docs dependencies",
-              "number": 5,
-              "status": "completed",
-              "conclusion": "success",
-              "started_at": "2026-10-29T13:45:43Z",
-              "completed_at": "2026-10-29T13:45:57Z"
-            },
-            {
-              "name": "Run full link check",
-              "number": 6,
-              "status": "completed",
-              "conclusion": "skipped",
-              "started_at": "2026-10-29T13:45:57Z",
-              "completed_at": "2026-10-29T13:45:57Z"
-            },
-            {
-              "name": "Run link check for changed docs",
-              "number": 7,
-              "status": "completed",
-              "conclusion": "success",
-              "started_at": "2026-10-29T13:45:57Z",
-              "completed_at": "2026-10-29T13:46:02Z"
-            },
-            {
-              "name": "Post Checkout vllm-project/vllm-ascend repo",
-              "number": 13,
-              "status": "completed",
-              "conclusion": "success",
-              "started_at": "2026-10-29T13:46:02Z",
-              "completed_at": "2026-10-29T13:46:03Z"
-            },
-            {
-              "name": "Stop containers",
-              "number": 14,
-              "status": "completed",
-              "conclusion": "success",
-              "started_at": "2026-10-29T13:46:03Z",
-              "completed_at": "2026-10-29T13:46:04Z"
-            },
-            {
-              "name": "Complete job",
-              "number": 15,
-              "status": "completed",
-              "conclusion": "success",
-              "started_at": "2026-10-29T13:46:04Z",
-              "completed_at": "2026-10-29T13:46:04Z"
-            }
-          ],
-          "url": "https://github.com/vllm-project/vllm-ascend/actions/runs/40883808873/job/123482043711"
-        }
-      ],
-      "failed_jobs": []
     }
   }
 ]
