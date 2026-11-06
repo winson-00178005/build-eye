@@ -1,5 +1,183 @@
 [
   {
+    "workflow_run_id": 41943348478,
+    "workflow_name": "Image build lint",
+    "pr_number": null,
+    "pipeline_type": "nightly",
+    "classification": {
+      "classification": "infrastructure",
+      "confidence": "low",
+      "category_detail": "无失败job信息",
+      "evidence": [],
+      "reasoning": "无法获取job详情，默认归类为基础设施问题"
+    },
+    "metadata": {
+      "workflow_run": {
+        "id": 41943348478,
+        "name": "Image build lint",
+        "workflow_id": 225921536,
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-11-05T00:42:42Z",
+        "completed_at": "2026-11-05T01:02:06Z",
+        "head_sha": "4a29682d1d8fa89df63a45dc4df2a2a8068984ff",
+        "head_branch": "main",
+        "url": "https://github.com/vllm-project/vllm-ascend/actions/runs/41943348478",
+        "triggering_actor": "wangxiyuan"
+      },
+      "pipeline_info": {
+        "pipeline_type": "nightly",
+        "pipeline_type_label": "每日定时",
+        "source": "event_fallback"
+      },
+      "pr": null,
+      "jobs": [
+        {
+          "id": 126969357257,
+          "name": "vllm-ascend lint image build",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-11-05T00:51:54Z",
+          "completed_at": "2026-11-05T01:02:05Z",
+          "runner_name": "GitHub Actions 1001758427",
+          "runner_group": "GitHub Actions",
+          "steps": [
+            {
+              "name": "Set up job",
+              "number": 1,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-11-05T00:51:55Z",
+              "completed_at": "2026-11-05T00:51:57Z"
+            },
+            {
+              "name": "Run actions/checkout@v7",
+              "number": 2,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-11-05T00:51:57Z",
+              "completed_at": "2026-11-05T00:52:04Z"
+            },
+            {
+              "name": "Print",
+              "number": 3,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-11-05T00:52:04Z",
+              "completed_at": "2026-11-05T00:52:04Z"
+            },
+            {
+              "name": "Docker meta",
+              "number": 4,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-11-05T00:52:04Z",
+              "completed_at": "2026-11-05T00:52:05Z"
+            },
+            {
+              "name": "Read verified vLLM commit",
+              "number": 5,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-11-05T00:52:05Z",
+              "completed_at": "2026-11-05T00:52:05Z"
+            },
+            {
+              "name": "Build - Set up QEMU",
+              "number": 6,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-11-05T00:52:05Z",
+              "completed_at": "2026-11-05T00:52:12Z"
+            },
+            {
+              "name": "Build - Set up Docker Buildx",
+              "number": 7,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-11-05T00:52:12Z",
+              "completed_at": "2026-11-05T00:52:17Z"
+            },
+            {
+              "name": "Publish - Login to Quay Container Registry",
+              "number": 8,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-11-05T00:52:17Z",
+              "completed_at": "2026-11-05T00:52:18Z"
+            },
+            {
+              "name": "Build and push",
+              "number": 9,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-11-05T00:52:18Z",
+              "completed_at": "2026-11-05T01:01:44Z"
+            },
+            {
+              "name": "Build and push",
+              "number": 10,
+              "status": "completed",
+              "conclusion": "skipped",
+              "started_at": "2026-11-05T01:01:44Z",
+              "completed_at": "2026-11-05T01:01:44Z"
+            },
+            {
+              "name": "Post Build and push",
+              "number": 16,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-11-05T01:01:44Z",
+              "completed_at": "2026-11-05T01:01:46Z"
+            },
+            {
+              "name": "Post Publish - Login to Quay Container Registry",
+              "number": 17,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-11-05T01:01:46Z",
+              "completed_at": "2026-11-05T01:01:47Z"
+            },
+            {
+              "name": "Post Build - Set up Docker Buildx",
+              "number": 18,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-11-05T01:01:47Z",
+              "completed_at": "2026-11-05T01:02:02Z"
+            },
+            {
+              "name": "Post Build - Set up QEMU",
+              "number": 19,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-11-05T01:02:02Z",
+              "completed_at": "2026-11-05T01:02:02Z"
+            },
+            {
+              "name": "Post Run actions/checkout@v7",
+              "number": 20,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-11-05T01:02:02Z",
+              "completed_at": "2026-11-05T01:02:03Z"
+            },
+            {
+              "name": "Complete job",
+              "number": 21,
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-11-05T01:02:03Z",
+              "completed_at": "2026-11-05T01:02:03Z"
+            }
+          ],
+          "url": "https://github.com/vllm-project/vllm-ascend/actions/runs/41943348478/job/126969357257"
+        }
+      ],
+      "failed_jobs": []
+    }
+  },
+  {
     "workflow_run_id": 41746278960,
     "workflow_name": "Image build lint",
     "pr_number": null,
@@ -3316,184 +3494,6 @@
             }
           ],
           "url": "https://github.com/vllm-project/vllm-ascend/actions/runs/41144547263/job/124366453602"
-        }
-      ],
-      "failed_jobs": []
-    }
-  },
-  {
-    "workflow_run_id": 40975440457,
-    "workflow_name": "Image build lint",
-    "pr_number": null,
-    "pipeline_type": "nightly",
-    "classification": {
-      "classification": "infrastructure",
-      "confidence": "low",
-      "category_detail": "无失败job信息",
-      "evidence": [],
-      "reasoning": "无法获取job详情，默认归类为基础设施问题"
-    },
-    "metadata": {
-      "workflow_run": {
-        "id": 40975440457,
-        "name": "Image build lint",
-        "workflow_id": 225921536,
-        "status": "completed",
-        "conclusion": "success",
-        "started_at": "2026-10-29T23:46:58Z",
-        "completed_at": "2026-10-29T23:55:29Z",
-        "head_sha": "1eda0ddad8b67f791a1019741d254cc97f9617ad",
-        "head_branch": "main",
-        "url": "https://github.com/vllm-project/vllm-ascend/actions/runs/40975440457",
-        "triggering_actor": "wangxiyuan"
-      },
-      "pipeline_info": {
-        "pipeline_type": "nightly",
-        "pipeline_type_label": "每日定时",
-        "source": "event_fallback"
-      },
-      "pr": null,
-      "jobs": [
-        {
-          "id": 123802194257,
-          "name": "vllm-ascend lint image build",
-          "status": "completed",
-          "conclusion": "success",
-          "started_at": "2026-10-29T23:47:01Z",
-          "completed_at": "2026-10-29T23:55:29Z",
-          "runner_name": "GitHub Actions 1001726422",
-          "runner_group": "GitHub Actions",
-          "steps": [
-            {
-              "name": "Set up job",
-              "number": 1,
-              "status": "completed",
-              "conclusion": "success",
-              "started_at": "2026-10-29T23:47:01Z",
-              "completed_at": "2026-10-29T23:47:04Z"
-            },
-            {
-              "name": "Run actions/checkout@v7",
-              "number": 2,
-              "status": "completed",
-              "conclusion": "success",
-              "started_at": "2026-10-29T23:47:04Z",
-              "completed_at": "2026-10-29T23:47:10Z"
-            },
-            {
-              "name": "Print",
-              "number": 3,
-              "status": "completed",
-              "conclusion": "success",
-              "started_at": "2026-10-29T23:47:10Z",
-              "completed_at": "2026-10-29T23:47:10Z"
-            },
-            {
-              "name": "Docker meta",
-              "number": 4,
-              "status": "completed",
-              "conclusion": "success",
-              "started_at": "2026-10-29T23:47:10Z",
-              "completed_at": "2026-10-29T23:47:11Z"
-            },
-            {
-              "name": "Read verified vLLM commit",
-              "number": 5,
-              "status": "completed",
-              "conclusion": "success",
-              "started_at": "2026-10-29T23:47:11Z",
-              "completed_at": "2026-10-29T23:47:11Z"
-            },
-            {
-              "name": "Build - Set up QEMU",
-              "number": 6,
-              "status": "completed",
-              "conclusion": "success",
-              "started_at": "2026-10-29T23:47:11Z",
-              "completed_at": "2026-10-29T23:47:20Z"
-            },
-            {
-              "name": "Build - Set up Docker Buildx",
-              "number": 7,
-              "status": "completed",
-              "conclusion": "success",
-              "started_at": "2026-10-29T23:47:20Z",
-              "completed_at": "2026-10-29T23:47:25Z"
-            },
-            {
-              "name": "Publish - Login to Quay Container Registry",
-              "number": 8,
-              "status": "completed",
-              "conclusion": "success",
-              "started_at": "2026-10-29T23:47:25Z",
-              "completed_at": "2026-10-29T23:47:26Z"
-            },
-            {
-              "name": "Build and push",
-              "number": 9,
-              "status": "completed",
-              "conclusion": "success",
-              "started_at": "2026-10-29T23:47:26Z",
-              "completed_at": "2026-10-29T23:54:59Z"
-            },
-            {
-              "name": "Build and push",
-              "number": 10,
-              "status": "completed",
-              "conclusion": "skipped",
-              "started_at": "2026-10-29T23:54:59Z",
-              "completed_at": "2026-10-29T23:54:59Z"
-            },
-            {
-              "name": "Post Build and push",
-              "number": 16,
-              "status": "completed",
-              "conclusion": "success",
-              "started_at": "2026-10-29T23:54:59Z",
-              "completed_at": "2026-10-29T23:55:01Z"
-            },
-            {
-              "name": "Post Publish - Login to Quay Container Registry",
-              "number": 17,
-              "status": "completed",
-              "conclusion": "success",
-              "started_at": "2026-10-29T23:55:01Z",
-              "completed_at": "2026-10-29T23:55:01Z"
-            },
-            {
-              "name": "Post Build - Set up Docker Buildx",
-              "number": 18,
-              "status": "completed",
-              "conclusion": "success",
-              "started_at": "2026-10-29T23:55:01Z",
-              "completed_at": "2026-10-29T23:55:26Z"
-            },
-            {
-              "name": "Post Build - Set up QEMU",
-              "number": 19,
-              "status": "completed",
-              "conclusion": "success",
-              "started_at": "2026-10-29T23:55:26Z",
-              "completed_at": "2026-10-29T23:55:26Z"
-            },
-            {
-              "name": "Post Run actions/checkout@v7",
-              "number": 20,
-              "status": "completed",
-              "conclusion": "success",
-              "started_at": "2026-10-29T23:55:26Z",
-              "completed_at": "2026-10-29T23:55:26Z"
-            },
-            {
-              "name": "Complete job",
-              "number": 21,
-              "status": "completed",
-              "conclusion": "success",
-              "started_at": "2026-10-29T23:55:26Z",
-              "completed_at": "2026-10-29T23:55:26Z"
-            }
-          ],
-          "url": "https://github.com/vllm-project/vllm-ascend/actions/runs/40975440457/job/123802194257"
         }
       ],
       "failed_jobs": []
